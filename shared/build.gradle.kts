@@ -47,10 +47,10 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(PodConfig.compileSDK)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(31)
+        minSdkVersion(PodConfig.minSdk)
+        targetSdkVersion(PodConfig.targetSdk)
     }
 }
