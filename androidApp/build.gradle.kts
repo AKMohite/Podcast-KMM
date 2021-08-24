@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(PodConfig.compileSDK)
+    compileSdk = PodConfig.compileSDKVersion
     defaultConfig {
         applicationId = PodConfig.applicationId
-        minSdkVersion(PodConfig.minSdk)
-        targetSdkVersion(PodConfig.targetSdk)
+        minSdk = PodConfig.minSdkVersion
+        targetSdk = PodConfig.targetSdkVersion
         versionCode = PodConfig.versionCode
         versionName = PodConfig.versionName
     }
