@@ -3,7 +3,9 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 version = "1.0"
@@ -27,21 +29,39 @@ kotlin {
     }
     
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(PodLib.coroutines)
+                implementation(PodLib.kotlinSerialization)
+                implementation(PodLib.ktorCore)
+                implementation(PodLib.ktorSerialization)
+                implementation(PodLib.sqlDelightRuntime)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(PodLib.ktorAndroidClient)
+                implementation(PodLib.sqlDelightAndroid)
+            }
+        }
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation(PodLib.ktoriOSClient)
+                implementation(PodLib.sqlDelightNative)
+            }
+        }
         val iosTest by getting
     }
 }
