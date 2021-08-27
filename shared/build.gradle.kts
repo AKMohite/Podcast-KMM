@@ -74,3 +74,9 @@ android {
         targetSdk = PodConfig.targetSdkVersion
     }
 }
+
+sqldelight {
+    database("PodDatabase") {
+        packageName = "com.app.podcast.data.local"
+    }
+}

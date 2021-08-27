@@ -1,0 +1,27 @@
+CREATE TABLE best_podcast (
+    id TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    link TEXT NOT NULL,
+    img_url TEXT NOT NULL,
+    audio_link TEXT
+);
+
+insertBestPodcast:
+INSERT INTO best_podcast(
+    id,
+    title,
+    description,
+    link,
+    img_url,
+    audio_link
+) VALUES(?, ?, ?, ?, ?, ?);
+
+removeAllBestPodcast:
+DELETE FROM best_podcast;
+
+getBestPodcasts:
+SELECT * FROM best_podcast;
+
+getPodcastbyID:
+SELECT * FROM best_podcast WHERE id = ?;
