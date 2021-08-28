@@ -1,9 +1,9 @@
 package com.app.podcast.data.local
 
 import com.app.podcast.data.remote.dto.PodcastDTO
-import com.app.podcast.domain.BestPodcast
+import com.app.podcast.domain.model.BestPodcast
 
-internal class PodcastDB(
+class PodcastDB(
     databaseDriverFactory: DatabaseDriverFactory
 ) {
     private val database = PodDatabase(databaseDriverFactory.createDriver())
