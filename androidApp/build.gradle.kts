@@ -1,5 +1,7 @@
 plugins {
     id("com.android.application")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
     kotlin("android")
 }
 
@@ -17,6 +19,11 @@ android {
             isMinifyEnabled = true
         }
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -24,4 +31,6 @@ dependencies {
     implementation(PodLib.material)
     implementation(PodLib.appCompat)
     implementation(PodLib.constraintLayout)
+    implementation(PodLib.hiltAndroid)
+    kapt(PodLib.hiltCompiler)
 }

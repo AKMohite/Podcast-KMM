@@ -9,6 +9,7 @@ buildscript {
         classpath(PodClassPath.buildGradle)
         classpath(PodClassPath.kotlinSerialization)
         classpath(PodClassPath.sqlDelight)
+        classpath(PodClassPath.hiltGradle)
     }
 }
 

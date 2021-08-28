@@ -1,14 +1,17 @@
-package com.app.podcast.android
+package com.app.podcast.android.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.app.podcast.Greeting
 import android.widget.TextView
+import com.app.podcast.android.R
+import dagger.hilt.android.AndroidEntryPoint
 
 fun greet(): String {
     return Greeting().greeting()
 }
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
