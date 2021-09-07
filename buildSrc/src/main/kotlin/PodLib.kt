@@ -2,7 +2,11 @@ object LibVersion {
     const val material = "1.4.0"
     const val appCompat = "1.3.1"
     const val constraintLayout = "2.1.0"
+    const val compose = "1.0.0-beta09"
+    const val composeActivity = "1.3.0-rc01"
+    const val constraintLayoutCompose = "1.0.0-alpha07"
     const val coroutines = "1.5.0-native-mt"
+    const val composeNavigation = "2.4.0-alpha01"
     const val gradle = "7.1.0-alpha08"
     const val hilt = "2.38.1"
     const val kotlin = "1.5.21"
@@ -26,6 +30,17 @@ object PodLib {
     const val sqlDelightRuntime = "com.squareup.sqldelight:runtime:${LibVersion.sqlDelight}"
     const val sqlDelightAndroid = "com.squareup.sqldelight:android-driver:${LibVersion.sqlDelight}"
     const val sqlDelightNative = "com.squareup.sqldelight:native-driver:${LibVersion.sqlDelight}"
+    
+    const val composeRuntime = "androidx.compose.runtime:runtime:${LibVersion.compose}"
+    const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:${LibVersion.compose}"
+    const val composeUI = "androidx.compose.ui:ui:${LibVersion.compose}"
+    const val materialCompose = "androidx.compose.material:material:${LibVersion.compose}"
+    const val uiTooling = "androidx.compose.ui:ui-tooling:${LibVersion.compose}"
+    const val composeFoundation = "androidx.compose.foundation:foundation:${LibVersion.compose}"
+    const val composeCompiler = "androidx.compose.compiler:compiler:${LibVersion.compose}"
+    const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:${LibVersion.constraintLayoutCompose}"
+    const val composeActivity = "androidx.activity:activity-compose:${LibVersion.composeActivity}"
+    const val composeNavigation = "androidx.navigation:navigation-compose:${LibVersion.composeNavigation}"
 }
 
 object PodClassPath {

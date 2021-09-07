@@ -20,9 +20,17 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = LibVersion.compose
     }
 }
 
@@ -30,8 +38,17 @@ dependencies {
     implementation(project(PodModule.shared))
     implementation(PodLib.material)
     implementation(PodLib.appCompat)
-    implementation(PodLib.constraintLayout)
-    implementation(PodLib.coroutines)
     implementation(PodLib.hiltAndroid)
     kapt(PodLib.hiltCompiler)
+
+    implementation(PodLib.composeRuntime)
+    implementation(PodLib.runtimeLiveData)
+    implementation(PodLib.composeUI)
+    implementation(PodLib.materialCompose)
+    implementation(PodLib.uiTooling)
+    implementation(PodLib.composeFoundation)
+    implementation(PodLib.composeCompiler)
+    implementation(PodLib.constraintLayoutCompose)
+    implementation(PodLib.composeActivity)
+    implementation(PodLib.composeNavigation)
 }
