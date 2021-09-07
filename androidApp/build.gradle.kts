@@ -31,6 +31,7 @@ dependencies {
     implementation(PodLib.material)
     implementation(PodLib.appCompat)
     implementation(PodLib.constraintLayout)
+    implementation(PodLib.coroutines)
     implementation(PodLib.hiltAndroid)
     kapt(PodLib.hiltCompiler)
 }
