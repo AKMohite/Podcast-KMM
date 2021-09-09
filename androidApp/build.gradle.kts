@@ -13,6 +13,9 @@ android {
         targetSdk = PodConfig.targetSdkVersion
         versionCode = PodConfig.versionCode
         versionName = PodConfig.versionName
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
     buildTypes {
         getByName("release") {
@@ -32,6 +35,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = LibVersion.compose
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
@@ -39,6 +50,7 @@ dependencies {
     implementation(PodLib.material)
     implementation(PodLib.appCompat)
     implementation(PodLib.hiltAndroid)
+    implementation(PodLib.hiltNavigation)
     kapt(PodLib.hiltCompiler)
 
     implementation(PodLib.composeRuntime)

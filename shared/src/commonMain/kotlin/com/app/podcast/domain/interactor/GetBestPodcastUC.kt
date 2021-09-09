@@ -7,7 +7,7 @@ import com.app.podcast.domain.model.BestPodcast
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetBestPodcastUC(
+class GetBestPodcastUC constructor(
     private val api: PodcastAPI,
     private val db: PodcastDB
 ) {
@@ -15,19 +15,19 @@ class GetBestPodcastUC(
     @Throws(Exception::class)
     operator fun invoke(forceReload: Boolean): Flow<DataState<List<BestPodcast>>> = flow {
         try {
-            emit(DataState.loading())
+            emit(DataState.loading<List<BestPodcast>>())
             val cachedPodcasts = db.getBestPodcasts()
             if (cachedPodcasts.isNotEmpty() && !forceReload) {
-                emit(DataState.data(data = cachedPodcasts))
+                emit(DataState.data<List<BestPodcast>>(data = cachedPodcasts))
             } else {
                 api.getBestPodcasts().also { dto ->
                     db.clearDatabase()
                     db.insertBestPodcast(dto.podcasts)
                 }
-                emit(DataState.data(data = db.getBestPodcasts()))
+                emit(DataState.data<List<BestPodcast>>(data = db.getBestPodcasts()))
             }
         } catch (e: Exception) {
-            emit(DataState.error(e.message ?: "Unknown error occurred"))
+            emit(DataState.error<List<BestPodcast>>(e.message ?: "Unknown error occurred"))
         }
     }
 

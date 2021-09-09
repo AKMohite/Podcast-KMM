@@ -40,21 +40,18 @@ class PodcastDB(
     internal fun insertBestPodcast(podcasts: List<PodcastDTO>) {
         dbQuery.transaction {
             podcasts.forEach { podcast ->
-                val pod = dbQuery.getPodcastbyID(podcast.id)
-                if (pod == null) {
-                    insetPodcast(podcast)
-                }
+                insertPodcast(podcast)
 
             }
         }
     }
 
-    private fun insetPodcast(podcast: PodcastDTO) {
+    private fun insertPodcast(podcast: PodcastDTO) {
         dbQuery.insertBestPodcast(
             podcast.id,
             podcast.title,
             podcast.description,
-            podcast.website,
+            podcast.website ?: "", // todo website link nullable?
             podcast.image,
             podcast.listenNotesUrl
         )

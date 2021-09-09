@@ -17,11 +17,12 @@ class PodcastAPI {
     }
 
     suspend fun getBestPodcasts(): BestPodcastDTO {
-        return httpClient.get(BEST_PODCAST)
+        val podcasts: BestPodcastDTO = httpClient.get(BEST_PODCAST)
+        return podcasts
     }
 
     companion object {
-        private const val BASE_URL = "https://listen-api.listennotes.com/api/v2"
+        private const val BASE_URL = "https://listen-api-test.listennotes.com/api/v2"
         private const val BEST_PODCAST = "$BASE_URL/best_podcasts"
     }
 }

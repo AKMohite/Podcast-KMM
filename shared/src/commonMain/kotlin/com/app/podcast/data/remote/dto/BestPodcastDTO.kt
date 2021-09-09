@@ -39,7 +39,7 @@ data class PodcastDTO(
     @SerialName("earliest_pub_date_ms")
     val earliestPubDateMs: Long,
     @SerialName("email")
-    val email: String,
+    val email: String?,
     @SerialName("explicit_content")
     val explicitContent: Boolean,
     @SerialName("extra")
@@ -59,9 +59,9 @@ data class PodcastDTO(
     @SerialName("latest_pub_date_ms")
     val latestPubDateMs: Long,
     @SerialName("listen_score")
-    val listenScore: Int,
+    val listenScore: Int?,
     @SerialName("listen_score_global_rank")
-    val listenScoreGlobalRank: String,
+    val listenScoreGlobalRank: String?,
     @SerialName("listennotes_url")
     val listenNotesUrl: String,
     @SerialName("looking_for")
@@ -79,7 +79,7 @@ data class PodcastDTO(
     @SerialName("type")
     val type: String,
     @SerialName("website")
-    val website: String
+    val website: String?
 )
 
 @Serializable
