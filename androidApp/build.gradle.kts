@@ -56,6 +56,7 @@ dependencies {
     implementation(PodLib.composeRuntime)
     implementation(PodLib.runtimeLiveData)
     implementation(PodLib.composeUI)
+    implementation(PodLib.composeCoil)
     implementation(PodLib.materialCompose)
     implementation(PodLib.uiTooling)
     implementation(PodLib.composeFoundation)

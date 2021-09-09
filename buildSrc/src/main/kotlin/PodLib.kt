@@ -3,6 +3,7 @@ object LibVersion {
     const val material = "1.4.0"
     const val appCompat = "1.3.1"
     const val constraintLayout = "2.1.0"
+    const val coilCompose = "1.3.2"
     const val compose = "1.1.0-alpha03"
     const val composeActivity = "1.3.0-rc01"
     const val constraintLayoutCompose = "1.0.0-alpha07"
@@ -34,6 +35,7 @@ object PodLib {
     const val sqlDelightNative = "com.squareup.sqldelight:native-driver:${LibVersion.sqlDelight}"
     
     const val composeRuntime = "androidx.compose.runtime:runtime:${LibVersion.compose}"
+    const val composeCoil = "io.coil-kt:coil-compose:${LibVersion.coilCompose}"
     const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:${LibVersion.compose}"
     const val composeUI = "androidx.compose.ui:ui:${LibVersion.compose}"
     const val materialCompose = "androidx.compose.material:material:${LibVersion.compose}"
