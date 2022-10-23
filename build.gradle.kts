@@ -10,7 +10,7 @@ plugins {
 }
 
 subprojects {
-//    apply(from = "../buildscripts/detekt.gradle.kts")
+//    region detekt
     apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
@@ -25,6 +25,7 @@ subprojects {
             md.required.set(true) // simple Markdown format
         }
     }
+//    endregion
 }
 
 tasks.register("clean", Delete::class) {
