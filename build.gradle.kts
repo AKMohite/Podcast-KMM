@@ -3,6 +3,7 @@ plugins {
 //    val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs") as org.gradle.accessors.dm.LibrariesForLibs
     alias(libs.plugins.android.app) apply false
     alias(libs.plugins.android.library) apply false
+//    TODO how to apply kotlin plugin
     kotlin("android").version(libs.versions.kotlin.get()).apply(false)
     kotlin("multiplatform").version(libs.versions.kotlin.get()).apply(false)
 }

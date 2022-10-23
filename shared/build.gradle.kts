@@ -48,9 +48,9 @@ kotlin {
 
 android {
     namespace = "com.mak.pocketnotes"
-    compileSdk = 32
+    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
     defaultConfig {
-        minSdk = 23
-        targetSdk = 32
+        minSdk = Integer.parseInt(libs.versions.minSdk.get())
+        targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
     }
 }
