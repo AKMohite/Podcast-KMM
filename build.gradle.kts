@@ -15,7 +15,7 @@ subprojects {
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
         config.setFrom(files("${rootProject.projectDir}/config/detekt/detekt.yml"))
-        baseline.set(file("${rootProject.projectDir}/config/detekt/baseline.xml"))
+//        baseline.set(file("${rootProject.projectDir}/config/detekt/baseline.xml"))
 //        debug = true
         reports {
             html.required.set(true) // observe findings in your browser with structure and code snippets
