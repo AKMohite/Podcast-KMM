@@ -6,6 +6,13 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Podcast"
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "Pocket_Notes"
 include(":androidApp")
 include(":shared")
