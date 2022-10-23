@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.android.ui
+package com.mak.pocketnotes.android.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
