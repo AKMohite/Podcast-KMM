@@ -1,0 +1,13 @@
+[versions]
+gradlePlugin = "7.2.2"
+kotlin = "1.7.10"
+
+[libraries]
+
+[bundles]
+
+[plugins]
+android-app = { id = "com.android.application", version.ref = "gradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "gradlePlugin" }
+#kotlin-android = {}
+#kotlin-multiplatform = {}
