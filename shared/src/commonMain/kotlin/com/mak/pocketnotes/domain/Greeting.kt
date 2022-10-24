@@ -1,4 +1,4 @@
-package com.mak.pocketnotes
+package com.mak.pocketnotes.domain
 
 class Greeting {
     private val platform: Platform = getPlatform()

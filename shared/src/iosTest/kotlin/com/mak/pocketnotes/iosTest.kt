@@ -1,5 +1,6 @@
 package com.mak.pocketnotes
 
+import com.mak.pocketnotes.domain.Greeting
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
