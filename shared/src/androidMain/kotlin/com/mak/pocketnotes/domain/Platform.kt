@@ -1,6 +1,4 @@
-package com.mak.pocketnotes
-
-import com.mak.pocketnotes.domain.Platform
+package com.mak.pocketnotes.domain
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"

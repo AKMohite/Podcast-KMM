@@ -1,6 +1,5 @@
-package com.mak.pocketnotes
+package com.mak.pocketnotes.domain
 
-import com.mak.pocketnotes.domain.Platform
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
