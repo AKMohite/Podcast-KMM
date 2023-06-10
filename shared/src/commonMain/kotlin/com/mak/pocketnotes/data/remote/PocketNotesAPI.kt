@@ -1,19 +1,27 @@
 package com.mak.pocketnotes.data.remote
 
 import com.mak.pocketnotes.data.remote.dto.BestPodcastsDTO
+import com.mak.pocketnotes.data.remote.dto.PodcastDTO
+import com.mak.pocketnotes.data.util.Dispatcher
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import kotlinx.coroutines.withContext
 
 internal class PocketNotesAPI(
-    private val client: HttpClient
+    private val client: HttpClient,
+    private val dispatcher: Dispatcher
 ): IPocketNotesAPI {
-
-    override suspend fun getBestPodcasts(): BestPodcastsDTO {
-        return client.get("/best_podcasts").body()
+    override suspend fun getBestPodcasts(page: Int): BestPodcastsDTO = withContext(dispatcher.io) {
+        client.get("/best_podcasts?page=$page").body()
+    }
+    override suspend fun getPodcastDetails(id: String): PodcastDTO = withContext(dispatcher.io) {
+        client.get("/podcasts/$id").body()
     }
 }
 
 internal interface IPocketNotesAPI {
-    suspend fun getBestPodcasts(): BestPodcastsDTO
+    suspend fun getBestPodcasts(page: Int): BestPodcastsDTO
+
+    suspend fun getPodcastDetails(id: String): PodcastDTO
 }

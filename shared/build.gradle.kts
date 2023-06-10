@@ -26,6 +26,8 @@ kotlin {
                 implementation(libs.ktor.content.negotiation)
                 implementation(libs.ktor.serialization)
                 implementation(libs.realm.base)
+                //Use api so that the android app can use it as well
+                implementation(libs.koin.core)
             }
         }
         val commonTest by getting {
@@ -36,6 +38,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.ktor.client.android)
+                implementation(libs.koin.android)
             }
         }
         val androidTest by getting
