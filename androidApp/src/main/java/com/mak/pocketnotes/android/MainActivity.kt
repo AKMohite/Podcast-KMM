@@ -18,9 +18,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.Home
+import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.appDestinations
 import com.mak.pocketnotes.android.common.ui.PodcastAppBar
 import com.mak.pocketnotes.android.feature.home.HomeScreen
+import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 
 
@@ -74,9 +76,18 @@ internal fun PodcastNav() {
         ) {
             composable(Home.routeWithArgs) {
                 HomeScreen(
-                    gotoDetails = {
-//                        navController.navigate(PodcastDetail.routeWithArgs)
+                    gotoDetails = { podcast ->
+                        navController.navigate(
+                            "${PodcastDetail.route}/${podcast.id}"
+                        )
                     }
+                )
+            }
+
+            composable(PodcastDetail.routeWithArgs) {
+                val movieId = it.arguments?.getString("podcast_id") ?: ""
+                PodcastDetailScreen(
+                    movieId = movieId
                 )
             }
         }

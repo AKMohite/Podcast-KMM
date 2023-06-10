@@ -16,7 +16,7 @@ internal class PocketNotesAPI(
         client.get("api/v2/best_podcasts?page=$page").body()
     }
     override suspend fun getPodcastDetails(id: String): PodcastDTO = withContext(dispatcher.io) {
-        client.get("/podcasts/$id").body()
+        client.get("api/v2/podcasts/$id").body()
     }
 }
 
