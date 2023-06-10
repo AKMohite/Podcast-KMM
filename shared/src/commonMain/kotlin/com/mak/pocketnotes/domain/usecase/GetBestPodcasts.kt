@@ -14,7 +14,7 @@ class GetBestPodcasts: KoinComponent {
     @Throws(Exception::class)
     suspend operator fun invoke(page:Int): List<Podcast> {
         val bestPodcastAPI = api.getBestPodcasts(page)
-        val podcasts = mapper.podcast.jsonToModels(bestPodcastAPI.podcasts)
+        val podcasts = mapper.podcast.jsonToModels(bestPodcastAPI.podcasts ?: emptyList())
         return podcasts
     }
 }

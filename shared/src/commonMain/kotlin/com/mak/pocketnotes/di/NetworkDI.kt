@@ -27,7 +27,7 @@ internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): H
             url {
                 protocol = URLProtocol.HTTPS
                 host = API_HOST
-                path("api", "v2")
+//                path("api/")
 //                parametersOf("api_key", "")
             }
         }

@@ -42,7 +42,8 @@ internal fun PodcastItem(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(bottomStart = 2.dp, bottomEnd = 2.dp))
+                        .clip(RoundedCornerShape(bottomStart = 2.dp, bottomEnd = 2.dp)),
+
                 )
 //                Surface(
 //                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
@@ -68,7 +69,9 @@ internal fun PodcastItem(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = podcast.publisher,
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

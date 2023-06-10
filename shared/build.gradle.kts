@@ -1,7 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("io.realm.kotlin")
+//    id("io.realm.kotlin")
     kotlin("plugin.serialization") version libs.versions.serialization.get()
 }
 
@@ -25,7 +25,7 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.content.negotiation)
                 implementation(libs.ktor.serialization)
-                implementation(libs.realm.base)
+//                implementation(libs.realm.base)
                 //Use api so that the android app can use it as well
                 implementation(libs.koin.core)
             }

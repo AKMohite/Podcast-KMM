@@ -21,10 +21,18 @@ import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
 import com.mak.pocketnotes.android.util.md2.pullRefresh
 import com.mak.pocketnotes.android.util.md2.rememberPullRefreshState
 import com.mak.pocketnotes.domain.models.Podcast
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun HomeScreen() {
-//    HomeContent()
+internal fun HomeScreen(
+    gotoDetails: (Podcast) -> Unit
+) {
+    val homeViewModel: HomeViewModel = koinViewModel()
+    HomeContent(
+        uiState = homeViewModel.uiState,
+        loadNextPodcasts = homeViewModel::loadPodcasts,
+        gotoDetails = gotoDetails
+    )
 }
 
 @Composable
@@ -41,7 +49,7 @@ private fun HomeContent(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .pullRefresh(state = refreshState)

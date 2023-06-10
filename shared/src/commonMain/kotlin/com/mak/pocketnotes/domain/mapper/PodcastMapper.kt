@@ -12,16 +12,16 @@ internal class PodcastMapper {
     }
 
     fun jsonToModel(dto: PodcastDTO) = Podcast(
-        id = dto.id,
-        description = dto.description,
-        image = dto.image,
-        listenScore = dto.listenScore,
-        publisher = dto.publisher,
-        thumbnail = dto.thumbnail,
-        title = dto.title,
-        totalEpisodes = dto.totalEpisodes,
-        type = dto.type,
-        website = dto.website
+        id = dto.id!!,
+        description = dto.description ?: "",
+        image = dto.image ?: "",
+        listenScore = dto.listenScore ?: 0,
+        publisher = dto.publisher ?: "",
+        thumbnail = dto.thumbnail ?: "",
+        title = dto.title ?: "",
+        totalEpisodes = dto.totalEpisodes ?: 0,
+        type = dto.type ?: "",
+        website = dto.website ?: ""
     )
 
 }
