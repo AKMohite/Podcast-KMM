@@ -34,4 +34,6 @@ android {
 dependencies {
     implementation(project(":shared"))
     implementation(libs.bundles.compose)
+    implementation(libs.koin.android.compose)
+    implementation(libs.accompanist.systemuicontroller)
 }
