@@ -47,61 +47,65 @@ private fun PodcastDetailContent(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                AsyncImage(
-                    model = podcast.image,
-                    contentDescription = podcast.title,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(320.dp)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .padding(20.dp)
-                ) {
-                    Text(
-                        text = podcast.title,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        onClick = {},
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
-                        ),
-                        elevation = ButtonDefaults.buttonElevation(
-                            defaultElevation = 0.dp
-                        )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.PlayArrow,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "Start listening now",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "By: ${podcast.publisher}".uppercase(),
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = podcast.description,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
 
                 LazyColumn(
                     contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
                 ) {
+                    item {
+                        AsyncImage(
+                            model = podcast.image,
+                            contentDescription = podcast.title,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(320.dp)
+                        )
+                    }
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .padding(20.dp)
+                        ) {
+                            Text(
+                                text = podcast.title,
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                onClick = {},
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                                ),
+                                elevation = ButtonDefaults.buttonElevation(
+                                    defaultElevation = 0.dp
+                                )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.PlayArrow,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = "Start listening now",
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "By: ${podcast.publisher}".uppercase(),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = podcast.description,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
                     items(
                         items = podcast.episodes,
                         key = { episode: PodcastEpisode -> episode.id }
