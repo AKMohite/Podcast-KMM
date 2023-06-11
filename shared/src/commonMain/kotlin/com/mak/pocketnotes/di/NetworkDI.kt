@@ -89,6 +89,6 @@ private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? {
 }
 
 //const val a = BuildCo
-//private const val API_HOST = "listen-api-test.listennotes.com"
-private const val API_HOST = "listen-api.listennotes.com"
+private const val API_HOST = "listen-api-test.listennotes.com"
+//private const val API_HOST = "listen-api.listennotes.com"
 private const val API_KEY = ""

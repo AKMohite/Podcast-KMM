@@ -62,7 +62,7 @@ internal data class PodcastDTO(
     @SerialName("latest_pub_date_ms")
     val latestPubDateMs: Long?,
     @SerialName("listen_score")
-    val listenScore: String?,
+    val listenScore: Int?, // for pro version it will return int else it will return string
     @SerialName("listen_score_global_rank")
     val listenScoreGlobalRank: String?,
     @SerialName("listennotes_url")
@@ -84,7 +84,9 @@ internal data class PodcastDTO(
     @SerialName("update_frequency_hours")
     val updateFrequencyHours: Int?,
     @SerialName("website")
-    val website: String?
+    val website: String?,
+    @SerialName("episodes")
+    val episodes: List<EpisodeDTO>? = emptyList()
 )
 @Serializable
 internal data class ExtraDTO(

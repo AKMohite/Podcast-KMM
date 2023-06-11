@@ -21,6 +21,7 @@ import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
 import com.mak.pocketnotes.android.util.md2.pullRefresh
 import com.mak.pocketnotes.android.util.md2.rememberPullRefreshState
 import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -99,7 +100,9 @@ private fun HomeScreenPreview() {
     PocketNotesTheme {
         Surface {
             HomeContent(
-                uiState = HomeScreenState(),
+                uiState = HomeScreenState(
+                    podcasts = samplePodcasts
+                ),
                 loadNextPodcasts = {},
                 gotoDetails = {}
             )

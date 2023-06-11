@@ -2,6 +2,8 @@ package com.mak.pocketnotes.android.feature.podcastdetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
@@ -12,7 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.PodcastEpisode
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -92,6 +96,12 @@ private fun PodcastDetailContent(
                         text = podcast.description,
                         style = MaterialTheme.typography.bodyMedium
                     )
+                }
+
+                LazyColumn {
+                    items(items = podcast.episodes, key = { episode: PodcastEpisode -> episode.id }) { episode ->
+                        PodcastEpisodeItem(episode = episode)
+                    }
                 }
             }
         }

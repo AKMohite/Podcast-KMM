@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun PodcastItem(
@@ -83,18 +84,7 @@ internal fun PodcastItem(
 private fun PodcastItemPreview() {
     PocketNotesTheme {
         PodcastItem(
-            podcast = Podcast(
-                id = "322323",
-                description = "Podcast description",
-                image = "",
-                listenScore = 8,
-                publisher = "Qwerty",
-                thumbnail = "",
-                title = "Podcast name",
-                totalEpisodes = 2,
-                type = "",
-                website = ""
-            ),
+            podcast = samplePodcasts[0],
             gotoDetails = {}
         )
     }
