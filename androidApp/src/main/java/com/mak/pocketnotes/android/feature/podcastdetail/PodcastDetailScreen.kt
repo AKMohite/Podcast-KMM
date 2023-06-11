@@ -10,10 +10,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
+import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.PodcastEpisode
@@ -53,6 +57,7 @@ private fun PodcastDetailContent(
                 ) {
                     item {
                         AsyncImage(
+                            placeholder = debugPlaceholder(),
                             model = podcast.image,
                             contentDescription = podcast.title,
                             modifier = Modifier

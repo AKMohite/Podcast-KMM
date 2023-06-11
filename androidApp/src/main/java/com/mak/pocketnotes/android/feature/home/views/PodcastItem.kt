@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
@@ -44,6 +45,7 @@ internal fun PodcastItem(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(bottomStart = 2.dp, bottomEnd = 2.dp)),
+                    placeholder = debugPlaceholder()
 
                 )
 //                Surface(
