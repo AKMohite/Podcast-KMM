@@ -9,4 +9,5 @@
 import Foundation
 import shared
 
-let samplePodcast = Podcast(id: "", description: "this is podcast description", image: "https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-YMha8DxnUbc-53MLh7NpAwm.1400x1400.jpg", listenScore: 3, publisher: "podcast publisher", thumbnail: "https://production.listennotes.com/podcasts/the-rough-cut-matt-feury-DEkF_8ybj6A-53MLh7NpAwm.300x300.jpg", title: "Podcast title", totalEpisodes: 4, type: "", website: "")
+let samplePodcasts = SampleDataKt.samplePodcasts
+let sampleEpisodes = SampleDataKt.sampleEpisodes

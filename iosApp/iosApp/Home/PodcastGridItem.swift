@@ -43,6 +43,6 @@ struct PodcastGridItem: View {
 
 struct PodcastGridItem_Previews: PreviewProvider {
     static var previews: some View {
-        PodcastGridItem(podcast: samplePodcast)
+        PodcastGridItem(podcast: samplePodcasts[0])
     }
 }

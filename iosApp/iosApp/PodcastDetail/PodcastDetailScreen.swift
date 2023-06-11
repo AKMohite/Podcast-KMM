@@ -57,7 +57,9 @@ struct PodcastDetailScreen: View {
                             Text(safePodcast.description_)
                                 .font(.body)
                                 .fixedSize(horizontal: false, vertical: true)
-                            
+                            ForEach(safePodcast.episodes, id: \.id) { episode in
+                                PodcastEpisodeItem(episode: episode)
+                            }
                         }
                         .padding(20)
                         .background(.black)
