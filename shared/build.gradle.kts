@@ -1,56 +1,76 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     id("com.android.library")
+//    id("io.realm.kotlin")
+    kotlin("plugin.serialization") version libs.versions.serialization.get()
 }
-
-version = "1.0"
 
 kotlin {
     android()
-
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget = when {
-        System.getenv("SDK_NAME")?.startsWith("iphoneos") == true -> ::iosArm64
-        else -> ::iosX64
-    }
-
-    iosTarget("ios") {}
-
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "14.1"
-        frameworkName = "shared"
-        podfile = project.file("../iosApp/Podfile")
-    }
     
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+        }
+    }
+
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.content.negotiation)
+                implementation(libs.ktor.serialization)
+//                implementation(libs.realm.base)
+                //Use api so that the android app can use it as well
+                implementation(libs.koin.core)
+            }
+        }
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting {
+        val androidMain by getting {
             dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
+                implementation(libs.ktor.client.android)
+                implementation(libs.koin.android)
             }
         }
-        val iosMain by getting
-        val iosTest by getting
+        val androidTest by getting
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.ktor.client.ios)
+            }
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosSimulatorArm64Test by getting
+        val iosTest by creating {
+            dependsOn(commonTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+            iosSimulatorArm64Test.dependsOn(this)
+        }
     }
 }
 
 android {
-    compileSdk = PodConfig.compileSDKVersion
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    namespace = "com.mak.pocketnotes"
+    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
     defaultConfig {
-        minSdk = PodConfig.minSdkVersion
-        targetSdk = PodConfig.targetSdkVersion
+        minSdk = Integer.parseInt(libs.versions.minSdk.get())
+        targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
     }
 }
