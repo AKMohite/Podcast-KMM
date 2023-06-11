@@ -17,6 +17,7 @@ import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -98,8 +99,13 @@ private fun PodcastDetailContent(
                     )
                 }
 
-                LazyColumn {
-                    items(items = podcast.episodes, key = { episode: PodcastEpisode -> episode.id }) { episode ->
+                LazyColumn(
+                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
+                ) {
+                    items(
+                        items = podcast.episodes,
+                        key = { episode: PodcastEpisode -> episode.id }
+                    ) { episode ->
                         PodcastEpisodeItem(episode = episode)
                     }
                 }
@@ -121,6 +127,8 @@ private fun PodcastDetailContent(
 @Composable
 private fun PodcastDetailScreenPreview() {
     PocketNotesTheme {
-        PodcastDetailContent(uiState = PodcastDetailState())
+        PodcastDetailContent(uiState = PodcastDetailState(
+            podcast = samplePodcasts[0]
+        ))
     }
 }

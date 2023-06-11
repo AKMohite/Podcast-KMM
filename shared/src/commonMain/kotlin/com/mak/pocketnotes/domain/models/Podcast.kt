@@ -34,4 +34,21 @@ data class PodcastEpisode(
         val gmtDate = GMTDate(uploadedAt)
         return "${gmtDate.month.value} ${gmtDate.dayOfMonth}"
     }
+
+    fun readableDuration(): String {
+        val hours = duration / 3600;
+        val minutes = (duration % 3600) / 60;
+        val seconds = duration % 60;
+        var duration = ""
+        if (hours > 0)
+            duration += "$hours hrs "
+
+        if (minutes > 0)
+            duration += "$minutes min "
+
+        if (seconds > 0)
+            duration += "$seconds sec"
+
+        return duration.trim()
+    }
 }
