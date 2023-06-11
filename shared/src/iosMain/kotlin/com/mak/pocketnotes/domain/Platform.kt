@@ -1,4 +1,4 @@
-package com.mak.pocketnotes
+package com.mak.pocketnotes.domain
 
 import platform.UIKit.UIDevice
 
