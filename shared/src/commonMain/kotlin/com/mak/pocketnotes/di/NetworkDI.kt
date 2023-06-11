@@ -8,9 +8,11 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.logging.*
 import kotlinx.serialization.json.Json
 
 internal fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
@@ -27,13 +29,14 @@ internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): H
             url {
                 protocol = URLProtocol.HTTPS
                 host = API_HOST
+                header("X-ListenAPI-Key", API_KEY)
 //                path("api/")
 //                parametersOf("api_key", "")
             }
         }
 
         HttpResponseValidator {
-            handleResponseExceptionWithRequest { exception, _ ->
+            handleResponseExceptionWithRequest { exception, request ->
                 /*val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
                 val exceptionResponse = clientException.response
                 if (exceptionResponse.status == HttpStatusCode.NotFound) {
@@ -85,4 +88,7 @@ private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? {
     }
 }
 
-private const val API_HOST = "listen-api-test.listennotes.com"
+//const val a = BuildCo
+//private const val API_HOST = "listen-api-test.listennotes.com"
+private const val API_HOST = "listen-api.listennotes.com"
+private const val API_KEY = ""

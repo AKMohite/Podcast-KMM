@@ -62,7 +62,7 @@ internal data class PodcastDTO(
     @SerialName("latest_pub_date_ms")
     val latestPubDateMs: Long?,
     @SerialName("listen_score")
-    val listenScore: Int?,
+    val listenScore: String?,
     @SerialName("listen_score_global_rank")
     val listenScoreGlobalRank: String?,
     @SerialName("listennotes_url")

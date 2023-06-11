@@ -15,7 +15,7 @@ internal class PodcastMapper {
         id = dto.id!!,
         description = dto.description ?: "",
         image = dto.image ?: "",
-        listenScore = dto.listenScore ?: 0,
+        listenScore = dto.listenScore?.toIntOrNull() ?: 0,
         publisher = dto.publisher ?: "",
         thumbnail = dto.thumbnail ?: "",
         title = dto.title ?: "",
