@@ -30,7 +30,7 @@ struct HomeScreen: View {
                     }
                     .padding(.horizontal, 12)
                     .navigationDestination(for: Podcast.self) { podast in
-                        PodcastDetailScreen(podcast: podast)
+                        PodcastDetailScreen(podcastId: podast.id)
                     }
                 }
                 .navigationTitle("Podcasts")
