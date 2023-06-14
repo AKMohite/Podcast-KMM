@@ -18,7 +18,7 @@ struct PodcastGridItem: View {
         ){
             ZStack(){
                 if #available(iOS 15.0, *) {
-                    AsyncImage(url: URL(string: podcast.image)) { image in
+                    AsyncImage(url: URL(string: podcast.thumbnail)) { image in
                         image.resizable()
                     }placeholder: {
                         Color.gray

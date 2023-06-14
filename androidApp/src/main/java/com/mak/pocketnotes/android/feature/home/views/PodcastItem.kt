@@ -39,7 +39,7 @@ internal fun PodcastItem(
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    model = podcast.image,
+                    model = podcast.thumbnail,
                     contentDescription = podcast.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
