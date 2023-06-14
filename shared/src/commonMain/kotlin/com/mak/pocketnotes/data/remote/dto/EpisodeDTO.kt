@@ -7,31 +7,31 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class EpisodeDTO(
     @SerialName("audio")
-    val audio: String?,
+    val audio: String? = null,
     @SerialName("audio_length_sec")
-    val audioLengthSec: Int?,
+    val audioLengthSec: Int? = null,
     @SerialName("description")
-    val description: String?,
+    val description: String? = null,
     @SerialName("explicit_content")
-    val explicitContent: Boolean?,
+    val explicitContent: Boolean? = null,
     @SerialName("guid_from_rss")
-    val guidFromRss: String?,
+    val guidFromRss: String? = null,
     @SerialName("id")
-    val id: String?,
+    val id: String? = null,
     @SerialName("image")
-    val image: String?,
+    val image: String? = null,
     @SerialName("link")
-    val link: String?,
+    val link: String? = null,
     @SerialName("listennotes_edit_url")
-    val listennotesEditUrl: String?,
+    val listennotesEditUrl: String? = null,
     @SerialName("listennotes_url")
-    val listennotesUrl: String?,
+    val listennotesUrl: String? = null,
     @SerialName("maybe_audio_invalid")
-    val maybeAudioInvalid: Boolean?,
+    val maybeAudioInvalid: Boolean? = null,
     @SerialName("pub_date_ms")
-    val pubDateMs: Long?,
+    val pubDateMs: Long? = null,
     @SerialName("thumbnail")
-    val thumbnail: String?,
+    val thumbnail: String? = null,
     @SerialName("title")
-    val title: String?
+    val title: String? = null
 )

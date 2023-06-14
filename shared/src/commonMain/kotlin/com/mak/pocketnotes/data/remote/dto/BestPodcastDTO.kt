@@ -7,125 +7,125 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class BestPodcastDTO(
     @SerialName("has_next")
-    val hasNext: Boolean?,
+    val hasNext: Boolean? = null,
     @SerialName("has_previous")
-    val hasPrevious: Boolean?,
+    val hasPrevious: Boolean? = null,
     @SerialName("id")
-    val id: Int?,
+    val id: Int? = null,
     @SerialName("listennotes_url")
-    val listennotesUrl: String?,
+    val listennotesUrl: String? = null,
     @SerialName("name")
-    val name: String?,
+    val name: String? = null,
     @SerialName("next_page_number")
-    val nextPageNumber: Int?,
+    val nextPageNumber: Int? = null,
     @SerialName("page_number")
-    val pageNumber: Int?,
+    val pageNumber: Int? = null,
     @SerialName("parent_id")
-    val parentId: Int?,
+    val parentId: Int? = null,
     @SerialName("podcasts")
-    val podcasts: List<PodcastDTO>?,
+    val podcasts: List<PodcastDTO>? = null,
     @SerialName("previous_page_number")
-    val previousPageNumber: Int?,
+    val previousPageNumber: Int? = null,
     @SerialName("total")
-    val total: Int?
+    val total: Int? = null
 )
 @Serializable
 internal data class PodcastDTO(
     @SerialName("audio_length_sec")
-    val audioLengthSec: Int?,
+    val audioLengthSec: Int? = null,
     @SerialName("country")
-    val country: String?,
+    val country: String? = null,
     @SerialName("description")
-    val description: String?,
+    val description: String? = null,
     @SerialName("earliest_pub_date_ms")
-    val earliestPubDateMs: Long?,
+    val earliestPubDateMs: Long? = null,
     @SerialName("email")
-    val email: String?,
+    val email: String? = null,
     @SerialName("explicit_content")
-    val explicitContent: Boolean?,
+    val explicitContent: Boolean? = null,
     @SerialName("extra")
-    val extra: ExtraDTO?,
+    val extra: ExtraDTO? = null,
     @SerialName("genre_ids")
-    val genreIds: List<Int?>?,
+    val genreIds: List<Int>? = null,
     @SerialName("id")
-    val id: String?,
+    val id: String? = null,
     @SerialName("image")
-    val image: String?,
+    val image: String? = null,
     @SerialName("is_claimed")
-    val isClaimed: Boolean?,
+    val isClaimed: Boolean? = null,
     @SerialName("itunes_id")
-    val itunesId: Int?,
+    val itunesId: Int? = null,
     @SerialName("language")
-    val language: String?,
+    val language: String? = null,
     @SerialName("latest_episode_id")
-    val latestEpisodeId: String?,
+    val latestEpisodeId: String? = null,
     @SerialName("latest_pub_date_ms")
-    val latestPubDateMs: Long?,
+    val latestPubDateMs: Long? = null,
     @SerialName("listen_score")
-    val listenScore: Int?, // for pro version it will return int else it will return string
+    val listenScore: Int? = null, // for pro version it will return int else it will return string
     @SerialName("listen_score_global_rank")
-    val listenScoreGlobalRank: String?,
+    val listenScoreGlobalRank: String? = null,
     @SerialName("listennotes_url")
-    val listennotesUrl: String?,
+    val listennotesUrl: String? = null,
     @SerialName("looking_for")
-    val lookingFor: LookingForDTO?,
+    val lookingFor: LookingForDTO? = null,
     @SerialName("publisher")
-    val publisher: String?,
+    val publisher: String? = null,
     @SerialName("rss")
-    val rss: String?,
+    val rss: String? = null,
     @SerialName("thumbnail")
-    val thumbnail: String?,
+    val thumbnail: String? = null,
     @SerialName("title")
-    val title: String?,
+    val title: String? = null,
     @SerialName("total_episodes")
-    val totalEpisodes: Int?,
+    val totalEpisodes: Int? = null,
     @SerialName("type")
-    val type: String?,
+    val type: String? = null,
     @SerialName("update_frequency_hours")
-    val updateFrequencyHours: Int?,
+    val updateFrequencyHours: Int? = null,
     @SerialName("website")
-    val website: String?,
+    val website: String? = null,
     @SerialName("episodes")
-    val episodes: List<EpisodeDTO>? = emptyList()
+    val episodes: List<EpisodeDTO>? = null
 )
 @Serializable
 internal data class ExtraDTO(
     @SerialName("amazon_music_url")
-    val amazonMusicUrl: String?,
+    val amazonMusicUrl: String? = null,
     @SerialName("facebook_handle")
-    val facebookHandle: String?,
+    val facebookHandle: String? = null,
     @SerialName("google_url")
-    val googleUrl: String?,
+    val googleUrl: String? = null,
     @SerialName("instagram_handle")
-    val instagramHandle: String?,
+    val instagramHandle: String? = null,
     @SerialName("linkedin_url")
-    val linkedinUrl: String?,
+    val linkedinUrl: String? = null,
     @SerialName("patreon_handle")
-    val patreonHandle: String?,
+    val patreonHandle: String? = null,
     @SerialName("spotify_url")
-    val spotifyUrl: String?,
+    val spotifyUrl: String? = null,
     @SerialName("twitter_handle")
-    val twitterHandle: String?,
+    val twitterHandle: String? = null,
     @SerialName("url1")
-    val url1: String?,
+    val url1: String? = null,
     @SerialName("url2")
-    val url2: String?,
+    val url2: String? = null,
     @SerialName("url3")
-    val url3: String?,
+    val url3: String? = null,
     @SerialName("wechat_handle")
-    val wechatHandle: String?,
+    val wechatHandle: String? = null,
     @SerialName("youtube_url")
-    val youtubeUrl: String?
+    val youtubeUrl: String? = null
 )
 
 @Serializable
 internal data class LookingForDTO(
     @SerialName("cohosts")
-    val cohosts: Boolean?,
+    val cohosts: Boolean? = null,
     @SerialName("cross_promotion")
-    val crossPromotion: Boolean?,
+    val crossPromotion: Boolean? = null,
     @SerialName("guests")
-    val guests: Boolean?,
+    val guests: Boolean? = null,
     @SerialName("sponsors")
-    val sponsors: Boolean?
+    val sponsors: Boolean? = null
 )
