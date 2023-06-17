@@ -31,6 +31,8 @@ kotlin {
 //                implementation(libs.realm.base)
                 //Use api so that the android app can use it as well
                 implementation(libs.koin.core)
+
+                implementation(libs.ktor.client.mock)
             }
         }
         val commonTest by getting {

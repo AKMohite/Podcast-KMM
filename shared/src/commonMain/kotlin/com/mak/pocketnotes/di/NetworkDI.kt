@@ -1,50 +1,68 @@
 package com.mak.pocketnotes.di
 
+import com.mak.pocketnotes.PNPublicConfig
+import com.mak.pocketnotes.data.mock.handleMockResponse
 import com.mak.pocketnotes.data.remote.dto.ErrorDTO
 import com.mak.pocketnotes.domain.exception.ExceptionType
 import com.mak.pocketnotes.domain.exception.PocketAPIException
 import com.mak.pocketnotes.domain.exception.UnknownAPIException
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.util.logging.*
 import kotlinx.serialization.json.Json
 
 internal fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
 
 internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): HttpClient {
-    return HttpClient{
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                useAlternativeNames = false
-            })
-        }
-        defaultRequest {
-            url {
-                protocol = URLProtocol.HTTPS
-                host = API_HOST
-                header("X-ListenAPI-Key", API_KEY)
+    val httpClient = if (PNPublicConfig.isProd) {
+        getApiEngine()
+    } else {
+        getMockEngine()
+    }
+    return httpClient
+}
+
+private fun getApiEngine(): HttpClient = HttpClient {
+    install(ContentNegotiation) {
+        json(Json {
+            ignoreUnknownKeys = true
+            useAlternativeNames = false
+        })
+    }
+    defaultRequest {
+        url {
+            protocol = URLProtocol.HTTPS
+            host = API_HOST
+            header("X-ListenAPI-Key", API_KEY)
 //                path("api/")
 //                parametersOf("api_key", "")
-            }
         }
+    }
 
-        HttpResponseValidator {
-            handleResponseExceptionWithRequest { exception, request ->
-                /*val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
-                val exceptionResponse = clientException.response
-                if (exceptionResponse.status == HttpStatusCode.NotFound) {
-                    val exceptionResponseText = exceptionResponse.bodyAsText()
-                    throw MissingPageException(exceptionResponse, exceptionResponseText)
-                }*/
-                throw handleKtorExceptions(exception) ?: UnknownAPIException(throwable = exception)
-            }
+    HttpResponseValidator {
+        handleResponseExceptionWithRequest { exception, request ->
+            /*val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
+            val exceptionResponse = clientException.response
+            if (exceptionResponse.status == HttpStatusCode.NotFound) {
+                val exceptionResponseText = exceptionResponse.bodyAsText()
+                throw MissingPageException(exceptionResponse, exceptionResponseText)
+            }*/
+            throw handleKtorExceptions(exception) ?: UnknownAPIException(throwable = exception)
+        }
+    }
+}
+
+private fun getMockEngine(): HttpClient = HttpClient(MockEngine) {
+    engine {
+        val responseHeaders = headersOf("Content-Type" to listOf(ContentType.Application.Json.toString()))
+        addHandler { request ->
+            handleMockResponse(request, responseHeaders)
         }
     }
 }
