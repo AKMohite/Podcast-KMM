@@ -1,8 +1,11 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
 //    id("io.realm.kotlin")
     kotlin("plugin.serialization") version libs.versions.serialization.get()
+    id("com.codingfeline.buildkonfig") version libs.versions.buildKonfig.get()
 }
 
 kotlin {
@@ -65,6 +68,42 @@ kotlin {
         }
     }
 }
+
+buildkonfig {
+    packageName = "com.mak.pocketnotes"
+    objectName = "PNConfig"
+    exposeObjectWithName = "PNPublicConfig"
+
+    // default config is required
+    defaultConfigs {
+        buildConfigField(FieldSpec.Type.BOOLEAN, "isProd", "true")
+    }
+    // flavor is passed as a first argument of defaultConfigs
+    defaultConfigs("mock") {
+        buildConfigField(FieldSpec.Type.BOOLEAN, "isProd", "false")
+    }
+    defaultConfigs("prod") {
+//        buildConfigField(FieldSpec.Type.BOOLEAN, "isProd", "true")
+    }
+
+//    targetConfigs {
+//        create("android") {
+//            buildConfigField(STRING, "name2", "value2")
+//        }
+//
+//        create("ios") {
+//            buildConfigField(STRING, "name", "valueIos")
+//        }
+//    }
+    // flavor is passed as a first argument of targetConfigs
+//    targetConfigs("dev") {
+//        create("ios") {
+//            buildConfigField(STRING, "name", "devValueIos")
+//        }
+//    }
+}
+
+
 
 android {
     namespace = "com.mak.pocketnotes"

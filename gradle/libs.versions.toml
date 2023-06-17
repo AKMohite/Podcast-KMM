@@ -6,6 +6,7 @@ versionCode = "1"
 versionName = "0.0.1"
 
 accompanist = "0.28.0"
+buildKonfig = "0.13.3"
 coil = "2.2.2"
 compose = "1.2.1"
 composeActivity = "1.6.0"
@@ -49,5 +50,6 @@ compose = [ "androidx-navigation", "compose-coil", "compose-activity", "compose-
 [plugins]
 android-app = { id = "com.android.application", version.ref = "gradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "gradlePlugin" }
+kmm-build-konfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 realm-kotlin = { id = "io.realm.kotlin", version.ref = "realm" }
