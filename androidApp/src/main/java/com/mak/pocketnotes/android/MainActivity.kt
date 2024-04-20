@@ -5,6 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -18,9 +23,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.Home
+import com.mak.pocketnotes.android.common.PodBottomItem
 import com.mak.pocketnotes.android.common.PodcastDetail
+import com.mak.pocketnotes.android.common.Search
+import com.mak.pocketnotes.android.common.Settings
+import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.appDestinations
-import com.mak.pocketnotes.android.common.ui.PodcastAppBar
 import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
@@ -57,9 +65,19 @@ internal fun PodcastNav() {
         backStackEntry?.destination?.route == it.route || backStackEntry?.destination?.route == it.routeWithArgs
     } ?: Home
 
+    val bottomBarItems = listOf(
+        PodBottomItem(Home.title, Icons.Outlined.Home),
+        PodBottomItem(Search.title, Icons.Outlined.Search),
+        PodBottomItem(Subscribed.title, Icons.Outlined.Star),
+        PodBottomItem(Settings.title, Icons.Outlined.Settings),
+    )
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
+//        bottomBar = {
+//            PodBottomNavigation()
+//        },
+        /*topBar = {
             PodcastAppBar(
                 canNavigateBack = navController.previousBackStackEntry != null,
                 currentScreen = currentScreen,
@@ -67,7 +85,7 @@ internal fun PodcastNav() {
                     navController.navigateUp()
                 }
             )
-        }
+        }*/
     ) { innerPaddings ->
         NavHost(
             navController = navController,
@@ -92,5 +110,10 @@ internal fun PodcastNav() {
             }
         }
     }
+}
+
+@Composable
+fun PodBottomNavigation() {
+
 }
 
