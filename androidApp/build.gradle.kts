@@ -26,7 +26,19 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+
+        create("staging") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".debugStaging"
+//            TODO enable code obfuscation
+//            isMinifyEnabled = true
+//            isShrinkResources = true
+            isDebuggable = true
+            matchingFallbacks += listOf("debug")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
