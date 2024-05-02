@@ -41,7 +41,8 @@ kotlin {
                 implementation(libs.koin.android)
             }
         }
-        val androidTest by getting
+//        val androidUnitTest by getting
+//        val androidAndroidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -72,5 +73,9 @@ android {
     defaultConfig {
         minSdk = Integer.parseInt(libs.versions.minSdk.get())
         targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
