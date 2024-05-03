@@ -39,6 +39,9 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.android)
                 implementation(libs.koin.android)
+                implementation(libs.androidx.media3.exoplayer)
+                implementation(libs.androidx.media3.dash)
+                implementation(libs.androidx.media3.ui)
             }
         }
 //        val androidUnitTest by getting

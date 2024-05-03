@@ -17,5 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="com.mak.pocketnotes.service.media.MediaPlayerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.media.browser.MediaBrowserService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest> 
