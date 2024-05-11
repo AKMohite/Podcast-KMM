@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.mak.pocketnotes.service.media.MediaPlayerService"
+        <service android:name="com.mak.pocketnotes.service.media.service.MediaPlayerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.media.browser.MediaBrowserService" />

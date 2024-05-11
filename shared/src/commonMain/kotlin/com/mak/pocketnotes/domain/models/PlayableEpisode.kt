@@ -4,6 +4,6 @@ data class PlayableEpisode(
     val id: String,
     val title: String,
     val image: String,
-    val track: String,
+    val track: String, // audio url
     val duration: Int
 )
