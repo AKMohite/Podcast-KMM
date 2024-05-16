@@ -1,8 +1,10 @@
 package com.mak.pocketnotes.service.media.service
 
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.mak.pocketnotes.domain.models.PlayableEpisode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -20,13 +22,16 @@ internal class PodtalkServiceHandler(
     override val audioState: StateFlow<MediaState> = _audioState.asStateFlow()
     private var job: Job? = null
 
-    override fun addMediaItem(mediaItem: MediaItem) {
-        exoPlayer.setMediaItem(mediaItem)
+    override fun addMediaItem(playableEpisode: PlayableEpisode) {
+        exoPlayer.setMediaItem(playableEpisode.asMediaItem())
         exoPlayer.prepare()
     }
 
-    override fun addMediaItems(mediaItems: List<MediaItem>) {
-        exoPlayer.setMediaItems(mediaItems)
+    override fun addMediaItems(playableEpisodes: List<PlayableEpisode>) {
+        val items = playableEpisodes.map { episode ->
+            episode.asMediaItem()
+        }
+        exoPlayer.setMediaItems(items)
         exoPlayer.prepare()
     }
 
@@ -113,10 +118,23 @@ internal class PodtalkServiceHandler(
 
 }
 
+private fun PlayableEpisode.asMediaItem(): MediaItem {
+    return MediaItem.Builder()
+        .setUri(track)
+        .setMediaMetadata(
+            MediaMetadata.Builder()
+                .setAlbumArtist(speaker)
+                .setDisplayTitle(title)
+                .setSubtitle(title)
+                .build()
+        )
+        .build()
+}
+
 interface IServiceHandler {
     val audioState: StateFlow<MediaState>
-    fun addMediaItem(mediaItem: MediaItem)
-    fun addMediaItems(mediaItems: List<MediaItem>)
+    fun addMediaItem(playableEpisode: PlayableEpisode)
+    fun addMediaItems(playableEpisodes: List<PlayableEpisode>)
     suspend fun onPlayerEvents(
         playerEvent: MediaEvent,
         selectedAudioIndex: Int = -1,
