@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.common.PodcastDetail
@@ -45,7 +46,7 @@ internal fun PodcastAppBar(
             
             Text(
                 modifier = Modifier.padding(12.dp),
-                text = currentScreen.title,
+                text = stringResource(currentScreen.title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )

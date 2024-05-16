@@ -3,32 +3,34 @@ package com.mak.pocketnotes.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.Home
-import com.mak.pocketnotes.android.common.PodBottomItem
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.appDestinations
+import com.mak.pocketnotes.android.common.navigation.PodBottomNavigation
 import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
@@ -66,26 +68,28 @@ internal fun PodcastNav() {
     } ?: Home
 
     val bottomBarItems = listOf(
-        PodBottomItem(Home.title, Icons.Outlined.Home),
-        PodBottomItem(Search.title, Icons.Outlined.Search),
-        PodBottomItem(Subscribed.title, Icons.Outlined.Star),
-        PodBottomItem(Settings.title, Icons.Outlined.Settings),
+        Home,
+        Search,
+        Subscribed,
+        Settings
     )
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-//        bottomBar = {
-//            PodBottomNavigation()
-//        },
-        /*topBar = {
-            PodcastAppBar(
-                canNavigateBack = navController.previousBackStackEntry != null,
-                currentScreen = currentScreen,
-                onNavigateBack = {
-                    navController.navigateUp()
+        bottomBar = {
+            PodBottomNavigation(
+                bottomBarItems = bottomBarItems,
+                onBottomNavigate = {
+                    navController.navigate(it.routeWithArgs) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
-        }*/
+        }
     ) { innerPaddings ->
         NavHost(
             navController = navController,
@@ -108,12 +112,25 @@ internal fun PodcastNav() {
                     movieId = movieId
                 )
             }
+
+            composable(Search.routeWithArgs) {
+                EmptyScreen(
+                    Search.title
+                )
+            }
+            composable(Subscribed.routeWithArgs) {
+                EmptyScreen(Subscribed.title)
+            }
+            composable(Settings.routeWithArgs) {
+                EmptyScreen(Settings.title)
+            }
         }
     }
 }
 
 @Composable
-fun PodBottomNavigation() {
-
+private fun EmptyScreen(
+    @StringRes title: Int
+) {
+    Text(text = "${stringResource(id = title)} Work in progress", style = MaterialTheme.typography.headlineSmall)
 }
-
