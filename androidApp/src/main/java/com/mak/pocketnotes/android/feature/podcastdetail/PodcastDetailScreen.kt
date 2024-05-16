@@ -24,7 +24,7 @@ import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-
+https://youtu.be/ZTLNSN2umjs?list=PLUPcj46QWTDXcsv3wLVox7PQRwymU4J_o&t=1664
 @Composable
 internal fun PodcastDetailScreen(
     movieId: String
