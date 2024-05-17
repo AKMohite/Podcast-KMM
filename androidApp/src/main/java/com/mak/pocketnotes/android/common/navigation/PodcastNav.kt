@@ -30,7 +30,6 @@ import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
-import com.mak.pocketnotes.android.common.appDestinations
 import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
@@ -52,9 +51,7 @@ internal fun PodcastNav() {
     }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = appDestinations.find {
-        backStackEntry?.destination?.route == it.route || backStackEntry?.destination?.route == it.routeWithArgs
-    } ?: Home
+    val currentScreen = backStackEntry?.destination
 
     val bottomBarItems = listOf(
         Home,
@@ -80,6 +77,7 @@ internal fun PodcastNav() {
                     )
 //                }
                 PodBottomNavigation(
+                    currentScreen = currentScreen,
                     bottomBarItems = bottomBarItems,
                     onBottomNavigate = {
                         navController.navigate(it.routeWithArgs) {

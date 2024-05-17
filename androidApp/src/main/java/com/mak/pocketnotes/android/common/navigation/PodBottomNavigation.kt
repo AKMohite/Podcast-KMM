@@ -10,18 +10,21 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import com.mak.pocketnotes.android.common.BottomDestination
 
 @Composable
 internal fun PodBottomNavigation(
     bottomBarItems: List<BottomDestination>,
-    onBottomNavigate: (BottomDestination) -> Unit
+    onBottomNavigate: (BottomDestination) -> Unit,
+    currentScreen: NavDestination?
 ) {
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     NavigationBar {
         bottomBarItems.forEachIndexed { index, item ->
             NavigationBarItem(
-                selected = selectedItem == index,
+                selected = currentScreen?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
                     selectedItem = index
                     onBottomNavigate(item)
