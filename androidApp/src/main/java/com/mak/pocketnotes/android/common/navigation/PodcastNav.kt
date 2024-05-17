@@ -1,7 +1,10 @@
 package com.mak.pocketnotes.android.common.navigation
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -15,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,8 +31,10 @@ import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.appDestinations
+import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun PodcastNav() {
@@ -60,18 +66,32 @@ internal fun PodcastNav() {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            PodBottomNavigation(
-                bottomBarItems = bottomBarItems,
-                onBottomNavigate = {
-                    navController.navigate(it.routeWithArgs) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+            Column {
+//                TODO handle player visibility
+//                AnimatedVisibility(visible = true) {
+                    MiniPlayer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp)
+                            .clickable {  },
+                        episode = sampleEpisodes[0],
+                        play = {},
+                        next = {}
+                    )
+//                }
+                PodBottomNavigation(
+                    bottomBarItems = bottomBarItems,
+                    onBottomNavigate = {
+                        navController.navigate(it.routeWithArgs) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
-                }
-            )
+                )
+            }
         }
     ) { innerPaddings ->
         NavHost(
