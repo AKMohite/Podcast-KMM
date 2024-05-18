@@ -8,4 +8,14 @@
     <string name="podcast_details">Podcast details</string>
     <string name="play">Play</string>
     <string name="next">Next</string>
+    <string name="close_full_player">Close now playing screen</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="more_full_player">More options for now playing screen</string>
+    <string name="player_shuffle">Player shuffle</string>
+    <string name="player_previous">Player previous button</string>
+    <string name="player_play_pause">Player play pause button</string>
+    <string name="player_next">Player next button</string>
+    <string name="player_favorite">Player favorite button</string>
+    <string name="player_available_device">Available device button</string>
+    <string name="player_share">Player share content button</string>
 </resources>
