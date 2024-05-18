@@ -90,4 +90,14 @@ object PodcastDetail: ScreenDestination {
     )
 }
 
+object PodcastPlayer: ScreenDestination {
+    @get:StringRes
+    override val title: Int
+        get() = R.string.now_playing
+    override val route: String
+        get() = "podcast-now-playing"
+    override val routeWithArgs: String
+        get() = route
+}
+
 internal val appDestinations = listOf(Home, PodcastDetail)

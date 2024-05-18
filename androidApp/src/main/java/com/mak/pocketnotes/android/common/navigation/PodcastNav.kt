@@ -28,11 +28,13 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.PodcastDetail
+import com.mak.pocketnotes.android.common.PodcastPlayer
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.feature.home.HomeScreen
+import com.mak.pocketnotes.android.feature.player.NowPlayingScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -72,7 +74,7 @@ internal fun PodcastNav() {
                             .fillMaxWidth()
                             .wrapContentHeight()
                             .padding(horizontal = 4.dp)
-                            .clickable {  },
+                            .clickable { navController.navigate(PodcastPlayer.route) },
                         episode = sampleEpisodes[0],
                         play = {},
                         next = {}
@@ -114,6 +116,10 @@ internal fun PodcastNav() {
                 PodcastDetailScreen(
                     movieId = movieId
                 )
+            }
+
+            composable(PodcastPlayer.routeWithArgs) {
+                NowPlayingScreen()
             }
 
             composable(Search.routeWithArgs) {
