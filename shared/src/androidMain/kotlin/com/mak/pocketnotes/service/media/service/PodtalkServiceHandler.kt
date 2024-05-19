@@ -125,6 +125,7 @@ internal class PodtalkServiceHandler(
 
 private fun PlayableEpisode.asMediaItem(): MediaItem {
     return MediaItem.Builder()
+        .setMediaId(id)
         .setUri(track)
         .setMediaMetadata(
             MediaMetadata.Builder()

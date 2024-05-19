@@ -32,13 +32,14 @@ internal class PodtalkNotificationManager(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun startNotification(
         mediaService: MediaSessionService,
         mediaSession: MediaSession
     ) {
         buildNotification(mediaSession)
-        startForegroundNotificationService(mediaService)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundNotificationService(mediaService)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,8 +80,6 @@ internal class PodtalkNotificationManager(
                 it.setPlayer(exoPlayer)
             }
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         if (
             Build.VERSION.SDK_INT < 26 ||

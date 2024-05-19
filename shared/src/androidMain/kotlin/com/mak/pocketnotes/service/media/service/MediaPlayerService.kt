@@ -26,6 +26,12 @@ class MediaPlayerService: MediaSessionService() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+//    Removed from recent
+//    override fun onTaskRemoved(rootIntent: Intent?) {
+//        notificationManager.stopNotification()
+//        super.onTaskRemoved(rootIntent)
+//    }
+
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
         return mediaSession
     }
