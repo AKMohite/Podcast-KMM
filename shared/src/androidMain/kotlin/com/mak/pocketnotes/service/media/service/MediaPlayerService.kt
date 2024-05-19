@@ -6,14 +6,14 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
-import com.mak.pocketnotes.service.media.notification.PodtalkNotificationManager
+import com.mak.pocketnotes.service.media.notification.INotificationManager
 import org.koin.android.ext.android.inject
 
 class MediaPlayerService: MediaSessionService() {
 
     private val mediaSession: MediaSession by inject()
 
-    private val notificationManager: PodtalkNotificationManager by inject()
+    private val notificationManager: INotificationManager by inject()
 
     @UnstableApi
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

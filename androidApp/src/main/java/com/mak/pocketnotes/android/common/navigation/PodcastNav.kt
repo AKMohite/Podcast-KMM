@@ -34,13 +34,20 @@ import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.ui.MiniPlayer
+import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
+import com.mak.pocketnotes.android.common.viewmodel.UIEvent
 import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.player.NowPlayingScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
+import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-internal fun PodcastNav() {
+internal fun PodcastNav(
+    startService: () -> Unit
+) {
+    val mediaViewModel: MediaViewModel = koinViewModel()
     val navController = rememberNavController()
     val systemUiController = rememberSystemUiController()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -81,7 +88,8 @@ internal fun PodcastNav() {
                             .clickable { navController.navigate(PodcastPlayer.route) },
                         episode = sampleEpisodes[0],
                         play = {},
-                        next = {}
+                        next = {},
+                        isMediaPlaying = mediaViewModel.isPlaying
                     )
 //                }
                     PodBottomNavigation(
@@ -119,13 +127,26 @@ internal fun PodcastNav() {
             composable(PodcastDetail.routeWithArgs) {
                 val movieId = it.arguments?.getString("podcast_id") ?: ""
                 PodcastDetailScreen(
-                    movieId = movieId
+                    movieId = movieId,
+                    startPodcast = { episodes ->
+                        startService()
+                        mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
+                    }
                 )
             }
 
             composable(PodcastPlayer.routeWithArgs) {
                 NowPlayingScreen(
-                    onCloseClick = { navController.popBackStack() }
+                    progress = mediaViewModel.progress,
+                    onCloseClick = { navController.popBackStack() },
+                    onSliderChange = { updateProgress ->
+                        mediaViewModel.onUIEvents(UIEvent.SeekTo(updateProgress))
+                    },
+                    playPause = {
+                        mediaViewModel.onUIEvents(UIEvent.PlayPause)
+                    },
+                    isMediaPLaying = mediaViewModel.isPlaying,
+                    episode = mediaViewModel.currentSelectedMedia
                 )
             }
 

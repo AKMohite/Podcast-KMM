@@ -15,12 +15,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 internal class PodtalkServiceHandler(
-    private val exoPlayer: ExoPlayer
+    private val exoPlayer: Player
 ): Player.Listener, IServiceHandler {
 
     private val _audioState: MutableStateFlow<MediaState> = MutableStateFlow(MediaState.Initial)
     override val audioState: StateFlow<MediaState> = _audioState.asStateFlow()
     private var job: Job? = null
+
+    init {
+        exoPlayer.addListener(this)
+    }
 
     override fun addMediaItem(playableEpisode: PlayableEpisode) {
         exoPlayer.setMediaItem(playableEpisode.asMediaItem())
@@ -81,7 +85,7 @@ internal class PodtalkServiceHandler(
         _audioState.value = MediaState.CurrentPlaying(exoPlayer.currentMediaItemIndex)
         if (isPlaying) {
 //            TODO remove
-            GlobalScope.launch(Dispatchers.IO) {
+            GlobalScope.launch(Dispatchers.Main) {
                 startProgressUpdate()
             }
         } else {

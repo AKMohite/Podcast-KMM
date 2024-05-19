@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +33,7 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun MiniPlayer(
+    isMediaPlaying: Boolean,
     modifier: Modifier = Modifier,
     episode: PodcastEpisode,
     play: () -> Unit,
@@ -64,9 +66,10 @@ internal fun MiniPlayer(
             color = MaterialTheme.colorScheme.onTertiary
         )
         IconButton(onClick = play) {
+//            TODO playpause icon
             Icon(
-                imageVector = Icons.Outlined.PlayArrow,
-                contentDescription = stringResource(R.string.play),
+                imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
+                contentDescription = stringResource(R.string.player_play_pause),
                 tint = MaterialTheme.colorScheme.onTertiary
             )
         }
@@ -88,7 +91,8 @@ private fun MiniPlayerPreview() {
             MiniPlayer(
                 episode = sampleEpisodes[0],
                 play = {},
-                next = {}
+                next = {},
+                isMediaPlaying = false
             )
         }
     }

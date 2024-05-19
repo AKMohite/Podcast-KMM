@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -21,8 +22,10 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 
 @Composable
 internal fun PlaybackController(
+    isMediaPlaying: Boolean,
     modifier: Modifier = Modifier,
-    onShuffleClick: () -> Unit
+    onShuffleClick: () -> Unit,
+    playPause: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -42,9 +45,9 @@ internal fun PlaybackController(
                 contentDescription = stringResource(R.string.player_previous)
             )
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = playPause) {
             Icon(
-                imageVector = Icons.Filled.PlayArrow,
+                imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
                 contentDescription = stringResource(R.string.player_play_pause)
             )
         }
@@ -69,7 +72,9 @@ private fun PlaybackControllerPreview() {
     PocketNotesTheme {
         Surface {
             PlaybackController(
-                onShuffleClick = {}
+                isMediaPlaying = false,
+                onShuffleClick = {},
+                playPause = {}
             )
         }
     }

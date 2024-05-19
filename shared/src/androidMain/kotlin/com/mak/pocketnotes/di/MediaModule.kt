@@ -1,6 +1,8 @@
 package com.mak.pocketnotes.di
 
-import android.media.AudioAttributes
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
@@ -15,20 +17,20 @@ import org.koin.dsl.module
 val mediaModule = module {
     single<AudioAttributes> {
         AudioAttributes.Builder()
-            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+            .setUsage(C.USAGE_MEDIA)
             .build()
     }
-    single<ExoPlayer> {
+    single<Player> {
         ExoPlayer.Builder(get())
             .setAudioAttributes(get(), true)
             .setTrackSelector(DefaultTrackSelector(get()))
             .setHandleAudioBecomingNoisy(true)
             .build()
     }
+    single<INotificationManager> { PodtalkNotificationManager(get(), get()) }
     single<MediaSession> {
         MediaSession.Builder(get(), get()).build()
     }
-    single<INotificationManager> { PodtalkNotificationManager(get(), get()) }
     single<IServiceHandler> { PodtalkServiceHandler(get()) }
 }

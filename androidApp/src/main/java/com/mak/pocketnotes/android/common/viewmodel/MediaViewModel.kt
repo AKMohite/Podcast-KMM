@@ -20,10 +20,10 @@ class MediaViewModel(
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private var duration by savedStateHandle.saveable { mutableStateOf(0L) }
-    private var progress by savedStateHandle.saveable { mutableStateOf(0f) }
+    internal var progress by savedStateHandle.saveable { mutableStateOf(0f) }
     private var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
-    private var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
-    private var currentSelectedMedia by savedStateHandle.saveable { mutableStateOf(PlayableEpisode.EMPTY) }
+    internal var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
+    internal var currentSelectedMedia by savedStateHandle.saveable { mutableStateOf(PlayableEpisode.EMPTY) }
     private var mediaList by savedStateHandle.saveable { mutableStateOf(listOf<PlayableEpisode>()) }
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
     val uiState = _uiState.asStateFlow()
@@ -39,7 +39,7 @@ class MediaViewModel(
         }
     }
 
-    private fun onUIEvents(event: UIEvent) {
+    fun onUIEvents(event: UIEvent) {
         viewModelScope.launch {
             when (event) {
                 UIEvent.Backward -> serviceHandler.onPlayerEvents(MediaEvent.Backward)
@@ -50,7 +50,10 @@ class MediaViewModel(
                 is UIEvent.SeekTo -> serviceHandler.onPlayerEvents(MediaEvent.SeekTo, seekPosition = ((duration * event.position) / 100f).toLong())
                 UIEvent.SeekToNext -> serviceHandler.onPlayerEvents(MediaEvent.SeekToNext)
                 is UIEvent.SelectedAudioChange -> serviceHandler.onPlayerEvents(MediaEvent.SelectedAudioChange, selectedAudioIndex =  event.index)
-                is UIEvent.UpdateProgress -> serviceHandler.onPlayerEvents(MediaEvent.UpdateProgress(event.newProgress))
+                is UIEvent.UpdateProgress -> {
+                    serviceHandler.onPlayerEvents(MediaEvent.UpdateProgress(event.newProgress))
+                    progress = event.newProgress
+                }
             }
         }
     }
@@ -89,6 +92,14 @@ class MediaViewModel(
         val seconds = minute - (minute * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES))
         return String.format("%02d:%02d", minute, seconds)
     }
+
+    override fun onCleared() {
+        viewModelScope.launch {
+            serviceHandler.onPlayerEvents(MediaEvent.Stop)
+        }
+        super.onCleared()
+    }
+
 }
 
 sealed interface UIEvent {

@@ -8,8 +8,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.ui.PlayerNotificationManager
@@ -20,7 +20,7 @@ import com.mak.pocketnotes.service.media.Constants.PLAYBACK_NOTIFICATION_ID
 @UnstableApi
 internal class PodtalkNotificationManager(
     private val context: Context,
-    private val exoPlayer: ExoPlayer
+    private val exoPlayer: Player
 ): INotificationManager {
 
     private val notificationManager = NotificationManagerCompat.from(context)
@@ -58,15 +58,16 @@ internal class PodtalkNotificationManager(
     private fun buildNotification(
         mediaSession: MediaSession
     ) {
-        mediaNotificationAdapter = PodtalkNotificationAdapter(
+        val adapter = PodtalkNotificationAdapter(
             context = context,
             pendingIntent = mediaSession.sessionActivity
         )
+        mediaNotificationAdapter = adapter
         PlayerNotificationManager.Builder(
             context,
             PLAYBACK_NOTIFICATION_ID,
             PLAYBACK_NOTIFICATION_CHANNEL_ID
-        ).setMediaDescriptionAdapter(mediaNotificationAdapter!!)
+        ).setMediaDescriptionAdapter(adapter)
             .setSmallIconResourceId(androidx.media3.session.R.drawable.media_session_service_notification_ic_music_note)
             .build()
             .also {
@@ -81,6 +82,12 @@ internal class PodtalkNotificationManager(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
+        if (
+            Build.VERSION.SDK_INT < 26 ||
+            notificationManager.getNotificationChannel(PLAYBACK_NOTIFICATION_CHANNEL_ID) != null
+        ) {
+            return
+        }
         val channel = NotificationChannel(
             PLAYBACK_NOTIFICATION_CHANNEL_ID,
             PLAYBACK_NOTIFICATION_CHANNEL_NAME,

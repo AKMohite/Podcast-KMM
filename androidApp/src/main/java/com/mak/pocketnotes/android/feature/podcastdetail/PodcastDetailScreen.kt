@@ -1,17 +1,31 @@
 package com.mak.pocketnotes.android.feature.podcastdetail
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,23 +38,30 @@ import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
-https://youtu.be/ZTLNSN2umjs?list=PLUPcj46QWTDXcsv3wLVox7PQRwymU4J_o&t=1664
+
 @Composable
 internal fun PodcastDetailScreen(
-    movieId: String
+    movieId: String,
+    startPodcast: (List<PodcastEpisode>) -> Unit
 ) {
     val detailViewModel: PodcastDetailViewModel = koinViewModel(
         parameters = { parametersOf(movieId) }
     )
     PodcastDetailContent(
-        uiState = detailViewModel.uiState
+        uiState = detailViewModel.uiState,
+        startPodcast = {
+            detailViewModel.uiState.podcast?.episodes?.let {
+                startPodcast(it)
+            }
+        }
     )
 }
 
 @Composable
 private fun PodcastDetailContent(
     modifier: Modifier = Modifier,
-    uiState: PodcastDetailState
+    uiState: PodcastDetailState,
+    startPodcast: () -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center
@@ -79,7 +100,7 @@ private fun PodcastDetailContent(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(
-                                onClick = {},
+                                onClick = startPodcast,
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -95,7 +116,7 @@ private fun PodcastDetailContent(
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "Start listening now",
+                                    text = stringResource(R.string.start_listening_now),
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                             }
@@ -136,8 +157,11 @@ private fun PodcastDetailContent(
 @Composable
 private fun PodcastDetailScreenPreview() {
     PocketNotesTheme {
-        PodcastDetailContent(uiState = PodcastDetailState(
-            podcast = samplePodcasts[0]
-        ))
+        PodcastDetailContent(
+            uiState = PodcastDetailState(
+                podcast = samplePodcasts[0]
+            ),
+            startPodcast = {}
+        )
     }
 }

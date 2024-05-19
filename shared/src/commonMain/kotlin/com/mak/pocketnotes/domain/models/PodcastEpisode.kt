@@ -36,4 +36,21 @@ data class PodcastEpisode(
 
         return duration.trim()
     }
+
+    fun asPlayableEpisode() = PlayableEpisode(
+        id = id,
+        title = title,
+        speaker = "", // TODO is there a speaker
+        image = image,
+        track = listennotesUrl,
+        duration = duration
+    )
+
+
+}
+
+fun List<PodcastEpisode>.asPlayableEpisodes(): List<PlayableEpisode> {
+    return this.map {
+        it.asPlayableEpisode()
+    }
 }

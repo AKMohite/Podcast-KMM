@@ -27,21 +27,36 @@ import com.mak.pocketnotes.android.feature.player.components.PlayerFooter
 import com.mak.pocketnotes.android.feature.player.components.PlayerHeader
 import com.mak.pocketnotes.android.feature.player.components.PlayerSlider
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.domain.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
-internal fun NowPlayingScreen(onCloseClick: () -> Unit) {
+internal fun NowPlayingScreen(
+    progress: Float,
+    onCloseClick: () -> Unit,
+    onSliderChange: (Float) -> Unit,
+    playPause: () -> Unit,
+    isMediaPLaying: Boolean,
+    episode: PlayableEpisode
+) {
     NowPlayingContent(
-        episode = sampleEpisodes[0],
-        onCloseClick = onCloseClick
+        episode = episode,
+        onCloseClick = onCloseClick,
+        progress = progress,
+        onSliderChange = onSliderChange,
+        isMediaPlaying = isMediaPLaying,
+        playPause = playPause
     )
 }
 
 @Composable
 private fun NowPlayingContent(
-    episode: PodcastEpisode,
-    onCloseClick: () -> Unit
+    episode: PlayableEpisode,
+    onCloseClick: () -> Unit,
+    progress: Float,
+    onSliderChange: (Float) -> Unit,
+    playPause: () -> Unit,
+    isMediaPlaying: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -76,14 +91,17 @@ private fun NowPlayingContent(
         Spacer(modifier = Modifier.weight(1f))
         PlayerSlider(
             durationRange = 0f..100f,
-            onSliderChange = {},
+            onSliderChange = onSliderChange,
+            currentProgress = progress
         )
         Spacer(modifier = Modifier.height(12.dp))
         PlaybackController(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            onShuffleClick = {}
+            onShuffleClick = {},
+            playPause = playPause,
+            isMediaPlaying = isMediaPlaying
         )
         Spacer(modifier = Modifier.height(8.dp))
         PlayerFooter(
@@ -98,8 +116,12 @@ private fun NowPlayingPreview() {
     PocketNotesTheme {
         Surface {
             NowPlayingContent(
-                episode = sampleEpisodes[0],
-                onCloseClick = {}
+                episode = sampleEpisodes[0].asPlayableEpisode(),
+                onCloseClick = {},
+                progress = 20f,
+                onSliderChange = {},
+                playPause = {},
+                isMediaPlaying = false
             )
         }
     }
