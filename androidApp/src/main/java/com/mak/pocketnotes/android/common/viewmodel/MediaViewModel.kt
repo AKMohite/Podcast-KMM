@@ -35,7 +35,7 @@ class MediaViewModel(
     fun loadMedia(playableEpisodes: List<PlayableEpisode>) {
         viewModelScope.launch {
             mediaList = playableEpisodes
-            serviceHandler.addMediaItems(playableEpisodes)
+            serviceHandler.addMediaItem(playableEpisodes[0])
         }
     }
 

@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.service.media.service
 
+import android.net.Uri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -127,6 +128,7 @@ private fun PlayableEpisode.asMediaItem(): MediaItem {
         .setUri(track)
         .setMediaMetadata(
             MediaMetadata.Builder()
+                .setArtworkUri(Uri.parse(image))
                 .setAlbumArtist(speaker)
                 .setDisplayTitle(title)
                 .setSubtitle(title)

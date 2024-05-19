@@ -42,7 +42,7 @@ data class PodcastEpisode(
         title = title,
         speaker = "", // TODO is there a speaker
         image = image,
-        track = listennotesUrl,
+        track = audio,
         duration = duration
     )
 

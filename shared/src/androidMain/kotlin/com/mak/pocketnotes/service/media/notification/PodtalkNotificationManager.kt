@@ -42,11 +42,11 @@ internal class PodtalkNotificationManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun startForegroundNotificationService(mediaService: MediaSessionService) {
+    private fun startForegroundNotificationService(mediaSessionService: MediaSessionService) {
         val notification = Notification.Builder(context, PLAYBACK_NOTIFICATION_CHANNEL_ID)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
-        mediaService.startForeground(PLAYBACK_NOTIFICATION_ID, notification)
+        mediaSessionService.startForeground(PLAYBACK_NOTIFICATION_ID, notification)
     }
 
     @UnstableApi
@@ -74,7 +74,7 @@ internal class PodtalkNotificationManager(
                 it.setMediaSessionToken(mediaSession.sessionCompatToken)
                 it.setUseFastForwardActionInCompactView(true)
                 it.setUseRewindActionInCompactView(true)
-                it.setUseNextActionInCompactView(true)
+                it.setUseNextActionInCompactView(false)
                 it.setPriority(NotificationCompat.PRIORITY_LOW)
                 it.setPlayer(exoPlayer)
             }
