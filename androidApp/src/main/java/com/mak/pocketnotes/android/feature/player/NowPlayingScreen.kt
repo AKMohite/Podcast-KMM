@@ -37,15 +37,19 @@ internal fun NowPlayingScreen(
     onSliderChange: (Float) -> Unit,
     playPause: () -> Unit,
     isMediaPLaying: Boolean,
-    episode: PlayableEpisode
+    episode: PlayableEpisode,
+    previousClick: () -> Unit,
+    nextClick: () -> Unit
 ) {
     NowPlayingContent(
         episode = episode,
         onCloseClick = onCloseClick,
         progress = progress,
         onSliderChange = onSliderChange,
+        playPause = playPause,
         isMediaPlaying = isMediaPLaying,
-        playPause = playPause
+        previousClick = previousClick,
+        nextClick = nextClick
     )
 }
 
@@ -56,7 +60,9 @@ private fun NowPlayingContent(
     progress: Float,
     onSliderChange: (Float) -> Unit,
     playPause: () -> Unit,
-    isMediaPlaying: Boolean
+    isMediaPlaying: Boolean,
+    previousClick: () -> Unit,
+    nextClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -96,12 +102,14 @@ private fun NowPlayingContent(
         )
         Spacer(modifier = Modifier.height(12.dp))
         PlaybackController(
+            isMediaPlaying = isMediaPlaying,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
             onShuffleClick = {},
             playPause = playPause,
-            isMediaPlaying = isMediaPlaying
+            previousClick = previousClick,
+            nextClick = nextClick
         )
         Spacer(modifier = Modifier.height(8.dp))
         PlayerFooter(
@@ -121,7 +129,9 @@ private fun NowPlayingPreview() {
                 progress = 20f,
                 onSliderChange = {},
                 playPause = {},
-                isMediaPlaying = false
+                isMediaPlaying = false,
+                previousClick = {},
+                nextClick = {}
             )
         }
     }

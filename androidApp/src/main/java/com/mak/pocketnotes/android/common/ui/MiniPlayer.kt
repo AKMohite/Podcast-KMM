@@ -28,14 +28,14 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.domain.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun MiniPlayer(
     isMediaPlaying: Boolean,
     modifier: Modifier = Modifier,
-    episode: PodcastEpisode,
+    episode: PlayableEpisode,
     play: () -> Unit,
     next: () -> Unit
 ) {
@@ -89,7 +89,7 @@ private fun MiniPlayerPreview() {
     PocketNotesTheme {
         Surface {
             MiniPlayer(
-                episode = sampleEpisodes[0],
+                episode = sampleEpisodes[0].asPlayableEpisode(),
                 play = {},
                 next = {},
                 isMediaPlaying = false

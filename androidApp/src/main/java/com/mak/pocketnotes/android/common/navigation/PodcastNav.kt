@@ -41,7 +41,6 @@ import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.player.NowPlayingScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.domain.models.asPlayableEpisodes
-import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -86,9 +85,9 @@ internal fun PodcastNav(
                             .wrapContentHeight()
                             .padding(horizontal = 4.dp)
                             .clickable { navController.navigate(PodcastPlayer.route) },
-                        episode = sampleEpisodes[0],
-                        play = {},
-                        next = {},
+                        episode = mediaViewModel.currentSelectedMedia,
+                        play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
+                        next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
                         isMediaPlaying = mediaViewModel.isPlaying
                     )
                 }
@@ -146,7 +145,9 @@ internal fun PodcastNav(
                         mediaViewModel.onUIEvents(UIEvent.PlayPause)
                     },
                     isMediaPLaying = mediaViewModel.isPlaying,
-                    episode = mediaViewModel.currentSelectedMedia
+                    episode = mediaViewModel.currentSelectedMedia,
+                    previousClick = {  },
+                    nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) }
                 )
             }
 

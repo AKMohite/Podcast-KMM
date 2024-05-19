@@ -25,7 +25,9 @@ internal fun PlaybackController(
     isMediaPlaying: Boolean,
     modifier: Modifier = Modifier,
     onShuffleClick: () -> Unit,
-    playPause: () -> Unit
+    playPause: () -> Unit,
+    previousClick: () -> Unit,
+    nextClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -39,7 +41,7 @@ internal fun PlaybackController(
                 contentDescription = stringResource(R.string.player_shuffle)
             )
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = previousClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(R.string.player_previous)
@@ -51,7 +53,7 @@ internal fun PlaybackController(
                 contentDescription = stringResource(R.string.player_play_pause)
             )
         }
-        IconButton(onClick = { }) {
+        IconButton(onClick = nextClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = stringResource(R.string.player_next)
@@ -74,7 +76,9 @@ private fun PlaybackControllerPreview() {
             PlaybackController(
                 isMediaPlaying = false,
                 onShuffleClick = {},
-                playPause = {}
+                playPause = {},
+                previousClick = {},
+                nextClick = {}
             )
         }
     }
