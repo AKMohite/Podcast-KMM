@@ -39,7 +39,9 @@ internal fun NowPlayingScreen(
     isMediaPLaying: Boolean,
     episode: PlayableEpisode,
     previousClick: () -> Unit,
-    nextClick: () -> Unit
+    nextClick: () -> Unit,
+    timeElapsed: String,
+    totalDuration: String
 ) {
     NowPlayingContent(
         episode = episode,
@@ -49,7 +51,9 @@ internal fun NowPlayingScreen(
         playPause = playPause,
         isMediaPlaying = isMediaPLaying,
         previousClick = previousClick,
-        nextClick = nextClick
+        nextClick = nextClick,
+        timeElapsed = timeElapsed,
+        totalDuration = totalDuration
     )
 }
 
@@ -62,7 +66,9 @@ private fun NowPlayingContent(
     playPause: () -> Unit,
     isMediaPlaying: Boolean,
     previousClick: () -> Unit,
-    nextClick: () -> Unit
+    nextClick: () -> Unit,
+    timeElapsed: String,
+    totalDuration: String
 ) {
     Column(
         modifier = Modifier
@@ -98,7 +104,9 @@ private fun NowPlayingContent(
         PlayerSlider(
             durationRange = 0f..100f,
             onSliderChange = onSliderChange,
-            currentProgress = progress
+            currentProgress = progress,
+            timeElapsed = timeElapsed,
+            totalDuration = totalDuration
         )
         Spacer(modifier = Modifier.height(12.dp))
         PlaybackController(
@@ -131,7 +139,9 @@ private fun NowPlayingPreview() {
                 playPause = {},
                 isMediaPlaying = false,
                 previousClick = {},
-                nextClick = {}
+                nextClick = {},
+                timeElapsed = "03:39",
+                totalDuration = "14:40"
             )
         }
     }

@@ -78,7 +78,7 @@ internal fun PodcastNav(
         bottomBar = {
             if (!isFullScreen) {
                 Column {
-                AnimatedVisibility(visible = mediaViewModel.isPlaying) {
+                AnimatedVisibility(visible = mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
                     MiniPlayer(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -147,7 +147,9 @@ internal fun PodcastNav(
                     isMediaPLaying = mediaViewModel.isPlaying,
                     episode = mediaViewModel.currentSelectedMedia,
                     previousClick = {  },
-                    nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) }
+                    nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
+                    timeElapsed = mediaViewModel.progressString,
+                    totalDuration = "where is it?"
                 )
             }
 

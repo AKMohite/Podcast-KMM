@@ -23,9 +23,9 @@ class MediaViewModel(
 ): ViewModel() {
     private var duration by savedStateHandle.saveable { mutableStateOf(0L) }
     internal var progress by savedStateHandle.saveable { mutableStateOf(0f) }
-    private var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
+    internal var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
     internal var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
-    internal var currentSelectedMedia by savedStateHandle.saveable { mutableStateOf(PlayableEpisode.EMPTY) }
+    internal var currentSelectedMedia: PlayableEpisode by savedStateHandle.saveable { mutableStateOf(PlayableEpisode.EMPTY) }
     private var mediaList by savedStateHandle.saveable { mutableStateOf(listOf<PlayableEpisode>()) }
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
     val uiState = _uiState.asStateFlow()
@@ -88,9 +88,10 @@ class MediaViewModel(
     }
 
     private fun formatDuration(duration: Long): String {
-        val minute = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
-        val seconds = minute - (minute * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES))
-        return String.format("%02d:%02d", minute, seconds)
+        val minutes: Long = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
+        val seconds: Long = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS)
+                - minutes * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES))
+        return String.format("%02d:%02d", minutes, seconds)
     }
 
     override fun onCleared() {
