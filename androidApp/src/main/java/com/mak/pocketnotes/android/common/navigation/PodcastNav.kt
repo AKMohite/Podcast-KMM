@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.android.common.navigation
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -78,8 +79,7 @@ internal fun PodcastNav(
         bottomBar = {
             if (!isFullScreen) {
                 Column {
-//                TODO handle player visibility
-//                AnimatedVisibility(visible = true) {
+                AnimatedVisibility(visible = mediaViewModel.isPlaying) {
                     MiniPlayer(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -91,7 +91,7 @@ internal fun PodcastNav(
                         next = {},
                         isMediaPlaying = mediaViewModel.isPlaying
                     )
-//                }
+                }
                     PodBottomNavigation(
                         currentScreen = currentScreen,
                         bottomBarItems = bottomBarItems,

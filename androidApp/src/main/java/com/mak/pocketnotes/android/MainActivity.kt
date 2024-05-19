@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.android
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,10 +27,20 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onDestroy() {
+        stopService(Intent(this, MediaPlayerService::class.java))
+        isServiceRunning = false
+        super.onDestroy()
+    }
+
     private fun startMediaService() {
         if (!isServiceRunning) {
             val intent = Intent(this, MediaPlayerService::class.java)
-            startForegroundService(intent)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
         }
         isServiceRunning = true
     }
