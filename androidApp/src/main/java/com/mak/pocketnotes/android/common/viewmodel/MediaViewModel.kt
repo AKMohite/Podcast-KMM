@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.mak.pocketnotes.domain.models.PlayableEpisode
 import com.mak.pocketnotes.service.media.service.IServiceHandler
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+@OptIn(SavedStateHandleSaveableApi::class)
 class MediaViewModel(
     private val serviceHandler: IServiceHandler,
     savedStateHandle: SavedStateHandle
@@ -44,15 +46,13 @@ class MediaViewModel(
             when (event) {
                 UIEvent.Backward -> serviceHandler.onPlayerEvents(MediaEvent.Backward)
                 UIEvent.Forward -> serviceHandler.onPlayerEvents(MediaEvent.Forward)
-                UIEvent.PlayPause -> {
-                    serviceHandler.onPlayerEvents(MediaEvent.PLayPause)
-                }
+                UIEvent.PlayPause -> serviceHandler.onPlayerEvents(MediaEvent.PLayPause)
                 is UIEvent.SeekTo -> serviceHandler.onPlayerEvents(MediaEvent.SeekTo, seekPosition = ((duration * event.position) / 100f).toLong())
                 UIEvent.SeekToNext -> serviceHandler.onPlayerEvents(MediaEvent.SeekToNext)
                 is UIEvent.SelectedAudioChange -> serviceHandler.onPlayerEvents(MediaEvent.SelectedAudioChange, selectedAudioIndex =  event.index)
                 is UIEvent.UpdateProgress -> {
-                    serviceHandler.onPlayerEvents(MediaEvent.UpdateProgress(event.newProgress))
                     progress = event.newProgress
+                    serviceHandler.onPlayerEvents(MediaEvent.UpdateProgress(event.newProgress))
                 }
             }
         }

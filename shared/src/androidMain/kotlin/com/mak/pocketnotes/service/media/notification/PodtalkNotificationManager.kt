@@ -41,7 +41,6 @@ internal class PodtalkNotificationManager(
             startForegroundNotificationService(mediaService)
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startForegroundNotificationService(mediaSessionService: MediaSessionService) {
         val notification = Notification.Builder(context, PLAYBACK_NOTIFICATION_CHANNEL_ID)
@@ -91,7 +90,9 @@ internal class PodtalkNotificationManager(
             PLAYBACK_NOTIFICATION_CHANNEL_ID,
             PLAYBACK_NOTIFICATION_CHANNEL_NAME,
             NotificationManager.IMPORTANCE_LOW
-        )
+        ).apply {
+            description = "This notification is for media playback"
+        }
         notificationManager.createNotificationChannel(channel)
     }
 
