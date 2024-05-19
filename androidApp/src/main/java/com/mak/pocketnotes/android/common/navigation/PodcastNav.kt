@@ -29,6 +29,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.PodcastPlayer
+import com.mak.pocketnotes.android.common.ScreenDestination
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
@@ -62,11 +63,14 @@ internal fun PodcastNav() {
         Subscribed,
         Settings
     )
+    val isFullScreen = ScreenDestination.isFullScreen(currentScreen?.route)
+//    val isPlayerScreen = rememberSaveable { currentScreen?.hierarchy?.any { it.route == PodcastPlayer.route } == true }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            Column {
+            if (!isFullScreen) {
+                Column {
 //                TODO handle player visibility
 //                AnimatedVisibility(visible = true) {
                     MiniPlayer(
@@ -80,19 +84,20 @@ internal fun PodcastNav() {
                         next = {}
                     )
 //                }
-                PodBottomNavigation(
-                    currentScreen = currentScreen,
-                    bottomBarItems = bottomBarItems,
-                    onBottomNavigate = {
-                        navController.navigate(it.routeWithArgs) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                    PodBottomNavigation(
+                        currentScreen = currentScreen,
+                        bottomBarItems = bottomBarItems,
+                        onBottomNavigate = {
+                            navController.navigate(it.routeWithArgs) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     ) { innerPaddings ->
@@ -119,7 +124,9 @@ internal fun PodcastNav() {
             }
 
             composable(PodcastPlayer.routeWithArgs) {
-                NowPlayingScreen()
+                NowPlayingScreen(
+                    onCloseClick = { navController.popBackStack() }
+                )
             }
 
             composable(Search.routeWithArgs) {

@@ -11,11 +11,19 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.mak.pocketnotes.android.R
 
+private val fullScreenRoutes = listOf(
+    PodcastPlayer.routeWithArgs
+)
 internal interface ScreenDestination {
     @get:StringRes
     val title: Int
     val route: String
     val routeWithArgs: String
+    companion object {
+        fun isFullScreen(route: String?): Boolean {
+            return fullScreenRoutes.contains(route)
+        }
+    }
 }
 
 internal interface BottomDestination: ScreenDestination {

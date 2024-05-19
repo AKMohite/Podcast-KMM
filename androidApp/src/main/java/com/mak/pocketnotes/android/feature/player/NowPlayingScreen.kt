@@ -31,13 +31,17 @@ import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
-internal fun NowPlayingScreen() {
-    NowPlayingContent(sampleEpisodes[0])
+internal fun NowPlayingScreen(onCloseClick: () -> Unit) {
+    NowPlayingContent(
+        episode = sampleEpisodes[0],
+        onCloseClick = onCloseClick
+    )
 }
 
 @Composable
 private fun NowPlayingContent(
-    episode: PodcastEpisode
+    episode: PodcastEpisode,
+    onCloseClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -48,13 +52,13 @@ private fun NowPlayingContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            onCloseClick = {},
+            onCloseClick = onCloseClick,
             onMoreClick = {}
         )
         Spacer(modifier = Modifier.height(36.dp))
         AsyncImage(
             modifier = Modifier
-                .size(330.dp)
+                .size(200.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .align(Alignment.CenterHorizontally),
             model = episode.image,
@@ -93,7 +97,10 @@ private fun NowPlayingContent(
 private fun NowPlayingPreview() {
     PocketNotesTheme {
         Surface {
-            NowPlayingContent(sampleEpisodes[0])
+            NowPlayingContent(
+                episode = sampleEpisodes[0],
+                onCloseClick = {}
+            )
         }
     }
 }
