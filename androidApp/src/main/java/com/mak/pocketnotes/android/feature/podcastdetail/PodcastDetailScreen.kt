@@ -39,7 +39,6 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun PodcastDetailScreen(
-    movieId: String,
     startPodcast: () -> Unit,
     state: PodcastDetailState
 ) {
