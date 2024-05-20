@@ -5,6 +5,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -21,12 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.mak.pocketnotes.android.common.BottomDestination
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.PodcastPlayer
@@ -48,7 +53,8 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun PodcastNav(
-    startService: () -> Unit
+    startService: () -> Unit,
+    navigationType: NavigationType
 ) {
     val mediaViewModel: MediaViewModel = koinViewModel()
     val navController = rememberNavController()
@@ -64,118 +70,191 @@ internal fun PodcastNav(
         systemUiController.setStatusBarColor(statusBarColor, darkIcons = !isSystemDark)
     }
 
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination
-
     val bottomBarItems = listOf(
         Home,
         Search,
         Subscribed,
         Settings
     )
-    val isFullScreen = ScreenDestination.isFullScreen(currentScreen?.route)
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = backStackEntry?.destination
 //    val isPlayerScreen = rememberSaveable { currentScreen?.hierarchy?.any { it.route == PodcastPlayer.route } == true }
 
+    when (navigationType) {
+        NavigationType.BOTTOM_NAV_BAR, NavigationType.NAVIGATION_RAIL -> {
+            CompactMediumContent(
+                snackbarHostState = snackbarHostState,
+                navController = navController,
+                mediaViewModel = mediaViewModel,
+                navigationType = navigationType,
+                currentScreen = currentScreen,
+                startService = startService,
+                bottomBarItems = bottomBarItems
+            )
+        }
+        NavigationType.PERMANENT_NAVIGATION_DRAWER -> PodPermanentDrawer(
+        bottomBarItems =bottomBarItems,
+            onBottomNavigate = {
+               onBottomItemTap(navController, it)
+            },
+            currentScreen = currentScreen
+        ) {
+           MainNavContent(
+               navController = navController,
+               startService = { },
+               mediaViewModel = mediaViewModel
+           )
+        }
+    }
+}
+
+@Composable
+private fun CompactMediumContent(
+    snackbarHostState: SnackbarHostState,
+    navController: NavHostController,
+    mediaViewModel: MediaViewModel,
+    navigationType: NavigationType,
+    currentScreen: NavDestination?,
+    startService: () -> Unit,
+    bottomBarItems: List<BottomDestination>
+) {
+    val isFullScreen = ScreenDestination.isFullScreen(currentScreen?.route)
+    val isMiniPlayerAvailable = mediaViewModel.currentSelectedMedia.track.isNotBlank() && listOf(NavigationType.BOTTOM_NAV_BAR, NavigationType.NAVIGATION_RAIL).contains(navigationType)
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             if (!isFullScreen) {
                 Column {
 //                    TODO handle this properly
-                AnimatedVisibility(visible = mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
-                    MiniPlayer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(horizontal = 4.dp)
-                            .clickable { navController.navigate(PodcastPlayer.route) },
-                        episode = mediaViewModel.currentSelectedMedia,
-                        play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                        next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                        isMediaPlaying = mediaViewModel.isPlaying
-                    )
-                }
-                    PodBottomNavigation(
-                        currentScreen = currentScreen,
-                        bottomBarItems = bottomBarItems,
-                        onBottomNavigate = {
-                            navController.navigate(it.routeWithArgs) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
+                    AnimatedVisibility(visible = isMiniPlayerAvailable) {
+                        MiniPlayer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(horizontal = 4.dp)
+                                .clickable { navController.navigate(PodcastPlayer.route) },
+                            episode = mediaViewModel.currentSelectedMedia,
+                            play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
+                            next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
+                            isMediaPlaying = mediaViewModel.isPlaying
+                        )
+                    }
+                    AnimatedVisibility(visible = navigationType == NavigationType.BOTTOM_NAV_BAR) {
+                        PodBottomNavigation(
+                            currentScreen = currentScreen,
+                            bottomBarItems = bottomBarItems,
+                            onBottomNavigate = {
+                                onBottomItemTap(navController, it)
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
     ) { innerPaddings ->
-        NavHost(
-            navController = navController,
-            modifier = Modifier.padding(innerPaddings),
-            startDestination = Home.routeWithArgs
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPaddings)
         ) {
-            composable(Home.routeWithArgs) {
-                val homeViewModel: HomeViewModel = koinViewModel()
-                HomeScreen(
-                    gotoDetails = { podcast ->
-                        navController.navigate(
-                            "${PodcastDetail.route}/${podcast.id}"
-                        )
-                    },
-                    state = homeViewModel.uiState,
-                    loadNextPodcasts = homeViewModel::loadPodcasts
+            AnimatedVisibility(visible = navigationType == NavigationType.NAVIGATION_RAIL) {
+                PodNavRail(
+                    bottomBarItems = bottomBarItems,
+                    onBottomNavigate = { onBottomItemTap(navController, it) },
+                    currentScreen = currentScreen
                 )
             }
+            MainNavContent(
+                navController = navController,
+                startService = startService,
+                mediaViewModel = mediaViewModel
+            )
+        }
+    }
+}
+private fun onBottomItemTap(
+    navController: NavHostController,
+    it: BottomDestination
+) {
+    navController.navigate(it.routeWithArgs) {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+}
 
-            composable(PodcastDetail.routeWithArgs) {
-                val movieId = it.arguments?.getString("podcast_id") ?: ""
-                val detailViewModel: PodcastDetailViewModel = koinViewModel(
-                    parameters = { parametersOf(movieId) }
-                )
-                PodcastDetailScreen(
-                    state = detailViewModel.uiState,
-                    startPodcast = {
-                        detailViewModel.uiState.podcast?.episodes?.let { episodes ->
-                            startService()
-                            mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
-                        }
+@Composable
+private fun MainNavContent(
+    navController: NavHostController,
+    startService: () -> Unit,
+    mediaViewModel: MediaViewModel
+) {
+    NavHost(
+        navController = navController,
+        modifier = Modifier.fillMaxSize(),
+        startDestination = Home.routeWithArgs
+    ) {
+        composable(Home.routeWithArgs) {
+            val homeViewModel: HomeViewModel = koinViewModel()
+            HomeScreen(
+                gotoDetails = { podcast ->
+                    navController.navigate(
+                        "${PodcastDetail.route}/${podcast.id}"
+                    )
+                },
+                state = homeViewModel.uiState,
+                loadNextPodcasts = homeViewModel::loadPodcasts
+            )
+        }
+
+        composable(PodcastDetail.routeWithArgs) {
+            val movieId = it.arguments?.getString("podcast_id") ?: ""
+            val detailViewModel: PodcastDetailViewModel = koinViewModel(
+                parameters = { parametersOf(movieId) }
+            )
+            PodcastDetailScreen(
+                state = detailViewModel.uiState,
+                startPodcast = {
+                    detailViewModel.uiState.podcast?.episodes?.let { episodes ->
+                        startService()
+                        mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
                     }
-                )
-            }
+                }
+            )
+        }
 
-            composable(PodcastPlayer.routeWithArgs) {
-                NowPlayingScreen(
-                    progress = mediaViewModel.progress,
-                    onCloseClick = { navController.popBackStack() },
-                    onSliderChange = { updateProgress ->
-                        mediaViewModel.onUIEvents(UIEvent.SeekTo(updateProgress))
-                    },
-                    playPause = {
-                        mediaViewModel.onUIEvents(UIEvent.PlayPause)
-                    },
-                    isMediaPLaying = mediaViewModel.isPlaying,
-                    episode = mediaViewModel.currentSelectedMedia,
-                    previousClick = {  },
-                    nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                    timeElapsed = mediaViewModel.progressString,
-                    totalDuration = "where is it?"
-                )
-            }
+        composable(PodcastPlayer.routeWithArgs) {
+            NowPlayingScreen(
+                progress = mediaViewModel.progress,
+                onCloseClick = { navController.popBackStack() },
+                onSliderChange = { updateProgress ->
+                    mediaViewModel.onUIEvents(UIEvent.SeekTo(updateProgress))
+                },
+                playPause = {
+                    mediaViewModel.onUIEvents(UIEvent.PlayPause)
+                },
+                isMediaPLaying = mediaViewModel.isPlaying,
+                episode = mediaViewModel.currentSelectedMedia,
+                previousClick = { },
+                nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
+                timeElapsed = mediaViewModel.progressString,
+                totalDuration = "where is it?"
+            )
+        }
 
-            composable(Search.routeWithArgs) {
-                EmptyScreen(
-                    Search.title
-                )
-            }
-            composable(Subscribed.routeWithArgs) {
-                EmptyScreen(Subscribed.title)
-            }
-            composable(Settings.routeWithArgs) {
-                EmptyScreen(Settings.title)
-            }
+        composable(Search.routeWithArgs) {
+            EmptyScreen(
+                Search.title
+            )
+        }
+        composable(Subscribed.routeWithArgs) {
+            EmptyScreen(Subscribed.title)
+        }
+        composable(Settings.routeWithArgs) {
+            EmptyScreen(Settings.title)
         }
     }
 }

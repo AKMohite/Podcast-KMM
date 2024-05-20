@@ -5,11 +5,18 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
+import com.mak.pocketnotes.android.common.navigation.NavigationType
 import com.mak.pocketnotes.android.common.navigation.PodcastNav
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.service.media.service.MediaPlayerService
 
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 class MainActivity : ComponentActivity() {
 
 //    private val mediaViewModel by viewModel<MediaViewModel>()
@@ -18,13 +25,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PocketNotesTheme {
-                PodcastNav(
-                    startService = {
-                        startMediaService()
-                    }
-                )
+                val windowSize = calculateWindowSizeClass(activity = this)
+                AppContent(windowSize)
             }
         }
+    }
+
+    @Composable
+    private fun AppContent(
+        windowSize: WindowSizeClass
+    ) {
+        val navigationType = when (windowSize.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> NavigationType.BOTTOM_NAV_BAR
+            WindowWidthSizeClass.Medium -> NavigationType.NAVIGATION_RAIL
+            WindowWidthSizeClass.Expanded -> NavigationType.PERMANENT_NAVIGATION_DRAWER
+            else -> NavigationType.BOTTOM_NAV_BAR
+        }
+
+        PodcastNav(
+            navigationType = navigationType,
+            startService = {
+                startMediaService()
+            }
+        )
     }
 
     override fun onDestroy() {
@@ -45,3 +68,4 @@ class MainActivity : ComponentActivity() {
         isServiceRunning = true
     }
 }
+
