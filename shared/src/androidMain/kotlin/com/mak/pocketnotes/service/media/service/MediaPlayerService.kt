@@ -26,9 +26,13 @@ class MediaPlayerService: MediaSessionService() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-//    Removed from recent
+//    app removed from recent
 //    override fun onTaskRemoved(rootIntent: Intent?) {
 //        notificationManager.stopNotification()
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            stopForeground(STOP_FOREGROUND_REMOVE)
+//        }
+//        stopSelf()
 //        super.onTaskRemoved(rootIntent)
 //    }
 
