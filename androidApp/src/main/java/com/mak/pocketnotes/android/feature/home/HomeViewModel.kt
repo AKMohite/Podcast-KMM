@@ -30,12 +30,14 @@ class HomeViewModel(
             _uiState = uiState.copy(loading = true)
             try {
                 val resultPodcasts = getPodcast(currentPage)
-                val podcasts = if (currentPage == 1) resultPodcasts else uiState.podcasts + resultPodcasts
+                val topPodcasts = if (currentPage == 1) resultPodcasts.take(4) else uiState.topPodcasts
+                val podcasts = if (currentPage == 1) resultPodcasts.drop(4) else uiState.podcasts + resultPodcasts
                 currentPage += 1
                 _uiState = uiState.copy(
                     loading = false,
                     refreshing = false,
                     loadFinished = podcasts.isEmpty(),
+                    topPodcasts = topPodcasts,
                     podcasts = podcasts
                 )
             } catch (error: Throwable) {
@@ -55,6 +57,7 @@ internal data class HomeScreenState(
     val loading: Boolean = false,
     val refreshing: Boolean = false,
     val podcasts: List<Podcast> = emptyList(),
+    val topPodcasts: List<Podcast> = emptyList(),
     val errorMsg: String? = null,
     val loadFinished: Boolean = false
 )

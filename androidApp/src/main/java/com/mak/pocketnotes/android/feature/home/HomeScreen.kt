@@ -3,6 +3,7 @@ package com.mak.pocketnotes.android.feature.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.feature.home.views.HomeHeader
 import com.mak.pocketnotes.android.feature.home.views.PodcastItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
@@ -61,32 +63,38 @@ private fun HomeContent(
             .background(MaterialTheme.colorScheme.background)
             .pullRefresh(state = refreshState)
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            itemsIndexed(
-                uiState.podcasts,
-                key = { _, podcast: Podcast -> podcast.id }
-            ) { index: Int, podcast: Podcast -> 
-                PodcastItem(podcast = podcast, gotoDetails = gotoDetails)
-                if (index >= uiState.podcasts.size - 1 && !uiState.loading && !uiState.loadFinished) {
-                    LaunchedEffect(key1 = Unit, block = { loadNextPodcasts(false) })
+        Column {
+            HomeHeader(
+                modifier = Modifier.fillMaxWidth(),
+                podcasts = uiState.topPodcasts
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                itemsIndexed(
+                    uiState.podcasts,
+                    key = { _, podcast: Podcast -> podcast.id }
+                ) { index: Int, podcast: Podcast ->
+                    PodcastItem(podcast = podcast, gotoDetails = gotoDetails)
+                    if (index >= uiState.podcasts.size - 1 && !uiState.loading && !uiState.loadFinished) {
+                        LaunchedEffect(key1 = Unit, block = { loadNextPodcasts(false) })
+                    }
                 }
-            }
 
-            if (uiState.loading && uiState.podcasts.isNotEmpty()) {
-                item(span = { GridItemSpan(2) }) { 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        CircularProgressIndicator()
+                if (uiState.loading && uiState.podcasts.isNotEmpty()) {
+                    item(span = { GridItemSpan(2) }) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
                 }
             }

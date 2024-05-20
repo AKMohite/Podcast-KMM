@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +31,8 @@ internal fun HomeCarouselCard(
     podcast: Podcast
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -38,8 +40,8 @@ internal fun HomeCarouselCard(
             contentDescription = podcast.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(150.dp)
-                .clip(RoundedCornerShape(bottomStart = 2.dp, bottomEnd = 2.dp)),
+                .size(120.dp)
+                .clip(RoundedCornerShape(8.dp)),
             placeholder = debugPlaceholder()
 
         )
