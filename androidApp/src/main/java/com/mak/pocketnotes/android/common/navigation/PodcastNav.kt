@@ -38,10 +38,13 @@ import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.common.viewmodel.UIEvent
 import com.mak.pocketnotes.android.feature.home.HomeScreen
+import com.mak.pocketnotes.android.feature.home.HomeViewModel
 import com.mak.pocketnotes.android.feature.player.NowPlayingScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
+import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
 import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun PodcastNav(
@@ -115,22 +118,31 @@ internal fun PodcastNav(
             startDestination = Home.routeWithArgs
         ) {
             composable(Home.routeWithArgs) {
+                val homeViewModel: HomeViewModel = koinViewModel()
                 HomeScreen(
                     gotoDetails = { podcast ->
                         navController.navigate(
                             "${PodcastDetail.route}/${podcast.id}"
                         )
-                    }
+                    },
+                    state = homeViewModel.uiState,
+                    loadNextPodcasts = homeViewModel::loadPodcasts
                 )
             }
 
             composable(PodcastDetail.routeWithArgs) {
                 val movieId = it.arguments?.getString("podcast_id") ?: ""
+                val detailViewModel: PodcastDetailViewModel = koinViewModel(
+                    parameters = { parametersOf(movieId) }
+                )
                 PodcastDetailScreen(
+                    state = detailViewModel.uiState,
                     movieId = movieId,
-                    startPodcast = { episodes ->
-                        startService()
-                        mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
+                    startPodcast = {
+                        detailViewModel.uiState.podcast?.episodes?.let { episodes ->
+                            startService()
+                            mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
+                        }
                     }
                 )
             }

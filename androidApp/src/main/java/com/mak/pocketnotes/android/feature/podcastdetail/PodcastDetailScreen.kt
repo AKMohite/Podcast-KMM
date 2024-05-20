@@ -36,24 +36,16 @@ import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeIte
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.samplePodcasts
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun PodcastDetailScreen(
     movieId: String,
-    startPodcast: (List<PodcastEpisode>) -> Unit
+    startPodcast: () -> Unit,
+    state: PodcastDetailState
 ) {
-    val detailViewModel: PodcastDetailViewModel = koinViewModel(
-        parameters = { parametersOf(movieId) }
-    )
     PodcastDetailContent(
-        uiState = detailViewModel.uiState,
-        startPodcast = {
-            detailViewModel.uiState.podcast?.episodes?.let {
-                startPodcast(it)
-            }
-        }
+        uiState = state,
+        startPodcast = startPodcast
     )
 }
 
