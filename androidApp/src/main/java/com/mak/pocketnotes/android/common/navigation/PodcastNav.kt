@@ -78,6 +78,7 @@ internal fun PodcastNav(
         bottomBar = {
             if (!isFullScreen) {
                 Column {
+//                    TODO handle this properly
                 AnimatedVisibility(visible = mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
                     MiniPlayer(
                         modifier = Modifier

@@ -25,7 +25,7 @@ class MediaViewModel(
     internal var progress by savedStateHandle.saveable { mutableStateOf(0f) }
     internal var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
     internal var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
-    internal var currentSelectedMedia: PlayableEpisode by savedStateHandle.saveable { mutableStateOf(PlayableEpisode.EMPTY) }
+    internal var currentSelectedMedia = PlayableEpisode.EMPTY
     private var mediaList by savedStateHandle.saveable { mutableStateOf(listOf<PlayableEpisode>()) }
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
     val uiState = _uiState.asStateFlow()
