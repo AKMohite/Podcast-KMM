@@ -18,4 +18,5 @@
     <string name="player_available_device">Available device button</string>
     <string name="player_share">Player share content button</string>
     <string name="start_listening_now">Start listening now</string>
+    <string name="trending">Trending</string>
 </resources>

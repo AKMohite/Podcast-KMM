@@ -3,13 +3,10 @@ package com.mak.pocketnotes.android.feature.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
 import com.mak.pocketnotes.android.feature.home.views.PodcastRow
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
@@ -68,24 +66,11 @@ private fun HomeContent(
                 )
             }
             item {
-                LazyRow {
-                    items(items = uiState.getSectionedPodcasts()) { podcasts ->
-                        Column(
-                            modifier = Modifier
-                                .fillParentMaxWidth(0.9f)
-                                .wrapContentHeight()
-                        ) {
-                            podcasts.forEach { podcast ->
-                                PodcastRow(
-                                    modifier = Modifier
-                                        .clickable { gotoDetails(podcast.id) }
-                                        .padding(4.dp),
-                                    podcast = podcast
-                                )
-                            }
-                        }
-                    }
-                }
+                BestPodcasts(
+                    modifier = Modifier.fillMaxWidth(),
+                    gotoDetails = gotoDetails,
+                    podcasts = uiState.getSectionedPodcasts()
+                )
             }
             items(
                 items = uiState.podcasts,
@@ -116,10 +101,11 @@ private fun HomeScreenPreview() {
         Surface {
             HomeContent(
                 uiState = HomeScreenState(
-                    podcasts = samplePodcasts
+                    podcasts = samplePodcasts,
+                    topPodcasts = samplePodcasts.take(3),
                 ),
                 loadNextPodcasts = {},
-                gotoDetails = {}
+                gotoDetails = {},
             )
         }
     }
