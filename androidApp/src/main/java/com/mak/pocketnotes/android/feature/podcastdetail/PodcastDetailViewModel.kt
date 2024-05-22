@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetPodcast
+import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import kotlinx.coroutines.launch
 
 internal class PodcastDetailViewModel(
     val getPodcast: GetPodcast,
+    val podcastRecommendations: GetPodcastRecommendations,
     podcastId: String
 ): ViewModel() {
 
@@ -27,7 +29,8 @@ internal class PodcastDetailViewModel(
         viewModelScope.launch {
             _uiState = try {
                 val podcast = getPodcast(podcastId)
-                uiState.copy(loading = false, podcast = podcast)
+                val recommendations = podcastRecommendations(podcastId)
+                uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
             } catch (error: Throwable) {
                 uiState.copy(loading = false, errorMsg = error.localizedMessage)
             }

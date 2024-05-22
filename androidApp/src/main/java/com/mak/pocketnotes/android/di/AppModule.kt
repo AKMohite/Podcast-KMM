@@ -9,7 +9,7 @@ import org.koin.dsl.module
 internal val appModule = module {
     viewModel { HomeViewModel(get(), get()) }
     viewModel { params ->
-        PodcastDetailViewModel(getPodcast = get(), podcastId = params.get())
+        PodcastDetailViewModel(getPodcast = get(), podcastRecommendations = get(), podcastId = params.get())
     }
     viewModel{ MediaViewModel(get(), get()) }
 }

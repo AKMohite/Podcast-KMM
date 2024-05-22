@@ -12,5 +12,6 @@ data class Podcast(
     val totalEpisodes: Int,
     val type: String,
     val website: String,
+    val recommendations: List<Podcast> = emptyList(),
     val episodes: List<PodcastEpisode> = emptyList()
 )
