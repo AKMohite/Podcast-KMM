@@ -1,7 +1,6 @@
 package com.mak.pocketnotes.android.feature.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,13 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
+import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
-import com.mak.pocketnotes.android.feature.home.views.PodcastRow
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
 import com.mak.pocketnotes.android.util.md2.pullRefresh
 import com.mak.pocketnotes.android.util.md2.rememberPullRefreshState
-import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
@@ -73,15 +72,15 @@ private fun HomeContent(
                 )
             }
             items(
-                items = uiState.podcasts,
-                key = { podcast: Podcast -> podcast.id }
+                items = uiState.curatedPodcasts,
+                key = { podcast: CuratedPodcast -> podcast.id }
             ) { podcast ->
-                PodcastRow(
+                CuratedPodcastRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp)
-                        .clickable { gotoDetails(podcast.id) },
-                    podcast = podcast
+                        .padding(4.dp),
+                    podcast = podcast,
+                    goToDetails = gotoDetails
                 )
             }
         }
