@@ -3,6 +3,7 @@ package com.mak.pocketnotes.android.feature.home.views
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,12 +36,14 @@ internal fun PodcastRow(
             contentDescription = podcast.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(60.dp)
+                .size(70.dp)
                 .clip(RoundedCornerShape(4.dp)),
             placeholder = debugPlaceholder()
         )
         Column(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
             Text(
                 text = podcast.title,
