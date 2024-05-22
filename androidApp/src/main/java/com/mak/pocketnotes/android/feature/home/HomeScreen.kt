@@ -66,7 +66,8 @@ private fun HomeContent(
         Column {
             HomeHeader(
                 modifier = Modifier.fillMaxWidth(),
-                podcasts = uiState.topPodcasts
+                podcasts = uiState.topPodcasts,
+                onPodcastClick = gotoDetails
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),

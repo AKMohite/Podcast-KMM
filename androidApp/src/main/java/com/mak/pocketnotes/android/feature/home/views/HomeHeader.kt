@@ -2,6 +2,7 @@ package com.mak.pocketnotes.android.feature.home.views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,15 +33,24 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 @Composable
 internal fun HomeHeader(
     modifier: Modifier = Modifier,
-    podcasts: List<Podcast>
+    podcasts: List<Podcast>,
+    onPodcastClick: (Podcast) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { podcasts.size })
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
     ) {
-        HorizontalPager(state = pagerState) { page ->
-            HomeCarouselCard(podcast = podcasts[page])
+        HorizontalPager(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            state = pagerState
+        ) { page ->
+            HomeCarouselCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onPodcastClick(podcasts[page]) },
+                podcast = podcasts[page]
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -72,7 +82,8 @@ private fun HomeHeaderPreview() {
         Surface {
             HomeHeader(
                 modifier = Modifier.fillMaxWidth(),
-                podcasts = samplePodcasts
+                podcasts = samplePodcasts,
+                onPodcastClick = {}
             )
         }
     }
