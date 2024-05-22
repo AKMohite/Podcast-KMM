@@ -3,9 +3,11 @@ package com.mak.pocketnotes.android.feature.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -67,37 +69,21 @@ private fun HomeContent(
             }
             item {
                 LazyRow {
-                    items(items = uiState.podcasts) {
-                        PodcastRow(
+                    items(items = uiState.getSectionedPodcasts()) { podcasts ->
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth(0.9f)
-                                .padding(4.dp),
-                            podcast = it
-                        )
+                                .fillParentMaxWidth(0.8f)
+                                .wrapContentHeight()
+                        ) {
+                            podcasts.forEach { podcast ->
+                                PodcastRow(
+                                    modifier = Modifier
+                                        .padding(4.dp),
+                                    podcast = podcast
+                                )
+                            }
+                        }
                     }
-//                    items(items = uiState.getSectionedPodcasts()) { podcasts ->
-//                        Column(
-//                            modifier = Modifier
-//                                .fillMaxWidth(.4f)
-//                                .wrapContentHeight()
-//                        ) {
-//                            podcasts.forEach { podcast ->
-//                                Text(
-//                                    modifier = Modifier.wrapContentWidth(),
-//                                    text = podcast.title,
-//                                    maxLines = 1,
-//                                    overflow = TextOverflow.Ellipsis
-//                                )
-////                                PodcastRow(
-////                                    modifier = Modifier
-////                                        .fillMaxWidth(0.5f)
-////                                        .background(Color.Red)
-////                                        .padding(4.dp),
-////                                    podcast = podcast
-////                                )
-//                            }
-//                        }
-//                    }
                 }
             }
             items(
