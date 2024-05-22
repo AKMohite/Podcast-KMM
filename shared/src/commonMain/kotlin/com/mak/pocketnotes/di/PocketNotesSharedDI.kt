@@ -6,6 +6,7 @@ import com.mak.pocketnotes.data.util.provideDispatcher
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
+import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
@@ -28,6 +29,7 @@ private val utilModule = module {
 private val domainModule = module {
 //    single<IRep> {  }
     factory { GetBestPodcasts() }
+    factory { GetCuratedPodcasts() }
     factory { GetPodcast() }
 }
 

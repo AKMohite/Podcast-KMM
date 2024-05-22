@@ -5,12 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
+import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val getPodcast: GetBestPodcasts
+    val getPodcast: GetBestPodcasts,
+    val curatedPodcast: GetCuratedPodcasts
 ): ViewModel() {
 
     private var _uiState by mutableStateOf(HomeScreenState())
@@ -30,6 +33,7 @@ class HomeViewModel(
             _uiState = uiState.copy(loading = true)
             try {
                 val resultPodcasts = getPodcast(currentPage)
+                val curatedPodcasts = curatedPodcast(1)
                 val topPodcasts = if (currentPage == 1) resultPodcasts.take(4) else uiState.topPodcasts
                 val podcasts = if (currentPage == 1) resultPodcasts.drop(4) else uiState.podcasts + resultPodcasts
                 currentPage += 1
@@ -38,7 +42,8 @@ class HomeViewModel(
                     refreshing = false,
                     loadFinished = podcasts.isEmpty(),
                     topPodcasts = topPodcasts,
-                    podcasts = podcasts
+                    podcasts = podcasts,
+                    curatedPodcasts = curatedPodcasts
                 )
             } catch (error: Throwable) {
                 _uiState = uiState.copy(
@@ -58,6 +63,7 @@ internal data class HomeScreenState(
     val refreshing: Boolean = false,
     val podcasts: List<Podcast> = emptyList(),
     val topPodcasts: List<Podcast> = emptyList(),
+    val curatedPodcasts: List<CuratedPodcast> = emptyList(),
     val errorMsg: String? = null,
     val loadFinished: Boolean = false
 ) {
