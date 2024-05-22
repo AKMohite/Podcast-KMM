@@ -19,4 +19,5 @@
     <string name="player_share">Player share content button</string>
     <string name="start_listening_now">Start listening now</string>
     <string name="trending">Trending</string>
+    <string name="reccomendations">Recommendations</string>
 </resources>

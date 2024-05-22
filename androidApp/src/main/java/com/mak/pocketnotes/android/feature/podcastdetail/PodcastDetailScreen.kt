@@ -1,6 +1,8 @@
 package com.mak.pocketnotes.android.feature.podcastdetail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -29,23 +32,28 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
+import com.mak.pocketnotes.android.feature.home.views.PodcastRow
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun PodcastDetailScreen(
     movieId: String,
+    state: PodcastDetailState,
     startPodcast: () -> Unit,
-    state: PodcastDetailState
+    gotoDetails: (String) -> Unit
 ) {
     PodcastDetailContent(
         uiState = state,
-        startPodcast = startPodcast
+        startPodcast = startPodcast,
+        gotoDetails = gotoDetails
     )
 }
 
@@ -53,7 +61,8 @@ internal fun PodcastDetailScreen(
 private fun PodcastDetailContent(
     modifier: Modifier = Modifier,
     uiState: PodcastDetailState,
-    startPodcast: () -> Unit
+    startPodcast: () -> Unit,
+    gotoDetails: (String) -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center
@@ -124,6 +133,32 @@ private fun PodcastDetailContent(
                             )
                         }
                     }
+                    item {
+                        AnimatedVisibility(visible = podcast.recommendations.isNotEmpty()) {
+                            Column {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    modifier = Modifier.padding(4.dp),
+                                    text = stringResource(R.string.reccomendations),
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontSize = 20.sp
+                                )
+                                LazyRow {
+                                    items(
+                                        items = podcast.recommendations,
+                                        key = { recommendation: Podcast -> recommendation.id }
+                                    ) { recommendation ->
+                                        PodcastRow(
+                                            modifier = Modifier
+                                                .clickable { gotoDetails(recommendation.id) }
+                                                .fillParentMaxWidth(0.9f),
+                                            podcast = recommendation
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                     items(
                         items = podcast.episodes,
                         key = { episode: PodcastEpisode -> episode.id }
@@ -153,7 +188,8 @@ private fun PodcastDetailScreenPreview() {
             uiState = PodcastDetailState(
                 podcast = samplePodcasts[0]
             ),
-            startPodcast = {}
+            startPodcast = {},
+            gotoDetails = {}
         )
     }
 }

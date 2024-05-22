@@ -143,6 +143,11 @@ internal fun PodcastNav(
                             startService()
                             mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
                         }
+                    },
+                    gotoDetails = { podcastId ->
+                        navController.navigate(
+                            "${PodcastDetail.route}/$podcastId"
+                        )
                     }
                 )
             }
