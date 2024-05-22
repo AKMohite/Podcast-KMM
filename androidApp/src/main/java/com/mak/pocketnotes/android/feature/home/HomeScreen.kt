@@ -29,8 +29,8 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun HomeScreen(
-    gotoDetails: (Podcast) -> Unit,
     state: HomeScreenState,
+    gotoDetails: (String) -> Unit,
     loadNextPodcasts: (Boolean) -> Unit
 ) {
     HomeContent(
@@ -45,7 +45,7 @@ private fun HomeContent(
     modifier: Modifier = Modifier,
     uiState: HomeScreenState,
     loadNextPodcasts: (Boolean) -> Unit,
-    gotoDetails: (Podcast) -> Unit
+    gotoDetails: (String) -> Unit
 ) {
 
     val refreshState = rememberPullRefreshState(
@@ -72,12 +72,13 @@ private fun HomeContent(
                     items(items = uiState.getSectionedPodcasts()) { podcasts ->
                         Column(
                             modifier = Modifier
-                                .fillParentMaxWidth(0.8f)
+                                .fillParentMaxWidth(0.9f)
                                 .wrapContentHeight()
                         ) {
                             podcasts.forEach { podcast ->
                                 PodcastRow(
                                     modifier = Modifier
+                                        .clickable { gotoDetails(podcast.id) }
                                         .padding(4.dp),
                                     podcast = podcast
                                 )
@@ -94,7 +95,7 @@ private fun HomeContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(4.dp)
-                        .clickable { gotoDetails(podcast) },
+                        .clickable { gotoDetails(podcast.id) },
                     podcast = podcast
                 )
             }

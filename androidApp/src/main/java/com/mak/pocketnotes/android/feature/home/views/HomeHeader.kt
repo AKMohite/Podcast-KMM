@@ -34,7 +34,7 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 internal fun HomeHeader(
     modifier: Modifier = Modifier,
     podcasts: List<Podcast>,
-    onPodcastClick: (Podcast) -> Unit
+    onPodcastClick: (String) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { podcasts.size })
     Column(
@@ -48,7 +48,7 @@ internal fun HomeHeader(
             HomeCarouselCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onPodcastClick(podcasts[page]) },
+                    .clickable { onPodcastClick(podcasts[page].id) },
                 podcast = podcasts[page]
             )
         }
