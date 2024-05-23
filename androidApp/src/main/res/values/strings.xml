@@ -23,4 +23,6 @@
     <string name="search">Search</string>
     <string name="search_placeholder">Search podcasts or episodes</string>
     <string name="clear_search">clear search field</string>
+    <string name="episode">Episode</string>
+    <string name="podcast">Podcast</string>
 </resources>

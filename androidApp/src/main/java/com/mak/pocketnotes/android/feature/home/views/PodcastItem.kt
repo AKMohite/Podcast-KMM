@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -83,6 +84,7 @@ internal fun PodcastItem(
 ) {
     Card(
         modifier = modifier
+            .width(200.dp)
             .height(220.dp)
             .clickable { gotoDetails(podcast) },
         shape = RoundedCornerShape(8.dp)

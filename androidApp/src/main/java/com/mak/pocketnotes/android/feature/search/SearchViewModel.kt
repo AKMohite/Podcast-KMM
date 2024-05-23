@@ -80,8 +80,9 @@ internal data class SearchState(
     val error: String? = null
 ) {
     fun canShowGenres(): Boolean {
-        return genres.isNotEmpty() && podcasts.isEmpty() && !areEpisodesAvailable()
+        return genres.isNotEmpty() && !arePodcastsAvailable() && !areEpisodesAvailable()
     }
 
     fun areEpisodesAvailable() = episodes.isNotEmpty()
+    fun arePodcastsAvailable() = podcasts.isNotEmpty()
 }
