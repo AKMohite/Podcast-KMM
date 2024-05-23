@@ -11,7 +11,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,15 +20,14 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 @Composable
 internal fun SearchField(
     onKeyboardDoneClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    searchText: String,
+    modifier: Modifier = Modifier,
+    onSearchTextChanged: (String) -> Unit
 ) {
-    var searchText: String = rememberSaveable { "" }
     OutlinedTextField(
         modifier = modifier,
         value = searchText,
-        onValueChange = {
-            searchText = it
-        },
+        onValueChange = onSearchTextChanged,
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Search,
@@ -40,8 +38,7 @@ internal fun SearchField(
             AnimatedVisibility(visible = searchText.isNotBlank()) {
                 IconButton(
                     onClick = {
-                        searchText = ""
-//                        onSearchTextChanged("")
+                        onSearchTextChanged("")
                     }
                 ) {
                     Icon(
@@ -71,6 +68,8 @@ private fun SearchFieldPreview() {
             SearchField(
                 onKeyboardDoneClick = {},
                 modifier = Modifier,
+                searchText = "asdasd",
+                onSearchTextChanged = {}
             )
         }
     }
