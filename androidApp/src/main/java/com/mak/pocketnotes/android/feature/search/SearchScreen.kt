@@ -1,7 +1,8 @@
 package com.mak.pocketnotes.android.feature.search
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,35 +41,36 @@ private fun SearchContent(
     actions: SearchActions
 ) {
     val controller = LocalSoftwareKeyboardController.current
-    LazyColumn(
+    BackHandler(enabled = !state.canShowGenres()) {
+        actions.closeSearch()
+    }
+    Column (
         modifier = modifier
             .padding(16.dp)
-//            .onFocusChanged(actions::onSearchFocusChanged)
+            .onFocusChanged(actions::onSearchFocusChanged)
     ) {
-        item {
-            SearchField(
-                onKeyboardDoneClick = { searchQuery ->
-                    controller?.hide()
-                    actions.onSearchClick(searchQuery)
-                }
+        SearchField(
+            onKeyboardDoneClick = { searchQuery ->
+                controller?.hide()
+                actions.onSearchClick(searchQuery)
+            }
+        )
+        AnimatedVisibility(visible = state.canShowGenres()) {
+            GenreCells(
+                genres = state.genres,
+                onGenreClick = actions::onGenreSelect
             )
         }
-        item {
-            Box {
-                AnimatedVisibility(visible = state.canShowGenres()) {
-                    GenreCells(
-                        genres = state.genres,
-                        onGenreClick = actions::onGenreSelect
-                    )
+
+        AnimatedVisibility(visible = state.areEpisodesAvailable()) {
+            LazyColumn {
+                items(
+                    items = state.episodes,
+                    key = { episode -> episode.id }
+                ) { episode ->
+                    PodcastEpisodeItem(episode = episode)
                 }
             }
-        }
-
-        items(
-            items = state.episodes,
-            key = { episode -> episode.id }
-        ) { episode ->
-            PodcastEpisodeItem(episode = episode)
         }
     }
 }
@@ -86,6 +89,7 @@ private fun SearchContentPreview() {
                     override fun onGenreSelect(genre: Genre) = Unit
                     override fun onSearchClick(searchText: String) = Unit
                     override fun onSearchFocusChanged(focusState: FocusState) = Unit
+                    override fun closeSearch() = Unit
                 }
             )
         }

@@ -63,6 +63,12 @@ internal class SearchViewModel(
 
     override fun onSearchFocusChanged(focusState: FocusState) {
     }
+
+    override fun closeSearch() {
+        viewModelScope.launch {
+            _state.update { it.copy(episodes = emptyList(), podcasts = emptyList()) }
+        }
+    }
 }
 
 internal data class SearchState(

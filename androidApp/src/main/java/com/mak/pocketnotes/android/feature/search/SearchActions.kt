@@ -10,4 +10,5 @@ internal interface SearchActions {
     fun onGenreSelect(genre: Genre)
     fun onSearchClick(searchText: String)
     fun onSearchFocusChanged(focusState: FocusState)
+    fun closeSearch()
 }
