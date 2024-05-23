@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -58,10 +59,12 @@ private fun SearchContent(
     }
     Column (
         modifier = modifier
-            .padding(16.dp)
             .onFocusChanged(actions::onSearchFocusChanged)
     ) {
         SearchField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
             onKeyboardDoneClick = { searchQuery ->
                 controller?.hide()
                 actions.onSearchClick(searchQuery)
@@ -69,13 +72,19 @@ private fun SearchContent(
         )
         AnimatedVisibility(visible = state.canShowGenres()) {
             GenreCells(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
                 genres = state.genres,
-                onGenreClick = actions::onGenreSelect
+                onGenreClick = actions::onGenreSelect,
             )
         }
 
         AnimatedVisibility(visible = state.isResultAvailable()) {
             ResultsContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 8.dp, horizontal = 4.dp),
                 state = state,
                 onPodcastClick = onPodcastClick
             )
@@ -86,16 +95,19 @@ private fun SearchContent(
 @Composable
 private fun ResultsContent(
     state: SearchState,
-    onPodcastClick: (String) -> Unit
+    onPodcastClick: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = modifier
+    ) {
         item {
             AnimatedVisibility(visible = state.arePodcastsAvailable()) {
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(id = R.string.podcast),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     LazyRow {
@@ -120,7 +132,7 @@ private fun ResultsContent(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(id = R.string.episode),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.titleMedium
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                 }

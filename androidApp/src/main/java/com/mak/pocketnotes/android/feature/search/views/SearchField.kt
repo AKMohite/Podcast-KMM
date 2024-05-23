@@ -12,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mak.pocketnotes.android.R
@@ -19,10 +20,12 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 
 @Composable
 internal fun SearchField(
-    onKeyboardDoneClick: (String) -> Unit
+    onKeyboardDoneClick: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var searchText: String = rememberSaveable { "" }
     OutlinedTextField(
+        modifier = modifier,
         value = searchText,
         onValueChange = {
             searchText = it
@@ -67,6 +70,7 @@ private fun SearchFieldPreview() {
         Surface {
             SearchField(
                 onKeyboardDoneClick = {},
+                modifier = Modifier,
             )
         }
     }

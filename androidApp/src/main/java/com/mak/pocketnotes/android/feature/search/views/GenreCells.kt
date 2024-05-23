@@ -26,9 +26,11 @@ import com.mak.pocketnotes.domain.models.Genre
 @Composable
 internal fun GenreCells(
     genres: List<Genre>,
-    onGenreClick: (Genre) -> Unit
+    onGenreClick: (Genre) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
+        modifier = modifier,
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -89,7 +91,7 @@ private fun GenreCellsPreview() {
                     Genre(5, "genre 5", 4),
                     Genre(6, "genre 6", 1),
                 ),
-                onGenreClick = {}
+                onGenreClick = {},
             )
         }
     }
