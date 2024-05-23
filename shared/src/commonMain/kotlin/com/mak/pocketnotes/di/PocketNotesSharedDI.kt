@@ -7,6 +7,7 @@ import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
+import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import kotlinx.serialization.json.Json
@@ -29,6 +30,7 @@ private val utilModule = module {
 
 private val domainModule = module {
 //    single<IRep> {  }
+    factory { GetGenres() }
     factory { GetBestPodcasts() }
     factory { GetCuratedPodcasts() }
     factory { GetPodcast() }

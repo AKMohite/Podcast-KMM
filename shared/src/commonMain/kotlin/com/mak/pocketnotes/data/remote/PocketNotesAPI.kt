@@ -2,6 +2,7 @@ package com.mak.pocketnotes.data.remote
 
 import com.mak.pocketnotes.data.remote.dto.BestPodcastDTO
 import com.mak.pocketnotes.data.remote.dto.CuratedPodcastsDTO
+import com.mak.pocketnotes.data.remote.dto.GenresDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastRecommendationsDTO
 import com.mak.pocketnotes.data.util.Dispatcher
@@ -14,6 +15,10 @@ internal class PocketNotesAPI(
     private val client: HttpClient,
     private val dispatcher: Dispatcher
 ): IPocketNotesAPI {
+
+    override suspend fun getAllGenres(): GenresDTO = withContext(dispatcher.io) {
+        client.get("api/v2/genres").body()
+    }
     override suspend fun getBestPodcasts(page: Int): BestPodcastDTO = withContext(dispatcher.io) {
         client.get("api/v2/best_podcasts?page=$page").body()
     }
@@ -29,6 +34,7 @@ internal class PocketNotesAPI(
 }
 
 internal interface IPocketNotesAPI {
+    suspend fun getAllGenres(): GenresDTO
     suspend fun getBestPodcasts(page: Int): BestPodcastDTO
     suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO
     suspend fun getPodcastRecommendations(id: String): PodcastRecommendationsDTO
