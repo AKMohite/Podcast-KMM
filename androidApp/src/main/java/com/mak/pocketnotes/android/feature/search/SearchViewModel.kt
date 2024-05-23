@@ -74,6 +74,8 @@ internal data class SearchState(
     val error: String? = null
 ) {
     fun canShowGenres(): Boolean {
-        return genres.isNotEmpty() && podcasts.isEmpty() && episodes.isEmpty()
+        return genres.isNotEmpty() && podcasts.isEmpty() && !areEpisodesAvailable()
     }
+
+    fun areEpisodesAvailable() = episodes.isNotEmpty()
 }
