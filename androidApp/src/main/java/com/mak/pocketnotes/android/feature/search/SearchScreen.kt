@@ -43,7 +43,6 @@ private fun SearchContent(
             .onFocusChanged(actions::onSearchFocusChanged)
     ) {
         SearchField(
-            onSearchTextChanged = actions::onSearchTextChange,
             onKeyboardDoneClick = { searchQuery ->
                 controller?.hide()
                 actions.onSearchClick(searchQuery)

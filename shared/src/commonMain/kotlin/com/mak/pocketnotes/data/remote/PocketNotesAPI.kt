@@ -33,8 +33,11 @@ internal class PocketNotesAPI(
         client.get("api/v2/podcasts/$id").body()
     }
 
-    override fun search(queries: Map<String, String>): SearchEpisodesDTO {
-        TODO("Not yet implemented")
+    override suspend fun search(queries: Map<String, String>): SearchEpisodesDTO = withContext(dispatcher.io) {
+        val queryMap= queries.map {
+            "${it.key}=${it.value}"
+        }.joinToString("&")
+        client.get("api/v2/search?$queryMap").body()
     }
 }
 
@@ -44,5 +47,5 @@ internal interface IPocketNotesAPI {
     suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO
     suspend fun getPodcastRecommendations(id: String): PodcastRecommendationsDTO
     suspend fun getPodcastDetails(id: String): PodcastDTO
-    fun search(queries: Map<String, String>): SearchEpisodesDTO
+    suspend fun search(queries: Map<String, String>): SearchEpisodesDTO
 }

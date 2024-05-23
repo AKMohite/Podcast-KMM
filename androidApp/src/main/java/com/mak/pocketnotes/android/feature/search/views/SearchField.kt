@@ -19,13 +19,14 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 
 @Composable
 internal fun SearchField(
-    onSearchTextChanged: (String) -> Unit,
     onKeyboardDoneClick: (String) -> Unit
 ) {
     var searchText: String = rememberSaveable { "" }
     OutlinedTextField(
         value = searchText,
-        onValueChange = onSearchTextChanged,
+        onValueChange = {
+            searchText = it
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Search,
@@ -37,7 +38,7 @@ internal fun SearchField(
                 IconButton(
                     onClick = {
                         searchText = ""
-                        onSearchTextChanged("")
+//                        onSearchTextChanged("")
                     }
                 ) {
                     Icon(
@@ -65,7 +66,6 @@ private fun SearchFieldPreview() {
     PocketNotesTheme {
         Surface {
             SearchField(
-                onSearchTextChanged = {},
                 onKeyboardDoneClick = {},
             )
         }

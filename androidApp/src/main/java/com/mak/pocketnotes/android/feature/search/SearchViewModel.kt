@@ -7,6 +7,7 @@ import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.usecase.GetGenres
+import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class SearchViewModel(
-    private val getGenres: GetGenres
+    private val getGenres: GetGenres,
+    private val searchPodcast: SearchPodcast
 ): ViewModel(), SearchActions {
 
     private val _state = MutableStateFlow(SearchState())
@@ -44,7 +46,19 @@ internal class SearchViewModel(
     }
 
     override fun onSearchClick(searchText: String) {
-
+        viewModelScope.launch {
+            try {
+                val results = searchPodcast(searchText)
+                _state.update {
+                    it.copy(
+                        episodes = results.episodes,
+                        podcasts = results.podcasts
+                    )
+                }
+            } catch (t: Throwable) {
+                _state.update { it.copy(error = t.message) }
+            }
+        }
     }
 
     override fun onSearchFocusChanged(focusState: FocusState) {

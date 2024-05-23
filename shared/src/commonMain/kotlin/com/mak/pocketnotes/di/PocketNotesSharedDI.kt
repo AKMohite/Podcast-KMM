@@ -10,6 +10,7 @@ import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
+import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
@@ -35,6 +36,7 @@ private val domainModule = module {
     factory { GetCuratedPodcasts() }
     factory { GetPodcast() }
     factory { GetPodcastRecommendations() }
+    factory { SearchPodcast() }
 }
 
 private val sharedModules = listOf(networkModule(), dataModule, utilModule, domainModule)
