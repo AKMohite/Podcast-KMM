@@ -42,6 +42,8 @@ import com.mak.pocketnotes.android.feature.home.HomeViewModel
 import com.mak.pocketnotes.android.feature.player.NowPlayingScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
+import com.mak.pocketnotes.android.feature.search.SearchScreen
+import com.mak.pocketnotes.android.feature.search.SearchViewModel
 import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -172,9 +174,8 @@ internal fun PodcastNav(
             }
 
             composable(Search.routeWithArgs) {
-                EmptyScreen(
-                    Search.title
-                )
+                val viewModel: SearchViewModel = koinViewModel()
+                SearchScreen()
             }
             composable(Subscribed.routeWithArgs) {
                 EmptyScreen(Subscribed.title)
