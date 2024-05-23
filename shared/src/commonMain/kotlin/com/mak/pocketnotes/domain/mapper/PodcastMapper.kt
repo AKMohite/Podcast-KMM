@@ -27,7 +27,7 @@ internal class PodcastMapper {
         episodes = getPodcastEpisodes(dto.episodes)
     )
 
-    private fun getPodcastEpisodes(episodes: List<EpisodeDTO>?): List<PodcastEpisode> {
+    fun getPodcastEpisodes(episodes: List<EpisodeDTO>?): List<PodcastEpisode> {
         return episodes?.map {
             getPodcastEpisode(it)
         } ?: emptyList()

@@ -5,6 +5,7 @@ import com.mak.pocketnotes.data.remote.dto.CuratedPodcastsDTO
 import com.mak.pocketnotes.data.remote.dto.GenresDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastRecommendationsDTO
+import com.mak.pocketnotes.data.remote.dto.SearchEpisodesDTO
 import com.mak.pocketnotes.data.util.Dispatcher
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -31,6 +32,10 @@ internal class PocketNotesAPI(
     override suspend fun getPodcastDetails(id: String): PodcastDTO = withContext(dispatcher.io) {
         client.get("api/v2/podcasts/$id").body()
     }
+
+    override fun search(queries: Map<String, String>): SearchEpisodesDTO {
+        TODO("Not yet implemented")
+    }
 }
 
 internal interface IPocketNotesAPI {
@@ -39,4 +44,5 @@ internal interface IPocketNotesAPI {
     suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO
     suspend fun getPodcastRecommendations(id: String): PodcastRecommendationsDTO
     suspend fun getPodcastDetails(id: String): PodcastDTO
+    fun search(queries: Map<String, String>): SearchEpisodesDTO
 }
