@@ -16,7 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
@@ -55,7 +58,7 @@ private fun SearchContent(
     onPodcastClick: (String) -> Unit
 ) {
     val controller = LocalSoftwareKeyboardController.current
-    var searchText: String = rememberSaveable { "" }
+    var searchText by rememberSaveable { mutableStateOf("") }
     BackHandler(enabled = !state.canShowGenres()) {
         searchText = ""
         actions.closeSearch()
@@ -75,6 +78,9 @@ private fun SearchContent(
             searchText = searchText,
             onSearchTextChanged = {
                 searchText = it
+            },
+            onClearSearchText = {
+                actions.closeSearch()
             }
         )
         AnimatedVisibility(visible = state.canShowGenres()) {

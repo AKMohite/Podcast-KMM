@@ -22,6 +22,7 @@ internal fun SearchField(
     onKeyboardDoneClick: (String) -> Unit,
     searchText: String,
     modifier: Modifier = Modifier,
+    onClearSearchText: () -> Unit,
     onSearchTextChanged: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -39,6 +40,7 @@ internal fun SearchField(
                 IconButton(
                     onClick = {
                         onSearchTextChanged("")
+                        onClearSearchText()
                     }
                 ) {
                     Icon(
@@ -69,7 +71,8 @@ private fun SearchFieldPreview() {
                 onKeyboardDoneClick = {},
                 modifier = Modifier,
                 searchText = "asdasd",
-                onSearchTextChanged = {}
+                onSearchTextChanged = {},
+                onClearSearchText = {}
             )
         }
     }
