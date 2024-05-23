@@ -13,5 +13,5 @@ internal val appModule = module {
         PodcastDetailViewModel(getPodcast = get(), podcastRecommendations = get(), podcastId = params.get())
     }
     viewModel{ MediaViewModel(get(), get()) }
-    viewModel { SearchViewModel(get(), get()) }
+    viewModel { SearchViewModel(get(), get(), get()) }
 }

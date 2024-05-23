@@ -20,8 +20,9 @@ internal class PocketNotesAPI(
     override suspend fun getAllGenres(): GenresDTO = withContext(dispatcher.io) {
         client.get("api/v2/genres").body()
     }
-    override suspend fun getBestPodcasts(page: Int): BestPodcastDTO = withContext(dispatcher.io) {
-        client.get("api/v2/best_podcasts?page=$page").body()
+    override suspend fun getBestPodcasts(queryMap: Map<String, String>): BestPodcastDTO = withContext(dispatcher.io) {
+        val queries= getAllQueries(queryMap)
+        client.get("api/v2/best_podcasts?page=$queries").body()
     }
     override suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO = withContext(dispatcher.io) {
         client.get("api/v2/curated_podcasts").body()
@@ -34,16 +35,18 @@ internal class PocketNotesAPI(
     }
 
     override suspend fun search(queries: Map<String, String>): SearchEpisodesDTO = withContext(dispatcher.io) {
-        val queryMap= queries.map {
-            "${it.key}=${it.value}"
-        }.joinToString("&")
+        val queryMap= getAllQueries(queries)
         client.get("api/v2/search?$queryMap").body()
     }
+
+    private fun getAllQueries(queries: Map<String, String>) = queries.map {
+        "${it.key}=${it.value}"
+    }.joinToString("&")
 }
 
 internal interface IPocketNotesAPI {
     suspend fun getAllGenres(): GenresDTO
-    suspend fun getBestPodcasts(page: Int): BestPodcastDTO
+    suspend fun getBestPodcasts(queryMap: Map<String, String>): BestPodcastDTO
     suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO
     suspend fun getPodcastRecommendations(id: String): PodcastRecommendationsDTO
     suspend fun getPodcastDetails(id: String): PodcastDTO

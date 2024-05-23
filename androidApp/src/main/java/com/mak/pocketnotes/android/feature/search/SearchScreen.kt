@@ -102,6 +102,24 @@ private fun SearchContent(
                 onPodcastClick = onPodcastClick
             )
         }
+
+        AnimatedVisibility(visible = state.areGenrePodcastsAvailable()) {
+            LazyColumn {
+                items(
+                    items = state.genrePodcasts,
+                    key = { podcast -> podcast.id }
+                ) { podcast ->
+                    PodcastRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                            .clickable { onPodcastClick(podcast.id) },
+                        podcast = podcast
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+            }
+        }
     }
 }
 

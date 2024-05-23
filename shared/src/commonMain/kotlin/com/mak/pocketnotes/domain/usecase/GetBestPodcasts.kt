@@ -12,8 +12,14 @@ class GetBestPodcasts: KoinComponent {
     private val mapper: PocketMapper by inject()
 
     @Throws(Exception::class)
-    suspend operator fun invoke(page:Int): List<Podcast> {
-        val bestPodcastAPI = api.getBestPodcasts(page)
+    suspend operator fun invoke(page:Int, genreId: Int? = null): List<Podcast> {
+        val queryMap = mutableMapOf(
+            "page" to page.toString()
+        )
+        genreId?.let { id ->
+            queryMap["genre_id"] = id.toString()
+        }
+        val bestPodcastAPI = api.getBestPodcasts(queryMap)
         val podcasts = mapper.podcast.jsonToModels(bestPodcastAPI.podcasts ?: emptyList())
         return podcasts
     }
