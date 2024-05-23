@@ -179,7 +179,12 @@ internal fun PodcastNav(
                 val state by viewModel.state.collectAsState()
                 SearchScreen(
                     state = state,
-                    actions = viewModel
+                    actions = viewModel,
+                    onPodcastClick = { podcastId ->
+                        navController.navigate(
+                            "${PodcastDetail.route}/$podcastId"
+                        )
+                    }
                 )
             }
             composable(Subscribed.routeWithArgs) {

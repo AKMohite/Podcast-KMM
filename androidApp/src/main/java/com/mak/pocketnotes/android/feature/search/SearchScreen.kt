@@ -2,6 +2,7 @@ package com.mak.pocketnotes.android.feature.search
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,12 +34,14 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 internal fun SearchScreen(
     state: SearchState,
-    actions: SearchActions
+    actions: SearchActions,
+    onPodcastClick: (String) -> Unit,
 ) {
     SearchContent(
         modifier = Modifier.fillMaxSize(),
         state = state,
-        actions = actions
+        actions = actions,
+        onPodcastClick = onPodcastClick
     )
 }
 
@@ -46,7 +49,8 @@ internal fun SearchScreen(
 private fun SearchContent(
     modifier: Modifier = Modifier,
     state: SearchState,
-    actions: SearchActions
+    actions: SearchActions,
+    onPodcastClick: (String) -> Unit
 ) {
     val controller = LocalSoftwareKeyboardController.current
     BackHandler(enabled = !state.canShowGenres()) {
@@ -71,13 +75,19 @@ private fun SearchContent(
         }
 
         AnimatedVisibility(visible = state.isResultAvailable()) {
-            ResultsContent(state)
+            ResultsContent(
+                state = state,
+                onPodcastClick = onPodcastClick
+            )
         }
     }
 }
 
 @Composable
-private fun ResultsContent(state: SearchState) {
+private fun ResultsContent(
+    state: SearchState,
+    onPodcastClick: (String) -> Unit
+) {
     LazyColumn {
         item {
             AnimatedVisibility(visible = state.arePodcastsAvailable()) {
@@ -95,7 +105,8 @@ private fun ResultsContent(state: SearchState) {
                         ) { podcast ->
                             PodcastRow(
                                 modifier = Modifier
-                                    .fillParentMaxWidth(0.9f),
+                                    .fillParentMaxWidth(0.9f)
+                                    .clickable { onPodcastClick(podcast.id) },
                                 podcast = podcast
                             )
                         }
@@ -145,7 +156,8 @@ private fun SearchContentPreview() {
                     override fun onSearchClick(searchText: String) = Unit
                     override fun onSearchFocusChanged(focusState: FocusState) = Unit
                     override fun closeSearch() = Unit
-                }
+                },
+                onPodcastClick = {}
             )
         }
     }
