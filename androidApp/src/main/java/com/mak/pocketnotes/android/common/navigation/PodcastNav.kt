@@ -179,9 +179,7 @@ internal fun PodcastNav(
                 val state by viewModel.state.collectAsState()
                 SearchScreen(
                     state = state,
-                    onGenreClick = {
-//                        viewModel.
-                    }
+                    actions = viewModel
                 )
             }
             composable(Subscribed.routeWithArgs) {

@@ -1,7 +1,6 @@
 package com.mak.pocketnotes.android.feature.search.views
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -21,7 +20,7 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 @Composable
 internal fun SearchField(
     onSearchTextChanged: (String) -> Unit,
-    onKeyboardDoneClick: KeyboardActionScope.() -> Unit
+    onKeyboardDoneClick: (String) -> Unit
 ) {
     var searchText: String = rememberSaveable { "" }
     OutlinedTextField(
@@ -54,7 +53,9 @@ internal fun SearchField(
             )
         },
         singleLine = true,
-        keyboardActions = KeyboardActions(onDone = onKeyboardDoneClick)
+        keyboardActions = KeyboardActions(onDone = {
+            onKeyboardDoneClick(searchText)
+        })
     )
 }
 

@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.feature.search
 
+import androidx.compose.ui.focus.FocusState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.Genre
@@ -14,10 +15,10 @@ import kotlinx.coroutines.launch
 
 internal class SearchViewModel(
     private val getGenres: GetGenres
-): ViewModel() {
+): ViewModel(), SearchActions {
 
     private val _state = MutableStateFlow(SearchState())
-    val state: StateFlow<SearchState> = _state.asStateFlow()
+    override val state: StateFlow<SearchState> = _state.asStateFlow()
 
     init {
         getAllGenres()
@@ -32,6 +33,21 @@ internal class SearchViewModel(
                 _state.update { it.copy(error = t.message) }
             }
         }
+    }
+
+    override fun onSearchTextChange(value: String) {
+//        TODO Not yet implemented
+    }
+
+    override fun onGenreSelect(genre: Genre) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSearchClick(searchText: String) {
+
+    }
+
+    override fun onSearchFocusChanged(focusState: FocusState) {
     }
 }
 
