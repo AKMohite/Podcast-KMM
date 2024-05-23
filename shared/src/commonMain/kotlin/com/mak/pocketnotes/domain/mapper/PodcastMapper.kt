@@ -37,7 +37,7 @@ internal class PodcastMapper {
         return with(dto) {
             PodcastEpisode(
                 id = id ?: "",
-                title = title ?: "",
+                title = title ?: titleOriginal ?: "",
                 description = description ?: "",
                 image = image ?: "",
                 listennotesUrl = listennotesUrl ?: "",

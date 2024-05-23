@@ -43,7 +43,6 @@ internal fun HomeCarouselCard(
                 .size(120.dp)
                 .clip(RoundedCornerShape(8.dp)),
             placeholder = debugPlaceholder()
-
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column {

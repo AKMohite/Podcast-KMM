@@ -33,5 +33,7 @@ internal data class EpisodeDTO(
     @SerialName("thumbnail")
     val thumbnail: String? = null,
     @SerialName("title")
-    val title: String? = null
+    val title: String? = null,
+    @SerialName("title_original")
+    val titleOriginal: String? = null,
 )

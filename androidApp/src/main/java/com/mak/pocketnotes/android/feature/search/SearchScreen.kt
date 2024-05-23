@@ -119,7 +119,10 @@ private fun ResultsContent(state: SearchState) {
             items = state.episodes,
             key = { episode -> episode.id }
         ) { episode ->
-            PodcastEpisodeItem(episode = episode)
+            PodcastEpisodeItem(
+                episode = episode,
+                showImage = true
+            )
         }
     }
 }
