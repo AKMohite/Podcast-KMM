@@ -85,4 +85,5 @@ internal data class SearchState(
 
     fun areEpisodesAvailable() = episodes.isNotEmpty()
     fun arePodcastsAvailable() = podcasts.isNotEmpty()
+    fun isResultAvailable() = arePodcastsAvailable() || areEpisodesAvailable()
 }

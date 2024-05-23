@@ -70,51 +70,56 @@ private fun SearchContent(
             )
         }
 
-        AnimatedVisibility(visible = state.areEpisodesAvailable()) {
-            LazyColumn {
-                item {
-                    AnimatedVisibility(visible = state.arePodcastsAvailable()) {
-                        Column {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.podcast),
-                                style = MaterialTheme.typography.titleSmall
+        AnimatedVisibility(visible = state.isResultAvailable()) {
+            ResultsContent(state)
+        }
+    }
+}
+
+@Composable
+private fun ResultsContent(state: SearchState) {
+    LazyColumn {
+        item {
+            AnimatedVisibility(visible = state.arePodcastsAvailable()) {
+                Column {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(id = R.string.podcast),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    LazyRow {
+                        items(
+                            items = state.podcasts,
+                            key = { podcast -> podcast.id }
+                        ) { podcast ->
+                            PodcastRow(
+                                modifier = Modifier
+                                    .fillParentMaxWidth(0.9f),
+                                podcast = podcast
                             )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            LazyRow {
-                                items(
-                                    items = state.podcasts,
-                                    key = { podcast -> podcast.id }
-                                ) { podcast ->
-                                    PodcastRow(
-                                        modifier = Modifier
-                                            .fillParentMaxWidth(0.9f),
-                                        podcast = podcast
-                                    )
-                                }
-                            }
                         }
                     }
-                }
-                item {
-                    AnimatedVisibility(visible = state.areEpisodesAvailable()) {
-                        Column {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.episode),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                        }
-                    }
-                }
-                items(
-                    items = state.episodes,
-                    key = { episode -> episode.id }
-                ) { episode ->
-                    PodcastEpisodeItem(episode = episode)
                 }
             }
+        }
+        item {
+            AnimatedVisibility(visible = state.areEpisodesAvailable()) {
+                Column {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(id = R.string.episode),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+            }
+        }
+        items(
+            items = state.episodes,
+            key = { episode -> episode.id }
+        ) { episode ->
+            PodcastEpisodeItem(episode = episode)
         }
     }
 }
