@@ -119,10 +119,13 @@ private fun ResultsContent(state: SearchState) {
             items = state.episodes,
             key = { episode -> episode.id }
         ) { episode ->
-            PodcastEpisodeItem(
-                episode = episode,
-                showImage = true
-            )
+            Column {
+                PodcastEpisodeItem(
+                    episode = episode,
+                    showImage = true
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
         }
     }
 }

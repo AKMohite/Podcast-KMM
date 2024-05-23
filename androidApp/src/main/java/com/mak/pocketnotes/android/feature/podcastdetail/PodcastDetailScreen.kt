@@ -156,6 +156,7 @@ private fun PodcastDetailContent(
                                         )
                                     }
                                 }
+                                Spacer(modifier = Modifier.height(8.dp))
                             }
                         }
                     }
@@ -163,7 +164,10 @@ private fun PodcastDetailContent(
                         items = podcast.episodes,
                         key = { episode: PodcastEpisode -> episode.id }
                     ) { episode ->
-                        PodcastEpisodeItem(episode = episode)
+                        Column {
+                            PodcastEpisodeItem(episode = episode)
+                            Spacer(modifier = Modifier.height(4.dp))
+                        }
                     }
                 }
             }
