@@ -20,7 +20,6 @@ kotlin = "1.9.24"
 kotlinCompiler = "1.5.14"
 ktor = "2.1.2"
 navigation = "2.5.3"
-realm = "1.2.0"
 serialization = "1.9.10"
 
 [libraries]
@@ -47,7 +46,6 @@ ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref =
 ktor-client-ios = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-realm-base = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
 
 [bundles]
 compose = [ "androidx-navigation", "compose-coil", "compose-activity", "compose-foundation", "compose-material", "compose-ui", "compose-ui-preview", "compose-ui-tooling" ]
@@ -56,4 +54,3 @@ compose = [ "androidx-navigation", "compose-coil", "compose-activity", "compose-
 android-app = { id = "com.android.application", version.ref = "gradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "gradlePlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-realm-kotlin = { id = "io.realm.kotlin", version.ref = "realm" }
