@@ -45,6 +45,7 @@ kotlin {
 //                TODO can be removed?
                 implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
+                implementation(libs.android.sql.driver)
             }
         }
 //        val androidUnitTest by getting
@@ -56,6 +57,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(libs.ktor.client.ios)
+                implementation(libs.ios.sql.driver)
             }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
