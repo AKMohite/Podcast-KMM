@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("app.cash.sqldelight") version libs.versions.sqldelight
     kotlin("plugin.serialization") version libs.versions.serialization.get()
 }
 
@@ -82,5 +83,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+sqldelight {
+    databases {
+        create("PocketDatabase") {
+            packageName.set("com.mak.pocketnotes")
+        }
     }
 }
