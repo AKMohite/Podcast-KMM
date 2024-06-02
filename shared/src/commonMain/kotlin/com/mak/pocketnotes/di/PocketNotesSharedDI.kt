@@ -5,6 +5,7 @@ import com.mak.pocketnotes.data.remote.PocketNotesAPI
 import com.mak.pocketnotes.data.util.provideDispatcher
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
+import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
@@ -26,7 +27,7 @@ private val dataModule = module {
     factory { PodcastMapper() }
     factory { PocketMapper(get()) }
     factory<IPocketNotesAPI> { PocketNotesAPI(get(), get()) }
-    factory<IPodcastDAO> { PodcastDAO(get()) }
+    factory<IPodcastDAO> { PodcastDAO(get(), get()) }
 }
 
 private val utilModule = module {
@@ -37,6 +38,7 @@ private val domainModule = module {
 //    single<IRep> {  }
     factory { GetGenres() }
     factory { RefreshBestPodcasts() }
+    factory { GetBestPodcasts() }
     factory { GetCuratedPodcasts() }
     factory { GetPodcast() }
     factory { GetPodcastRecommendations() }
