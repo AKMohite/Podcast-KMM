@@ -5,13 +5,16 @@ import com.mak.pocketnotes.data.remote.PocketNotesAPI
 import com.mak.pocketnotes.data.util.provideDispatcher
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
-import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
+import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
+import com.mak.pocketnotes.local.IPodcastDAO
+import com.mak.pocketnotes.local.PodcastDAO
 import kotlinx.serialization.json.Json
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
 private fun networkModule(enableNetworkingLogs: Boolean = false) = module {
@@ -23,6 +26,7 @@ private val dataModule = module {
     factory { PodcastMapper() }
     factory { PocketMapper(get()) }
     factory<IPocketNotesAPI> { PocketNotesAPI(get(), get()) }
+    factory<IPodcastDAO> { PodcastDAO(get()) }
 }
 
 private val utilModule = module {
@@ -32,13 +36,15 @@ private val utilModule = module {
 private val domainModule = module {
 //    single<IRep> {  }
     factory { GetGenres() }
-    factory { GetBestPodcasts() }
+    factory { RefreshBestPodcasts() }
     factory { GetCuratedPodcasts() }
     factory { GetPodcast() }
     factory { GetPodcastRecommendations() }
     factory { SearchPodcast() }
 }
 
-private val sharedModules = listOf(networkModule(), dataModule, utilModule, domainModule)
+internal expect fun platformModule(): Module
+
+private val sharedModules = listOf(networkModule(), dataModule, utilModule, domainModule, platformModule())
 
 fun getSharedModules() = sharedModules

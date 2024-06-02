@@ -3,12 +3,14 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.local.IPodcastDAO
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class GetBestPodcasts: KoinComponent {
+class RefreshBestPodcasts: KoinComponent {
 
     private val api: IPocketNotesAPI by inject()
+    private val dao: IPodcastDAO by inject()
     private val mapper: PocketMapper by inject()
 
     @Throws(Exception::class)
@@ -20,7 +22,8 @@ class GetBestPodcasts: KoinComponent {
             queryMap["genre_id"] = id.toString()
         }
         val bestPodcastAPI = api.getBestPodcasts(queryMap)
-        val podcasts = mapper.podcast.jsonToModels(bestPodcastAPI.podcasts ?: emptyList())
-        return podcasts
+        val entities = mapper.podcast.jsonToEntities(bestPodcastAPI.podcasts ?: emptyList())
+        dao.insertPodcasts(entities)
+        return mapper.podcast.entityToModels(entities)
     }
 }

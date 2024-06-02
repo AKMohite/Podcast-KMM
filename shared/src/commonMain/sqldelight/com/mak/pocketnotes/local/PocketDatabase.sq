@@ -7,10 +7,10 @@ CREATE TABLE PodcastEntity (
 );
 
 insertPodcastInfo:
-INSERT INTO PodcastEntity (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
+INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
 
 insertPodcast:
-INSERT INTO PodcastEntity (id , title, description, image, thumbnail) VALUES ?;
+INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES ?;
 
 getBestPodcasts:
 SELECT * FROM PodcastEntity;

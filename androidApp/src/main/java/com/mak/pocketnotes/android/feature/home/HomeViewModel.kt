@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
+import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val getPodcast: GetBestPodcasts,
+    val refreshPodcasts: RefreshBestPodcasts,
     val curatedPodcast: GetCuratedPodcasts
 ): ViewModel() {
 
@@ -32,7 +32,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _uiState = uiState.copy(loading = true)
             try {
-                val resultPodcasts = getPodcast(currentPage)
+                val resultPodcasts = refreshPodcasts(currentPage)
                 val curatedPodcasts = curatedPodcast(1)
                 val topPodcasts = if (currentPage == 1) resultPodcasts.take(4) else uiState.topPodcasts
                 val podcasts = if (currentPage == 1) resultPodcasts.drop(4) else uiState.podcasts + resultPodcasts

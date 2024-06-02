@@ -4,6 +4,7 @@ import com.mak.pocketnotes.data.remote.dto.EpisodeDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.local.PodcastEntity
 
 internal class PodcastMapper {
 
@@ -13,18 +14,32 @@ internal class PodcastMapper {
         }
     }
 
+    fun jsonToEntity(dto: PodcastDTO): PodcastEntity {
+        return PodcastEntity(
+            id = dto.id!!,
+            title = dto.title ?: "",
+            description = dto.description ?: "",
+            image = dto.image,
+            thumbnail = dto.thumbnail
+        )
+    }
+
+    fun jsonToEntities(dtos: List<PodcastDTO>): List<PodcastEntity> = dtos.map { dto ->
+        jsonToEntity(dto)
+    }
+
     fun jsonToModel(dto: PodcastDTO) = Podcast(
         id = dto.id!!,
+        title = dto.title ?: "",
         description = dto.description ?: "",
         image = dto.image ?: "",
-        listenScore = dto.listenScore?.toString()?.toIntOrNull() ?: 0,
-        publisher = dto.publisher ?: "",
         thumbnail = dto.thumbnail ?: "",
-        title = dto.title ?: "",
-        totalEpisodes = dto.totalEpisodes ?: 0,
-        type = dto.type ?: "",
-        website = dto.website ?: "",
-        episodes = getPodcastEpisodes(dto.episodes)
+        publisher = dto.publisher ?: "",
+        episodes = getPodcastEpisodes(dto.episodes),
+//        listenScore = dto.listenScore?.toString()?.toIntOrNull() ?: 0,
+//        totalEpisodes = dto.totalEpisodes ?: 0,
+//        type = dto.type ?: "",
+//        website = dto.website ?: ""
     )
 
     fun getPodcastEpisodes(episodes: List<EpisodeDTO>?): List<PodcastEpisode> {
@@ -47,6 +62,20 @@ internal class PodcastMapper {
                 duration = audioLengthSec ?: 0
             )
         }
+    }
+
+    fun entityToModels(entities: List<PodcastEntity>): List<Podcast> = entities.map { entity ->
+        entityToModel(entity)
+    }
+
+    private fun entityToModel(entity: PodcastEntity): Podcast {
+        return Podcast(
+            id = entity.id,
+            title = entity.title,
+            description = entity.description,
+            image = entity.image ?: "",
+            thumbnail = entity.thumbnail ?: "",
+        )
     }
 
 }

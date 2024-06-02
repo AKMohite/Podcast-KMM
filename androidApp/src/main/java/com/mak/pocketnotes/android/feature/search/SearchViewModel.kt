@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
-import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetGenres
+import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 internal class SearchViewModel(
     private val getGenres: GetGenres,
     private val searchPodcast: SearchPodcast,
-    private val getBestPodcasts: GetBestPodcasts
+    private val getBestPodcasts: RefreshBestPodcasts
 ): ViewModel(), SearchActions {
 
     private val _state = MutableStateFlow(SearchState())
@@ -103,6 +103,6 @@ internal data class SearchState(
     fun areGenrePodcastsAvailable() = genrePodcasts.isNotEmpty()
     fun isResultAvailable() = arePodcastsAvailable() || areEpisodesAvailable()
     fun searchCleared(): SearchState {
-        return this.copy(episodes = emptyList(), podcasts = emptyList(), genres = emptyList())
+        return this.copy(episodes = emptyList(), podcasts = emptyList())
     }
 }
