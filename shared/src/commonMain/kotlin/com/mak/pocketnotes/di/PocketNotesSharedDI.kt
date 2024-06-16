@@ -27,7 +27,7 @@ private val dataModule = module {
     factory { PodcastMapper() }
     factory { PocketMapper(get()) }
     factory<IPocketNotesAPI> { PocketNotesAPI(get(), get()) }
-    factory<IPodcastDAO> { PodcastDAO(get(), get()) }
+    single<IPodcastDAO> { PodcastDAO(get(), get()) }
 }
 
 private val utilModule = module {

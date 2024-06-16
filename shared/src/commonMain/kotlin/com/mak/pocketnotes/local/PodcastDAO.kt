@@ -1,7 +1,10 @@
 package com.mak.pocketnotes.local
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 internal class PodcastDAO(
@@ -11,9 +14,9 @@ internal class PodcastDAO(
     private val database = PocketDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.pocketDatabaseQueries
 
-    override suspend fun getBestPodcasts(): List<PodcastEntity> = withContext(dispatcher.io) {
-        dbQuery.getBestPodcasts().executeAsList()
-    }
+    override fun getBestPodcasts(): Flow<List<PodcastEntity>> = dbQuery.getBestPodcasts()
+        .asFlow()
+        .mapToList(dispatcher.io)
 
     override suspend fun insertPodcast(podcast: PodcastEntity) = withContext(dispatcher.io) {
         dbQuery.insertPodcast(podcast)
@@ -31,7 +34,7 @@ internal class PodcastDAO(
 }
 
 internal interface IPodcastDAO {
-    suspend fun getBestPodcasts(): List<PodcastEntity>
+    fun getBestPodcasts(): Flow<List<PodcastEntity>>
     suspend fun insertPodcast(podcast: PodcastEntity)
     suspend fun insertPodcasts(podcasts: List<PodcastEntity>)
     suspend fun removePodcasts()

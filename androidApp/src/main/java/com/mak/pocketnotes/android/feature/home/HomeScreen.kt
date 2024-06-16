@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.feature.home
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -65,11 +66,13 @@ private fun HomeContent(
                 )
             }
             item {
-                BestPodcasts(
-                    modifier = Modifier.fillMaxWidth(),
-                    gotoDetails = gotoDetails,
-                    podcasts = uiState.getSectionedPodcasts()
-                )
+                AnimatedVisibility(visible = uiState.podcasts.isNotEmpty()) {
+                    BestPodcasts(
+                        modifier = Modifier.fillMaxWidth(),
+                        gotoDetails = gotoDetails,
+                        podcasts = uiState.getSectionedPodcasts()
+                    )
+                }
             }
             items(
                 items = uiState.curatedPodcasts,

@@ -1,8 +1,5 @@
 package com.mak.pocketnotes.android.feature.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
@@ -10,6 +7,11 @@ import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -18,14 +20,33 @@ class HomeViewModel(
     val curatedPodcast: GetCuratedPodcasts
 ): ViewModel() {
 
-    private var _uiState by mutableStateOf(HomeScreenState())
-    internal val uiState: HomeScreenState
+    private var _uiState = MutableStateFlow(HomeScreenState())
+    internal val uiState: StateFlow<HomeScreenState>
         get() = _uiState
     private var currentPage = 1
 
     init {
         loadPodcasts()
         refreshDiscover()
+        observerPodcasts()
+    }
+
+    private fun observerPodcasts() {
+        getBestPodcasts()
+            .onEach { results ->
+                val state = uiState.value
+                val (topPodcasts, podcasts) = results.take(4) to results.drop(4)
+                _uiState.update { current ->
+                    current.copy(
+                        loading = false,
+                        refreshing = false,
+                        loadFinished = podcasts.isEmpty(),
+                        topPodcasts = topPodcasts,
+                        podcasts = podcasts,
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun refreshDiscover() {
@@ -36,32 +57,35 @@ class HomeViewModel(
     }
 
     fun loadPodcasts(forceReload: Boolean = false) {
-        if (uiState.loading) return
+        val state = uiState.value
+        if (state.loading) return
         if (forceReload) currentPage = 1
-        if (currentPage == 1) _uiState = uiState.copy(refreshing = true)
         viewModelScope.launch {
-            _uiState = uiState.copy(loading = true)
+            if (currentPage == 1) _uiState.update { current ->
+                current.copy(refreshing = true)
+            }
+            _uiState.update { current ->
+                current.copy(loading = true)
+            }
             try {
-                val resultPodcasts = getBestPodcasts()
                 val curatedPodcasts = curatedPodcast(1)
-                val topPodcasts = if (currentPage == 1) resultPodcasts.take(4) else uiState.topPodcasts
-                val podcasts = if (currentPage == 1) resultPodcasts.drop(4) else uiState.podcasts + resultPodcasts
                 currentPage += 1
-                _uiState = uiState.copy(
-                    loading = false,
-                    refreshing = false,
-                    loadFinished = podcasts.isEmpty(),
-                    topPodcasts = topPodcasts,
-                    podcasts = podcasts,
-                    curatedPodcasts = curatedPodcasts
-                )
+                _uiState.update { current ->
+                    current.copy(
+                        loading = false,
+                        refreshing = false,
+                        curatedPodcasts = curatedPodcasts
+                    )
+                }
             } catch (error: Throwable) {
-                _uiState = uiState.copy(
-                    loading = false,
-                    refreshing = false,
-                    loadFinished = true,
-                    errorMsg = error.localizedMessage
-                )
+                _uiState.update { current ->
+                    current.copy(
+                        loading = false,
+                        refreshing = false,
+                        loadFinished = true,
+                        errorMsg = error.localizedMessage
+                    )
+                }
             }
         }
     }
