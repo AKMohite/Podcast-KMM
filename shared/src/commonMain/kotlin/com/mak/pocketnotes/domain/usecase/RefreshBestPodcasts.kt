@@ -24,6 +24,7 @@ class RefreshBestPodcasts: KoinComponent {
         val bestPodcastAPI = api.getBestPodcasts(queryMap)
         val entities = mapper.podcast.jsonToEntities(bestPodcastAPI.podcasts ?: emptyList())
         dao.insertPodcasts(entities)
+//        TODO: this is for iOS we can remove it after local db for iOS is implemented
         return mapper.podcast.entityToModels(entities)
     }
 }
