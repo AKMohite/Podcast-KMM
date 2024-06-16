@@ -49,6 +49,7 @@ ktor-client-ios = { group = "io.ktor", name = "ktor-client-darwin", version.ref 
 ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ios-sql-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 
 [bundles]
 compose = [ "androidx-navigation", "compose-coil", "compose-activity", "compose-foundation", "compose-material", "compose-ui", "compose-ui-preview", "compose-ui-tooling" ]

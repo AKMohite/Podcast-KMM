@@ -27,6 +27,7 @@ kotlin {
                 implementation(libs.ktor.serialization)
                 //Use api so that the android app can use it as well
                 implementation(libs.koin.core)
+                implementation(libs.sqldelight.extensions)
             }
         }
         val commonTest by getting {
