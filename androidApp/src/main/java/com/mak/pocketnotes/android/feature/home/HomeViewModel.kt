@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
-import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
+import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     val refreshPodcasts: RefreshBestPodcasts,
     val getBestPodcasts: GetBestPodcasts,
-    val curatedPodcast: GetCuratedPodcasts
+    val curatedPodcast: RefreshCuratedPodcasts
 ): ViewModel() {
 
     private var _uiState = MutableStateFlow(HomeScreenState())

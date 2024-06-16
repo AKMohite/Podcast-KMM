@@ -8,7 +8,7 @@ import com.mak.pocketnotes.domain.models.SectionPodcast
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class GetCuratedPodcasts: KoinComponent {
+class RefreshCuratedPodcasts: KoinComponent {
     private val api: IPocketNotesAPI by inject()
 
     @Throws(Exception::class)
