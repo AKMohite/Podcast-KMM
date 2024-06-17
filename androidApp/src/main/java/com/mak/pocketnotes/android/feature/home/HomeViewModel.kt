@@ -34,7 +34,6 @@ class HomeViewModel(
     private fun observerPodcasts() {
         getBestPodcasts()
             .onEach { results ->
-                val state = uiState.value
                 val (topPodcasts, podcasts) = results.take(4) to results.drop(4)
                 _uiState.update { current ->
                     current.copy(

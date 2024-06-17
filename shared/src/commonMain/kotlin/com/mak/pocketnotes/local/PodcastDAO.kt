@@ -12,7 +12,7 @@ internal class PodcastDAO(
     private val dispatcher: Dispatcher
 ): IPodcastDAO {
     private val database = PocketDatabase(databaseDriverFactory.createDriver())
-    private val dbQuery = database.podcastTableQueries
+    private val dbQuery = database.pocketDatabaseQueries
 
     override fun getBestPodcasts(): Flow<List<PodcastEntity>> = dbQuery.getBestPodcasts()
         .asFlow()

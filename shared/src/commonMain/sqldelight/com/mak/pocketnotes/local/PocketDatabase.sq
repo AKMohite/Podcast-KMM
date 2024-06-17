@@ -1,0 +1,41 @@
+-- podcast table for all podcasts
+CREATE TABLE PodcastEntity (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image TEXT,
+    thumbnail TEXT
+);
+
+insertPodcastInfo:
+INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
+
+insertPodcast:
+INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES ?;
+
+getBestPodcasts:
+SELECT * FROM PodcastEntity;
+
+removeAllPodcasts:
+DELETE FROM PodcastEntity;
+
+-- curated section of podcasts
+CREATE TABLE CuratedSectionEntity (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL
+);
+
+CREATE TABLE CuratedPodcastEntity (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    image TEXT,
+    thumbnail TEXT,
+    sectionId TEXT NOT NULL,
+    FOREIGN KEY(sectionId) REFERENCES CuratedSectionEntity(id) ON DELETE CASCADE
+);
+
+insertCuratedSection:
+INSERT OR REPLACE INTO CuratedSectionEntity (id, title) VALUES ?;
+
+insertCuratedPodcast:
+INSERT OR REPLACE INTO CuratedPodcastEntity (id, title, image, thumbnail, sectionId) VALUES ?;

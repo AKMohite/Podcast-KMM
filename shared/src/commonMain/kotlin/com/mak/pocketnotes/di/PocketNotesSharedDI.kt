@@ -6,12 +6,14 @@ import com.mak.pocketnotes.data.util.provideDispatcher
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
-import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
+import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
+import com.mak.pocketnotes.local.CuratedPodcastDAO
+import com.mak.pocketnotes.local.ICuratedPodcastDAO
 import com.mak.pocketnotes.local.IPodcastDAO
 import com.mak.pocketnotes.local.PodcastDAO
 import kotlinx.serialization.json.Json
@@ -28,6 +30,7 @@ private val dataModule = module {
     factory { PocketMapper(get()) }
     factory<IPocketNotesAPI> { PocketNotesAPI(get(), get()) }
     single<IPodcastDAO> { PodcastDAO(get(), get()) }
+    single<ICuratedPodcastDAO> { CuratedPodcastDAO(get(), get()) }
 }
 
 private val utilModule = module {
