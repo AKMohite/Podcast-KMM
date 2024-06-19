@@ -39,3 +39,6 @@ INSERT OR REPLACE INTO CuratedSectionEntity (id, title) VALUES ?;
 
 insertCuratedPodcast:
 INSERT OR REPLACE INTO CuratedPodcastEntity (id, title, image, thumbnail, sectionId) VALUES ?;
+
+curatedSectionWithPodcast:
+SELECT S.id, S.title AS sectionTitle, P.id AS podcastId, P.title AS podcastTitle, P.thumbnail FROM CuratedSectionEntity AS S JOIN CuratedPodcastEntity AS P ON P.sectionId = S.id;

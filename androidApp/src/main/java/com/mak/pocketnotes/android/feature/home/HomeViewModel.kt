@@ -1,23 +1,26 @@
 package com.mak.pocketnotes.android.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
+import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     val refreshPodcasts: RefreshBestPodcasts,
+    val refreshCuratedPodcasts: RefreshCuratedPodcasts,
     val getBestPodcasts: GetBestPodcasts,
-    val curatedPodcast: RefreshCuratedPodcasts
+    val getCuratedPodcasts: GetCuratedPodcasts
 ): ViewModel() {
 
     private var _uiState = MutableStateFlow(HomeScreenState())
@@ -26,67 +29,72 @@ class HomeViewModel(
     private var currentPage = 1
 
     init {
-        loadPodcasts()
+//        loadPodcasts()
         refreshDiscover()
         observerPodcasts()
     }
 
     private fun observerPodcasts() {
-        getBestPodcasts()
-            .onEach { results ->
-                val (topPodcasts, podcasts) = results.take(4) to results.drop(4)
-                _uiState.update { current ->
-                    current.copy(
-                        loading = false,
-                        refreshing = false,
-                        loadFinished = podcasts.isEmpty(),
-                        topPodcasts = topPodcasts,
-                        podcasts = podcasts,
-                    )
-                }
+        combine(getBestPodcasts(), getCuratedPodcasts()) { bestPodcasts, curatedPodcasts ->
+            val (topPodcasts, podcasts) = bestPodcasts.take(4) to bestPodcasts.drop(4)
+            _uiState.update { current ->
+                current.copy(
+                    loading = false,
+                    refreshing = false,
+                    loadFinished = podcasts.isEmpty(),
+                    topPodcasts = topPodcasts,
+                    podcasts = podcasts,
+                    curatedPodcasts = curatedPodcasts
+                )
             }
-            .launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     private fun refreshDiscover() {
         viewModelScope.launch {
-            refreshPodcasts(1)
-//        curatedPodcast(1)
+            try {
+//                TODO handle all exceptions
+                refreshPodcasts(1)
+                refreshCuratedPodcasts(1)
+            } catch (t: Throwable) {
+                Log.e("HomeViewModel", "refreshDiscover: ", t)
+            }
         }
     }
 
     fun loadPodcasts(forceReload: Boolean = false) {
-        val state = uiState.value
-        if (state.loading) return
-        if (forceReload) currentPage = 1
-        viewModelScope.launch {
-            if (currentPage == 1) _uiState.update { current ->
-                current.copy(refreshing = true)
-            }
-            _uiState.update { current ->
-                current.copy(loading = true)
-            }
-            try {
-                val curatedPodcasts = curatedPodcast(1)
-                currentPage += 1
-                _uiState.update { current ->
-                    current.copy(
-                        loading = false,
-                        refreshing = false,
-                        curatedPodcasts = curatedPodcasts
-                    )
-                }
-            } catch (error: Throwable) {
-                _uiState.update { current ->
-                    current.copy(
-                        loading = false,
-                        refreshing = false,
-                        loadFinished = true,
-                        errorMsg = error.localizedMessage
-                    )
-                }
-            }
-        }
+        refreshDiscover()
+//        val state = uiState.value
+//        if (state.loading) return
+//        if (forceReload) currentPage = 1
+//        viewModelScope.launch {
+//            if (currentPage == 1) _uiState.update { current ->
+//                current.copy(refreshing = true)
+//            }
+//            _uiState.update { current ->
+//                current.copy(loading = true)
+//            }
+//            try {
+//                val curatedPodcasts = refreshCuratedPodcasts(1)
+//                currentPage += 1
+//                _uiState.update { current ->
+//                    current.copy(
+//                        loading = false,
+//                        refreshing = false,
+//                        curatedPodcasts = curatedPodcasts
+//                    )
+//                }
+//            } catch (error: Throwable) {
+//                _uiState.update { current ->
+//                    current.copy(
+//                        loading = false,
+//                        refreshing = false,
+//                        loadFinished = true,
+//                        errorMsg = error.localizedMessage
+//                    )
+//                }
+//            }
+//        }
     }
 
 }
