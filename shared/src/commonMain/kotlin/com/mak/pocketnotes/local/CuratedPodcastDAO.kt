@@ -12,22 +12,23 @@ internal class CuratedPodcastDAO(
     private val dispatcher: Dispatcher
 ): ICuratedPodcastDAO {
     private val database = PocketDatabase(databaseDriverFactory.createDriver())
-    private val dbQuery = database.pocketDatabaseQueries
+    private val curatedSectionDao = database.curated_section_entityQueries
+    private val curatedPodcastDao = database.curated_podcast_entityQueries
 
     override suspend fun insertCuratedPodcasts(
         sections: List<CuratedSectionEntity>,
         podcasts: List<CuratedPodcastEntity>
     ) = withContext(dispatcher.io) {
         sections.forEach { section ->
-            dbQuery.insertCuratedSection(section)
+            curatedSectionDao.insertCuratedSection(section)
         }
         podcasts.forEach { podcast ->
-            dbQuery.insertCuratedPodcast(podcast)
+            curatedPodcastDao.insertCuratedPodcast(podcast)
         }
     }
 
     override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> {
-        return dbQuery.curatedSectionWithPodcast().asFlow()
+        return curatedSectionDao.curatedSectionWithPodcast().asFlow()
             .mapToList(dispatcher.io)
     }
 

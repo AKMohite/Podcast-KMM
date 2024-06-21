@@ -1,0 +1,11 @@
+CREATE TABLE CuratedPodcastEntity (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    image TEXT,
+    thumbnail TEXT,
+    sectionId TEXT NOT NULL,
+    FOREIGN KEY(sectionId) REFERENCES CuratedSectionEntity(id) ON DELETE CASCADE
+);
+
+insertCuratedPodcast:
+INSERT OR REPLACE INTO CuratedPodcastEntity (id, title, image, thumbnail, sectionId) VALUES ?;

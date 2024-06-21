@@ -1,0 +1,19 @@
+CREATE TABLE PodcastEntity (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image TEXT,
+    thumbnail TEXT
+);
+
+insertPodcastInfo:
+INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
+
+insertPodcast:
+INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES ?;
+
+getBestPodcasts:
+SELECT * FROM PodcastEntity;
+
+removeAllPodcasts:
+DELETE FROM PodcastEntity;

@@ -1,0 +1,10 @@
+CREATE TABLE CuratedSectionEntity (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL
+);
+
+insertCuratedSection:
+INSERT OR REPLACE INTO CuratedSectionEntity (id, title) VALUES ?;
+
+curatedSectionWithPodcast:
+SELECT S.id, S.title AS sectionTitle, P.id AS podcastId, P.title AS podcastTitle, P.thumbnail FROM CuratedSectionEntity AS S JOIN CuratedPodcastEntity AS P ON P.sectionId = S.id;
