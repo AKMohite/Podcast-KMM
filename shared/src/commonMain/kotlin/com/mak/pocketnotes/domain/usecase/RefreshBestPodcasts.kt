@@ -5,6 +5,7 @@ import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.local.IPodcastDAO
 import com.mak.pocketnotes.local.ITrendingPodcastDAO
+import com.mak.pocketnotes.local.TrendingPodcastEntity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -24,10 +25,17 @@ class RefreshBestPodcasts: KoinComponent {
             queryMap["genre_id"] = id.toString()
         }
         val bestPodcastAPI = api.getBestPodcasts(queryMap)
-        val entities = mapper.podcast.jsonToEntities(bestPodcastAPI.podcasts ?: emptyList())
-        podcastDAO.insertPodcasts(entities)
-        trendingPodcastDAO.upsertPage(page, entities)
+        val podcasts = mapper.podcast.jsonToEntities(bestPodcastAPI.podcasts ?: emptyList())
+        val trendingPodcasts = podcasts.map {
+            TrendingPodcastEntity(
+                id = 0L,
+                podcast_id = it.id,
+                page = page
+            )
+        }
+        podcastDAO.insertPodcasts(podcasts)
+        trendingPodcastDAO.upsertPage(trendingPodcasts)
 //        TODO: this is for iOS we can remove it after local db for iOS is implemented
-        return mapper.podcast.entityToModels(entities)
+        return mapper.podcast.entityToModels(podcasts)
     }
 }

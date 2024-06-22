@@ -28,6 +28,7 @@ kotlin {
                 //Use api so that the android app can use it as well
                 implementation(libs.koin.core)
                 implementation(libs.sqldelight.extensions)
+                implementation(libs.sqldelight.primitive)
             }
         }
         val commonTest by getting {

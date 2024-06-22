@@ -9,4 +9,4 @@ getTrendingPodcasts:
 SELECT podcasts.* FROM trending_podcasts INNER JOIN podcasts ON podcasts.id = trending_podcasts.podcast_id ORDER BY page ASC;
 
 insertPodcast:
-INSERT OR IGNORE INTO trending_podcasts (id, podcast_id, page) VALUES ?;
+INSERT OR IGNORE INTO trending_podcasts (id, podcast_id, page) VALUES (nullif(:id, 0), :podcast_id, :page);

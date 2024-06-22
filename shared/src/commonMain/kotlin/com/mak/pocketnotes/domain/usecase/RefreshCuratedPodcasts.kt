@@ -8,18 +8,34 @@ import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.local.CuratedPodcastEntity
 import com.mak.pocketnotes.local.CuratedSectionEntity
 import com.mak.pocketnotes.local.ICuratedPodcastDAO
+import com.mak.pocketnotes.local.IPodcastDAO
+import com.mak.pocketnotes.local.PodcastEntity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class RefreshCuratedPodcasts: KoinComponent {
     private val api: IPocketNotesAPI by inject()
-    private val dao: ICuratedPodcastDAO by inject()
+    private val curatedPodcastDAO: ICuratedPodcastDAO by inject()
+    private val podcastDAO: IPodcastDAO by inject()
 
     @Throws(Exception::class)
     suspend operator fun invoke(page: Int): List<CuratedPodcast> {
         val dto = api.getCuratedPodcasts(page).curatedLists ?: return emptyList()
         val (sectionEntities, podcastEntities) = dto.toSectionEntities()
-        dao.insertCuratedPodcasts(sectionEntities, podcastEntities)
+        curatedPodcastDAO.insertCuratedPodcasts(sectionEntities, podcastEntities)
+        val podcasts = dto.mapNotNull {
+            it.podcasts
+        }.flatten()
+        .map {
+            PodcastEntity(
+                id = it.id!!,
+                title = it.title ?: "",
+                thumbnail = it.thumbnail ?: "",
+                image = it.image ?: "",
+                description = ""
+            )
+        }
+        podcastDAO.insertPodcasts(podcasts)
         return dto.toCuratedPodcasts()
     }
 }
@@ -35,10 +51,7 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
         section.podcasts?.map { podcast ->
             CuratedPodcastEntity(
                 id = podcast.id!!,
-                title = podcast.title ?: "",
-                thumbnail = podcast.thumbnail ?: "",
-                image = podcast.image ?: "",
-                sectionId = section.id!!
+                section_id = section.id!!
             )
         }
     }.flatten()

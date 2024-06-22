@@ -7,5 +7,5 @@ insertCuratedSection:
 INSERT OR REPLACE INTO curated_sections (id, title) VALUES ?;
 
 curatedSectionWithPodcast:
-SELECT * FROM curated_sections AS cs JOIN curated_podcasts AS cp ON cp.section_id = cs.id;
+SELECT cs.id, cs.title AS sectionTitle, cp.id AS podcastId, p.title AS podcastTitle, p.thumbnail, p.image FROM curated_sections AS cs INNER JOIN curated_podcasts AS cp ON cp.section_id = cs.id INNER JOIN podcasts AS p ON cp.id = p.id;
 -- SELECT S.id, S.title AS sectionTitle, P.id AS podcastId, P.title AS podcastTitle, P.thumbnail FROM curated_sections AS S JOIN curated_podcasts AS P ON P.sectionId = S.id;

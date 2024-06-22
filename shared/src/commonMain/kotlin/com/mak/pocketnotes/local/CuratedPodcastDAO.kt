@@ -11,10 +11,9 @@ internal typealias CuratedSectionEntity = Curated_sections
 internal typealias CuratedPodcastEntity = Curated_podcasts
 
 internal class CuratedPodcastDAO(
-    databaseDriverFactory: DatabaseDriverFactory,
+    database: PocketDatabase,
     private val dispatcher: Dispatcher
 ): ICuratedPodcastDAO {
-    private val database = PocketDatabase(databaseDriverFactory.createDriver())
     private val curatedSectionDao = database.curated_section_entityQueries
     private val curatedPodcastDao = database.curated_podcast_entityQueries
 

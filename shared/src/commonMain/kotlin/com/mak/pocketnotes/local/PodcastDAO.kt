@@ -7,10 +7,9 @@ import kotlinx.coroutines.withContext
 internal typealias PodcastEntity = Podcasts
 
 internal class PodcastDAO(
-    databaseDriverFactory: DatabaseDriverFactory,
+    database: PocketDatabase,
     private val dispatcher: Dispatcher
 ): IPodcastDAO {
-    private val database = PocketDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.podcast_entityQueries
 
     override suspend fun insertPodcast(podcast: Podcasts) = withContext(dispatcher.io) {

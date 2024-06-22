@@ -10,20 +10,20 @@ import kotlinx.coroutines.withContext
 internal typealias TrendingPodcastEntity = Trending_podcasts
 
 internal class TrendingPodcastDAO(
-    databaseDriverFactory: DatabaseDriverFactory,
+    database: PocketDatabase,
     private val dispatcher: Dispatcher
 ): ITrendingPodcastDAO {
-    private val database = PocketDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.trending_podcastQueries
 
     override fun getBestPodcasts(): Flow<List<PodcastEntity>> = dbQuery.getTrendingPodcasts()
         .asFlow()
         .mapToList(dispatcher.io)
 
-    override suspend fun upsertPage(page: Int, entities: List<TrendingPodcastEntity>) = withContext(dispatcher.io) {
+    override suspend fun upsertPage(entities: List<TrendingPodcastEntity>) = withContext(dispatcher.io) {
         dbQuery.transaction {
+//            TODO delete page and then insert
             entities.forEach { entity ->
-                dbQuery.insertPodcast(entity)
+                dbQuery.insertPodcast(entity.id, entity.podcast_id, entity.page)
             }
         }
     }
@@ -31,5 +31,5 @@ internal class TrendingPodcastDAO(
 
 internal interface ITrendingPodcastDAO {
     fun getBestPodcasts(): Flow<List<PodcastEntity>>
-    suspend fun upsertPage(page: Int, entities: List<TrendingPodcastEntity>)
+    suspend fun upsertPage(entities: List<TrendingPodcastEntity>)
 }
