@@ -1,4 +1,4 @@
-CREATE TABLE PodcastEntity (
+CREATE TABLE IF NOT EXISTS `podcasts` (
     id TEXT PRIMARY KEY NOT NULL,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
@@ -7,13 +7,10 @@ CREATE TABLE PodcastEntity (
 );
 
 insertPodcastInfo:
-INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
+INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
 
 insertPodcast:
-INSERT OR REPLACE INTO PodcastEntity (id , title, description, image, thumbnail) VALUES ?;
-
-getBestPodcasts:
-SELECT * FROM PodcastEntity;
+INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail) VALUES ?;
 
 removeAllPodcasts:
-DELETE FROM PodcastEntity;
+DELETE FROM podcasts;

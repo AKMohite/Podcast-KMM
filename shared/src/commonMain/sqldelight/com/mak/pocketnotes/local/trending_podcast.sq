@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS `trending_podcasts` (
+    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    `podcast_id` TEXT NOT NULL,
+    `page` INTEGER AS kotlin.Int NOT NULL,
+    FOREIGN KEY(`podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+getTrendingPodcasts:
+SELECT podcasts.* FROM trending_podcasts INNER JOIN podcasts ON podcasts.id = trending_podcasts.podcast_id ORDER BY page ASC;
+
+insertPodcast:
+INSERT OR IGNORE INTO trending_podcasts (id, podcast_id, page) VALUES ?;

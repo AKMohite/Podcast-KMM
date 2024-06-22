@@ -7,6 +7,9 @@ import com.mak.pocketnotes.data.util.Dispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
+internal typealias CuratedSectionEntity = Curated_sections
+internal typealias CuratedPodcastEntity = Curated_podcasts
+
 internal class CuratedPodcastDAO(
     databaseDriverFactory: DatabaseDriverFactory,
     private val dispatcher: Dispatcher
