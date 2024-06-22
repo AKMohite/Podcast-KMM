@@ -22,6 +22,7 @@ ktor = "2.1.2"
 navigation = "2.5.3"
 serialization = "1.9.10"
 sqldelight= "2.0.0-alpha05"
+store5 = "5.1.0-alpha02"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -51,6 +52,7 @@ ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-jso
 ios-sql-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-primitive = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
+store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 
 [bundles]
 compose = [ "androidx-navigation", "compose-coil", "compose-activity", "compose-foundation", "compose-material", "compose-ui", "compose-ui-preview", "compose-ui-tooling" ]
