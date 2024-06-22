@@ -10,3 +10,6 @@ SELECT podcasts.* FROM trending_podcasts INNER JOIN podcasts ON podcasts.id = tr
 
 insertPodcast:
 INSERT OR IGNORE INTO trending_podcasts (id, podcast_id, page) VALUES (nullif(:id, 0), :podcast_id, :page);
+
+deletePage:
+DELETE FROM trending_podcasts WHERE page=:page;

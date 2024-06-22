@@ -21,6 +21,7 @@ internal class CuratedPodcastDAO(
         sections: List<CuratedSectionEntity>,
         podcasts: List<CuratedPodcastEntity>
     ) = withContext(dispatcher.io) {
+        curatedSectionDao.deletePage(sections.first().page)
         sections.forEach { section ->
             curatedSectionDao.insertCuratedSection(section)
         }

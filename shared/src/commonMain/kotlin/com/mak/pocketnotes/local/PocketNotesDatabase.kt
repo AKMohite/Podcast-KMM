@@ -10,7 +10,8 @@ internal class PocketNotesDatabase(
     fun build(): PocketDatabase {
         return PocketDatabase(
             driver = driver,
-            trending_podcastsAdapter = Trending_podcasts.Adapter(IntColumnAdapter)
+            trending_podcastsAdapter = Trending_podcasts.Adapter(IntColumnAdapter),
+            curated_sectionsAdapter = Curated_sections.Adapter(IntColumnAdapter)
         )
     }
 }

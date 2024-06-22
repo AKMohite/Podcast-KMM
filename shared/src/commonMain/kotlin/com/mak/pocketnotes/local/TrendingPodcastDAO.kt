@@ -21,7 +21,7 @@ internal class TrendingPodcastDAO(
 
     override suspend fun upsertPage(entities: List<TrendingPodcastEntity>) = withContext(dispatcher.io) {
         dbQuery.transaction {
-//            TODO delete page and then insert
+            dbQuery.deletePage(entities.first().page)
             entities.forEach { entity ->
                 dbQuery.insertPodcast(entity.id, entity.podcast_id, entity.page)
             }
