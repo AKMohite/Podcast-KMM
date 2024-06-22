@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS `podcasts` (
+    id TEXT PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image TEXT,
+    thumbnail TEXT
+);
+
+insertPodcastInfo:
+INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
+
+insertPodcast:
+INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail) VALUES ?;
+
+removeAllPodcasts:
+DELETE FROM podcasts;

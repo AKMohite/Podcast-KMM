@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS curated_podcasts (
+    `id` TEXT PRIMARY KEY NOT NULL,
+    `section_id` TEXT NOT NULL,
+    FOREIGN KEY(`section_id`) REFERENCES `curated_sections`(`id`) ON DELETE CASCADE
+);
+
+insertCuratedPodcast:
+INSERT OR REPLACE INTO curated_podcasts (id, section_id) VALUES ?;

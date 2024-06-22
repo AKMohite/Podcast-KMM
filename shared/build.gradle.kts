@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("app.cash.sqldelight") version libs.versions.sqldelight
     kotlin("plugin.serialization") version libs.versions.serialization.get()
 }
 
@@ -26,6 +27,8 @@ kotlin {
                 implementation(libs.ktor.serialization)
                 //Use api so that the android app can use it as well
                 implementation(libs.koin.core)
+                implementation(libs.sqldelight.extensions)
+                implementation(libs.sqldelight.primitive)
             }
         }
         val commonTest by getting {
@@ -44,6 +47,7 @@ kotlin {
 //                TODO can be removed?
                 implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
+                implementation(libs.android.sql.driver)
             }
         }
 //        val androidUnitTest by getting
@@ -55,6 +59,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(libs.ktor.client.ios)
+                implementation(libs.ios.sql.driver)
             }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
@@ -82,5 +87,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+sqldelight {
+    databases {
+        create("PocketDatabase") {
+            packageName.set("com.mak.pocketnotes")
+        }
     }
 }

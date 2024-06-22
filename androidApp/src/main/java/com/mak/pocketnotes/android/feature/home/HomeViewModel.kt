@@ -1,43 +1,44 @@
 package com.mak.pocketnotes.android.feature.home
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
 import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
+import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
+import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val getPodcast: GetBestPodcasts,
-    val curatedPodcast: GetCuratedPodcasts
+    val refreshPodcasts: RefreshBestPodcasts,
+    val refreshCuratedPodcasts: RefreshCuratedPodcasts,
+    val getBestPodcasts: GetBestPodcasts,
+    val getCuratedPodcasts: GetCuratedPodcasts
 ): ViewModel() {
 
-    private var _uiState by mutableStateOf(HomeScreenState())
-    internal val uiState: HomeScreenState
+    private var _uiState = MutableStateFlow(HomeScreenState())
+    internal val uiState: StateFlow<HomeScreenState>
         get() = _uiState
     private var currentPage = 1
 
     init {
-        loadPodcasts()
+//        loadPodcasts()
+        refreshDiscover()
+        observerPodcasts()
     }
 
-    fun loadPodcasts(forceReload: Boolean = false) {
-        if (uiState.loading) return
-        if (forceReload) currentPage = 1
-        if (currentPage == 1) _uiState = uiState.copy(refreshing = true)
-        viewModelScope.launch {
-            _uiState = uiState.copy(loading = true)
-            try {
-                val resultPodcasts = getPodcast(currentPage)
-                val curatedPodcasts = curatedPodcast(1)
-                val topPodcasts = if (currentPage == 1) resultPodcasts.take(4) else uiState.topPodcasts
-                val podcasts = if (currentPage == 1) resultPodcasts.drop(4) else uiState.podcasts + resultPodcasts
-                currentPage += 1
-                _uiState = uiState.copy(
+    private fun observerPodcasts() {
+        combine(getBestPodcasts(), getCuratedPodcasts()) { bestPodcasts, curatedPodcasts ->
+            val (topPodcasts, podcasts) = bestPodcasts.take(4) to bestPodcasts.drop(4)
+            _uiState.update { current ->
+                current.copy(
                     loading = false,
                     refreshing = false,
                     loadFinished = podcasts.isEmpty(),
@@ -45,15 +46,55 @@ class HomeViewModel(
                     podcasts = podcasts,
                     curatedPodcasts = curatedPodcasts
                 )
-            } catch (error: Throwable) {
-                _uiState = uiState.copy(
-                    loading = false,
-                    refreshing = false,
-                    loadFinished = true,
-                    errorMsg = error.localizedMessage
-                )
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun refreshDiscover() {
+        viewModelScope.launch {
+            try {
+//                TODO handle all exceptions
+                refreshPodcasts(1)
+                refreshCuratedPodcasts(1)
+            } catch (t: Throwable) {
+                Log.e("HomeViewModel", "refreshDiscover: ", t)
             }
         }
+    }
+
+    fun loadPodcasts(forceReload: Boolean = false) {
+        refreshDiscover()
+//        val state = uiState.value
+//        if (state.loading) return
+//        if (forceReload) currentPage = 1
+//        viewModelScope.launch {
+//            if (currentPage == 1) _uiState.update { current ->
+//                current.copy(refreshing = true)
+//            }
+//            _uiState.update { current ->
+//                current.copy(loading = true)
+//            }
+//            try {
+//                val curatedPodcasts = refreshCuratedPodcasts(1)
+//                currentPage += 1
+//                _uiState.update { current ->
+//                    current.copy(
+//                        loading = false,
+//                        refreshing = false,
+//                        curatedPodcasts = curatedPodcasts
+//                    )
+//                }
+//            } catch (error: Throwable) {
+//                _uiState.update { current ->
+//                    current.copy(
+//                        loading = false,
+//                        refreshing = false,
+//                        loadFinished = true,
+//                        errorMsg = error.localizedMessage
+//                    )
+//                }
+//            }
+//        }
     }
 
 }
