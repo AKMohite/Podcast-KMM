@@ -3,6 +3,8 @@ package com.mak.pocketnotes.local
 import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
 import com.mak.pocketnotes.PocketDatabase
+import com.mak.pocketnotes.local.database.columnadapters.InstantStringColumnAdapter
+import com.mak.pocketnotes.local.database.columnadapters.SyncRequestColumnAdapter
 
 internal class PocketNotesDatabase(
     private val driver: SqlDriver
@@ -16,6 +18,10 @@ internal class PocketNotesDatabase(
                 idAdapter = IntColumnAdapter,
                 parent_idAdapter = IntColumnAdapter
             ),
+            last_syncsAdapter = Last_syncs.Adapter(
+                request_typeAdapter = SyncRequestColumnAdapter,
+                timestampAdapter = InstantStringColumnAdapter
+            )
         )
     }
 }
