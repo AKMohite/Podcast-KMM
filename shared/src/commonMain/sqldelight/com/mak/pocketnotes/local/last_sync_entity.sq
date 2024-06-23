@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS last_syncs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    request_type TEXT AS com.mak.pocketnotes.domain.models.SyncRequest NOT NULL,
+    entity_id INTEGER NOT NULL,
+    timestamp INTEGER AS kotlinx.datetime.Instant NOT NULL
+);
+
+insert:
+INSERT OR REPLACE INTO last_syncs (id, request_type, entity_id, timestamp) VALUES ?;
+
+update:
+UPDATE last_syncs SET entity_id=:entityId, request_type=:requestType, timestamp=:timestamp;
+
+getLastSyncFor:
+SELECT * FROM last_syncs WHERE request_type=:requestType AND entity_id=:entityId;
