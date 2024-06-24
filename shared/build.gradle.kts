@@ -29,6 +29,8 @@ kotlin {
                 implementation(libs.koin.core)
                 implementation(libs.sqldelight.extensions)
                 implementation(libs.sqldelight.primitive)
+                implementation(libs.store5)
+                implementation(libs.kotlinx.datetime)
             }
         }
         val commonTest by getting {

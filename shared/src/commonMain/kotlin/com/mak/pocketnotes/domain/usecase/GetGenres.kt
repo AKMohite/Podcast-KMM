@@ -3,24 +3,90 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.GenreDTO
 import com.mak.pocketnotes.domain.models.Genre
+import com.mak.pocketnotes.domain.models.SyncRequest
+import com.mak.pocketnotes.local.GenreEntity
+import com.mak.pocketnotes.local.IGenresDAO
+import com.mak.pocketnotes.local.ILastSyncDAO
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.mobilenativefoundation.store.store5.Fetcher
+import org.mobilenativefoundation.store.store5.SourceOfTruth
+import org.mobilenativefoundation.store.store5.StoreBuilder
+import org.mobilenativefoundation.store.store5.StoreReadRequest
+import org.mobilenativefoundation.store.store5.StoreReadResponse
+import org.mobilenativefoundation.store.store5.Validator
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 class GetGenres: KoinComponent {
     private val api: IPocketNotesAPI by inject()
+    private val genresDAO: IGenresDAO by inject()
+    private val lastSyncDAO: ILastSyncDAO by inject()
 
-    suspend operator fun invoke(): List<Genre> {
-        val genreDTOS = api.getAllGenres().genres ?: return emptyList()
-        return genreDTOS.asGenres()
+    operator fun invoke(): Flow<List<Genre>> = StoreBuilder
+        .from<Unit, List<GenreDTO>, List<Genre>>(
+            fetcher = Fetcher.of<Unit, List<GenreDTO>> {
+                api.getAllGenres().genres ?: emptyList()
+            },
+            sourceOfTruth = SourceOfTruth.of<Unit, List<GenreDTO>, List<Genre>>(
+                reader = {
+                    genresDAO.getGenres()
+                        .mapNotNull {
+                            it.asGenres()
+                        }
+                 },
+                writer = { _, dto ->
+                    lastSyncDAO.insertLastSync(SyncRequest.GENRES)
+                    genresDAO.insertGenres(dto.asGenreEntities())
+                },
+//                delete = { dao.removeGenres() },
+                deleteAll = genresDAO::removeGenres
+            )
+        ).validator(
+            Validator.by {
+                    lastSyncDAO.isRequestValid(
+                        requestType = SyncRequest.GENRES,
+                        threshold = if (it.isNotEmpty()) 24.hours else 30.minutes,
+                    )
+            }
+        )
+        .build()
+        .stream(StoreReadRequest.cached(Unit, false))
+        .map { response ->
+            when (response) {
+                is StoreReadResponse.Data -> {
+                    response.value
+                }
+//                    is StoreReadResponse.Error -> {
+//                        response.errorMessageOrNull()
+//                    }
+//                    StoreReadResponse.Initial -> TODO()
+//                    is StoreReadResponse.Loading -> TODO()
+//                    is StoreReadResponse.NoNewData -> TODO()
+                else -> { emptyList() }
+            }
+        }
+}
+
+private fun List<GenreDTO>.asGenreEntities(): List<GenreEntity> {
+    return map { dto ->
+        GenreEntity(
+            id = dto.id!!,
+            title = dto.name ?: "",
+            parent_id = dto.parentId ?: 0
+        )
     }
 }
 
-private fun List<GenreDTO>.asGenres(): List<Genre> {
-    return map { dto ->
+private fun List<GenreEntity>.asGenres(): List<Genre> {
+    return map { entity ->
         Genre(
-            id = dto.id ?: 0,
-            name = dto.name ?: "",
-            parentId = dto.parentId ?: 0
+            id = entity.id,
+            name = entity.title,
+            parentId = entity.parent_id ?: 0
         )
     }
 }

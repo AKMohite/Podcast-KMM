@@ -16,9 +16,13 @@ import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import com.mak.pocketnotes.local.CuratedPodcastDAO
+import com.mak.pocketnotes.local.GenresDAO
 import com.mak.pocketnotes.local.ICuratedPodcastDAO
+import com.mak.pocketnotes.local.IGenresDAO
+import com.mak.pocketnotes.local.ILastSyncDAO
 import com.mak.pocketnotes.local.IPodcastDAO
 import com.mak.pocketnotes.local.ITrendingPodcastDAO
+import com.mak.pocketnotes.local.LastSyncDAO
 import com.mak.pocketnotes.local.PocketNotesDatabase
 import com.mak.pocketnotes.local.PodcastDAO
 import com.mak.pocketnotes.local.TrendingPodcastDAO
@@ -33,6 +37,8 @@ private fun networkModule(enableNetworkingLogs: Boolean = false) = module {
 
 private val localModule = module {
     single<PocketDatabase> { PocketNotesDatabase(get<SqlDriver>()).build() }
+    single<ILastSyncDAO> { LastSyncDAO(get(), get()) }
+    single<IGenresDAO> { GenresDAO(get(), get()) }
     single<IPodcastDAO> { PodcastDAO(get(), get()) }
     single<ICuratedPodcastDAO> { CuratedPodcastDAO(get(), get()) }
     single<ITrendingPodcastDAO> { TrendingPodcastDAO(get(), get()) }

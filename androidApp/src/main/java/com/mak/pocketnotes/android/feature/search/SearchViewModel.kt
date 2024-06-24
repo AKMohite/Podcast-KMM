@@ -12,6 +12,8 @@ import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -29,14 +31,10 @@ internal class SearchViewModel(
     }
 
     private fun getAllGenres() {
-        viewModelScope.launch {
-            try {
-                val genres = getGenres()
+        getGenres()
+            .map { genres ->
                 _state.update { it.copy(genres = genres) }
-            } catch (t: Throwable) {
-                _state.update { it.copy(error = t.message) }
-            }
-        }
+            }.launchIn(viewModelScope)
     }
 
     override fun onSearchTextChange(value: String) {
