@@ -2,6 +2,7 @@ package com.mak.pocketnotes.domain.usecase
 
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.GenreDTO
+import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.SyncRequest
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
@@ -9,8 +10,10 @@ import com.mak.pocketnotes.local.database.dao.GenreEntity
 import com.mak.pocketnotes.local.database.dao.IGenresDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.mobilenativefoundation.store.store5.Fetcher
@@ -23,6 +26,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 class GetGenres: KoinComponent {
+    private val dispatcher: Dispatcher by inject()
     private val api: IPocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val genresDAO: IGenresDAO by inject()
@@ -36,25 +40,34 @@ class GetGenres: KoinComponent {
             sourceOfTruth = SourceOfTruth.of<Unit, List<GenreDTO>, List<Genre>>(
                 reader = {
                     genresDAO.getGenres()
+                        .flowOn(dispatcher.io)
                         .mapNotNull {
                             it.asGenres()
-                        }
+                        }.flowOn(dispatcher.computation)
                  },
                 writer = { _, dto ->
-                    transactionRunner {
-                        lastSyncDAO.insertLastSync(SyncRequest.GENRES)
-                        genresDAO.insertGenres(dto.asGenreEntities())
+                    withContext(dispatcher.io) {
+                        transactionRunner {
+                            lastSyncDAO.insertLastSync(SyncRequest.GENRES)
+                            genresDAO.insertGenres(dto.asGenreEntities())
+                        }
                     }
                 },
 //                delete = { dao.removeGenres() },
-                deleteAll = { transactionRunner(genresDAO::removeGenres) }
+                deleteAll = {
+                    withContext(dispatcher.io) {
+                        transactionRunner(genresDAO::removeGenres)
+                    }
+                }
             )
         ).validator(
             Validator.by {
-                    lastSyncDAO.isRequestValid(
-                        requestType = SyncRequest.GENRES,
-                        threshold = if (it.isNotEmpty()) 24.hours else 30.minutes,
-                    )
+                    withContext(dispatcher.io) {
+                        lastSyncDAO.isRequestValid(
+                            requestType = SyncRequest.GENRES,
+                            threshold = if (it.isNotEmpty()) 24.hours else 30.minutes,
+                        )
+                    }
             }
         )
         .build()
