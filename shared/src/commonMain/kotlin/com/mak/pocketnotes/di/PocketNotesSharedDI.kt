@@ -15,6 +15,9 @@ import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
+import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
+import com.mak.pocketnotes.local.database.PocketNotesDatabase
+import com.mak.pocketnotes.local.database.SQLDatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.CuratedPodcastDAO
 import com.mak.pocketnotes.local.database.dao.GenresDAO
 import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
@@ -23,7 +26,6 @@ import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
 import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
 import com.mak.pocketnotes.local.database.dao.LastSyncDAO
-import com.mak.pocketnotes.local.database.PocketNotesDatabase
 import com.mak.pocketnotes.local.database.dao.PodcastDAO
 import com.mak.pocketnotes.local.database.dao.TrendingPodcastDAO
 import kotlinx.serialization.json.Json
@@ -36,6 +38,7 @@ private fun networkModule(enableNetworkingLogs: Boolean = false) = module {
 }
 
 private val localModule = module {
+    single<DatabaseTransactionRunner> { SQLDatabaseTransactionRunner(get()) }
     single<PocketDatabase> { PocketNotesDatabase(get<SqlDriver>()).build() }
     single<ILastSyncDAO> { LastSyncDAO(get(), get()) }
     single<IGenresDAO> { GenresDAO(get(), get()) }
