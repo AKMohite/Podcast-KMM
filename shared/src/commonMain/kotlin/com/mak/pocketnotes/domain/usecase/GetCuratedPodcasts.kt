@@ -1,10 +1,12 @@
 package com.mak.pocketnotes.domain.usecase
 
+import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.local.CuratedSectionWithPodcast
 import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -12,9 +14,11 @@ import org.koin.core.component.inject
 class GetCuratedPodcasts: KoinComponent {
 
     private val dao: ICuratedPodcastDAO by inject()
+    private val dispatcher: Dispatcher by inject()
 
     operator fun invoke(): Flow<List<CuratedPodcast>> {
         return dao.getCuratedPodcasts()
+            .flowOn(dispatcher.io)
             .map { sectionedPodcast ->
                 sectionedPodcast.groupBy { it.id }
                     .map { (sectionId, podcasts) ->
@@ -25,7 +29,7 @@ class GetCuratedPodcasts: KoinComponent {
                             podcasts = mapPodcasts(podcasts)
                         )
                     }
-        }
+            }.flowOn(dispatcher.computation)
     }
 
     private fun mapPodcasts(podcasts: List<CuratedSectionWithPodcast>): List<SectionPodcast> {

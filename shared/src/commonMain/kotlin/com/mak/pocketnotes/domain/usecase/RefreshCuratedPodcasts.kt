@@ -3,6 +3,7 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.CuratedPodcastDTO
 import com.mak.pocketnotes.data.remote.dto.SectionPodcastDTO
+import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
@@ -11,10 +12,12 @@ import com.mak.pocketnotes.local.database.dao.CuratedSectionEntity
 import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
 import com.mak.pocketnotes.local.database.dao.PodcastEntity
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class RefreshCuratedPodcasts: KoinComponent {
+    private val dispatcher: Dispatcher by inject()
     private val api: IPocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val curatedPodcastDAO: ICuratedPodcastDAO by inject()
@@ -36,12 +39,21 @@ class RefreshCuratedPodcasts: KoinComponent {
                 description = ""
             )
         }
+        updateLocal(page, sectionEntities, podcastEntities, podcasts)
+        return dto.toCuratedPodcasts()
+    }
+
+    private suspend fun updateLocal(
+        page: Int,
+        sectionEntities: List<CuratedSectionEntity>,
+        podcastEntities: List<CuratedPodcastEntity>,
+        podcasts: List<PodcastEntity>
+    ) = withContext(dispatcher.io) {
         transactionRunner {
             curatedPodcastDAO.deletePage(page)
             curatedPodcastDAO.insertCuratedPodcasts(sectionEntities, podcastEntities)
             podcastDAO.insertPodcasts(podcasts)
         }
-        return dto.toCuratedPodcasts()
     }
 }
 
