@@ -6,6 +6,7 @@ import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.local.CuratedSectionWithPodcast
 import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
@@ -18,6 +19,7 @@ class GetCuratedPodcasts: KoinComponent {
 
     operator fun invoke(): Flow<List<CuratedPodcast>> {
         return dao.getCuratedPodcasts()
+            .distinctUntilChanged()
             .flowOn(dispatcher.io)
             .map { sectionedPodcast ->
                 sectionedPodcast.groupBy { it.id }

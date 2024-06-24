@@ -10,6 +10,7 @@ import com.mak.pocketnotes.local.database.dao.GenreEntity
 import com.mak.pocketnotes.local.database.dao.IGenresDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -40,6 +41,7 @@ class GetGenres: KoinComponent {
             sourceOfTruth = SourceOfTruth.of<Unit, List<GenreDTO>, List<Genre>>(
                 reader = {
                     genresDAO.getGenres()
+                        .distinctUntilChanged()
                         .flowOn(dispatcher.io)
                         .mapNotNull {
                             it.asGenres()
