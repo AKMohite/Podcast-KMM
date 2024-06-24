@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.domain.models
 
-internal enum class SyncRequest {
+enum class SyncRequest {
+    GENRES,
     BEST_PODCASTS,
     CURATED_PODCASTS,
     PODCAST_DETAILS,

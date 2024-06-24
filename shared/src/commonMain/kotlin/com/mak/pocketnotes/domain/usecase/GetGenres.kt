@@ -3,8 +3,10 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.GenreDTO
 import com.mak.pocketnotes.domain.models.Genre
+import com.mak.pocketnotes.domain.models.SyncRequest
 import com.mak.pocketnotes.local.GenreEntity
 import com.mak.pocketnotes.local.IGenresDAO
+import com.mak.pocketnotes.local.ILastSyncDAO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -16,10 +18,13 @@ import org.mobilenativefoundation.store.store5.StoreBuilder
 import org.mobilenativefoundation.store.store5.StoreReadRequest
 import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.Validator
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 class GetGenres: KoinComponent {
     private val api: IPocketNotesAPI by inject()
-    private val dao: IGenresDAO by inject()
+    private val genresDAO: IGenresDAO by inject()
+    private val lastSyncDAO: ILastSyncDAO by inject()
 
     operator fun invoke(): Flow<List<Genre>> = StoreBuilder
         .from<Unit, List<GenreDTO>, List<Genre>>(
@@ -28,20 +33,24 @@ class GetGenres: KoinComponent {
             },
             sourceOfTruth = SourceOfTruth.of<Unit, List<GenreDTO>, List<Genre>>(
                 reader = {
-                    dao.getGenres()
+                    genresDAO.getGenres()
                         .mapNotNull {
                             it.asGenres()
                         }
                  },
                 writer = { _, dto ->
-                    dao.insertGenres(dto.asGenreEntities())
+                    lastSyncDAO.insertLastSync(SyncRequest.GENRES)
+                    genresDAO.insertGenres(dto.asGenreEntities())
                 },
 //                delete = { dao.removeGenres() },
-                deleteAll = dao::removeGenres
+                deleteAll = genresDAO::removeGenres
             )
         ).validator(
             Validator.by {
-                it.isNotEmpty()
+                    lastSyncDAO.isRequestValid(
+                        requestType = SyncRequest.GENRES,
+                        threshold = if (it.isNotEmpty()) 24.hours else 30.minutes,
+                    )
             }
         )
         .build()
