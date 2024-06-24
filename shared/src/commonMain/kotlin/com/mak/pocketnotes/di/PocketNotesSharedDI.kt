@@ -23,7 +23,7 @@ import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
 import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
 import com.mak.pocketnotes.local.database.dao.LastSyncDAO
-import com.mak.pocketnotes.local.PocketNotesDatabase
+import com.mak.pocketnotes.local.database.PocketNotesDatabase
 import com.mak.pocketnotes.local.database.dao.PodcastDAO
 import com.mak.pocketnotes.local.database.dao.TrendingPodcastDAO
 import kotlinx.serialization.json.Json

@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.di
 
 import app.cash.sqldelight.db.SqlDriver
-import com.mak.pocketnotes.local.AndroidDatabaseDriverFactory
+import com.mak.pocketnotes.local.database.AndroidDatabaseDriverFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

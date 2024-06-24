@@ -1,8 +1,12 @@
-package com.mak.pocketnotes.local
+package com.mak.pocketnotes.local.database
 
 import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
 import com.mak.pocketnotes.PocketDatabase
+import com.mak.pocketnotes.local.Curated_sections
+import com.mak.pocketnotes.local.Genres
+import com.mak.pocketnotes.local.Last_syncs
+import com.mak.pocketnotes.local.Trending_podcasts
 import com.mak.pocketnotes.local.database.columnadapters.InstantStringColumnAdapter
 import com.mak.pocketnotes.local.database.columnadapters.SyncRequestColumnAdapter
 

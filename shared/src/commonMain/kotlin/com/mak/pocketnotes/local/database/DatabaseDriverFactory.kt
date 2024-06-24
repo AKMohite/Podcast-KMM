@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.local
+package com.mak.pocketnotes.local.database
 
 import app.cash.sqldelight.db.SqlDriver
 
