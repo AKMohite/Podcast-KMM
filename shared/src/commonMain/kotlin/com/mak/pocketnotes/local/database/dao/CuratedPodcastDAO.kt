@@ -16,28 +16,28 @@ internal class CuratedPodcastDAO(
     database: PocketDatabase,
     private val dispatcher: Dispatcher
 ): ICuratedPodcastDAO {
-    private val curatedSectionDao = database.curated_section_entityQueries
-    private val curatedPodcastDao = database.curated_podcast_entityQueries
+    private val sectionQuery = database.curated_section_entityQueries
+    private val podcastQuery = database.curated_podcast_entityQueries
 
     override fun insertCuratedPodcasts(
         sections: List<CuratedSectionEntity>,
         podcasts: List<CuratedPodcastEntity>
     ) {
         sections.forEach { section ->
-            curatedSectionDao.insertCuratedSection(section)
+            sectionQuery.insertCuratedSection(section)
         }
         podcasts.forEach { podcast ->
-            curatedPodcastDao.insertCuratedPodcast(podcast)
+            podcastQuery.insertCuratedPodcast(podcast)
         }
     }
 
     override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> {
-        return curatedSectionDao.curatedSectionWithPodcast().asFlow()
+        return sectionQuery.curatedSectionWithPodcast().asFlow()
             .mapToList(dispatcher.io)
     }
 
     override fun deletePage(page: Int) {
-        curatedSectionDao.deletePage(page)
+        sectionQuery.deletePage(page)
     }
 
 }
