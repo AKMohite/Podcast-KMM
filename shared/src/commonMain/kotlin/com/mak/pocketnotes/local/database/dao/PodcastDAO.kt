@@ -13,11 +13,11 @@ internal class PodcastDAO(
 ): IPodcastDAO {
     private val dbQuery = database.podcast_entityQueries
 
-    override suspend fun insertPodcast(podcast: Podcasts) = withContext(dispatcher.io) {
+    override fun insertPodcast(podcast: Podcasts) {
         dbQuery.insertPodcast(podcast)
     }
 
-    override suspend fun insertPodcasts(podcasts: List<PodcastEntity>) = withContext(dispatcher.io) {
+    override fun insertPodcasts(podcasts: List<PodcastEntity>) {
         podcasts.forEach { podcast ->
             insertPodcast(podcast)
         }
@@ -29,7 +29,7 @@ internal class PodcastDAO(
 }
 
 internal interface IPodcastDAO {
-    suspend fun insertPodcast(podcast: PodcastEntity)
-    suspend fun insertPodcasts(podcasts: List<PodcastEntity>)
+    fun insertPodcast(podcast: PodcastEntity)
+    fun insertPodcasts(podcasts: List<PodcastEntity>)
     suspend fun removePodcasts()
 }

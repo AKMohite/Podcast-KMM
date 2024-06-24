@@ -25,7 +25,7 @@ internal class LastSyncDAO(
         dbQueries.getLastSyncFor(requestType, entityId).executeAsOneOrNull()
     }
 
-    override suspend fun insertLastSync(requestType: SyncRequest, entityId: String) = withContext(dispatcher.io) {
+    override fun insertLastSync(requestType: SyncRequest, entityId: String) {
         dbQueries.insert(
             id = null,
             requestType = requestType,
@@ -48,6 +48,6 @@ internal class LastSyncDAO(
 
 internal interface ILastSyncDAO {
     suspend fun getLastSyncFor(requestType: SyncRequest, entityId: String = DEFAULT_ID): LastSyncEntity?
-    suspend fun insertLastSync(requestType: SyncRequest, entityId: String = DEFAULT_ID)
+    fun insertLastSync(requestType: SyncRequest, entityId: String = DEFAULT_ID)
     suspend fun isRequestValid(requestType: SyncRequest, entityId: String = DEFAULT_ID, threshold: Duration): Boolean
 }

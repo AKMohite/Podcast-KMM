@@ -5,6 +5,7 @@ import com.mak.pocketnotes.data.remote.dto.CuratedPodcastDTO
 import com.mak.pocketnotes.data.remote.dto.SectionPodcastDTO
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.SectionPodcast
+import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.CuratedPodcastEntity
 import com.mak.pocketnotes.local.database.dao.CuratedSectionEntity
 import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
@@ -15,6 +16,7 @@ import org.koin.core.component.inject
 
 class RefreshCuratedPodcasts: KoinComponent {
     private val api: IPocketNotesAPI by inject()
+    private val transactionRunner: DatabaseTransactionRunner by inject()
     private val curatedPodcastDAO: ICuratedPodcastDAO by inject()
     private val podcastDAO: IPodcastDAO by inject()
 
@@ -22,7 +24,6 @@ class RefreshCuratedPodcasts: KoinComponent {
     suspend operator fun invoke(page: Int): List<CuratedPodcast> {
         val dto = api.getCuratedPodcasts(page).curatedLists ?: return emptyList()
         val (sectionEntities, podcastEntities) = dto.toSectionEntities()
-        curatedPodcastDAO.insertCuratedPodcasts(sectionEntities, podcastEntities)
         val podcasts = dto.mapNotNull {
             it.podcasts
         }.flatten()
@@ -35,7 +36,11 @@ class RefreshCuratedPodcasts: KoinComponent {
                 description = ""
             )
         }
-        podcastDAO.insertPodcasts(podcasts)
+        transactionRunner {
+            curatedPodcastDAO.deletePage(page)
+            curatedPodcastDAO.insertCuratedPodcasts(sectionEntities, podcastEntities)
+            podcastDAO.insertPodcasts(podcasts)
+        }
         return dto.toCuratedPodcasts()
     }
 }

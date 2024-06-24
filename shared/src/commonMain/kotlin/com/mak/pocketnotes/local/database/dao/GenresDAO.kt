@@ -6,7 +6,6 @@ import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Genres
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 internal typealias GenreEntity = Genres
 
@@ -17,12 +16,10 @@ internal class GenresDAO(
 
     private val dbQuery = database.genre_entityQueries
 
-    override suspend fun insertGenres(genres: List<GenreEntity>) = withContext(dispatcher.io)  {
-        dbQuery.transaction {
+    override fun insertGenres(genres: List<GenreEntity>) {
             genres.forEach { genre ->
                 dbQuery.insert(genre)
             }
-        }
     }
 
     override fun getGenres(): Flow<List<GenreEntity>> {
@@ -31,13 +28,13 @@ internal class GenresDAO(
             .mapToList(dispatcher.io)
     }
 
-    override suspend fun removeGenres() = withContext(dispatcher.io) {
+    override fun removeGenres() {
         dbQuery.deleteAll()
     }
 }
 
 internal interface IGenresDAO {
-    suspend fun insertGenres(genres: List<GenreEntity>)
-    suspend fun removeGenres()
+    fun insertGenres(genres: List<GenreEntity>)
+    fun removeGenres()
     fun getGenres(): Flow<List<GenreEntity>>
 }

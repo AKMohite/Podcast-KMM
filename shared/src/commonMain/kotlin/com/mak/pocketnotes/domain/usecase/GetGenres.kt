@@ -4,6 +4,7 @@ import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.GenreDTO
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.SyncRequest
+import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.GenreEntity
 import com.mak.pocketnotes.local.database.dao.IGenresDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
@@ -23,6 +24,7 @@ import kotlin.time.Duration.Companion.minutes
 
 class GetGenres: KoinComponent {
     private val api: IPocketNotesAPI by inject()
+    private val transactionRunner: DatabaseTransactionRunner by inject()
     private val genresDAO: IGenresDAO by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
 
@@ -39,11 +41,13 @@ class GetGenres: KoinComponent {
                         }
                  },
                 writer = { _, dto ->
-                    lastSyncDAO.insertLastSync(SyncRequest.GENRES)
-                    genresDAO.insertGenres(dto.asGenreEntities())
+                    transactionRunner {
+                        lastSyncDAO.insertLastSync(SyncRequest.GENRES)
+                        genresDAO.insertGenres(dto.asGenreEntities())
+                    }
                 },
 //                delete = { dao.removeGenres() },
-                deleteAll = genresDAO::removeGenres
+                deleteAll = { transactionRunner(genresDAO::removeGenres) }
             )
         ).validator(
             Validator.by {

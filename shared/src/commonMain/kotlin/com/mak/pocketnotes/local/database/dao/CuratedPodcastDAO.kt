@@ -8,7 +8,6 @@ import com.mak.pocketnotes.local.CuratedSectionWithPodcast
 import com.mak.pocketnotes.local.Curated_podcasts
 import com.mak.pocketnotes.local.Curated_sections
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 internal typealias CuratedSectionEntity = Curated_sections
 internal typealias CuratedPodcastEntity = Curated_podcasts
@@ -20,11 +19,10 @@ internal class CuratedPodcastDAO(
     private val curatedSectionDao = database.curated_section_entityQueries
     private val curatedPodcastDao = database.curated_podcast_entityQueries
 
-    override suspend fun insertCuratedPodcasts(
+    override fun insertCuratedPodcasts(
         sections: List<CuratedSectionEntity>,
         podcasts: List<CuratedPodcastEntity>
-    ) = withContext(dispatcher.io) {
-        curatedSectionDao.deletePage(sections.first().page)
+    ) {
         sections.forEach { section ->
             curatedSectionDao.insertCuratedSection(section)
         }
@@ -38,9 +36,14 @@ internal class CuratedPodcastDAO(
             .mapToList(dispatcher.io)
     }
 
+    override fun deletePage(page: Int) {
+        curatedSectionDao.deletePage(page)
+    }
+
 }
 
 internal interface ICuratedPodcastDAO {
-    suspend fun insertCuratedPodcasts(sections: List<CuratedSectionEntity>, podcasts: List<CuratedPodcastEntity>)
+    fun insertCuratedPodcasts(sections: List<CuratedSectionEntity>, podcasts: List<CuratedPodcastEntity>)
     fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>>
+    fun deletePage(page: Int)
 }

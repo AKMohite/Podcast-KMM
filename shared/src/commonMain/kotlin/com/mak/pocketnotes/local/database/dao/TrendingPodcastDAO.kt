@@ -6,7 +6,6 @@ import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Trending_podcasts
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 
 internal typealias TrendingPodcastEntity = Trending_podcasts
 
@@ -20,17 +19,19 @@ internal class TrendingPodcastDAO(
         .asFlow()
         .mapToList(dispatcher.io)
 
-    override suspend fun upsertPage(entities: List<TrendingPodcastEntity>) = withContext(dispatcher.io) {
-        dbQuery.transaction {
-            dbQuery.deletePage(entities.first().page)
+    override fun upsertPage(entities: List<TrendingPodcastEntity>) {
             entities.forEach { entity ->
                 dbQuery.insertPodcast(entity.id, entity.podcast_id, entity.page)
             }
-        }
+    }
+
+    override fun deletePage(page: Int) {
+        dbQuery.deletePage(page)
     }
 }
 
 internal interface ITrendingPodcastDAO {
     fun getBestPodcasts(): Flow<List<PodcastEntity>>
-    suspend fun upsertPage(entities: List<TrendingPodcastEntity>)
+    fun upsertPage(entities: List<TrendingPodcastEntity>)
+    fun deletePage(page: Int)
 }
