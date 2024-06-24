@@ -5,11 +5,11 @@ import com.mak.pocketnotes.data.remote.dto.CuratedPodcastDTO
 import com.mak.pocketnotes.data.remote.dto.SectionPodcastDTO
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.SectionPodcast
-import com.mak.pocketnotes.local.CuratedPodcastEntity
-import com.mak.pocketnotes.local.CuratedSectionEntity
-import com.mak.pocketnotes.local.ICuratedPodcastDAO
-import com.mak.pocketnotes.local.IPodcastDAO
-import com.mak.pocketnotes.local.PodcastEntity
+import com.mak.pocketnotes.local.database.dao.CuratedPodcastEntity
+import com.mak.pocketnotes.local.database.dao.CuratedSectionEntity
+import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
+import com.mak.pocketnotes.local.database.dao.IPodcastDAO
+import com.mak.pocketnotes.local.database.dao.PodcastEntity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

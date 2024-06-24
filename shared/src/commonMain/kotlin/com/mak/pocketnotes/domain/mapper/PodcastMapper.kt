@@ -4,7 +4,7 @@ import com.mak.pocketnotes.data.remote.dto.EpisodeDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
-import com.mak.pocketnotes.local.PodcastEntity
+import com.mak.pocketnotes.local.database.dao.PodcastEntity
 
 internal class PodcastMapper {
 

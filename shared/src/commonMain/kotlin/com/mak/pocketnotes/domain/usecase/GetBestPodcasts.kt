@@ -2,7 +2,7 @@ package com.mak.pocketnotes.domain.usecase
 
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.local.ITrendingPodcastDAO
+import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent

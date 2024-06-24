@@ -3,9 +3,9 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.local.IPodcastDAO
-import com.mak.pocketnotes.local.ITrendingPodcastDAO
-import com.mak.pocketnotes.local.TrendingPodcastEntity
+import com.mak.pocketnotes.local.database.dao.IPodcastDAO
+import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
+import com.mak.pocketnotes.local.database.dao.TrendingPodcastEntity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

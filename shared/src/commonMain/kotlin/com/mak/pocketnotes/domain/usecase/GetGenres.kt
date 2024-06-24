@@ -4,9 +4,9 @@ import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.GenreDTO
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.SyncRequest
-import com.mak.pocketnotes.local.GenreEntity
-import com.mak.pocketnotes.local.IGenresDAO
-import com.mak.pocketnotes.local.ILastSyncDAO
+import com.mak.pocketnotes.local.database.dao.GenreEntity
+import com.mak.pocketnotes.local.database.dao.IGenresDAO
+import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull

@@ -1,7 +1,8 @@
-package com.mak.pocketnotes.local
+package com.mak.pocketnotes.local.database.dao
 
 import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.local.Podcasts
 import kotlinx.coroutines.withContext
 
 internal typealias PodcastEntity = Podcasts

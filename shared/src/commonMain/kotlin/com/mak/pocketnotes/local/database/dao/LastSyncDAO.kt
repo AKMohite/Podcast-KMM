@@ -1,9 +1,10 @@
-package com.mak.pocketnotes.local
+package com.mak.pocketnotes.local.database.dao
 
 import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.models.SyncRequest
-import com.mak.pocketnotes.local.LastSyncDAO.Companion.DEFAULT_ID
+import com.mak.pocketnotes.local.Last_syncs
+import com.mak.pocketnotes.local.database.dao.LastSyncDAO.Companion.DEFAULT_ID
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlin.time.Duration

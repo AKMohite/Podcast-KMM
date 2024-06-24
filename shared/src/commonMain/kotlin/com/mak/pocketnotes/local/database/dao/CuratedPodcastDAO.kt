@@ -1,9 +1,12 @@
-package com.mak.pocketnotes.local
+package com.mak.pocketnotes.local.database.dao
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.local.CuratedSectionWithPodcast
+import com.mak.pocketnotes.local.Curated_podcasts
+import com.mak.pocketnotes.local.Curated_sections
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
