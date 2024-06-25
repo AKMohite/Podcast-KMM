@@ -68,8 +68,9 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
     val podcastEntities = this.mapNotNull { section ->
         section.podcasts?.map { podcast ->
             CuratedPodcastEntity(
-                id = podcast.id!!,
-                section_id = section.id!!
+                id = "${section.id!!}-${podcast.id!!}",
+                podcast_id = podcast.id,
+                section_id = section.id
             )
         }
     }.flatten()
