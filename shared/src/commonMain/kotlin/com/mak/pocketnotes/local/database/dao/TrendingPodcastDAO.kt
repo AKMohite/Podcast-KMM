@@ -6,6 +6,8 @@ import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Trending_podcasts
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 
 internal typealias TrendingPodcastEntity = Trending_podcasts
 
@@ -18,6 +20,8 @@ internal class TrendingPodcastDAO(
     override fun getBestPodcasts(): Flow<List<PodcastEntity>> = dbQuery.getTrendingPodcasts()
         .asFlow()
         .mapToList(dispatcher.io)
+        .distinctUntilChanged()
+        .flowOn(dispatcher.io)
 
     override fun upsertPage(entities: List<TrendingPodcastEntity>) {
             entities.forEach { entity ->

@@ -6,6 +6,8 @@ import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Genres
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 
 internal typealias GenreEntity = Genres
 
@@ -26,6 +28,8 @@ internal class GenresDAO(
         return dbQuery.getGenres()
             .asFlow()
             .mapToList(dispatcher.io)
+            .distinctUntilChanged()
+            .flowOn(dispatcher.io)
     }
 
     override fun removeGenres() {

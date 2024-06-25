@@ -13,7 +13,6 @@ import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
 import com.mak.pocketnotes.local.database.dao.PodcastEntity
 import com.mak.pocketnotes.local.database.dao.TrendingPodcastEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -51,8 +50,6 @@ class GetBestPodcasts: KoinComponent {
             sourceOfTruth = SourceOfTruth.of<Unit, BestPodcastDTO, List<Podcast>>(
                 reader = {
                     trendingPodcastDAO.getBestPodcasts()
-                        .distinctUntilChanged()
-                        .flowOn(dispatcher.io)
                         .map { entities -> mapper.entityToModels(entities) }
                         .flowOn(dispatcher.computation)
                 },
