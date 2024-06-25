@@ -3,6 +3,7 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.GenreDTO
 import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.SyncRequest
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
@@ -33,7 +34,7 @@ class GetGenres: KoinComponent {
     private val genresDAO: IGenresDAO by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
 
-    operator fun invoke(): Flow<List<Genre>> = StoreBuilder
+    operator fun invoke(): Flow<DomainResult<List<Genre>>> = StoreBuilder
         .from<Unit, List<GenreDTO>, List<Genre>>(
             fetcher = Fetcher.of<Unit, List<GenreDTO>> {
                 api.getAllGenres().genres ?: emptyList()
@@ -77,15 +78,15 @@ class GetGenres: KoinComponent {
         .map { response ->
             when (response) {
                 is StoreReadResponse.Data -> {
-                    response.value
+                    DomainResult.Success(response.value)
                 }
-//                    is StoreReadResponse.Error -> {
-//                        response.errorMessageOrNull()
-//                    }
+                    is StoreReadResponse.Error -> {
+                        DomainResult.Error(response.errorMessageOrNull())
+                    }
 //                    StoreReadResponse.Initial -> TODO()
-//                    is StoreReadResponse.Loading -> TODO()
+                    is StoreReadResponse.Loading -> DomainResult.Loading
 //                    is StoreReadResponse.NoNewData -> TODO()
-                else -> { emptyList() }
+                else -> { DomainResult.Success(emptyList()) }
             }
         }
 }

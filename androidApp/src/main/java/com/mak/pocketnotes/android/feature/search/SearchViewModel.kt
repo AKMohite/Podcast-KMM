@@ -3,6 +3,7 @@ package com.mak.pocketnotes.android.feature.search
 import androidx.compose.ui.focus.FocusState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
@@ -32,8 +33,12 @@ internal class SearchViewModel(
 
     private fun getAllGenres() {
         getGenres()
-            .map { genres ->
-                _state.update { it.copy(genres = genres) }
+            .map { result ->
+                when(result) {
+                    is DomainResult.Error -> _state.update { it.copy(error = result.message) }
+                    DomainResult.Loading -> _state.update { it.copy(loading = true) }
+                    is DomainResult.Success -> _state.update { it.copy(genres = result.data) }
+                }
             }.launchIn(viewModelScope)
     }
 
@@ -90,7 +95,8 @@ internal data class SearchState(
     val podcasts: List<Podcast> = emptyList(),
     val genrePodcasts: List<Podcast> = emptyList(),
     val episodes: List<PodcastEpisode> = emptyList(),
-    val error: String? = null
+    val error: String? = null,
+    val loading: Boolean = false
 ) {
     fun canShowGenres(): Boolean {
         return genres.isNotEmpty() && (!arePodcastsAvailable() && !areEpisodesAvailable() && !areGenrePodcastsAvailable())
