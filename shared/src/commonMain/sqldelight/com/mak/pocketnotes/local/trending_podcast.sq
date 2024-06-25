@@ -13,3 +13,6 @@ INSERT OR IGNORE INTO trending_podcasts (id, podcast_id, page) VALUES (nullif(:i
 
 deletePage:
 DELETE FROM trending_podcasts WHERE page=:page;
+
+deleteAll:
+DELETE FROM trending_podcasts;

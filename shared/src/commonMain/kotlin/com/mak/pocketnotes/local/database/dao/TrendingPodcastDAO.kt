@@ -28,10 +28,15 @@ internal class TrendingPodcastDAO(
     override fun deletePage(page: Int) {
         dbQuery.deletePage(page)
     }
+
+    override fun deleteAll() {
+        dbQuery.deleteAll()
+    }
 }
 
 internal interface ITrendingPodcastDAO {
     fun getBestPodcasts(): Flow<List<PodcastEntity>>
     fun upsertPage(entities: List<TrendingPodcastEntity>)
     fun deletePage(page: Int)
+    fun deleteAll()
 }

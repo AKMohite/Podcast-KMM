@@ -8,7 +8,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 internal val appModule = module {
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { params ->
         PodcastDetailViewModel(getPodcast = get(), podcastRecommendations = get(), podcastId = params.get())
     }
