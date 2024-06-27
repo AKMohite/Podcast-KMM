@@ -24,7 +24,6 @@ class HomeViewModel(
     private var _uiState = MutableStateFlow(HomeScreenState())
     internal val uiState: StateFlow<HomeScreenState>
         get() = _uiState
-    private var currentPage = 1
 
     init {
 //        loadPodcasts()

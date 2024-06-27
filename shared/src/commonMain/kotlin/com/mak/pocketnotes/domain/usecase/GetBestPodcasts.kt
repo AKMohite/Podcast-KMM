@@ -24,7 +24,6 @@ import org.mobilenativefoundation.store.store5.StoreBuilder
 import org.mobilenativefoundation.store.store5.StoreReadRequest
 import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.Validator
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 class GetBestPodcasts: KoinComponent {
@@ -82,7 +81,7 @@ class GetBestPodcasts: KoinComponent {
                 withContext(dispatcher.io) {
                     lastSyncDAO.isRequestValid(
                         requestType = SyncRequest.BEST_PODCASTS,
-                        threshold = if (it.isNotEmpty()) 1.hours else 5.minutes,
+                        threshold = if (it.isNotEmpty()) 90.minutes else 5.minutes,
                     )
                 }
             }

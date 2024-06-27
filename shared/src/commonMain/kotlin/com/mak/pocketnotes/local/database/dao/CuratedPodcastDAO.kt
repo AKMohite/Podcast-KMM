@@ -8,6 +8,8 @@ import com.mak.pocketnotes.local.CuratedSectionWithPodcast
 import com.mak.pocketnotes.local.Curated_podcasts
 import com.mak.pocketnotes.local.Curated_sections
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 
 internal typealias CuratedSectionEntity = Curated_sections
 internal typealias CuratedPodcastEntity = Curated_podcasts
@@ -33,7 +35,9 @@ internal class CuratedPodcastDAO(
 
     override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> {
         return sectionQuery.curatedSectionWithPodcast().asFlow()
+            .distinctUntilChanged()
             .mapToList(dispatcher.io)
+            .flowOn(dispatcher.io)
     }
 
     override fun deletePage(page: Int) {
