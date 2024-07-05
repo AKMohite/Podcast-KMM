@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("app.cash.sqldelight") version libs.versions.sqldelight
-    kotlin("plugin.serialization") version libs.versions.serialization.get()
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
 kotlin {
