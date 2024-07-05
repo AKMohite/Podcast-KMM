@@ -47,9 +47,7 @@ class PodtalkNotificationAdapter(
             // `getCurrentLargeIcon` don't cause the bitmap to be recreated.
             currentMediaImage = image
             serviceScope.launch {
-                currentBitmap = image?.let {
-                    resolveBitmap(it)
-                }
+                currentBitmap = resolveBitmap(image)
                 currentBitmap?.let { callback.onBitmap(it) }
             }
             currentBitmap
