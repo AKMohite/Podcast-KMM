@@ -7,9 +7,7 @@ versionName = "0.0.1"
 
 accompanist = "0.28.0"
 coil = "2.2.2"
-compose = "1.2.1"
-composeActivity = "1.6.0"
-composeMaterial = "1.2.1"
+composeBom = "2024.06.00"
 coroutines = "1.6.4"
 detekt = "1.21.0"
 gradlePlugin = "8.5.0"
@@ -33,13 +31,11 @@ androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "medi
 androidx-media3-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3Exoplayer" }
 androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3Exoplayer" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-material = { group = "androidx.compose.material3", name = "material3" }
 compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
-compose-material = { group = "androidx.compose.material3", name = "material3", version.ref = "composeMaterial" }
-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
@@ -56,7 +52,7 @@ sqldelight-primitive = { module = "app.cash.sqldelight:primitive-adapters", vers
 store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 
 [bundles]
-compose = [ "androidx-navigation", "compose-coil", "compose-activity", "compose-foundation", "compose-material", "compose-ui", "compose-ui-preview", "compose-ui-tooling" ]
+compose = [ "androidx-navigation", "compose-coil", "compose-material", "compose-ui-preview" ]
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "gradlePlugin" }

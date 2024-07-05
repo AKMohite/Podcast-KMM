@@ -53,7 +53,9 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
+    debugImplementation(libs.compose.ui.tooling)
     implementation(libs.koin.android.compose)
     implementation(libs.accompanist.systemuicontroller)
 }
