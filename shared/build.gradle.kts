@@ -2,11 +2,11 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("app.cash.sqldelight") version libs.versions.sqldelight
-    kotlin("plugin.serialization") version libs.versions.serialization.get()
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
 kotlin {
-    android()
+    androidTarget()
     
     listOf(
         iosX64(),
@@ -47,7 +47,7 @@ kotlin {
                 implementation(libs.androidx.media3.ui)
                 implementation(libs.androidx.media3.session)
 //                TODO can be removed?
-                implementation("androidx.legacy:legacy-support-v4:1.0.0") // Needed MediaSessionCompat.Token
+                implementation(libs.androidx.legacy.support) // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
                 implementation(libs.android.sql.driver)
             }
@@ -84,7 +84,6 @@ android {
     compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
     defaultConfig {
         minSdk = Integer.parseInt(libs.versions.minSdk.get())
-        targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -19,7 +19,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -53,7 +53,9 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
+    debugImplementation(libs.compose.ui.tooling)
     implementation(libs.koin.android.compose)
     implementation(libs.accompanist.systemuicontroller)
 }
