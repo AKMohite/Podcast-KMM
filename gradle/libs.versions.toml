@@ -17,6 +17,7 @@ kotlin = "1.9.24"
 kotlinCompiler = "1.5.14"
 kotlinxDatetime = "0.6.0"
 ktor = "2.3.12"
+legacySupportV4 = "1.0.0"
 media3Exoplayer = "1.3.1"
 navigation = "2.7.7"
 sqldelight= "2.0.2"
@@ -26,6 +27,7 @@ store5 = "5.1.0-alpha02"
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 android-sql-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 androidx-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+androidx-legacy-support = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Exoplayer" }
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Exoplayer" }
 androidx-media3-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3Exoplayer" }
