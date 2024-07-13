@@ -3,14 +3,16 @@ CREATE TABLE IF NOT EXISTS `podcasts` (
     title TEXT NOT NULL,
     description TEXT NOT NULL,
     image TEXT,
-    thumbnail TEXT
+    thumbnail TEXT,
+    publisher TEXT NOT NULL,
+    genres TEXT NOT NULL
 );
 
 insertPodcastInfo:
-INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail) VALUES(?,?,?,?,?);
+INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail, publisher, genres) VALUES(?,?,?,?,?,?,?);
 
 insertPodcast:
-INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail) VALUES ?;
+INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail, publisher, genres) VALUES ?;
 
 removeAllPodcasts:
 DELETE FROM podcasts;

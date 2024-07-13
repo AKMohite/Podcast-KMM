@@ -104,7 +104,9 @@ class GetCuratedPodcasts: KoinComponent {
                     title = it.title ?: "",
                     thumbnail = it.thumbnail ?: "",
                     image = it.image ?: "",
-                    description = ""
+                    description = "",
+                    publisher = it.publisher ?: "",
+                    genres = ""
                 )
             }
         transactionRunner {

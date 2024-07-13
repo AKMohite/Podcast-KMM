@@ -20,7 +20,9 @@ internal class PodcastMapper {
             title = dto.title ?: "",
             description = dto.description ?: "",
             image = dto.image,
-            thumbnail = dto.thumbnail
+            thumbnail = dto.thumbnail,
+            publisher = dto.publisher ?: "",
+            genres = dto.genreIds?.joinToString(separator = ",") { it.toString() } ?: ""
         )
     }
 

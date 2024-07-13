@@ -36,7 +36,9 @@ class RefreshCuratedPodcasts: KoinComponent {
                 title = it.title ?: "",
                 thumbnail = it.thumbnail ?: "",
                 image = it.image ?: "",
-                description = ""
+                description = "",
+                publisher = it.publisher ?: "",
+                genres = ""
             )
         }
         updateLocal(page, sectionEntities, podcastEntities, podcasts)
