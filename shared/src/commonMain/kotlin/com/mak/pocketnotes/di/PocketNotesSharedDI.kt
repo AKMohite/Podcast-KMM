@@ -7,8 +7,8 @@ import com.mak.pocketnotes.data.remote.PocketNotesAPI
 import com.mak.pocketnotes.data.util.provideDispatcher
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
-import com.mak.pocketnotes.domain.usecase.GetBestPodcasts
-import com.mak.pocketnotes.domain.usecase.GetCuratedPodcasts
+import com.mak.pocketnotes.domain.store.BestPodcastsStore
+import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
@@ -60,9 +60,9 @@ private val utilModule = module {
 private val domainModule = module {
     factory { GetGenres() }
     factory { RefreshBestPodcasts() }
-    factory { GetBestPodcasts() }
+    factory { BestPodcastsStore() }
     factory { RefreshCuratedPodcasts() }
-    factory { GetCuratedPodcasts() }
+    factory { CuratedPodcastsStore() }
     factory { GetPodcast() }
     factory { GetPodcastRecommendations() }
     factory { SearchPodcast() }

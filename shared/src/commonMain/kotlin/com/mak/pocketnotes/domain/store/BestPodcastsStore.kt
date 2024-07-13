@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.domain.usecase
+package com.mak.pocketnotes.domain.store
 
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.BestPodcastDTO
@@ -26,7 +26,7 @@ import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.Validator
 import kotlin.time.Duration.Companion.minutes
 
-class GetBestPodcasts: KoinComponent {
+class BestPodcastsStore: KoinComponent {
     private val api: IPocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val podcastDAO: IPodcastDAO by inject()

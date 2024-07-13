@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.domain.usecase
+package com.mak.pocketnotes.domain.store
 
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.remote.dto.CuratedPodcastDTO
@@ -28,7 +28,7 @@ import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.Validator
 import kotlin.time.Duration.Companion.minutes
 
-class GetCuratedPodcasts: KoinComponent {
+class CuratedPodcastsStore: KoinComponent {
 
     private val api: IPocketNotesAPI by inject()
     private val dao: ICuratedPodcastDAO by inject()
