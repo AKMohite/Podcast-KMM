@@ -104,7 +104,9 @@ class BestPodcastsStore: KoinComponent {
         trendingPodcasts: List<TrendingPodcastEntity>
     ) = withContext(dispatcher.io) {
         transactionRunner {
-            lastSyncDAO.insertLastSync(SyncRequest.BEST_PODCASTS)
+            if (page == 1) {
+                lastSyncDAO.insertLastSync(SyncRequest.BEST_PODCASTS)
+            }
             podcastDAO.insertPodcasts(podcasts)
             trendingPodcastDAO.deletePage(page)
             trendingPodcastDAO.upsertPage(trendingPodcasts)
