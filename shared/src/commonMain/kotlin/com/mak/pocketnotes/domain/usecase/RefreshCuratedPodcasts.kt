@@ -95,7 +95,8 @@ private fun getPodcasts(curatedPodcastDTOS: List<CuratedPodcastDTO>): List<Secti
         SectionPodcast(
             id = podcast.id!!,
             title = podcast.title ?: "",
-            image = podcast.thumbnail ?: ""
+            image = podcast.thumbnail ?: "",
+            publisher = podcast.publisher ?: ""
         )
     }
 }

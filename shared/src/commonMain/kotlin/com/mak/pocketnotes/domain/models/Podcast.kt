@@ -7,7 +7,7 @@ data class Podcast(
     val description: String,
     val image: String,
     val thumbnail: String,
-    val publisher: String = "",
+    val publisher: String,
 //    val listenScore: Int = 0,
 //    val totalEpisodes: Int = 0,
 //    val type: String = "",

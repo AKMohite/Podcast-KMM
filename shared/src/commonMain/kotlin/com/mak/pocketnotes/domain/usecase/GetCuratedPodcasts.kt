@@ -125,7 +125,8 @@ class GetCuratedPodcasts: KoinComponent {
             SectionPodcast(
                 id = podcast.podcastId,
                 image = podcast.thumbnail ?: "",
-                title = podcast.podcastTitle
+                title = podcast.podcastTitle,
+                publisher = podcast.publisher ?: ""
             )
         }
     }
@@ -167,7 +168,8 @@ private fun getPodcasts(curatedPodcastDTOS: List<CuratedPodcastDTO>): List<Secti
         SectionPodcast(
             id = podcast.id!!,
             title = podcast.title ?: "",
-            image = podcast.thumbnail ?: ""
+            image = podcast.thumbnail ?: "",
+            publisher = podcast.publisher ?: ""
         )
     }
 }

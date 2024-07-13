@@ -77,6 +77,7 @@ internal class PodcastMapper {
             description = entity.description,
             image = entity.image ?: "",
             thumbnail = entity.thumbnail ?: "",
+            publisher = entity.publisher
         )
     }
 
