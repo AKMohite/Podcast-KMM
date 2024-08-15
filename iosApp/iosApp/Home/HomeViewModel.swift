@@ -11,8 +11,7 @@ import shared
 
 extension HomeScreen {
     @MainActor class HomeViewModel: ObservableObject {
-        
-        private let refreshPodcasts = RefreshBestPodcasts.init()
+        private let getPodcasts = BestPodcastsStore.init()
         
         @Published private(set) var podcasts: [Podcast] = []
         @Published private(set) var isLoading: Bool = false
@@ -23,11 +22,13 @@ extension HomeScreen {
             if isLoading { return }
             
             do {
-                let podcasts = try await refreshPodcasts.invoke(page: Int32(currentPage), genreId: nil)
-                isLoading = false
-                loadFinished = podcasts.isEmpty
-                currentPage += 1
-                self.podcasts = self.podcasts + podcasts
+                for await podcasts in getPodcasts.invoke(query: GetGenreQuery(genreId: nil, page: Int32(currentPage))) {
+//                    let podcasts = try await getPodcasts.invoke(query: GetGenreQuery(genreId: nil, page: Int32(1)))
+                    isLoading = false
+                    loadFinished = podcasts.isEmpty
+                    currentPage += 1
+                    self.podcasts = self.podcasts + podcasts
+                }
             } catch  {
                 isLoading = false
                 loadFinished = true

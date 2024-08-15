@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("app.cash.sqldelight") version libs.versions.sqldelight
+    id("co.touchlab.skie") version libs.versions.skie
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
@@ -21,6 +22,18 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+//                This override dependency and configurations exclude is required
+//                for fixing some error in SKIE dependency. May not be need in
+//                future.
+                implementation("co.touchlab:stately-common:2.0.7")
+//                implementation("co.touchlab:stately-collections:2.0.7")
+//                implementation("co.touchlab:stately-concurrency:2.0.7")
+//                implementation("co.touchlab:stately-isolate:2.0.7")
+//                configurations.all {
+//                    exclude(group = "co.touchlab", module = "stately-strict-jvm")
+//                }
+
+
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.content.negotiation)
