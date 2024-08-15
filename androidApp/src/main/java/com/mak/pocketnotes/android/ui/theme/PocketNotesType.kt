@@ -1,110 +1,56 @@
 package com.mak.pocketnotes.android.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import com.mak.pocketnotes.android.R
 
 
-private val fonts = FontFamily(
-    Font(R.font.montserrat_regular),
-    Font(R.font.montserrat_medium, FontWeight.W500),
-    Font(R.font.montserrat_bold, FontWeight.Bold)
+val bodyFontFamily = FontFamily(
+//    Font(R.font.satoshi_black, FontWeight.Black, FontStyle.Normal),
+//    Font(R.font.satoshi_black_italic, FontWeight.Black, FontStyle.Italic),
+//    Font(R.font.satoshi_bold, FontWeight.Bold, FontStyle.Normal),
+//    Font(R.font.satoshi_bold_italic, FontWeight.Bold, FontStyle.Italic),
+    Font(R.font.satoshi_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.satoshi_light, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.satoshi_light_italic, FontWeight.Light, FontStyle.Italic),
+    Font(R.font.satoshi_medium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.satoshi_medium_italic, FontWeight.Medium, FontStyle.Italic),
+    Font(R.font.satoshi_regular, FontWeight.Normal, FontStyle.Normal),
 )
 
-val typography = typographyFromDefaults(
-    h1 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Bold
-    ),
-    h2 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Bold
-    ),
-    h3 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Bold
-    ),
-    h4 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Bold,
-        lineHeight = 40.sp
-    ),
-    h5 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Bold
-    ),
-    h6 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.W500,
-        lineHeight = 28.sp
-    ),
-    subtitle1 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.W500,
-        lineHeight = 22.sp
-    ),
-    subtitle2 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.W500
-    ),
-    body1 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Normal,
-        lineHeight = 28.sp
-    ),
-    body2 = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Normal,
-        lineHeight = 16.sp
-    ),
-    button = TextStyle(
-        fontFamily = fonts,
-        fontWeight = FontWeight.Bold
-    ),
-    caption = TextStyle(
-        fontFamily = fonts
-    ),
-    overline = TextStyle(
-        letterSpacing = 0.08.em
-    )
+val displayFontFamily = FontFamily(
+    Font(R.font.cabinet_grotesk_black, FontWeight.Black, FontStyle.Normal),
+    Font(R.font.cabinet_grotesk_bold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.cabinet_grotesk_extrabold, FontWeight.ExtraBold, FontStyle.Normal),
+//    Font(R.font.cabinet_grotesk_extralight, FontWeight.ExtraLight, FontStyle.Normal),
+//    Font(R.font.cabinet_grotesk_light, FontWeight.Light, FontStyle.Normal),
+//    Font(R.font.cabinet_grotesk_medium, FontWeight.Medium, FontStyle.Normal),
+//    Font(R.font.cabinet_grotesk_thin, FontWeight.Thin, FontStyle.Normal),
+//    Font(R.font.cabinet_grotesk_regular, FontWeight.Normal, FontStyle.Normal)
 )
 
-fun typographyFromDefaults(
-    h1: TextStyle?,
-    h2: TextStyle?,
-    h3: TextStyle?,
-    h4: TextStyle?,
-    h5: TextStyle?,
-    h6: TextStyle?,
-    subtitle1: TextStyle?,
-    subtitle2: TextStyle?,
-    body1: TextStyle?,
-    body2: TextStyle?,
-    button: TextStyle?,
-    caption: TextStyle?,
-    overline: TextStyle?
-): Typography {
-    val defaults = Typography()
+val typography = typographyFromDefaults()
+
+fun typographyFromDefaults(): Typography {
+    val baseline = Typography()
     return Typography(
-        displayLarge = defaults.displayLarge.merge(h1),
-        displayMedium = defaults.displayMedium.merge(h2),
-        displaySmall = defaults.displaySmall.merge(h3),
-//        ?? = defaults.headlineLarge.merge(h3),
-        headlineMedium = defaults.headlineMedium.merge(h4),
-        headlineSmall = defaults.headlineSmall.merge(h5),
-        titleLarge = defaults.titleLarge.merge(h6),
-        titleMedium = defaults.titleMedium.merge(subtitle1),
-        titleSmall = defaults.titleSmall.merge(subtitle2),
-        bodyLarge = defaults.bodyLarge.merge(body1),
-        bodyMedium = defaults.bodyMedium.merge(body2),
-        bodySmall = defaults.bodySmall.merge(caption),
-        labelLarge = defaults.labelLarge.merge(button),
-//        ?? = defaults.labelMedium.merge(button),
-        labelSmall = defaults.labelSmall.merge(overline)
+        displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),
+        displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily),
+        displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily),
+        headlineLarge = baseline.headlineLarge.copy(fontFamily = displayFontFamily),
+        headlineMedium = baseline.headlineMedium.copy(fontFamily = displayFontFamily),
+        headlineSmall = baseline.headlineSmall.copy(fontFamily = displayFontFamily),
+        titleLarge = baseline.titleLarge.copy(fontFamily = displayFontFamily),
+        titleMedium = baseline.titleMedium.copy(fontFamily = displayFontFamily),
+        titleSmall = baseline.titleSmall.copy(fontFamily = displayFontFamily),
+        bodyLarge = baseline.bodyLarge.copy(fontFamily = bodyFontFamily),
+        bodyMedium = baseline.bodyMedium.copy(fontFamily = bodyFontFamily),
+        bodySmall = baseline.bodySmall.copy(fontFamily = bodyFontFamily),
+        labelLarge = baseline.labelLarge.copy(fontFamily = bodyFontFamily),
+        labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily),
+        labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily),
     )
 }
