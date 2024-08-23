@@ -1,8 +1,11 @@
 package com.mak.pocketnotes.local.database.dao
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToOne
 import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Podcasts
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 internal typealias PodcastEntity = Podcasts
@@ -26,10 +29,22 @@ internal class PodcastDAO(
     override suspend fun removePodcasts() = withContext(dispatcher.io) {
         dbQuery.removeAllPodcasts()
     }
+
+    override fun getPodcast(id: String): Flow<PodcastEntity> {
+        return dbQuery.getPodcastById(id)
+            .asFlow()
+            .mapToOne(dispatcher.io)
+    }
+
+    override suspend fun removePodcast(podcastId: String) {
+        dbQuery.delete(podcastId)
+    }
 }
 
 internal interface IPodcastDAO {
     fun insertPodcast(podcast: PodcastEntity)
     fun insertPodcasts(podcasts: List<PodcastEntity>)
     suspend fun removePodcasts()
+    fun getPodcast(id: String): Flow<PodcastEntity>
+    suspend fun removePodcast(podcastId: String)
 }

@@ -14,5 +14,11 @@ INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail, publ
 insertPodcast:
 INSERT OR REPLACE INTO podcasts (id , title, description, image, thumbnail, publisher, genres) VALUES ?;
 
+getPodcastById:
+SELECT * FROM podcasts WHERE id = :id;
+
+delete:
+DELETE FROM podcasts WHERE id = :id;
+
 removeAllPodcasts:
 DELETE FROM podcasts;

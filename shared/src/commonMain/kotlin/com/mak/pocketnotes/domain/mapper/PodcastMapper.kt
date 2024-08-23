@@ -70,7 +70,7 @@ internal class PodcastMapper {
         entityToModel(entity)
     }
 
-    private fun entityToModel(entity: PodcastEntity): Podcast {
+    fun entityToModel(entity: PodcastEntity): Podcast {
         return Podcast(
             id = entity.id,
             title = entity.title,
