@@ -31,7 +31,9 @@ internal class PocketNotesAPI(
         client.get("api/v2/podcasts/$id/recommendations").body()
     }
     override suspend fun getPodcastDetails(id: String): PodcastDTO = withContext(dispatcher.io) {
-        client.get("api/v2/podcasts/$id").body()
+//        TODO: remove copy
+        client.get("api/v2/podcasts/$id").body<PodcastDTO>()
+            .copy(id = id)
     }
 
     override suspend fun search(queries: Map<String, String>): SearchEpisodesDTO = withContext(dispatcher.io) {

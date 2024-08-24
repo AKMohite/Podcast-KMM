@@ -9,6 +9,7 @@ import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
+import com.mak.pocketnotes.domain.store.PodcastStore
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
@@ -68,8 +69,12 @@ private val domainModule = module {
     factory { SearchPodcast() }
 }
 
+private val storeModule = module {
+    factory { PodcastStore() }
+}
+
 internal expect fun platformModule(): Module
 
-private val sharedModules = listOf(networkModule(), dataModule, utilModule, domainModule, platformModule(), localModule)
+private val sharedModules = listOf(networkModule(), dataModule, utilModule, storeModule, domainModule, platformModule(), localModule)
 
 fun getSharedModules() = sharedModules

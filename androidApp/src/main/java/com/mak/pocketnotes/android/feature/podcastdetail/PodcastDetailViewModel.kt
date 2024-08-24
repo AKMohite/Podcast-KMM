@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 
 internal class PodcastDetailViewModel(
     val getPodcast: GetPodcast,
@@ -25,16 +27,23 @@ internal class PodcastDetailViewModel(
     }
 
     private fun loadPodcast(podcastId: String) {
-        _uiState = uiState.copy(loading = true)
-        viewModelScope.launch {
-            _uiState = try {
-                val podcast = getPodcast(podcastId)
-                val recommendations = podcastRecommendations(podcastId)
-                uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
-            } catch (error: Throwable) {
-                uiState.copy(loading = false, errorMsg = error.localizedMessage)
+        getPodcast(podcastId)
+            .onStart {
+                _uiState = uiState.copy(loading = true)
             }
-        }
+            .onCompletion {
+                _uiState = uiState.copy(loading = false, podcast = pod)
+            }
+            .launchIn(viewModelScope)
+//        viewModelScope.launch {
+//            _uiState = try {
+//                val podcast = getPodcast(podcastId)
+//                val recommendations = podcastRecommendations(podcastId)
+//                uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
+//            } catch (error: Throwable) {
+//                uiState.copy(loading = false, errorMsg = error.localizedMessage)
+//            }
+//        }
     }
 
 }

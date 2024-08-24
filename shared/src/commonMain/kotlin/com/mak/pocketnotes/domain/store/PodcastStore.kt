@@ -19,7 +19,7 @@ import org.mobilenativefoundation.store.store5.StoreBuilder
 import org.mobilenativefoundation.store.store5.Validator
 import kotlin.time.Duration.Companion.days
 
-class PodcastStore: KoinComponent {
+internal class PodcastStore: KoinComponent {
 
     private val api: IPocketNotesAPI by inject()
     private val podcastDAO: IPodcastDAO by inject()
@@ -65,5 +65,11 @@ class PodcastStore: KoinComponent {
                 }
             }
         ).build()
+//        .stream(StoreReadRequest.cached(key = id, refresh = false))
+//        .filter { storeResponse ->
+//            storeResponse is StoreReadResponse.Data
+//        }.map { storeResponse ->
+//            storeResponse.requireData()
+//        }
 
 }
