@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -28,22 +29,15 @@ internal class PodcastDetailViewModel(
 
     private fun loadPodcast(podcastId: String) {
         getPodcast(podcastId)
+            .combine(podcastRecommendations(podcastId)) { podcast, recommendations ->
+                _uiState = uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
+            }
             .onStart {
                 _uiState = uiState.copy(loading = true)
             }
             .onCompletion {
-                _uiState = uiState.copy(loading = false, podcast = pod)
-            }
-            .launchIn(viewModelScope)
-//        viewModelScope.launch {
-//            _uiState = try {
-//                val podcast = getPodcast(podcastId)
-//                val recommendations = podcastRecommendations(podcastId)
-//                uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
-//            } catch (error: Throwable) {
-//                uiState.copy(loading = false, errorMsg = error.localizedMessage)
-//            }
-//        }
+                _uiState = uiState.copy(loading = false)
+            }.launchIn(viewModelScope)
     }
 
 }

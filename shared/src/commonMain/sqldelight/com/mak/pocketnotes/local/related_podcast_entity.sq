@@ -1,0 +1,29 @@
+CREATE TABLE IF NOT EXISTS `related_podcasts` (
+    `id` TEXT PRIMARY KEY NOT NULL,
+    `podcast_id` TEXT NOT NULL,
+    `other_podcast_id` TEXT NOT NULL,
+    FOREIGN KEY(`podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE ,
+    FOREIGN KEY(`other_podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- queries
+insertPodcast:
+INSERT OR REPLACE INTO related_podcasts (id , podcast_id, other_podcast_id) VALUES ?;
+
+entries:
+SELECT * FROM related_podcasts
+WHERE podcast_id = :podcastId;
+
+getRelatedPodcasts:
+SELECT podcasts.* FROM related_podcasts INNER JOIN podcasts ON podcasts.id = related_podcasts.other_podcast_id WHERE podcast_id =:podcastId;
+
+deleteWithId:
+DELETE FROM related_podcasts
+WHERE podcast_id = :podcastId;
+
+delete:
+DELETE FROM related_podcasts
+WHERE id = :id;
+
+deleteAll:
+DELETE FROM related_podcasts;

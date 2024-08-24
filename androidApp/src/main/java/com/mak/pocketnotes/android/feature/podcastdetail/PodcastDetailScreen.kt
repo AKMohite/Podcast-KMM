@@ -77,7 +77,7 @@ private fun PodcastDetailContent(
                 LazyColumn(
                     contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
                 ) {
-                    item {
+                    item(key = "poster-image") {
                         AsyncImage(
                             placeholder = debugPlaceholder(),
                             model = podcast.image,
@@ -87,7 +87,7 @@ private fun PodcastDetailContent(
                                 .height(320.dp)
                         )
                     }
-                    item {
+                    item(key = "podcast-overview") {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -133,7 +133,7 @@ private fun PodcastDetailContent(
                             )
                         }
                     }
-                    item {
+                    item(key = "podcast-recommendations") {
                         AnimatedVisibility(visible = podcast.recommendations.isNotEmpty()) {
                             Column {
                                 Spacer(modifier = Modifier.height(8.dp))

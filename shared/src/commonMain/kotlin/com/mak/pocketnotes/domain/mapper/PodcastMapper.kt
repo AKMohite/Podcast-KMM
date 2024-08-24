@@ -5,6 +5,7 @@ import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.local.database.dao.PodcastEntity
+import com.mak.pocketnotes.local.database.dao.RelatedPodcastEntity
 
 internal class PodcastMapper {
 
@@ -28,6 +29,14 @@ internal class PodcastMapper {
 
     fun jsonToEntities(dtos: List<PodcastDTO>): List<PodcastEntity> = dtos.map { dto ->
         jsonToEntity(dto)
+    }
+
+    fun jsonToRelatedEntities(podcastId: String, dtos: List<PodcastDTO>): List<RelatedPodcastEntity> = dtos.map { dto ->
+        RelatedPodcastEntity(
+            id = "${podcastId}_${dto.id}",
+            podcast_id = podcastId,
+            other_podcast_id = dto.id!!
+        )
     }
 
     fun jsonToModel(dto: PodcastDTO) = Podcast(

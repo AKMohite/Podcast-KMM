@@ -10,6 +10,7 @@ import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
 import com.mak.pocketnotes.domain.store.PodcastStore
+import com.mak.pocketnotes.domain.store.RelatedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
@@ -25,9 +26,11 @@ import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
 import com.mak.pocketnotes.local.database.dao.IGenresDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
+import com.mak.pocketnotes.local.database.dao.IRelatedPodcastDAO
 import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
 import com.mak.pocketnotes.local.database.dao.LastSyncDAO
 import com.mak.pocketnotes.local.database.dao.PodcastDAO
+import com.mak.pocketnotes.local.database.dao.RelatedPodcastDAO
 import com.mak.pocketnotes.local.database.dao.TrendingPodcastDAO
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
@@ -44,6 +47,7 @@ private val localModule = module {
     single<ILastSyncDAO> { LastSyncDAO(get(), get()) }
     single<IGenresDAO> { GenresDAO(get(), get()) }
     single<IPodcastDAO> { PodcastDAO(get(), get()) }
+    single<IRelatedPodcastDAO> { RelatedPodcastDAO(get(), get()) }
     single<ICuratedPodcastDAO> { CuratedPodcastDAO(get(), get()) }
     single<ITrendingPodcastDAO> { TrendingPodcastDAO(get(), get()) }
 }
@@ -71,6 +75,7 @@ private val domainModule = module {
 
 private val storeModule = module {
     factory { PodcastStore() }
+    factory { RelatedPodcastsStore() }
 }
 
 internal expect fun platformModule(): Module

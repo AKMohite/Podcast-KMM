@@ -1,19 +1,25 @@
 package com.mak.pocketnotes.domain.usecase
 
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
-import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.domain.store.RelatedPodcastsStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.mobilenativefoundation.store.store5.StoreReadRequest
+import org.mobilenativefoundation.store.store5.StoreReadResponse
 
 class GetPodcastRecommendations: KoinComponent {
 
-    private val api: IPocketNotesAPI by inject()
-    private val mapper: PocketMapper by inject()
+    private val store: RelatedPodcastsStore by inject()
 
-    suspend operator fun invoke(id: String): List<Podcast> {
-        val dto = api.getPodcastRecommendations(id).recommendations ?: return emptyList()
-        val podcasts = mapper.podcast.jsonToModels(dto)
-        return podcasts
+    operator fun invoke(id: String): Flow<List<Podcast>> {
+        return store.invoke(id).stream(StoreReadRequest.cached(key = id, refresh = false))
+            .filter { storeResponse ->
+                storeResponse is StoreReadResponse.Data
+            }.map { storeResponse ->
+                storeResponse.requireData()
+            }
     }
 }
