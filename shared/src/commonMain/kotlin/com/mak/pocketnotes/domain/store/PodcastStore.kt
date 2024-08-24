@@ -29,10 +29,10 @@ class PodcastStore: KoinComponent {
 
     operator fun invoke(id: String) = StoreBuilder
         .from<String, PodcastDTO, Podcast>(
-            fetcher = Fetcher.of<String, PodcastDTO> { podcastId ->
+            fetcher = Fetcher.of { podcastId ->
                 api.getPodcastDetails(podcastId)
             },
-            sourceOfTruth = SourceOfTruth.of<String, PodcastDTO, Podcast>(
+            sourceOfTruth = SourceOfTruth.of(
                 reader = { podcastId ->
                     podcastDAO.getPodcast(podcastId)
                         .map { mapper.entityToModel(it) }
@@ -64,6 +64,6 @@ class PodcastStore: KoinComponent {
                     )
                 }
             }
-        )
+        ).build()
 
 }
