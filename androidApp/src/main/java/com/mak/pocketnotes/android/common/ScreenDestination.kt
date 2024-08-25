@@ -12,7 +12,8 @@ import androidx.navigation.navArgument
 import com.mak.pocketnotes.android.R
 
 private val fullScreenRoutes = listOf(
-    PodcastPlayer.routeWithArgs
+    PodcastPlayer.routeWithArgs,
+    PodcastDetail.routeWithArgs
 )
 internal interface ScreenDestination {
     @get:StringRes
