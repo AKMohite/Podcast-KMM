@@ -5,8 +5,20 @@ CREATE TABLE IF NOT EXISTS `episodes` (
     image TEXT NOT NULL,
     audio TEXT NOT NULL,
     audio_length INTEGER NOT NULL,
+    podcast_id TEXT NOT NULL,
     published_on INTEGER AS kotlinx.datetime.Instant NOT NULL,
     next_episode_published_on INTEGER AS kotlinx.datetime.Instant,
-    podcast_id TEXT NOT NULL,
     FOREIGN KEY(`podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+insert:
+INSERT OR REPLACE INTO episodes (id, title, description, image, audio, audio_length, published_on, next_episode_published_on, podcast_id) VALUES ?;
+
+getEpisodes:
+SELECT * FROM episodes WHERE podcast_id =:podcastId;
+
+deleteWithId:
+DELETE FROM episodes WHERE podcast_id =:podcastId;
+
+deleteAll:
+DELETE FROM episodes;

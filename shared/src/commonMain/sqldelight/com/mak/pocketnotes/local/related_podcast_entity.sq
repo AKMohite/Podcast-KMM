@@ -22,8 +22,7 @@ DELETE FROM related_podcasts
 WHERE podcast_id = :podcastId;
 
 delete:
-DELETE FROM related_podcasts
-WHERE id = :id;
+DELETE FROM related_podcasts WHERE id = :id;
 
 deleteAll:
 DELETE FROM related_podcasts;
