@@ -6,6 +6,7 @@ import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.SyncRequest
+import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
 import com.mak.pocketnotes.local.database.dao.IRelatedPodcastDAO
@@ -25,6 +26,7 @@ internal class RelatedPodcastsStore: KoinComponent {
 
     private val api: IPocketNotesAPI by inject()
     private val podcastDAO: IPodcastDAO by inject()
+    private val transactionRunner: DatabaseTransactionRunner by inject()
     private val relatedPodcastDAO: IRelatedPodcastDAO by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
     private val dispatcher: Dispatcher by inject()
@@ -45,8 +47,19 @@ internal class RelatedPodcastsStore: KoinComponent {
                 },
                 writer = { podcastId, dto ->
                     withContext(dispatcher.io) {
-                        relatedPodcastDAO.insertPodcasts(mapper.jsonToRelatedEntities(podcastId, dto))
-                        podcastDAO.insertPodcasts(mapper.jsonToEntities(dto))
+                        transactionRunner {
+                            lastSyncDAO.insertLastSync(
+                                SyncRequest.PODCAST_RECOMMENDATIONS,
+                                podcastId
+                            )
+                            relatedPodcastDAO.insertPodcasts(
+                                mapper.jsonToRelatedEntities(
+                                    podcastId,
+                                    dto
+                                )
+                            )
+                            podcastDAO.insertPodcasts(mapper.jsonToEntities(dto))
+                        }
                     }
                 },
                 deleteAll = {
