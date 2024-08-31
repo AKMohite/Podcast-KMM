@@ -21,8 +21,10 @@ import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.PocketNotesDatabase
 import com.mak.pocketnotes.local.database.SQLDatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.CuratedPodcastDAO
+import com.mak.pocketnotes.local.database.dao.EpisodeDAO
 import com.mak.pocketnotes.local.database.dao.GenresDAO
 import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
+import com.mak.pocketnotes.local.database.dao.IEpisodeDAO
 import com.mak.pocketnotes.local.database.dao.IGenresDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
@@ -47,6 +49,7 @@ private val localModule = module {
     single<ILastSyncDAO> { LastSyncDAO(get(), get()) }
     single<IGenresDAO> { GenresDAO(get(), get()) }
     single<IPodcastDAO> { PodcastDAO(get(), get()) }
+    single<IEpisodeDAO> { EpisodeDAO(get(), get()) }
     single<IRelatedPodcastDAO> { RelatedPodcastDAO(get(), get()) }
     single<ICuratedPodcastDAO> { CuratedPodcastDAO(get(), get()) }
     single<ITrendingPodcastDAO> { TrendingPodcastDAO(get(), get()) }

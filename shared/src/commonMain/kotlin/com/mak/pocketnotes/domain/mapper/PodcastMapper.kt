@@ -4,8 +4,10 @@ import com.mak.pocketnotes.data.remote.dto.EpisodeDTO
 import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.local.database.dao.EpisodeEntity
 import com.mak.pocketnotes.local.database.dao.PodcastEntity
 import com.mak.pocketnotes.local.database.dao.RelatedPodcastEntity
+import kotlinx.datetime.Instant
 
 internal class PodcastMapper {
 
@@ -52,6 +54,43 @@ internal class PodcastMapper {
 //        type = dto.type ?: "",
 //        website = dto.website ?: ""
     )
+
+    fun mapEpisodeEntities(episodes: List<EpisodeDTO>?, podcastId: String, nextEpisodeDate: Long?): List<EpisodeEntity> {
+        val podcastEpisodes = (episodes?.map {
+            mapEpisodeEntity(it, podcastId)
+        } ?: emptyList()).sortedByDescending { it.published_on }
+
+        val updatedEpisodes = mutableListOf<EpisodeEntity>()
+
+        podcastEpisodes.forEachIndexed { index, episode ->
+            val element = if (index != podcastEpisodes.size - 1) {
+                episode.copy(next_episode_published_on = podcastEpisodes.getOrNull(index + 1)?.published_on)
+            } else {
+                episode.copy(next_episode_published_on = nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) })
+            }
+            updatedEpisodes.add(
+                element
+            )
+        }
+        return updatedEpisodes.toList()
+
+    }
+
+    private fun mapEpisodeEntity(dto: EpisodeDTO, podcastId: String): EpisodeEntity {
+        return with(dto) {
+            EpisodeEntity(
+                id = id!!,
+                title = title ?: "",
+                description = description ?: "",
+                image = image ?: "",
+                audio = audio ?: "",
+                audio_length = audioLengthSec?.toLong() ?: 0L,
+                podcast_id = podcastId,
+                published_on = Instant.fromEpochMilliseconds(dto.pubDateMs ?: Instant.DISTANT_PAST.toEpochMilliseconds()),
+                next_episode_published_on = null
+            )
+        }
+    }
 
     fun getPodcastEpisodes(episodes: List<EpisodeDTO>?): List<PodcastEpisode> {
         return episodes?.map {

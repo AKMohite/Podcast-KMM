@@ -7,6 +7,7 @@ import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.SyncRequest
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
+import com.mak.pocketnotes.local.database.dao.IEpisodeDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
 import kotlinx.coroutines.flow.flowOn
@@ -25,6 +26,7 @@ internal class PodcastStore: KoinComponent {
     private val api: IPocketNotesAPI by inject()
     private val podcastDAO: IPodcastDAO by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
+    private val episodeDAO: IEpisodeDAO by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
     private val dispatcher: Dispatcher by inject()
     private val mapper: PodcastMapper by inject()
@@ -48,6 +50,12 @@ internal class PodcastStore: KoinComponent {
                                 podcastId
                             )
                             podcastDAO.insertPodcast(mapper.jsonToEntity(dto))
+                            val episodes = mapper.mapEpisodeEntities(
+                                dto.episodes,
+                                podcastId,
+                                dto.nextEpisodeDate
+                            )
+                            episodeDAO.insertEpisodes(episodes)
                         }
                     }
                 },

@@ -4,6 +4,7 @@ import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
 import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.local.Curated_sections
+import com.mak.pocketnotes.local.Episodes
 import com.mak.pocketnotes.local.Genres
 import com.mak.pocketnotes.local.Last_syncs
 import com.mak.pocketnotes.local.Trending_podcasts
@@ -25,6 +26,10 @@ internal class PocketNotesDatabase(
             last_syncsAdapter = Last_syncs.Adapter(
                 request_typeAdapter = SyncRequestColumnAdapter,
                 timestampAdapter = InstantStringColumnAdapter
+            ),
+            episodesAdapter = Episodes.Adapter(
+                published_onAdapter = InstantStringColumnAdapter,
+                next_episode_published_onAdapter = InstantStringColumnAdapter
             )
         )
     }

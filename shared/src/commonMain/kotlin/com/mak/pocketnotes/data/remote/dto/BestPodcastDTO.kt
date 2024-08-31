@@ -39,6 +39,8 @@ internal data class PodcastDTO(
     val description: String? = null,
     @SerialName("earliest_pub_date_ms")
     val earliestPubDateMs: Long? = null,
+    @SerialName("next_episode_pub_date")
+    val nextEpisodeDate: Long? = null, // this is used for pagination
     @SerialName("email")
     val email: String? = null,
     @SerialName("explicit_content")
