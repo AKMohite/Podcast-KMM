@@ -58,21 +58,16 @@ internal class PodcastMapper {
     fun mapEpisodeEntities(episodes: List<EpisodeDTO>?, podcastId: String, nextEpisodeDate: Long?): List<EpisodeEntity> {
         val podcastEpisodes = (episodes?.map {
             mapEpisodeEntity(it, podcastId)
-        } ?: emptyList()).sortedByDescending { it.published_on }
+        } ?: return emptyList()).sortedByDescending { it.published_on }
 
-        val updatedEpisodes = mutableListOf<EpisodeEntity>()
-
-        podcastEpisodes.forEachIndexed { index, episode ->
+        return podcastEpisodes.mapIndexed { index, episode ->
             val element = if (index != podcastEpisodes.size - 1) {
                 episode.copy(next_episode_published_on = podcastEpisodes.getOrNull(index + 1)?.published_on)
             } else {
                 episode.copy(next_episode_published_on = nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) })
             }
-            updatedEpisodes.add(
-                element
-            )
+            element
         }
-        return updatedEpisodes.toList()
 
     }
 
