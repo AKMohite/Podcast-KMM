@@ -22,7 +22,7 @@ internal class PocketNotesAPI(
     }
     override suspend fun getBestPodcasts(queryMap: Map<String, String>): BestPodcastDTO = withContext(dispatcher.io) {
         val queries= getAllQueries(queryMap)
-        client.get("api/v2/best_podcasts?page=$queries").body()
+        client.get("api/v2/best_podcasts?$queries").body()
     }
     override suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO = withContext(dispatcher.io) {
         client.get("api/v2/curated_podcasts").body()
@@ -30,9 +30,10 @@ internal class PocketNotesAPI(
     override suspend fun getPodcastRecommendations(id: String): PodcastRecommendationsDTO = withContext(dispatcher.io) {
         client.get("api/v2/podcasts/$id/recommendations").body()
     }
-    override suspend fun getPodcastDetails(id: String): PodcastDTO = withContext(dispatcher.io) {
+    override suspend fun getPodcastDetails(id: String, queryMap: Map<String, String>): PodcastDTO = withContext(dispatcher.io) {
+        val queries = getAllQueries(queryMap)
 //        TODO: remove copy
-        client.get("api/v2/podcasts/$id").body<PodcastDTO>()
+        client.get("api/v2/podcasts/$id?$queries").body<PodcastDTO>()
             .copy(id = id)
     }
 
@@ -51,6 +52,6 @@ internal interface IPocketNotesAPI {
     suspend fun getBestPodcasts(queryMap: Map<String, String>): BestPodcastDTO
     suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO
     suspend fun getPodcastRecommendations(id: String): PodcastRecommendationsDTO
-    suspend fun getPodcastDetails(id: String): PodcastDTO
+    suspend fun getPodcastDetails(id: String, queryMap: Map<String, String> = emptyMap()): PodcastDTO
     suspend fun search(queries: Map<String, String>): SearchEpisodesDTO
 }

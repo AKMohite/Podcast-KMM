@@ -10,9 +10,10 @@ import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.IEpisodeDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.mobilenativefoundation.store.store5.Fetcher
@@ -31,24 +32,27 @@ internal class PodcastStore: KoinComponent {
     private val dispatcher: Dispatcher by inject()
     private val mapper: PodcastMapper by inject()
 
-    operator fun invoke(id: String) = StoreBuilder
+    operator fun invoke() = StoreBuilder
         .from<String, PodcastDTO, Podcast>(
             fetcher = Fetcher.of { podcastId ->
                 api.getPodcastDetails(podcastId)
             },
             sourceOfTruth = SourceOfTruth.of(
                 reader = { podcastId ->
-                    podcastDAO.getPodcast(podcastId)
-                        .map { mapper.entityToModel(it) }
-                        .flowOn(dispatcher.computation)
+//                    TODO maybe pass only podcasts and not all episodes
+                    combine(
+                        podcastDAO.getPodcast(podcastId),
+                        episodeDAO.getEpisodes(
+                            podcastId = podcastId, nextEpisodeDate = Clock.System.now()
+                        )
+                    ) { podcastEntity, episodeEntities ->
+                        val podcast = mapper.entityToModel(podcastEntity)
+                        podcast.copy(episodes = mapper.episodeEntityToModels(episodeEntities))
+                    }.flowOn(dispatcher.computation)
                 },
                 writer = { podcastId, dto ->
                     withContext(dispatcher.io) {
                         transactionRunner {
-                            lastSyncDAO.insertLastSync(
-                                SyncRequest.PODCAST_DETAILS,
-                                podcastId
-                            )
                             podcastDAO.insertPodcast(mapper.jsonToEntity(dto))
                             val episodes = mapper.mapEpisodeEntities(
                                 dto.episodes,
@@ -56,6 +60,14 @@ internal class PodcastStore: KoinComponent {
                                 dto.nextEpisodeDate
                             )
                             episodeDAO.insertEpisodes(episodes)
+                            lastSyncDAO.insertLastSync(
+                                SyncRequest.PODCAST_DETAILS,
+                                podcastId
+                            )
+                            lastSyncDAO.insertLastSync(
+                                SyncRequest.PODCAST_EPISODES,
+                                podcastId
+                            )
                         }
                     }
                 },
@@ -75,7 +87,7 @@ internal class PodcastStore: KoinComponent {
                 withContext(dispatcher.io) {
                     lastSyncDAO.isRequestValid(
                         requestType = SyncRequest.PODCAST_DETAILS,
-                        threshold = 6.days,
+                        threshold = 5.days,
                         entityId = podcast.id
                     )
                 }

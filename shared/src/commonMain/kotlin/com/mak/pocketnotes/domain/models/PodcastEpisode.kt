@@ -11,6 +11,7 @@ data class PodcastEpisode(
     val listennotesUrl: String,
     val thumbnail: String,
     val uploadedAt: Long,
+    val nextEpisodeAt: Long? = null,
     val audio: String,
     val duration: Int // in seconds
 ) {

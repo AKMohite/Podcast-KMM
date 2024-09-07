@@ -6,6 +6,7 @@ import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Episodes
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 
 internal typealias EpisodeEntity = Episodes
 
@@ -32,6 +33,12 @@ internal class EpisodeDAO(
             .mapToList(dispatcher.io)
     }
 
+    override fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>> {
+        return dbQuery.getPaginatedEpisodes(podcastId, nextEpisodeDate = nextEpisodeDate)
+            .asFlow()
+            .mapToList(dispatcher.io)
+    }
+
     override fun removeEpisodes(podcastId: String) {
         dbQuery.deleteWithId(podcastId)
     }
@@ -45,6 +52,7 @@ internal interface IEpisodeDAO {
     fun insert(entity: EpisodeEntity)
     fun insertEpisodes(entities: List<EpisodeEntity>)
     fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>>
+    fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
     fun removeEpisodes(podcastId: String)
     fun removeEpisodes()
 }

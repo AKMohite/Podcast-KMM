@@ -18,7 +18,7 @@ class GetPodcast: KoinComponent {
     private val dispatcher: Dispatcher by inject()
 
     operator fun invoke(id: String): Flow<Podcast> {
-        return store.invoke(id).stream(StoreReadRequest.cached(id, refresh = false))
+        return store().stream(StoreReadRequest.cached(id, refresh = false))
             .filter { response ->
                 response is StoreReadResponse.Data
             }.map { response ->

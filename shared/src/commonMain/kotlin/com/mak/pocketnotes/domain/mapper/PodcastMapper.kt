@@ -55,6 +55,10 @@ internal class PodcastMapper {
 //        website = dto.website ?: ""
     )
 
+    /**
+     * map network episode dto with each episode having respective next episode dates
+     * and for last episode to have next paginated date
+     */
     fun mapEpisodeEntities(episodes: List<EpisodeDTO>?, podcastId: String, nextEpisodeDate: Long?): List<EpisodeEntity> {
         val podcastEpisodes = (episodes?.map {
             mapEpisodeEntity(it, podcastId)
@@ -77,6 +81,8 @@ internal class PodcastMapper {
                 id = id!!,
                 title = title ?: "",
                 description = description ?: "",
+                thumbnail = thumbnail ?: "",
+                listen_notes_url = listennotesUrl ?: "",
                 image = image ?: "",
                 audio = audio ?: "",
                 audio_length = audioLengthSec?.toLong() ?: 0L,
@@ -103,6 +109,7 @@ internal class PodcastMapper {
                 listennotesUrl = listennotesUrl ?: "",
                 thumbnail = thumbnail ?: "",
                 uploadedAt = pubDateMs ?: 0,
+                nextEpisodeAt = null,
                 audio = audio ?: "",
                 duration = audioLengthSec ?: 0
             )
@@ -122,6 +129,25 @@ internal class PodcastMapper {
             thumbnail = entity.thumbnail ?: "",
             publisher = entity.publisher
         )
+    }
+
+    fun episodeEntityToModels(entities: List<EpisodeEntity>): List<PodcastEpisode> {
+        return entities.map { entity ->
+            with(entity) {
+                PodcastEpisode(
+                    id = id,
+                    title = title,
+                    description = description,
+                    image = image,
+                    listennotesUrl = listen_notes_url,
+                    thumbnail = thumbnail,
+                    uploadedAt = published_on.toEpochMilliseconds(),
+                    nextEpisodeAt = next_episode_published_on?.toEpochMilliseconds(),
+                    audio = audio,
+                    duration = audio_length.toInt()
+                )
+            }
+        }
     }
 
 }

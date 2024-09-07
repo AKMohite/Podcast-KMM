@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS `episodes` (
     id TEXT PRIMARY KEY NOT NULL,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
+    listen_notes_url TEXT NOT NULL,
+    thumbnail TEXT NOT NULL,
     image TEXT NOT NULL,
     audio TEXT NOT NULL,
     audio_length INTEGER NOT NULL,
@@ -12,10 +14,13 @@ CREATE TABLE IF NOT EXISTS `episodes` (
 );
 
 insert:
-INSERT OR REPLACE INTO episodes (id, title, description, image, audio, audio_length, published_on, next_episode_published_on, podcast_id) VALUES ?;
+INSERT OR REPLACE INTO episodes (id, title, description, listen_notes_url, thumbnail, image, audio, audio_length, published_on, next_episode_published_on, podcast_id) VALUES ?;
 
 getEpisodes:
 SELECT * FROM episodes WHERE podcast_id =:podcastId;
+
+getPaginatedEpisodes:
+SELECT * FROM episodes WHERE podcast_id =:podcastId AND published_on >=:nextEpisodeDate LIMIT 10;
 
 deleteWithId:
 DELETE FROM episodes WHERE podcast_id =:podcastId;
