@@ -48,7 +48,7 @@ internal class PodcastMapper {
         image = dto.image ?: "",
         thumbnail = dto.thumbnail ?: "",
         publisher = dto.publisher ?: "",
-        episodes = getPodcastEpisodes(dto.episodes),
+        episodes = getPodcastEpisodes(dto.episodes, dto.id),
 //        listenScore = dto.listenScore?.toString()?.toIntOrNull() ?: 0,
 //        totalEpisodes = dto.totalEpisodes ?: 0,
 //        type = dto.type ?: "",
@@ -93,9 +93,11 @@ internal class PodcastMapper {
         }
     }
 
-    fun getPodcastEpisodes(episodes: List<EpisodeDTO>?): List<PodcastEpisode> {
+    fun getPodcastEpisodes(episodes: List<EpisodeDTO>?, id: String): List<PodcastEpisode> {
         return episodes?.map {
-            getPodcastEpisode(it)
+            getPodcastEpisode(it).copy(
+                podcastId = id
+            )
         } ?: emptyList()
     }
 
@@ -111,7 +113,8 @@ internal class PodcastMapper {
                 uploadedAt = pubDateMs ?: 0,
                 nextEpisodeAt = null,
                 audio = audio ?: "",
-                duration = audioLengthSec ?: 0
+                duration = audioLengthSec ?: 0,
+                podcastId = ""
             )
         }
     }
@@ -144,7 +147,8 @@ internal class PodcastMapper {
                     uploadedAt = published_on.toEpochMilliseconds(),
                     nextEpisodeAt = next_episode_published_on?.toEpochMilliseconds(),
                     audio = audio,
-                    duration = audio_length.toInt()
+                    duration = audio_length.toInt(),
+                    podcastId = podcast_id
                 )
             }
         }

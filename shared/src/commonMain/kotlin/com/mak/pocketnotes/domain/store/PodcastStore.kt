@@ -10,10 +10,9 @@ import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.IEpisodeDAO
 import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.mobilenativefoundation.store.store5.Fetcher
@@ -39,16 +38,10 @@ internal class PodcastStore: KoinComponent {
             },
             sourceOfTruth = SourceOfTruth.of(
                 reader = { podcastId ->
-//                    TODO maybe pass only podcasts and not all episodes
-                    combine(
-                        podcastDAO.getPodcast(podcastId),
-                        episodeDAO.getEpisodes(
-                            podcastId = podcastId, nextEpisodeDate = Clock.System.now()
-                        )
-                    ) { podcastEntity, episodeEntities ->
-                        val podcast = mapper.entityToModel(podcastEntity)
-                        podcast.copy(episodes = mapper.episodeEntityToModels(episodeEntities))
-                    }.flowOn(dispatcher.computation)
+                    podcastDAO.getPodcast(podcastId)
+                        .map { podcastEntity ->
+                            mapper.entityToModel(podcastEntity)
+                        }.flowOn(dispatcher.computation)
                 },
                 writer = { podcastId, dto ->
                     withContext(dispatcher.io) {

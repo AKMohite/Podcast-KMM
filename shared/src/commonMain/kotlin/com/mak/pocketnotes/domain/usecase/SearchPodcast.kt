@@ -23,7 +23,7 @@ class SearchPodcast: KoinComponent {
             "type" to "podcast"
         )
         val episodeDTOs = api.search(episodeQuery).results ?: emptyList()
-        val episodes = mapper.podcast.getPodcastEpisodes(episodeDTOs)
+        val episodes = mapper.podcast.getPodcastEpisodes(episodeDTOs, throw IllegalArgumentException("Where can I get podcast ids for episodes?"))
 //        val podcasts = api.search(podcastQuery)
         val podcasts = samplePodcasts
         return SearchResults(episodes, podcasts)

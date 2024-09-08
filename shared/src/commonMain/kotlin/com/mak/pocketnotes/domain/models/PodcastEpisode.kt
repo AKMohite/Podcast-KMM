@@ -5,6 +5,7 @@ import io.ktor.util.date.GMTDate
 @kotlinx.serialization.Serializable
 data class PodcastEpisode(
     val id: String,
+    val podcastId: String = "",
     val title: String,
     val description: String,
     val image: String,

@@ -5,8 +5,11 @@ import com.mak.pocketnotes.data.remote.dto.PodcastDTO
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.domain.models.SyncRequest
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.IEpisodeDAO
+import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
+import com.mak.pocketnotes.local.database.dao.LastSyncDAO.Companion.DEFAULT_ID
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -16,6 +19,8 @@ import org.koin.core.component.inject
 import org.mobilenativefoundation.store.store5.Fetcher
 import org.mobilenativefoundation.store.store5.SourceOfTruth
 import org.mobilenativefoundation.store.store5.StoreBuilder
+import org.mobilenativefoundation.store.store5.Validator
+import kotlin.time.Duration.Companion.days
 
 /**
  * Pair of Podcast id and next episode date
@@ -27,6 +32,7 @@ internal class EpisodeStore: KoinComponent {
     private val api: IPocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val episodeDAO: IEpisodeDAO by inject()
+    private val lastSyncDAO: ILastSyncDAO by inject()
     private val dispatcher: Dispatcher by inject()
     private val mapper: PodcastMapper by inject()
 
@@ -67,6 +73,17 @@ internal class EpisodeStore: KoinComponent {
 //                    }
 //                }
             )
+        )
+        .validator(
+            Validator.by { episodes ->
+                withContext(dispatcher.io) {
+                    lastSyncDAO.isRequestValid(
+                        requestType = SyncRequest.PODCAST_EPISODES,
+                        threshold = 5.days,
+                        entityId = episodes.firstOrNull()?.podcastId ?: DEFAULT_ID
+                    )
+                }
+            }
         ).build()
 //        .stream(StoreReadRequest.cached(key = id, refresh = false))
 //        .filter { storeResponse ->

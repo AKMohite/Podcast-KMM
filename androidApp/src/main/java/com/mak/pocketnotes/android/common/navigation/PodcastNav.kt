@@ -142,7 +142,7 @@ internal fun PodcastNav(
                 )
                 PodcastDetailScreen(
                     state = detailViewModel.uiState,
-                    movieId = movieId,
+                    episodes = detailViewModel.episodesState,
                     startPodcast = {
                         detailViewModel.uiState.podcast?.episodes?.let { episodes ->
                             startService()

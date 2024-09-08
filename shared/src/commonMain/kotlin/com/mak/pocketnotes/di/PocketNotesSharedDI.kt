@@ -9,10 +9,12 @@ import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
+import com.mak.pocketnotes.domain.store.EpisodeStore
 import com.mak.pocketnotes.domain.store.PodcastStore
 import com.mak.pocketnotes.domain.store.RelatedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.GetPodcast
+import com.mak.pocketnotes.domain.usecase.GetPodcastEpisodes
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
@@ -68,16 +70,18 @@ private val utilModule = module {
 private val domainModule = module {
     factory { GetGenres() }
     factory { RefreshBestPodcasts() }
-    factory { BestPodcastsStore() }
     factory { RefreshCuratedPodcasts() }
-    factory { CuratedPodcastsStore() }
     factory { GetPodcast() }
+    factory { GetPodcastEpisodes() }
     factory { GetPodcastRecommendations() }
     factory { SearchPodcast() }
 }
 
 private val storeModule = module {
+    factory { CuratedPodcastsStore() }
+    factory { BestPodcastsStore() }
     factory { PodcastStore() }
+    factory { EpisodeStore() }
     factory { RelatedPodcastsStore() }
 }
 

@@ -45,14 +45,15 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun PodcastDetailScreen(
-    movieId: String,
     state: PodcastDetailState,
+    episodes: List<PodcastEpisode>,
     startPodcast: () -> Unit,
     gotoDetails: (String) -> Unit
 ) {
     PodcastDetailContent(
         uiState = state,
         startPodcast = startPodcast,
+        episodes = episodes,
         gotoDetails = gotoDetails
     )
 }
@@ -61,8 +62,9 @@ internal fun PodcastDetailScreen(
 private fun PodcastDetailContent(
     modifier: Modifier = Modifier,
     uiState: PodcastDetailState,
-    startPodcast: () -> Unit,
-    gotoDetails: (String) -> Unit
+    episodes: List<PodcastEpisode>,
+    gotoDetails: (String) -> Unit,
+    startPodcast: () -> Unit
 ) {
     Box(
         contentAlignment = Alignment.Center
@@ -161,7 +163,7 @@ private fun PodcastDetailContent(
                         }
                     }
                     items(
-                        items = podcast.episodes,
+                        items = episodes,
                         key = { episode: PodcastEpisode -> episode.id }
                     ) { episode ->
                         Column {
@@ -192,8 +194,9 @@ private fun PodcastDetailScreenPreview() {
             uiState = PodcastDetailState(
                 podcast = samplePodcasts[0]
             ),
-            startPodcast = {},
-            gotoDetails = {}
+            episodes = samplePodcasts.flatMap { it.episodes },
+            gotoDetails = {},
+            startPodcast = {}
         )
     }
 }
