@@ -8,7 +8,7 @@ insertCuratedSection:
 INSERT OR REPLACE INTO curated_sections (`id`, `title`, `page`) VALUES ?;
 
 curatedSectionWithPodcast:
-SELECT cs.id, cs.title AS sectionTitle, cp.id AS podcastId, p.title AS podcastTitle, p.thumbnail, p.image, p.publisher FROM curated_sections AS cs INNER JOIN curated_podcasts AS cp ON cp.section_id = cs.id INNER JOIN podcasts AS p ON cp.podcast_id = p.id;
+SELECT cs.id, cs.title AS sectionTitle, cp.podcast_id AS podcastId, p.title AS podcastTitle, p.thumbnail, p.image, p.publisher FROM curated_sections AS cs INNER JOIN curated_podcasts AS cp ON cp.section_id = cs.id INNER JOIN podcasts AS p ON cp.podcast_id = p.id;
 
 deletePage:
 DELETE FROM curated_sections WHERE `page`=:page;
