@@ -62,16 +62,16 @@ internal class EpisodeStore: KoinComponent {
                         }
                     }
                 },
-//                deleteAll = {
+                deleteAll = {
 //                    withContext(dispatcher.io) {
-//                        podcastDAO.removePodcasts()
+//                        episodeDAO.removeEpisodes()
 //                    }
-//                },
-//                delete = { podcastId ->
-//                    withContext(dispatcher.io) {
-//                        podcastDAO.removePodcast(podcastId)
-//                    }
-//                }
+                },
+                delete = { (podcastId, nextDate) ->
+                    withContext(dispatcher.io) {
+                        episodeDAO.removeEpisodes(podcastId, Instant.fromEpochMilliseconds(nextDate))
+                    }
+                }
             )
         )
         .validator(

@@ -20,10 +20,13 @@ getEpisodes:
 SELECT * FROM episodes WHERE podcast_id =:podcastId;
 
 getPaginatedEpisodes:
-SELECT * FROM episodes WHERE podcast_id =:podcastId AND published_on >=:nextEpisodeDate LIMIT 10;
+SELECT * FROM episodes WHERE podcast_id =:podcastId AND published_on <=:nextEpisodeDate LIMIT 10;
 
 deleteWithId:
 DELETE FROM episodes WHERE podcast_id =:podcastId;
+
+removeEpisode:
+DELETE FROM episodes WHERE podcast_id=:podcastId AND published_on <=:nextEpisodeDate;
 
 deleteAll:
 DELETE FROM episodes;

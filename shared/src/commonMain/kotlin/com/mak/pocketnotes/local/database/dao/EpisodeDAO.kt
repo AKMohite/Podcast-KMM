@@ -43,6 +43,10 @@ internal class EpisodeDAO(
         dbQuery.deleteWithId(podcastId)
     }
 
+    override fun removeEpisodes(podcastId: String, nextDate: Instant) {
+        dbQuery.removeEpisode(podcastId, nextDate)
+    }
+
     override fun removeEpisodes() {
         dbQuery.deleteAll()
     }
@@ -55,4 +59,5 @@ internal interface IEpisodeDAO {
     fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
     fun removeEpisodes(podcastId: String)
     fun removeEpisodes()
+    fun removeEpisodes(podcastId: String, nextDate: Instant)
 }

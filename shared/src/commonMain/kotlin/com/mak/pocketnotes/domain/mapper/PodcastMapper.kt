@@ -77,8 +77,9 @@ internal class PodcastMapper {
 
     private fun mapEpisodeEntity(dto: EpisodeDTO, podcastId: String): EpisodeEntity {
         return with(dto) {
+//            todo id = id as episodes has unique-id
             EpisodeEntity(
-                id = id!!,
+                id = "$podcastId-$id",
                 title = title ?: "",
                 description = description ?: "",
                 thumbnail = thumbnail ?: "",

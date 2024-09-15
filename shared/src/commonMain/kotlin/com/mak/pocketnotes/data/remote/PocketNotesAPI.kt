@@ -34,6 +34,7 @@ internal class PocketNotesAPI(
         val queries = getAllQueries(queryMap)
 //        TODO: remove copy
         client.get("api/v2/podcasts/$id?$queries").body<PodcastDTO>()
+            .copy(id = id)
     }
 
     override suspend fun search(queries: Map<String, String>): SearchEpisodesDTO = withContext(dispatcher.io) {
