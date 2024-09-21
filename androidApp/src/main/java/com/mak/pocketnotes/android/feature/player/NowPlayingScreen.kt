@@ -73,7 +73,8 @@ private fun NowPlayingContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 6.dp)
+            .padding(horizontal = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PlayerHeader(
             modifier = Modifier
@@ -85,8 +86,8 @@ private fun NowPlayingContent(
         Spacer(modifier = Modifier.height(36.dp))
         AsyncImage(
             modifier = Modifier
-                .size(200.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .size(350.dp)
+                .clip(RoundedCornerShape(2.dp))
                 .align(Alignment.CenterHorizontally),
             model = episode.image,
             contentDescription = episode.title,
@@ -96,8 +97,14 @@ private fun NowPlayingContent(
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = episode.title,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            text = "Podcast title", // TODO map title
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.weight(1f))
