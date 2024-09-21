@@ -3,11 +3,7 @@ package com.mak.pocketnotes.android.feature.player.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mak.pocketnotes.android.R
@@ -32,18 +29,24 @@ internal fun PlaybackController(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.Center,
     ) {
-        IconButton(onClick = onShuffleClick) {
-//            TODO change drawable
+//        IconButton(onClick = onShuffleClick) {
+////            TODO change drawable
+//            Icon(
+//                imageVector = Icons.Filled.Refresh,
+//                contentDescription = stringResource(R.string.player_shuffle)
+//            )
+//        }
+        IconButton(onClick = {}) {
             Icon(
-                imageVector = Icons.Filled.Refresh,
-                contentDescription = stringResource(R.string.player_shuffle)
+                painter = painterResource(R.drawable.icon_previous_ten),
+                contentDescription = stringResource(R.string.player_backward)
             )
         }
         IconButton(onClick = previousClick) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                painter = painterResource(R.drawable.icon_previous),
                 contentDescription = stringResource(R.string.player_previous)
             )
         }
@@ -55,16 +58,22 @@ internal fun PlaybackController(
         }
         IconButton(onClick = nextClick) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                painter = painterResource(R.drawable.icon_next),
                 contentDescription = stringResource(R.string.player_next)
             )
         }
         IconButton(onClick = {}) {
             Icon(
-                imageVector = Icons.Filled.FavoriteBorder,
-                contentDescription = stringResource(R.string.player_favorite)
+                painter = painterResource(R.drawable.icon_forward_ten),
+                contentDescription = stringResource(R.string.player_forward)
             )
         }
+//        IconButton(onClick = {}) {
+//            Icon(
+//                imageVector = Icons.Filled.FavoriteBorder,
+//                contentDescription = stringResource(R.string.player_favorite)
+//            )
+//        }
     }
 }
 

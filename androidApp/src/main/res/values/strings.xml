@@ -14,6 +14,10 @@
     <string name="player_previous">Player previous button</string>
     <string name="player_play_pause">Player play pause button</string>
     <string name="player_next">Player next button</string>
+    <string name="player_forward">Player forward 10 seconds</string>
+    <string name="player_speed">Player speed</string>
+    <string name="player_queue">Player queue</string>
+    <string name="player_backward">Player backward 10 seconds</string>
     <string name="player_favorite">Player favorite button</string>
     <string name="player_available_device">Available device button</string>
     <string name="player_share">Player share content button</string>
