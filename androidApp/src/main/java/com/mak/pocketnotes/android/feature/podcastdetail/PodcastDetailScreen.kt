@@ -77,7 +77,7 @@ private fun PodcastDetailContent(
             ) {
 
                 LazyColumn(
-                    contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp)
+                    contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
                     item(key = "poster-image") {
                         AsyncImage(
@@ -86,7 +86,7 @@ private fun PodcastDetailContent(
                             contentDescription = podcast.title,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(320.dp)
+                                .height(300.dp)
                         )
                     }
                     item(key = "podcast-overview") {
@@ -145,7 +145,9 @@ private fun PodcastDetailContent(
                                     style = MaterialTheme.typography.headlineSmall,
                                     fontSize = 20.sp
                                 )
-                                LazyRow {
+                                LazyRow(
+                                    contentPadding = PaddingValues(horizontal = 8.dp)
+                                ) {
                                     items(
                                         items = podcast.recommendations,
                                         key = { recommendation: Podcast -> recommendation.id }
@@ -167,7 +169,11 @@ private fun PodcastDetailContent(
                         key = { episode: PodcastEpisode -> episode.id }
                     ) { episode ->
                         Column {
-                            PodcastEpisodeItem(episode = episode)
+                            PodcastEpisodeItem(
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp),
+                                episode = episode
+                            )
                             Spacer(modifier = Modifier.height(4.dp))
                         }
                     }
