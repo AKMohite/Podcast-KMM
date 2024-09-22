@@ -144,7 +144,7 @@ internal fun PodcastNav(
                     state = detailViewModel.uiState,
                     episodes = detailViewModel.episodesState,
                     startPodcast = {
-                        detailViewModel.uiState.podcast?.episodes?.let { episodes ->
+                        detailViewModel.episodesState.let { episodes ->
                             startService()
                             mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
                         }
