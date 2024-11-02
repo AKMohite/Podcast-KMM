@@ -27,27 +27,27 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
 
         create("staging") {
-            initWith(getByName("debug"))
+//            initWith(getByName("debug"))
             applicationIdSuffix = ".debugStaging"
-//            TODO enable code obfuscation
-//            isMinifyEnabled = true
-//            isShrinkResources = true
-            isDebuggable = true
+            isMinifyEnabled = true
+            isShrinkResources = true
+//            isDebuggable = true
             matchingFallbacks += listOf("debug")
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 
