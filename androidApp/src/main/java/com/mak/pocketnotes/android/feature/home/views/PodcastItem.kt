@@ -16,7 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -87,7 +87,7 @@ internal fun PodcastItem(
             .width(200.dp)
             .height(220.dp)
             .clickable { gotoDetails(podcast) },
-        shape = RoundedCornerShape(8.dp)
+        shape = MaterialTheme.shapes.medium
     ) {
         Column {
             Box(
@@ -100,7 +100,7 @@ internal fun PodcastItem(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(bottomStart = 2.dp, bottomEnd = 2.dp)),
+                        .clip(MaterialTheme.shapes.small.copy(bottomStart = CornerSize(2.dp), bottomEnd = CornerSize(2.dp))),
                     placeholder = debugPlaceholder()
 
                 )

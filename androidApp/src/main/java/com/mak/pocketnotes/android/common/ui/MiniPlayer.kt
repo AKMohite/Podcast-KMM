@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
@@ -42,7 +41,7 @@ internal fun MiniPlayer(
     Row(
         //        TODO add image palette colors
         modifier = modifier
-            .clip(RoundedCornerShape(6.dp))
+            .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colorScheme.tertiary)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -50,7 +49,7 @@ internal fun MiniPlayer(
         AsyncImage(
             modifier = Modifier
                 .size(30.dp)
-                .clip(RoundedCornerShape(4.dp)),
+                .clip(MaterialTheme.shapes.small),
             model = episode.image,
             contentDescription = episode.title,
             contentScale = ContentScale.Crop,

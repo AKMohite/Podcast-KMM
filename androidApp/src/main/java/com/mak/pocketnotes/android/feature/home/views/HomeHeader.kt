@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -79,7 +78,7 @@ internal fun HomeHeader(
                 Box(
                     modifier = Modifier
                         .padding(2.dp)
-                        .clip(CircleShape)
+                        .clip(MaterialTheme.shapes.medium)
                         .clickable {
                             coroutineScope.launch {
                                 pagerState.animateScrollToPage(iteration)

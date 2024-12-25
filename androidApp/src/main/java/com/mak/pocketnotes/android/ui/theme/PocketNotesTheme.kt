@@ -81,7 +81,7 @@ fun PocketNotesTheme(
     MaterialTheme(
         colorScheme = colors,
         typography = typography,
-        shapes = shapes,
+        shapes = roundShapes,
         content = content
     )
 }
