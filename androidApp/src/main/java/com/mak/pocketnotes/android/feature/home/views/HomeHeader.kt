@@ -1,6 +1,5 @@
 package com.mak.pocketnotes.android.feature.home.views
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,8 +29,9 @@ import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeHeader(
     modifier: Modifier = Modifier,
@@ -37,6 +39,16 @@ internal fun HomeHeader(
     onPodcastClick: (String) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { podcasts.size })
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = pagerState.settledPage) {
+        launch {
+            delay(5_500)
+            val target = if (pagerState.currentPage == pagerState.pageCount - 1) 0 else pagerState.currentPage + 1
+            pagerState.animateScrollToPage(target)
+        }
+    }
+
     Column(
         modifier = modifier
     ) {
@@ -62,13 +74,19 @@ internal fun HomeHeader(
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(pagerState.pageCount) { iteration ->
-                val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+                val size = if (pagerState.currentPage == iteration) 12.dp else 6.dp
+                val color = if (pagerState.currentPage == iteration) Color.LightGray else Color.DarkGray
                 Box(
                     modifier = Modifier
                         .padding(2.dp)
                         .clip(CircleShape)
+                        .clickable {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(iteration)
+                            }
+                        }
                         .background(color)
-                        .size(8.dp)
+                        .size(height = 6.dp, width = size)
                 )
             }
         }
