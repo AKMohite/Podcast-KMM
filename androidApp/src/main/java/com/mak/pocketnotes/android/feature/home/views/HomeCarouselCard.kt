@@ -49,13 +49,15 @@ internal fun HomeCarouselCard(
                 text = podcast.title,
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
                 text = podcast.publisher,
                 style = MaterialTheme.typography.bodySmall,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }
