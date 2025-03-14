@@ -6,21 +6,19 @@ versionCode = "1"
 versionName = "0.0.1"
 
 accompanist = "0.36.0"
+agp = "8.9.0"
 coil = "2.7.0"
-composeBom = "2024.09.02"
+composeBom = "2025.02.00"
 coroutines = "1.9.0"
 detekt = "1.21.0"
-gradlePlugin = "8.9.0"
-koin = "3.5.6"
-koinCompose = "3.4.1"
-kotlin = "1.9.24"
-kotlinCompiler = "1.5.14"
+koin = "4.0.2"
+kotlin = "2.1.0"
 kotlinxDatetime = "0.6.1"
-ktor = "2.3.12"
+ktor = "3.0.1"
 legacySupportV4 = "1.0.0"
-media3Exoplayer = "1.4.1"
-navigation = "2.8.1"
-skie= "0.8.3"
+media3Exoplayer = "1.5.1"
+navigation = "2.8.9"
+skie= "0.10.1"
 sqldelight= "2.0.2"
 store5 = "5.1.0-alpha02"
 
@@ -39,7 +37,7 @@ compose-material = { group = "androidx.compose.material3", name = "material3" }
 compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinCompose" }
+koin-android-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -58,6 +56,9 @@ store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "st
 compose = [ "androidx-navigation", "compose-coil", "compose-material", "compose-ui-preview" ]
 
 [plugins]
-android-app = { id = "com.android.application", version.ref = "gradlePlugin" }
-android-library = { id = "com.android.library", version.ref = "gradlePlugin" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

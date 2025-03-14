@@ -1,12 +1,13 @@
 plugins {
     //trick: for the same plugin versions in all sub-modules
 //    val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs") as org.gradle.accessors.dm.LibrariesForLibs
-    alias(libs.plugins.android.app) apply false
-    alias(libs.plugins.android.library) apply false
+    //trick: for the same plugin versions in all sub-modules
+    alias(libs.plugins.androidApplication).apply(false)
+    alias(libs.plugins.androidLibrary).apply(false)
+    alias(libs.plugins.kotlinAndroid).apply(false)
+    alias(libs.plugins.kotlinMultiplatform).apply(false)
+    alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.detekt) apply false
-//    TODO how to apply kotlin plugin
-    kotlin("android").version(libs.versions.kotlin.get()).apply(false)
-    kotlin("multiplatform").version(libs.versions.kotlin.get()).apply(false)
 }
 
 subprojects {
