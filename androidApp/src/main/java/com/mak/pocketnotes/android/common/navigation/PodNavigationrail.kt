@@ -31,7 +31,7 @@ internal fun PodNavigationRail(
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     NavigationRail(
         modifier = modifier
-            .fillMaxHeight()
+            .fillMaxHeight(),
     ) {
         bottomBarItems.forEachIndexed { index, item ->
             NavigationRailItem(

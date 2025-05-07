@@ -200,7 +200,7 @@ internal fun PodcastNav(
 }
 
 @Composable
-private fun EmptyScreen(
+internal fun EmptyScreen(
     @StringRes title: Int
 ) {
     Text(text = "${stringResource(id = title)} Work in progress", style = MaterialTheme.typography.headlineSmall)

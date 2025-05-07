@@ -34,6 +34,7 @@ androidx-media3-session = { group = "androidx.media3", name = "media3-session", 
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-material = { group = "androidx.compose.material3", name = "material3" }
+compose-material-adaptinve = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
 compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -53,7 +54,7 @@ sqldelight-primitive = { module = "app.cash.sqldelight:primitive-adapters", vers
 store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 
 [bundles]
-compose = [ "androidx-navigation", "compose-coil", "compose-material", "compose-ui-preview" ]
+compose = [ "androidx-navigation", "compose-coil", "compose-material", "compose-material-adaptinve", "compose-ui-preview" ]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
