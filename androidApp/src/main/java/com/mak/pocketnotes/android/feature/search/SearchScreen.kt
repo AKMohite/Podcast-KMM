@@ -190,7 +190,14 @@ private fun SearchContentPreview() {
     PocketNotesTheme {
         Surface {
             SearchContent(
-                state = SearchState(),
+                state = SearchState(genres = listOf(
+                    Genre(1, "genre 1", 3),
+                    Genre(2, "genre 2", 2),
+                    Genre(3, "genre 3", 2),
+                    Genre(4, "genre 4", 3),
+                    Genre(5, "genre 5", 4),
+                    Genre(6, "genre 6", 1),
+                )),
                 actions = object : SearchActions {
                     override val state: StateFlow<SearchState>
                         get() = TODO("Not yet implemented")

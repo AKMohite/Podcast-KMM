@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -84,7 +85,7 @@ internal fun PermanentMinPlayer(
                     contentDescription = stringResource(R.string.player_previous)
                 )
             }
-            IconButton(onClick = playPause) {
+            FilledIconButton(onClick = playPause) {
                 Icon(
                     imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
                     contentDescription = stringResource(R.string.player_play_pause)

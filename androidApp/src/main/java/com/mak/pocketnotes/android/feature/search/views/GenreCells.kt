@@ -62,7 +62,7 @@ private fun GenreCell(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
 //            .border(width = 2.dp, color = MaterialTheme.colorScheme.primaryContainer)
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.tertiary)
             .clickable { onGenreClick(genre) }
             .padding(8.dp),
         contentAlignment = Alignment.Center
@@ -71,7 +71,7 @@ private fun GenreCell(
             text = genre.name,
             maxLines = 1,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
+            color = MaterialTheme.colorScheme.onTertiary
         )
     }
 }

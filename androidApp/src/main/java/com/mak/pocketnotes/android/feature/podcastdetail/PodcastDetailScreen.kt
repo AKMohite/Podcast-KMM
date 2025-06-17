@@ -105,9 +105,6 @@ private fun PodcastDetailContent(
                             Button(
                                 onClick = startPodcast,
                                 modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                                ),
                                 elevation = ButtonDefaults.buttonElevation(
                                     defaultElevation = 0.dp
                                 )
@@ -198,7 +195,7 @@ private fun PodcastDetailScreenPreview() {
     PocketNotesTheme {
         PodcastDetailContent(
             uiState = PodcastDetailState(
-                podcast = samplePodcasts[0]
+                podcast = samplePodcasts[0].copy(recommendations = samplePodcasts)
             ),
             episodes = samplePodcasts.flatMap { it.episodes },
             gotoDetails = {},

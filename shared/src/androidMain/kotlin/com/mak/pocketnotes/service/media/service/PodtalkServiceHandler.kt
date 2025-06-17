@@ -1,18 +1,24 @@
 package com.mak.pocketnotes.service.media.service
 
-import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.mak.pocketnotes.domain.models.PlayableEpisode
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class PodtalkServiceHandler(
@@ -21,7 +27,12 @@ internal class PodtalkServiceHandler(
 
     private val _audioState: MutableStateFlow<MediaState> = MutableStateFlow(MediaState.Initial)
     override val audioState: StateFlow<MediaState> = _audioState.asStateFlow()
+    private val supervisorJob = SupervisorJob()
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        Log.e("PodtalkServiceHandler", "FirebaseServiceImpl, non blocking exception received", exception)
+    }
     private var job: Job? = null
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + supervisorJob + exceptionHandler)
 
     init {
         exoPlayer.addListener(this)
@@ -58,7 +69,7 @@ internal class PodtalkServiceHandler(
                     }
                     else -> {
                         exoPlayer.seekToDefaultPosition(selectedAudioIndex)
-                        _audioState.value = MediaState.PLaying(isPLaying = true)
+                        _audioState.update { MediaState.PLaying(isPLaying = true) }
                         exoPlayer.playWhenReady = true
                         startProgressUpdate()
                     }
@@ -85,8 +96,7 @@ internal class PodtalkServiceHandler(
         _audioState.value = MediaState.PLaying(isPlaying)
         _audioState.value = MediaState.CurrentPlaying(exoPlayer.currentMediaItemIndex)
         if (isPlaying) {
-//            TODO remove
-            GlobalScope.launch(Dispatchers.Main) {
+            coroutineScope.launch {
                 startProgressUpdate()
             }
         } else {
@@ -100,9 +110,7 @@ internal class PodtalkServiceHandler(
             stopProgressUpdate()
         } else {
             exoPlayer.play()
-            _audioState.value = MediaState.PLaying(
-                isPLaying = true
-            )
+            _audioState.update { MediaState.PLaying(isPLaying = true) }
             startProgressUpdate()
         }
     }
@@ -111,14 +119,15 @@ internal class PodtalkServiceHandler(
         job.run {
             while (true) {
                 delay(500)
-                _audioState.value = MediaState.Progress(exoPlayer.currentPosition)
+                _audioState.update { MediaState.Progress(exoPlayer.currentPosition) }
             }
         }
     }
 
     private fun stopProgressUpdate() {
         job?.cancel()
-        _audioState.value = MediaState.PLaying(isPLaying = false)
+        supervisorJob.cancel()
+        _audioState.update { MediaState.PLaying(isPLaying = false) }
     }
 
 }
@@ -129,7 +138,7 @@ private fun PlayableEpisode.asMediaItem(): MediaItem {
         .setUri(track)
         .setMediaMetadata(
             MediaMetadata.Builder()
-                .setArtworkUri(Uri.parse(image))
+                .setArtworkUri(image.toUri())
                 .setAlbumArtist(speaker)
                 .setDisplayTitle(title)
                 .setSubtitle(title)

@@ -16,6 +16,8 @@ class MainActivity : ComponentActivity() {
 
 //    private val mediaViewModel by viewModel<MediaViewModel>()
     private var isServiceRunning = false
+    private var mediaIntent: Intent? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,18 +30,19 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
-        stopService(Intent(this, MediaPlayerService::class.java))
+        mediaIntent?.let { stopService(it) }
         isServiceRunning = false
+        mediaIntent = null
         super.onDestroy()
     }
 
     private fun startMediaService() {
         if (!isServiceRunning) {
-            val intent = Intent(this, MediaPlayerService::class.java)
+            mediaIntent = Intent(this, MediaPlayerService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent)
+                startForegroundService(mediaIntent)
             } else {
-                startService(intent)
+                startService(mediaIntent)
             }
         }
         isServiceRunning = true

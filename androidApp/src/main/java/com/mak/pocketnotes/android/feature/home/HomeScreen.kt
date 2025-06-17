@@ -59,6 +59,11 @@ private fun HomeContent(
     ) {
         LazyColumn {
             item {
+                /*HomeCarousel(
+                    modifier = Modifier.fillMaxWidth(),
+                    podcasts = uiState.topPodcasts,
+                    onPodcastClick = gotoDetails
+                )*/
                 HomeHeader(
                     modifier = Modifier.fillMaxWidth(),
                     podcasts = uiState.topPodcasts,
