@@ -28,7 +28,7 @@ internal class RelatedPodcastDAO(
     }
 
     override suspend fun removePodcasts() = withContext(dispatcher.io) {
-        dbQuery.deleteAll()
+        dbQuery.deleteAll().await()
     }
 
     override fun getPodcast(id: String): Flow<List<PodcastEntity>> {
@@ -45,7 +45,7 @@ internal class RelatedPodcastDAO(
 internal interface IRelatedPodcastDAO {
     fun insertPodcast(podcast: RelatedPodcastEntity)
     fun insertPodcasts(podcasts: List<RelatedPodcastEntity>)
-    suspend fun removePodcasts()
+    suspend fun removePodcasts(): Long
     fun getPodcast(id: String): Flow<List<PodcastEntity>>
     suspend fun removePodcast(podcastId: String)
 }

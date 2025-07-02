@@ -27,7 +27,7 @@ internal class PodcastDAO(
     }
 
     override suspend fun removePodcasts() = withContext(dispatcher.io) {
-        dbQuery.removeAllPodcasts()
+        dbQuery.removeAllPodcasts().await()
     }
 
     override fun getPodcast(id: String): Flow<PodcastEntity> {
@@ -36,15 +36,15 @@ internal class PodcastDAO(
             .mapToOne(dispatcher.io)
     }
 
-    override suspend fun removePodcast(podcastId: String) {
-        dbQuery.delete(podcastId)
+    override suspend fun removePodcast(podcastId: String): Long {
+        return dbQuery.delete(podcastId).await()
     }
 }
 
 internal interface IPodcastDAO {
     fun insertPodcast(podcast: PodcastEntity)
     fun insertPodcasts(podcasts: List<PodcastEntity>)
-    suspend fun removePodcasts()
+    suspend fun removePodcasts(): Long
     fun getPodcast(id: String): Flow<PodcastEntity>
-    suspend fun removePodcast(podcastId: String)
+    suspend fun removePodcast(podcastId: String): Long
 }
