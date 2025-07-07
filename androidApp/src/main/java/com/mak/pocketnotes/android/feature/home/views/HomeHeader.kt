@@ -18,7 +18,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.carousel.HorizontalUncontainedCarousel
+import androidx.compose.material3.carousel.HorizontalCenteredHeroCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
@@ -38,23 +38,32 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeCarousel(
+internal fun HomeCarousel(
     modifier: Modifier = Modifier,
     podcasts: List<Podcast>,
     onPodcastClick: (String) -> Unit
 ) {
-    HorizontalUncontainedCarousel(
-        state = rememberCarouselState { podcasts.size },
-        modifier = modifier.height(180.dp)
-            .padding(top = 8.dp, bottom = 8.dp),
-        itemWidth = (LocalConfiguration.current.screenWidthDp - 70).dp,
+
+    val carouselState = rememberCarouselState { podcasts.size }
+    val animationScope = rememberCoroutineScope()
+
+    HorizontalCenteredHeroCarousel(
+        state = carouselState,
+        modifier = modifier
+            .height(250.dp)
+            .padding(horizontal = 12.dp),
         itemSpacing = 8.dp,
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp)
     ) { index ->
         HomeCarouselCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onPodcastClick(podcasts[index].id) },
+                .clickable(true, "Click to focus", Role.Image) {
+                    animationScope.launch {
+                        carouselState.animateScrollToItem(index)
+                    }
+                },
+//                .clickable { onPodcastClick(podcasts[index].id) },
             podcast = podcasts[index]
         )
     }

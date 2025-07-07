@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
+import com.mak.pocketnotes.android.feature.home.views.HomeCarousel
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
@@ -58,7 +59,7 @@ private fun HomeContent(
             .pullRefresh(state = refreshState)
     ) {
         LazyColumn {
-            item {
+            item("home-header") {
                 /*HomeCarousel(
                     modifier = Modifier.fillMaxWidth(),
                     podcasts = uiState.topPodcasts,
@@ -70,7 +71,7 @@ private fun HomeContent(
                     onPodcastClick = gotoDetails
                 )
             }
-            item {
+            item("best-podcasts") {
                 AnimatedVisibility(visible = uiState.podcasts.isNotEmpty()) {
                     BestPodcasts(
                         modifier = Modifier.fillMaxWidth(),

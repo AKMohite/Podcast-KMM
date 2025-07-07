@@ -35,7 +35,7 @@ class HomeViewModel(
 
     private fun observerPodcasts() {
         combine(getBestPodcasts(), getCuratedPodcasts()) { bestPodcasts, curatedPodcasts ->
-            val (topPodcasts, podcasts) = bestPodcasts.take(4) to bestPodcasts.drop(4)
+            val (topPodcasts, podcasts) = bestPodcasts.take(8).shuffled() to bestPodcasts.drop(4)
             _uiState.update { current ->
                 current.copy(
                     loading = false,

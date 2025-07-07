@@ -1,9 +1,11 @@
 package com.mak.pocketnotes.android.feature.home.views
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,36 +31,51 @@ internal fun HomeCarouselCard(
     modifier: Modifier = Modifier,
     podcast: Podcast
 ) {
-    Row(
+    Box(
         modifier = modifier
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = podcast.thumbnail,
             contentDescription = podcast.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(120.dp)
+                .fillMaxWidth()
+                .height(150.dp)
                 .clip(MaterialTheme.shapes.medium),
-            placeholder = debugPlaceholder()
+            placeholder = debugPlaceholder(),
+            alpha = 0.3f
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Text(
-                text = podcast.title,
-                style = MaterialTheme.typography.titleSmall,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+        Row(
+            modifier = Modifier
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = podcast.thumbnail,
+                contentDescription = podcast.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(MaterialTheme.shapes.medium),
+                placeholder = debugPlaceholder()
             )
-            Text(
-                text = podcast.publisher,
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column {
+                Text(
+                    text = podcast.title,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = podcast.publisher,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
