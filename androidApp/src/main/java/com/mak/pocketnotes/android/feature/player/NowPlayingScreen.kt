@@ -106,7 +106,7 @@ private fun NowPlayingContent(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(32.dp))
         PlayerSlider(
             durationRange = 0f..100f,
             onSliderChange = onSliderChange,
