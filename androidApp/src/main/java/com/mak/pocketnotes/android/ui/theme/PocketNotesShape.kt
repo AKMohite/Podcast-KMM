@@ -20,3 +20,10 @@ val cutShapes = Shapes(
     large = CutCornerShape(16.dp),
     extraLarge = CutCornerShape(24.dp)
 )
+
+val LeafyCardShape = RoundedCornerShape(
+    topStart = 28.dp,
+    topEnd = 12.dp,
+    bottomStart = 12.dp,
+    bottomEnd = 28.dp
+)
