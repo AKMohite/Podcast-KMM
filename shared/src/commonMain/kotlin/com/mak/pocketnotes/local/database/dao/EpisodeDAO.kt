@@ -6,7 +6,7 @@ import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.local.Episodes
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 internal typealias EpisodeEntity = Episodes
 

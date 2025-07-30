@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS last_syncs (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     request_type TEXT AS com.mak.pocketnotes.domain.models.SyncRequest NOT NULL,
     entity_id TEXT NOT NULL,
-    timestamp INTEGER AS kotlinx.datetime.Instant NOT NULL
+    timestamp INTEGER AS kotlin.time.Instant NOT NULL
 );
 
 -- index

@@ -21,6 +21,9 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
+            compilerOptions {
+                freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
+            }
             dependencies {
 //                This override dependency and configurations exclude is required
 //                for fixing some error in SKIE dependency. May not be need in

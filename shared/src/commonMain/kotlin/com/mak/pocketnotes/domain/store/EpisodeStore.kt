@@ -13,7 +13,6 @@ import com.mak.pocketnotes.local.database.dao.LastSyncDAO.Companion.DEFAULT_ID
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Instant
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.mobilenativefoundation.store.store5.Fetcher
@@ -21,6 +20,7 @@ import org.mobilenativefoundation.store.store5.SourceOfTruth
 import org.mobilenativefoundation.store.store5.StoreBuilder
 import org.mobilenativefoundation.store.store5.Validator
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 /**
  * Pair of Podcast id and next episode date

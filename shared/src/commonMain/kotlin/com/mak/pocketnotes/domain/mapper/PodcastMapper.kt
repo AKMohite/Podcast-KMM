@@ -7,7 +7,7 @@ import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.local.database.dao.EpisodeEntity
 import com.mak.pocketnotes.local.database.dao.PodcastEntity
 import com.mak.pocketnotes.local.database.dao.RelatedPodcastEntity
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 internal class PodcastMapper {
 

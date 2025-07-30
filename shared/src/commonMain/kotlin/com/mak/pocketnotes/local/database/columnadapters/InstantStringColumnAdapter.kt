@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.local.database.columnadapters
 
 import app.cash.sqldelight.ColumnAdapter
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 internal object InstantStringColumnAdapter : ColumnAdapter<Instant, Long> {
     override fun decode(databaseValue: Long): Instant = Instant.fromEpochMilliseconds(databaseValue)

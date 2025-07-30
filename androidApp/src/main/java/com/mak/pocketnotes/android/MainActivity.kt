@@ -5,8 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
-import com.mak.pocketnotes.android.common.navigation.PodcastNavHost
 import com.mak.pocketnotes.android.common.navigation.PodcastNavigationWrapper
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.service.media.service.MediaPlayerService
