@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "Pocket_Notes"
 include(":androidApp")
 include(":shared")
+include(":pocketnotes-wearos")
