@@ -71,7 +71,7 @@ internal class PodtalkNotificationManager(
             .setSmallIconResourceId(androidx.media3.session.R.drawable.media_session_service_notification_ic_music_note)
             .build()
             .also {
-                it.setMediaSessionToken(mediaSession.sessionCompatToken)
+                it.setMediaSessionToken(mediaSession.platformToken)
                 it.setUseFastForwardActionInCompactView(true)
                 it.setUseRewindActionInCompactView(true)
                 it.setUseNextActionInCompactView(true)
