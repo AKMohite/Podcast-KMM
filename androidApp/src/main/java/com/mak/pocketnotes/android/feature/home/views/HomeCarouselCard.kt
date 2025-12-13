@@ -17,10 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
@@ -40,7 +42,7 @@ internal fun HomeCarouselCard(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(dimensionResource(R.dimen.home_carossel_height))
                 .clip(MaterialTheme.shapes.medium),
             placeholder = debugPlaceholder(),
             alpha = 0.3f
@@ -55,7 +57,7 @@ internal fun HomeCarouselCard(
                 contentDescription = podcast.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(dimensionResource(R.dimen.home_carossel_img))
                     .clip(MaterialTheme.shapes.medium),
                 placeholder = debugPlaceholder()
             )

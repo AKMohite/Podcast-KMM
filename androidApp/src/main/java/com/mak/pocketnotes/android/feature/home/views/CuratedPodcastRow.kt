@@ -20,12 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.booleanResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.CuratedPodcast
@@ -38,6 +41,9 @@ internal fun CuratedPodcastRow(
     podcast: CuratedPodcast,
     goToDetails: (String) -> Unit
 ) {
+    // TODO need to handle this with width class
+    val isTablet = booleanResource(R.bool.is_tablet)
+    val columnFraction = if (isTablet) 0.35f else 0.8f
     Column(
         modifier = modifier
     ) {
@@ -54,7 +60,7 @@ internal fun CuratedPodcastRow(
             items(items = podcast.getCuratedPodcasts()) { podcasts ->
                 CuratedPodcastItem(
                     modifier = Modifier
-                        .fillParentMaxWidth(0.9f)
+                        .fillParentMaxWidth(columnFraction)
                         .wrapContentHeight()
                         .padding(4.dp),
                     podcasts = podcasts,
@@ -87,7 +93,7 @@ private fun CuratedPodcastItem(
                     contentDescription = podcast.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(dimensionResource(R.dimen.curated_img))
                         .clip(MaterialTheme.shapes.small),
                     placeholder = debugPlaceholder()
                 )

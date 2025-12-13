@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="home_carossel_height">150dp</dimen>
+    <dimen name="home_carossel_img">120dp</dimen>
+    <dimen name="curated_img">50dp</dimen>
+</resources>

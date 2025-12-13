@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,9 @@ internal fun BestPodcasts(
     podcasts: List<List<Podcast>>,
     gotoDetails: (String) -> Unit
 ) {
+    // TODO need to handle this with width class
+    val isTablet = booleanResource(R.bool.is_tablet)
+    val columnFraction = if (isTablet) 0.35f else 0.8f
     Column(
         modifier = modifier
     ) {
@@ -42,7 +46,7 @@ internal fun BestPodcasts(
             items(items = podcasts) { podcasts ->
                 Column(
                     modifier = Modifier
-                        .fillParentMaxWidth(0.9f)
+                        .fillParentMaxWidth(columnFraction)
                         .wrapContentHeight()
                 ) {
                     podcasts.forEach { podcast ->
