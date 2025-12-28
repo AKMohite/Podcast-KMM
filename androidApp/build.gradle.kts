@@ -64,6 +64,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
     debugImplementation(libs.compose.ui.tooling)

@@ -18,6 +18,7 @@ ktor = "3.3.3"
 legacySupportV4 = "1.0.0"
 media3Exoplayer = "1.8.0"
 navigation = "2.9.6"
+profileinstaller = "1.4.1"
 skie= "0.10.8"
 sqldelight= "2.1.0"
 store5 = "5.1.0-alpha07"
@@ -30,6 +31,7 @@ coreSplashscreen = "1.2.0"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
 android-sql-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 androidx-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 androidx-legacy-support = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacySupportV4" }
