@@ -43,6 +43,7 @@ android {
 
         create("benchmark") {
             initWith(getByName("debug"))
+            matchingFallbacks += listOf("release")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
