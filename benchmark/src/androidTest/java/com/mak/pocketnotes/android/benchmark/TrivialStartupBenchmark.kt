@@ -2,6 +2,7 @@ package com.mak.pocketnotes.android.benchmark
 
 import android.content.ComponentName
 import android.content.Intent
+import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
@@ -18,12 +19,21 @@ class TrivialStartupBenchmark {
     val rule = MacrobenchmarkRule()
 
     @Test
-    fun trivialStartup() {
+    fun trivialStartupNoProfile() {
+        trackStartup(CompilationMode.None())
+    }
+
+    @Test
+    fun trivialStartupWithProfile() {
+        trackStartup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))
+    }
+
+    private fun trackStartup(mode: CompilationMode) {
         rule.measureRepeated(
             packageName = APP_TO_BENCHMARK,
             metrics = listOf(StartupTimingMetric()),
             startupMode = StartupMode.COLD,
-            compilationMode = CompilationMode.DEFAULT, // don't care yet
+            compilationMode = mode, // don't care yet
             iterations = 1,
             setupBlock = {
 //        killProcess()

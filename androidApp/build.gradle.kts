@@ -42,8 +42,9 @@ android {
         }
 
         create("benchmark") {
-            initWith(getByName("debug"))
+            initWith(getByName("release"))
             matchingFallbacks += listOf("release")
+            signingConfig = signingConfigs.findByName("debug")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
