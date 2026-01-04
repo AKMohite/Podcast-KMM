@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -63,12 +64,21 @@ android {
     }
 }
 
+baselineProfile {
+    dexLayoutOptimization = true
+    baselineProfileRulesRewrite = true
+    baselineProfileOutputDir = "../../src/main/baselineprofiles"
+}
+
 dependencies {
     implementation(project(":shared"))
-    implementation(libs.androidx.profileinstaller)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.koin.android.compose)
     implementation(libs.accompanist.systemuicontroller)
+
+    // baseline profile
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineprofiles"))
 }
