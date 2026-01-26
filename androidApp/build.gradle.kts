@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -28,7 +29,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
         create("staging") {
@@ -38,7 +39,17 @@ android {
             isShrinkResources = true
 //            isDebuggable = true
             matchingFallbacks += listOf("debug")
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        create("benchmark") {
+            initWith(getByName("release"))
+            matchingFallbacks += listOf("release")
+            signingConfig = signingConfigs.findByName("debug")
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "dontobfuscate.pro")
         }
     }
 
@@ -53,6 +64,12 @@ android {
     }
 }
 
+baselineProfile {
+    dexLayoutOptimization = true
+    baselineProfileRulesRewrite = true
+    baselineProfileOutputDir = "../../src/main/baselineprofiles"
+}
+
 dependencies {
     implementation(project(":shared"))
     implementation(platform(libs.compose.bom))
@@ -60,4 +77,8 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.koin.android.compose)
     implementation(libs.accompanist.systemuicontroller)
+
+    // baseline profile
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineprofiles"))
 }
