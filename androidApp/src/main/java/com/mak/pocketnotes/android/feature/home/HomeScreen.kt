@@ -14,10 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
-import com.mak.pocketnotes.android.feature.home.views.HomeCarousel
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
@@ -102,16 +103,46 @@ private fun HomeContent(
     }
 }
 
+class HomeScreenStateProvider: PreviewParameterProvider<HomeScreenState> {
+
+    val data = listOf(
+        Pair(
+            "Loading",
+            HomeScreenState(
+                loading = true
+            )
+        ),
+        Pair(
+            "Empty",
+            HomeScreenState()
+        ),
+        Pair(
+            "Success",
+            HomeScreenState(
+                podcasts = samplePodcasts,
+                topPodcasts = samplePodcasts.take(3),
+            )
+        )
+    )
+
+    override val values: Sequence<HomeScreenState>
+        get() = data.map { it.second }.asSequence()
+
+    override fun getDisplayName(index: Int): String {
+        return data[index].first
+    }
+}
+
 @Preview
 @Composable
-private fun HomeScreenPreview() {
+private fun HomeScreenPreview(
+    @PreviewParameter(HomeScreenStateProvider::class) previewData: Pair<String, HomeScreenState>
+) {
+    val (_, uiState) = previewData
     PocketNotesTheme {
         Surface {
             HomeContent(
-                uiState = HomeScreenState(
-                    podcasts = samplePodcasts,
-                    topPodcasts = samplePodcasts.take(3),
-                ),
+                uiState = uiState,
                 loadNextPodcasts = {},
                 gotoDetails = {},
             )

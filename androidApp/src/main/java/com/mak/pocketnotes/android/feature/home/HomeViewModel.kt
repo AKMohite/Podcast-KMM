@@ -98,7 +98,24 @@ class HomeViewModel(
 
 }
 
-internal data class HomeScreenState(
+internal sealed interface HomeState {
+    data object Idle : HomeState
+    data object Loading : HomeState
+    data object Empty : HomeState
+
+    data class Success(
+        val podcasts: List<Podcast> = emptyList(),
+        val topPodcasts: List<Podcast> = emptyList(),
+        val curatedPodcasts: List<CuratedPodcast> = emptyList(),
+        val isPaginating: Boolean = false
+    ) : HomeState {
+        fun getSectionedPodcasts(noOfRows: Int = 4) = podcasts.chunked(noOfRows)
+    }
+
+    data class Error(val message: String) : HomeState
+}
+
+data class HomeScreenState(
     val loading: Boolean = false,
     val refreshing: Boolean = false,
     val podcasts: List<Podcast> = emptyList(),
