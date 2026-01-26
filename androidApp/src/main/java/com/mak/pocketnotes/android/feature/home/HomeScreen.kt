@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
@@ -25,6 +26,7 @@ import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
 import com.mak.pocketnotes.android.util.md2.pullRefresh
 import com.mak.pocketnotes.android.util.md2.rememberPullRefreshState
 import com.mak.pocketnotes.domain.models.CuratedPodcast
+import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
@@ -109,7 +111,13 @@ class HomeScreenStateProvider: PreviewParameterProvider<HomeScreenState> {
         Pair(
             "Loading",
             HomeScreenState(
-                loading = true
+                loading = true,
+            )
+        ),
+        Pair(
+            "Refreshing",
+            HomeScreenState(
+                refreshing = true
             )
         ),
         Pair(
@@ -121,6 +129,7 @@ class HomeScreenStateProvider: PreviewParameterProvider<HomeScreenState> {
             HomeScreenState(
                 podcasts = samplePodcasts,
                 topPodcasts = samplePodcasts.take(3),
+                curatedPodcasts = sampleCuratedPodcasts
             )
         )
     )
@@ -134,15 +143,15 @@ class HomeScreenStateProvider: PreviewParameterProvider<HomeScreenState> {
 }
 
 @Preview
+@PreviewScreenSizes
 @Composable
 private fun HomeScreenPreview(
-    @PreviewParameter(HomeScreenStateProvider::class) previewData: Pair<String, HomeScreenState>
+    @PreviewParameter(HomeScreenStateProvider::class) previewData: HomeScreenState
 ) {
-    val (_, uiState) = previewData
     PocketNotesTheme {
         Surface {
             HomeContent(
-                uiState = uiState,
+                uiState = previewData,
                 loadNextPodcasts = {},
                 gotoDetails = {},
             )
