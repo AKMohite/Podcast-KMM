@@ -34,7 +34,7 @@ class TrivialStartupBenchmark {
             metrics = listOf(StartupTimingMetric()),
             startupMode = StartupMode.COLD,
             compilationMode = mode, // don't care yet
-            iterations = 1,
+            iterations = 10,
             setupBlock = {
 //        killProcess()
                 pressHome()
