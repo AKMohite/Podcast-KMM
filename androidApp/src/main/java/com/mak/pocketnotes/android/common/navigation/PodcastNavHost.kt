@@ -31,8 +31,9 @@ import org.koin.core.parameter.parametersOf
 internal fun PodcastNavHost(
     navController: NavHostController,
     startService: () -> Unit,
+    adaptiveScreenType: AdaptiveScreenType,
     mediaViewModel: MediaViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
@@ -49,7 +50,8 @@ internal fun PodcastNavHost(
                     )
                 },
                 state = state,
-                loadNextPodcasts = homeViewModel::loadPodcasts
+                loadNextPodcasts = homeViewModel::loadPodcasts,
+                adaptiveScreenType = adaptiveScreenType
             )
         }
 

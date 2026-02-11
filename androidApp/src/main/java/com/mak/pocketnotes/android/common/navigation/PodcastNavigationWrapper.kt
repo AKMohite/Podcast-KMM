@@ -34,8 +34,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowSizeClass
+import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
+import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
+import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.BottomDestination
@@ -52,7 +54,13 @@ import com.mak.pocketnotes.android.common.viewmodel.UIEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-private fun WindowSizeClass.isCompact() = windowWidthSizeClass == WindowWidthSizeClass.COMPACT || windowHeightSizeClass == WindowHeightSizeClass.COMPACT
+internal enum class AdaptiveScreenType {
+    Compact, Medium, Expanded, Large, ExtraLarge
+}
+
+private fun WindowSizeClass.isCompact(): Boolean {
+    return isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) || isHeightAtLeastBreakpoint(HEIGHT_DP_MEDIUM_LOWER_BOUND)
+}
 
 @Composable
 internal fun PodcastNavigationWrapper(
@@ -70,6 +78,29 @@ internal fun PodcastNavigationWrapper(
         adaptiveInfo.windowSizeClass.isCompact() -> NavigationSuiteType.NavigationBar
         adaptiveInfo.windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED && windowSize.width >= 1200.dp -> NavigationSuiteType.NavigationDrawer
         else -> NavigationSuiteType.NavigationRail
+    }
+
+    val sizeClass = adaptiveInfo.windowSizeClass
+    val adaptiveScreenType = when {
+        sizeClass.isWidthAtLeastBreakpoint(1600) -> {
+            AdaptiveScreenType.ExtraLarge
+        }
+
+        sizeClass.isWidthAtLeastBreakpoint(1200) -> {
+            AdaptiveScreenType.Large
+        }
+
+        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND) -> {
+            AdaptiveScreenType.Expanded
+        }
+
+        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) -> {
+            AdaptiveScreenType.Medium
+        }
+
+        else -> {
+            AdaptiveScreenType.Compact
+        }
     }
 //    val navContentPosition = when(adaptiveInfo.windowSizeClass.windowHeightSizeClass) {
 //        WindowHeightSizeClass.COMPACT ->
@@ -193,6 +224,7 @@ internal fun PodcastNavigationWrapper(
                     PodcastNavHost(
                         navController = navController,
                         startService = startService,
+                        adaptiveScreenType = adaptiveScreenType,
                         mediaViewModel = mediaViewModel,
                         modifier = Modifier
                             .fillMaxWidth()

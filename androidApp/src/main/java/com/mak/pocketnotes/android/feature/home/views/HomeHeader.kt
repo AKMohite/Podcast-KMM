@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.common.navigation.AdaptiveScreenType
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
@@ -72,6 +73,7 @@ internal fun HomeCarousel(
 @Composable
 internal fun HomeHeader(
     modifier: Modifier = Modifier,
+    adaptiveScreenType: AdaptiveScreenType = AdaptiveScreenType.Compact,
     podcasts: List<Podcast>,
     onPodcastClick: (String) -> Unit
 ) {
@@ -138,7 +140,7 @@ private fun HomeHeaderPreview() {
             HomeHeader(
                 modifier = Modifier.fillMaxWidth(),
                 podcasts = samplePodcasts.take(5),
-                onPodcastClick = {}
+                onPodcastClick = {},
             )
         }
     }

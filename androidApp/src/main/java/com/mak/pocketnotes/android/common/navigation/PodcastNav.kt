@@ -125,13 +125,13 @@ internal fun PodcastNav(
                 val homeViewModel: HomeViewModel = koinViewModel()
                 val state by homeViewModel.uiState.collectAsState()
                 HomeScreen(
+                    state = state,
                     gotoDetails = { podcastId ->
                         navController.navigate(
                             "${PodcastDetail.route}/$podcastId"
                         )
                     },
-                    state = state,
-                    loadNextPodcasts = homeViewModel::loadPodcasts
+                    loadNextPodcasts = homeViewModel::loadPodcasts,
                 )
             }
 
