@@ -61,10 +61,12 @@ internal fun HomeHeader(
     podcasts: List<Podcast>,
     onPodcastClick: (String) -> Unit
 ) {
-    when(adaptiveScreenType) {
-        AdaptiveScreenType.Compact -> CompactHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
-        AdaptiveScreenType.Medium -> MediumHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
-        AdaptiveScreenType.Expanded, AdaptiveScreenType.Large, AdaptiveScreenType.ExtraLarge -> LargeHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+    if (podcasts.isNotEmpty()) {
+        when(adaptiveScreenType) {
+            AdaptiveScreenType.Compact -> CompactHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+            AdaptiveScreenType.Medium -> MediumHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+            AdaptiveScreenType.Expanded, AdaptiveScreenType.Large, AdaptiveScreenType.ExtraLarge -> LargeHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+        }
     }
 }
 

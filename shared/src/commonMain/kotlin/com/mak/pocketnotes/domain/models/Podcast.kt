@@ -13,5 +13,6 @@ data class Podcast(
 //    val type: String = "",
 //    val website: String = "",
     val recommendations: List<Podcast> = emptyList(),
-    val episodes: List<PodcastEpisode> = emptyList()
+    val episodes: List<PodcastEpisode> = emptyList(),
+    val genres: String = "Adventure, Action, Technology, Health"
 )

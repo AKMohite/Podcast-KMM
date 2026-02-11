@@ -132,6 +132,7 @@ internal fun PodcastNav(
                         )
                     },
                     loadNextPodcasts = homeViewModel::loadPodcasts,
+                    adaptiveScreenType = AdaptiveScreenType.Compact
                 )
             }
 
