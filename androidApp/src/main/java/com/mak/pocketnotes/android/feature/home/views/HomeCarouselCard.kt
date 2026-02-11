@@ -1,9 +1,11 @@
 package com.mak.pocketnotes.android.feature.home.views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,17 +37,13 @@ internal fun HomeCarouselCard(
 ) {
     Box(
         modifier = modifier
+            .height(120.dp)
     ) {
-        AsyncImage(
-            model = podcast.thumbnail,
-            contentDescription = podcast.title,
-            contentScale = ContentScale.Crop,
+        Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(dimensionResource(R.dimen.home_carossel_height))
-                .clip(MaterialTheme.shapes.medium),
-            placeholder = debugPlaceholder(),
-            alpha = 0.3f
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.surfaceContainer)
         )
         Row(
             modifier = Modifier

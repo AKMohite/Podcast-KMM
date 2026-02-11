@@ -112,9 +112,9 @@ internal fun LargeHomeHeader(
                     .align(Alignment.Center),
                 verticalAlignment = Alignment.Bottom
             ) {
-                Spacer(modifier = Modifier.weight(0.4f))
+                Spacer(modifier = Modifier.size(180.dp))
                 Column(
-                    modifier = Modifier.weight(0.6f)
+                    modifier = Modifier.weight(1f)
                 ) {
                     Text(
                         text = podcastDets.title,
