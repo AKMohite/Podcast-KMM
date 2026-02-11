@@ -15,7 +15,6 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.adaptive.currentWindowSize
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.rememberDrawerState
@@ -27,9 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -38,7 +35,6 @@ import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
-import androidx.window.core.layout.WindowWidthSizeClass
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.BottomDestination
 import com.mak.pocketnotes.android.common.Home
@@ -70,17 +66,14 @@ internal fun PodcastNavigationWrapper(
     val mediaViewModel: MediaViewModel = koinViewModel()
     val navController = rememberNavController()
     val adaptiveInfo = currentWindowAdaptiveInfo()
-    val windowSize = with(LocalDensity.current) {
-        currentWindowSize().toSize().toDpSize()
-    }
-    val navLayoutType = when {
-        adaptiveInfo.windowPosture.isTabletop -> NavigationSuiteType.NavigationBar
-        adaptiveInfo.windowSizeClass.isCompact() -> NavigationSuiteType.NavigationBar
-        adaptiveInfo.windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED && windowSize.width >= 1200.dp -> NavigationSuiteType.NavigationDrawer
-        else -> NavigationSuiteType.NavigationRail
-    }
 
     val sizeClass = adaptiveInfo.windowSizeClass
+    val navLayoutType = when {
+        adaptiveInfo.windowPosture.isTabletop -> NavigationSuiteType.NavigationBar
+        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND) -> NavigationSuiteType.NavigationDrawer
+        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) -> NavigationSuiteType.NavigationRail
+        else -> NavigationSuiteType.NavigationBar
+    }
     val adaptiveScreenType = when {
         sizeClass.isWidthAtLeastBreakpoint(1600) -> {
             AdaptiveScreenType.ExtraLarge
