@@ -173,9 +173,9 @@ internal fun PodcastNavigationWrapper(
                         }
 
                         NavigationSuiteType.NavigationRail -> {
-                            PodNavigationRail(
+                            PodModalWideNavigationRail(
                                 bottomBarItems = bottomBarItems,
-                                currentScreen = currentScreen,
+//                                currentScreen = currentScreen,
                                 onBottomNavigate = { destination ->
                                     navigateToDestination(
                                         navController,

@@ -21,7 +21,6 @@ import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeCarousel(
     modifier: Modifier = Modifier,

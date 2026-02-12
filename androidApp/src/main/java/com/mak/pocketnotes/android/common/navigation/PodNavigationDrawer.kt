@@ -2,7 +2,9 @@ package com.mak.pocketnotes.android.common.navigation
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
@@ -38,10 +40,13 @@ internal fun PodNavigationDrawer(
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     PermanentDrawerSheet(
         modifier = modifier
-            .sizeIn(minWidth = 200.dp, maxWidth = 300.dp)
+            .sizeIn(minWidth = 200.dp, maxWidth = 250.dp)
     ) {
+        Spacer(Modifier.height(24.dp))
         bottomBarItems.forEachIndexed { index, item ->
             NavigationDrawerItem(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 selected = currentScreen?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
                     selectedItem = index
