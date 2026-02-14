@@ -3,14 +3,12 @@ package com.mak.pocketnotes.android.common.navigation
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -19,13 +17,11 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -35,7 +31,6 @@ import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mak.pocketnotes.android.common.BottomDestination
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.PodcastPlayer
@@ -95,22 +90,7 @@ internal fun PodcastNavigationWrapper(
             AdaptiveScreenType.Compact
         }
     }
-//    val navContentPosition = when(adaptiveInfo.windowSizeClass.windowHeightSizeClass) {
-//        WindowHeightSizeClass.COMPACT ->
-//        WindowHeightSizeClass.MEDIUM, WindowHeightSizeClass.EXPANDED ->
-//        else ->
-//    }
-    val systemUiController = rememberSystemUiController()
     val snackbarHostState = remember { SnackbarHostState() }
-//    val scope = rememberCoroutineScope()
-
-
-    val isSystemDark = isSystemInDarkTheme()
-    val statusBarColor = if (isSystemDark) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
-
-    SideEffect {
-        systemUiController.setStatusBarColor(statusBarColor, darkIcons = !isSystemDark)
-    }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination
