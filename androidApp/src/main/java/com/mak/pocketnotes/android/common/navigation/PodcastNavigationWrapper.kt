@@ -47,6 +47,7 @@ import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.common.ui.PermanentMinPlayer
 import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.common.viewmodel.UIEvent
+import com.mak.pocketnotes.android.feature.casestudy.AdaptiveGridScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -65,7 +66,7 @@ internal fun PodcastNavigationWrapper(
 ) {
     val mediaViewModel: MediaViewModel = koinViewModel()
     val navController = rememberNavController()
-    val adaptiveInfo = currentWindowAdaptiveInfo()
+    val adaptiveInfo = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
 
     val sizeClass = adaptiveInfo.windowSizeClass
     val navLayoutType = when {
@@ -214,7 +215,7 @@ internal fun PodcastNavigationWrapper(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    PodcastNavHost(
+                    /*PodcastNavHost(
                         navController = navController,
                         startService = startService,
                         adaptiveScreenType = adaptiveScreenType,
@@ -222,6 +223,12 @@ internal fun PodcastNavigationWrapper(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
+                    )*/
+                    AdaptiveGridScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(1f),
+                        adaptiveScreenType = adaptiveScreenType
                     )
                     // TODO handle this properly
                     AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail && !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {

@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.android.feature.casstudy
+package com.mak.pocketnotes.android.feature.casestudy
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -13,12 +13,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 
@@ -41,9 +41,13 @@ fun GridItem(label: String) {
 @Composable
 fun BentoSample(
     modifier: Modifier = Modifier,
-    gridColumnCount: Int = 5,
-    isTablet: Boolean = false,
 ) {
+    val isTablet: Boolean = currentWindowAdaptiveInfo().windowSizeClass.isWidthAtLeastBreakpoint(400)
+    val gridColumnCount: Int = if (isTablet) {
+        12
+    } else {
+        5
+    }
     LazyVerticalGrid(
         columns = GridCells.Fixed(gridColumnCount),
         modifier = modifier.fillMaxSize()
@@ -86,28 +90,12 @@ fun BentoSample(
     }
 }
 
-@Preview
+@PreviewScreenSizes
 @Composable
 private fun BentoGridSamplePreview() {
     PocketNotesTheme {
         Surface {
-            BentoSample(
-                gridColumnCount = 5,
-                isTablet = false
-            )
-        }
-    }
-}
-
-@Preview(device = Devices.FOLDABLE)
-@Composable
-private fun BentoGridSamplePreviewTab() {
-    PocketNotesTheme {
-        Surface {
-            BentoSample(
-                gridColumnCount = 12,
-                isTablet = true
-            )
+            BentoSample()
         }
     }
 }
