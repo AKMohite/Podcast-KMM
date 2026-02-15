@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -82,7 +83,9 @@ private fun HomeContent(
             item("best-podcasts") {
                 AnimatedVisibility(visible = uiState.podcasts.isNotEmpty()) {
                     BestPodcasts(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
                         gotoDetails = gotoDetails,
                         podcasts = uiState.getSectionedPodcasts()
                     )

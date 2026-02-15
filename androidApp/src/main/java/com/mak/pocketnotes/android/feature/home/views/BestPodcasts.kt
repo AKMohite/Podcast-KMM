@@ -3,11 +3,13 @@ package com.mak.pocketnotes.android.feature.home.views
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,12 +28,14 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 @Composable
 internal fun BestPodcasts(
     modifier: Modifier = Modifier,
-    podcasts: List<List<Podcast>>,
+    podcasts: List<Podcast>,
     gotoDetails: (String) -> Unit
 ) {
     // TODO need to handle this with width class
     val isTablet = booleanResource(R.bool.is_tablet)
     val columnFraction = if (isTablet) 0.35f else 0.8f
+    val rowCount = if (isTablet) 4 else 2
+    val maxHeight = if (isTablet) 300.dp else 150.dp
     Column(
         modifier = modifier
     ) {
@@ -42,22 +46,20 @@ internal fun BestPodcasts(
             fontSize = 20.sp
         )
         Spacer(modifier = Modifier.height(8.dp))
-        LazyRow {
-            items(items = podcasts) { podcasts ->
-                Column(
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(rowCount),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = maxHeight),
+        ) {
+            items(items = podcasts, key = Podcast::id) { podcast ->
+                PodcastRow(
                     modifier = Modifier
-                        .fillParentMaxWidth(columnFraction)
-                        .wrapContentHeight()
-                ) {
-                    podcasts.forEach { podcast ->
-                        PodcastRow(
-                            modifier = Modifier
-                                .clickable { gotoDetails(podcast.id) }
-                                .padding(4.dp),
-                            podcast = podcast
-                        )
-                    }
-                }
+                        .fillMaxWidth(columnFraction)
+                        .clickable { gotoDetails(podcast.id) }
+                        .padding(horizontal = 4.dp),
+                    podcast = podcast
+                )
             }
         }
     }
@@ -69,7 +71,7 @@ private fun BestPodcastsPreview() {
     PocketNotesTheme {
         Surface {
             BestPodcasts(
-                podcasts = samplePodcasts.chunked(2),
+                podcasts = samplePodcasts.take(8),
                 gotoDetails = {}
             )
         }

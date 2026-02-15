@@ -124,5 +124,5 @@ data class HomeScreenState(
     val errorMsg: String? = null,
     val loadFinished: Boolean = false
 ) {
-    fun getSectionedPodcasts(noOfRows: Int = 4) = podcasts.chunked(noOfRows)
+    fun getSectionedPodcasts() = podcasts
 }
