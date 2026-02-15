@@ -79,7 +79,7 @@ internal class EpisodeStore: KoinComponent {
                 withContext(dispatcher.io) {
                     lastSyncDAO.isRequestValid(
                         requestType = SyncRequest.PODCAST_EPISODES,
-                        threshold = 5.days,
+                        threshold = 1.days,
                         entityId = episodes.firstOrNull()?.podcastId ?: DEFAULT_ID
                     )
                 }

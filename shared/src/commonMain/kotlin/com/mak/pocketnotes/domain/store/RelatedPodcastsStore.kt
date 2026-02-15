@@ -78,7 +78,7 @@ internal class RelatedPodcastsStore: KoinComponent {
                 withContext(dispatcher.io) {
                     lastSyncDAO.isRequestValid(
                         requestType = SyncRequest.PODCAST_RECOMMENDATIONS,
-                        threshold = if (podcasts.isNotEmpty()) 28.days else 1.hours,
+                        threshold = if (podcasts.isNotEmpty()) 4.days else 1.hours,
                         entityId = id
                     )
                 }

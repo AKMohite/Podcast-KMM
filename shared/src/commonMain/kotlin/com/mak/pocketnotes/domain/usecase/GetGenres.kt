@@ -24,7 +24,6 @@ import org.mobilenativefoundation.store.store5.StoreReadRequest
 import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.Validator
 import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
 
 class GetGenres: KoinComponent {
     private val dispatcher: Dispatcher by inject()
@@ -62,12 +61,15 @@ class GetGenres: KoinComponent {
             )
         ).validator(
             Validator.by {
-                    withContext(dispatcher.io) {
-                        lastSyncDAO.isRequestValid(
-                            requestType = SyncRequest.GENRES,
-                            threshold = if (it.isNotEmpty()) 24.hours else 30.minutes,
-                        )
-                    }
+                if (it.isEmpty()) {
+                    return@by false
+                }
+                withContext(dispatcher.io) {
+                    lastSyncDAO.isRequestValid(
+                        requestType = SyncRequest.GENRES,
+                        threshold = 24.hours,
+                    )
+                }
             }
         )
         .build()

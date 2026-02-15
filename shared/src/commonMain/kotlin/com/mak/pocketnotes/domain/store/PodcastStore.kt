@@ -80,7 +80,7 @@ internal class PodcastStore: KoinComponent {
                 withContext(dispatcher.io) {
                     lastSyncDAO.isRequestValid(
                         requestType = SyncRequest.PODCAST_DETAILS,
-                        threshold = 5.days,
+                        threshold = 1.days,
                         entityId = podcast.id
                     )
                 }

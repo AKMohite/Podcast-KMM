@@ -78,10 +78,13 @@ class BestPodcastsStore: KoinComponent {
             )
         ).validator(
             Validator.by {
+                if (it.isEmpty()) {
+                    return@by false
+                }
                 withContext(dispatcher.io) {
                     lastSyncDAO.isRequestValid(
                         requestType = SyncRequest.BEST_PODCASTS,
-                        threshold = if (it.isNotEmpty()) 90.minutes else 5.minutes,
+                        threshold = 90.minutes,
                     )
                 }
             }
