@@ -6,7 +6,7 @@ versionCode = "1"
 versionName = "0.0.1"
 
 accompanist = "0.36.0"
-agp = "8.13.2"
+agp = "9.1.0"
 coil = "2.7.0"
 composeBom = "2026.01.00"
 coroutines = "1.10.2"
