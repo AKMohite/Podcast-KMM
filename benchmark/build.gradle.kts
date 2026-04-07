@@ -1,13 +1,16 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+    }
 }
 
 android {
     namespace = "com.mak.pocketnotes.android.benchmark"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -28,11 +31,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-    kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(21))
-        }
     }
 }
 

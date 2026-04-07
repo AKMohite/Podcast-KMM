@@ -1,10 +1,7 @@
 plugins {
-    //trick: for the same plugin versions in all sub-modules
-//    val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs") as org.gradle.accessors.dm.LibrariesForLibs
-    //trick: for the same plugin versions in all sub-modules
     alias(libs.plugins.androidApplication).apply(false)
     alias(libs.plugins.androidLibrary).apply(false)
-    alias(libs.plugins.kotlinAndroid).apply(false)
+    alias(libs.plugins.androidKMMLibrary).apply(false)
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.detekt) apply false

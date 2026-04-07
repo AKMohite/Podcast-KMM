@@ -1,24 +1,21 @@
 plugins {
     alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.baselineprofile)
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+    }
 }
 
 android {
     namespace = "app.mak.baselineprofiles"
-    compileSdk {
-        version = release(Integer.parseInt(libs.versions.compileSdk.get()))
-    }
+    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(21))
-        }
     }
 
     defaultConfig {
