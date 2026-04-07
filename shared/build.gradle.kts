@@ -1,13 +1,22 @@
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
-    id("app.cash.sqldelight") version libs.versions.sqldelight
-    id("co.touchlab.skie") version libs.versions.skie
-    kotlin("plugin.serialization") version libs.versions.kotlin.get()
+    alias(libs.plugins.androidKMMLibrary)
+    id("app.cash.sqldelight") version "2.3.2"
+    id("co.touchlab.skie") version "0.10.11"
+    kotlin("plugin.serialization") version "2.3.20"
 }
 
 kotlin {
-    androidTarget()
+    android {
+        namespace = "com.mak.pocketnotes"
+        compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+        minSdk = Integer.parseInt(libs.versions.minSdk.get())
+        
+        // As per skill Path A point 11: Resolve Sub-dependency Variants
+        localDependencySelection {
+            selectBuildTypeFrom.set(listOf("debug", "release"))
+        }
+    }
     
     listOf(
         iosX64(),
@@ -92,18 +101,6 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
-    }
-}
-
-android {
-    namespace = "com.mak.pocketnotes"
-    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
-    defaultConfig {
-        minSdk = Integer.parseInt(libs.versions.minSdk.get())
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
