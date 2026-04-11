@@ -113,7 +113,7 @@ private fun HomeContent(
     }
 }
 
-class HomeScreenStateProvider: PreviewParameterProvider<HomeScreenState> {
+private class HomeScreenStateProvider: PreviewParameterProvider<HomeScreenState> {
 
     val data = listOf(
         Pair(
