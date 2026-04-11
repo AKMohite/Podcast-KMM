@@ -9,6 +9,8 @@ import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -53,8 +55,9 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
 //                TODO handle all exceptions
-                refreshBestPodcasts(1)
-                refreshCuratedPodcasts(1)
+                val bestPodcasts = async { refreshBestPodcasts(1) }
+                val curatedPodcasts = async {  refreshCuratedPodcasts(1) }
+                val (b, c) = awaitAll(bestPodcasts, curatedPodcasts)
             } catch (t: Throwable) {
                 Log.e("HomeViewModel", "refreshDiscover: ", t)
             }

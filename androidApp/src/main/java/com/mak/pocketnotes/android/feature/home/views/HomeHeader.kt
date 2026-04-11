@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.carousel.HorizontalCenteredHeroCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
@@ -14,6 +13,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.common.navigation.AdaptiveScreenType
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
@@ -69,15 +70,44 @@ internal fun HomeHeader(
     }
 }
 
+
+private class HomeHeaderAdaptiveProvider: PreviewParameterProvider<AdaptiveScreenType> {
+
+    val data = listOf(
+        Pair(
+            "Mobile",
+            AdaptiveScreenType.Compact
+        ),
+        Pair(
+            "Foldable",
+            AdaptiveScreenType.Medium
+        ),
+        Pair(
+            "Expanded",
+            AdaptiveScreenType.Expanded
+        ),
+    )
+
+    override val values: Sequence<AdaptiveScreenType>
+        get() = data.map { it.second }.asSequence()
+
+    override fun getDisplayName(index: Int): String {
+        return data[index].first
+    }
+}
+
 @Preview
 @Composable
-private fun HomeHeaderPreview() {
+private fun HomeHeaderPreview(
+    @PreviewParameter(HomeHeaderAdaptiveProvider::class) previewData: AdaptiveScreenType
+) {
     PocketNotesTheme {
         Surface {
             HomeHeader(
                 modifier = Modifier.fillMaxWidth(),
                 podcasts = samplePodcasts.take(5),
                 onPodcastClick = {},
+                adaptiveScreenType = previewData
             )
         }
     }
