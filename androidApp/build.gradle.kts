@@ -82,4 +82,8 @@ dependencies {
     // baseline profile
     implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":baselineprofiles"))
+
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.test.junit4)
+    debugImplementation(libs.compose.test.manifest)
 }
