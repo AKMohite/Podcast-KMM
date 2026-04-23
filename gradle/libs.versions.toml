@@ -1,30 +1,29 @@
 [versions]
-compileSdk = "36"
+compileSdk = "37"
 minSdk = "24"
-targetSdk = "36"
+targetSdk = "37"
 versionCode = "1"
 versionName = "0.0.1"
 
 accompanist = "0.36.0"
-agp = "9.1.0"
+agp = "9.2.0"
 coil = "2.7.0"
-composeBom = "2026.03.01"
+composeBom = "2026.04.01"
 coroutines = "1.10.2"
 detekt = "1.23.8"
-koin = "4.2.0"
+koin = "4.2.1"
 kotlin = "2.3.20"
 kotlinxDatetime = "0.7.1"
-ktor = "3.4.2"
+ktor = "3.4.3"
 legacySupportV4 = "1.0.0"
 media3Exoplayer = "1.10.0"
-navigation = "2.9.7"
+navigation = "2.9.8"
 profileinstaller = "1.4.1"
 skie= "0.10.11"
 sqldelight= "2.3.2"
 store5 = "5.1.0-alpha08"
 playServicesWearable = "19.0.0"
-composeMaterial = "1.6.0"
-composeFoundation = "1.6.0"
+composeFoundation = "1.6.1"
 wearToolingPreview = "1.0.0"
 activityCompose = "1.13.0"
 coreSplashscreen = "1.2.0"
@@ -73,7 +72,7 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
+androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeFoundation" }
 androidx-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeFoundation" }
 androidx-wear-tooling-preview = { group = "androidx.wear", name = "wear-tooling-preview", version.ref = "wearToolingPreview" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
