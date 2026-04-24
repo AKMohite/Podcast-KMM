@@ -1,5 +1,8 @@
 package com.mak.pocketnotes.domain.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AppSettings(
     val theme: AppTheme = AppTheme.SYSTEM,
     val language: String = "en",
