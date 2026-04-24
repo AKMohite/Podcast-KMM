@@ -69,4 +69,141 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+
+    <!-- Navigation labels -->
+    <string name="nav_discover">Discover</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_subscribe">Subscriptions</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Discover screen -->
+    <string name="discover_title">Discover</string>
+    <string name="discover_trending">Trending Now</string>
+    <string name="discover_featured">Featured</string>
+    <string name="discover_by_category">Browse by Topic</string>
+
+    <!-- Podcast actions -->
+    <string name="action_subscribe">Subscribe</string>
+    <string name="action_subscribed">Subscribed</string>
+    <string name="action_unsubscribe">Unsubscribe</string>
+    <!-- Confirmation prompt shown in dialog -->
+    <string name="action_unsubscribe_confirm">Unsubscribe from %1$s?</string>
+    <string name="action_see_all">See all</string>
+    <string name="action_show_more">Show more</string>
+    <string name="action_show_less">Show less</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+
+    <!-- Podcast detail -->
+    <string name="podcast_episodes">Episodes</string>
+    <!-- %1$d = number of episodes -->
+    <string name="podcast_episode_count">%1$d episodes</string>
+    <string name="podcast_about">About this podcast</string>
+    <string name="podcast_explicit">Explicit</string>
+
+    <!-- Episode detail -->
+    <string name="episode_about">About this episode</string>
+    <!-- %1$s = episode number, %2$s = season number -->
+    <string name="episode_number_season">Episode %1$s · Season %2$s</string>
+    <string name="episode_number">Episode %1$s</string>
+
+    <!-- Search screen -->
+    <string name="search_hint">Search podcasts and episodes…</string>
+    <string name="search_prompt_title">Search WavePod</string>
+    <string name="search_prompt_subtitle">Find your next favourite podcast or episode</string>
+    <string name="search_recent_title">Recent searches</string>
+    <string name="search_no_results_title">No results found</string>
+    <!-- %1$s = query string -->
+    <string name="search_no_results_subtitle">No podcasts or episodes match \"%1$s\"</string>
+    <!-- %1$d = total count -->
+    <string name="search_result_count">%1$,d results</string>
+    <string name="search_podcasts_header">Podcasts</string>
+    <string name="search_episodes_header">Episodes</string>
+    <string name="search_filter_explicit">Explicit</string>
+    <string name="search_filter_chapters">Chapters</string>
+    <string name="search_filter_recent">Recent</string>
+
+    <!-- Subscribe screen -->
+    <string name="subscribe_title">My Podcasts</string>
+    <string name="subscribe_new_episodes">New Episodes</string>
+    <string name="subscribe_your_podcasts">All Subscriptions</string>
+    <string name="subscribe_empty_title">No subscriptions yet</string>
+    <string name="subscribe_empty_subtitle">Subscribe to a podcast to see new episodes here</string>
+    <string name="subscribe_explore">Explore podcasts</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_text_size">Text size</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_playback">Playback</string>
+    <string name="settings_autoplay">Auto-play next episode</string>
+    <string name="settings_autoplay_subtitle">Automatically play the next episode when one finishes</string>
+    <string name="settings_stream_quality">Streaming quality</string>
+    <string name="settings_storage">Storage</string>
+    <string name="settings_wifi_only">Download on Wi-Fi only</string>
+    <string name="settings_wifi_only_subtitle">Restrict episode downloads to Wi-Fi connections</string>
+    <string name="settings_delete_played">Delete played episodes</string>
+    <string name="settings_delete_played_subtitle">Automatically remove episodes after you\'ve listened to them</string>
+    <string name="settings_about">About</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_source_code">Source Code</string>
+    <string name="settings_licenses">Open-source licences</string>
+    <string name="settings_app_version">App version</string>
+
+    <!-- Error messages -->
+    <string name="error_no_internet">No internet connection. Showing cached content.</string>
+    <string name="error_timeout">Request timed out. Please try again.</string>
+    <string name="error_unauthorized">Authentication failed. Please sign in again.</string>
+    <string name="error_forbidden">Access denied.</string>
+    <string name="error_not_found">Content not found.</string>
+    <string name="error_rate_limit">Too many requests. Please wait a moment.</string>
+    <string name="error_server">Server error. Please try again later.</string>
+    <string name="error_serialization">Data parsing error. Please try again.</string>
+    <string name="error_disk_full">Not enough storage space.</string>
+    <string name="error_not_found_local">Item not found in local storage.</string>
+    <string name="error_unknown">Something went wrong. Please try again.</string>
+    <string name="error_subscribe_failed">Failed to update subscription. Please try again.</string>
+
+    <!-- Content descriptions (accessibility) -->
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_subscribed">Subscribed</string>
+    <string name="cd_episode_played">Episode played</string>
+    <string name="cd_episode_mark_played">Mark as played</string>
+    <!-- %1$s = episode title -->
+    <string name="cd_play_episode">Play %1$s</string>
+    <string name="cd_pause_episode">Pause episode</string>
+    <string name="cd_go_back">Go back</string>
+    <string name="cd_podcast_artwork">Podcast artwork for %1$s</string>
+    <string name="cd_episode_artwork">Episode artwork for %1$s</string>
+    <string name="cd_rewind_15">Rewind 15 seconds</string>
+    <string name="cd_forward_30">Skip forward 30 seconds</string>
+    <string name="cd_playback_speed">Playback speed: %1$s×</string>
+    <string name="cd_loading">Loading content</string>
+
+    <!-- Plurals -->
+    <plurals name="episode_count">
+        <item quantity="one">%d episode</item>
+        <item quantity="other">%d episodes</item>
+    </plurals>
+    <plurals name="subscriber_count">
+        <item quantity="one">%d subscriber</item>
+        <item quantity="other">%d subscribers</item>
+    </plurals>
+
+    <!-- Player -->
+    <string name="player_speed_normal">Normal speed</string>
+    <string name="player_buffering">Buffering…</string>
+    <string name="player_playing_on">Playing on %1$s</string>   <!-- Cast device name -->
+    <string name="player_sleep_timer">Sleep timer</string>
+    <string name="player_chapters">Chapters</string>
+
+    <!-- Notification channel -->
+    <string name="notification_channel_playback_name">Playback</string>
+    <string name="notification_channel_playback_desc">WavePod audio playback controls</string>
 </resources>

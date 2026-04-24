@@ -9,10 +9,6 @@ import androidx.compose.ui.unit.sp
 import com.mak.pocketnotes.android.R
 
 
-internal enum class TextSize {
-    SMALL, MEDIUM, LARGE, EXTRA_LARGE
-}
-
 val bodyFontFamily = FontFamily(
 //    Font(R.font.satoshi_black, FontWeight.Black, FontStyle.Normal),
 //    Font(R.font.satoshi_black_italic, FontWeight.Black, FontStyle.Italic),
