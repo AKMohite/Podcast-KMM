@@ -13,6 +13,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import com.mak.pocketnotes.domain.models.AppTheme
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -297,5 +298,3 @@ private fun selectSchemeForContrast(isDark: Boolean): ColorScheme {
         return colorScheme
     } else return colorScheme
 }
-
-enum class AppTheme   { LIGHT, DARK, SYSTEM }
