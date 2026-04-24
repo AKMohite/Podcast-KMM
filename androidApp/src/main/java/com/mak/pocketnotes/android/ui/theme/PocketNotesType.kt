@@ -5,8 +5,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.mak.pocketnotes.android.R
 
+
+internal enum class TextSize {
+    SMALL, MEDIUM, LARGE, EXTRA_LARGE
+}
 
 val bodyFontFamily = FontFamily(
 //    Font(R.font.satoshi_black, FontWeight.Black, FontStyle.Normal),
@@ -32,25 +37,23 @@ val displayFontFamily = FontFamily(
 //    Font(R.font.cabinet_grotesk_regular, FontWeight.Normal, FontStyle.Normal)
 )
 
-val typography = typographyFromDefaults()
-
-fun typographyFromDefaults(): Typography {
+fun typographyFromDefaults(fontScale: Float = 1f): Typography {
     val baseline = Typography()
     return Typography(
-        displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),
-        displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily),
-        displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily),
-        headlineLarge = baseline.headlineLarge.copy(fontFamily = displayFontFamily),
-        headlineMedium = baseline.headlineMedium.copy(fontFamily = displayFontFamily),
-        headlineSmall = baseline.headlineSmall.copy(fontFamily = displayFontFamily),
-        titleLarge = baseline.titleLarge.copy(fontFamily = displayFontFamily),
-        titleMedium = baseline.titleMedium.copy(fontFamily = displayFontFamily),
-        titleSmall = baseline.titleSmall.copy(fontFamily = displayFontFamily),
-        bodyLarge = baseline.bodyLarge.copy(fontFamily = bodyFontFamily),
-        bodyMedium = baseline.bodyMedium.copy(fontFamily = bodyFontFamily),
-        bodySmall = baseline.bodySmall.copy(fontFamily = bodyFontFamily),
-        labelLarge = baseline.labelLarge.copy(fontFamily = bodyFontFamily),
-        labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily),
-        labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily),
+        displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily, fontWeight = FontWeight.Bold,      fontSize = (57 * fontScale).sp, lineHeight = (64 * fontScale).sp),
+        displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily, fontWeight = FontWeight.Bold,      fontSize = (45 * fontScale).sp, lineHeight = (52 * fontScale).sp),
+        displaySmall = baseline.displaySmall.copy(fontFamily = displayFontFamily, fontWeight = FontWeight.SemiBold,  fontSize = (36 * fontScale).sp, lineHeight = (44 * fontScale).sp),
+        headlineLarge = baseline.headlineLarge.copy(fontFamily = displayFontFamily, fontWeight = FontWeight.SemiBold,  fontSize = (32 * fontScale).sp, lineHeight = (40 * fontScale).sp),
+        headlineMedium = baseline.headlineMedium.copy(fontFamily = displayFontFamily, fontWeight = FontWeight.SemiBold,  fontSize = (28 * fontScale).sp, lineHeight = (36 * fontScale).sp),
+        headlineSmall = baseline.headlineSmall.copy(fontFamily = displayFontFamily, fontWeight = FontWeight.Medium,    fontSize = (24 * fontScale).sp, lineHeight = (32 * fontScale).sp),
+        titleLarge = baseline.titleLarge.copy(fontFamily = displayFontFamily,          fontWeight = FontWeight.SemiBold,  fontSize = (22 * fontScale).sp, lineHeight = (28 * fontScale).sp),
+        titleMedium = baseline.titleMedium.copy(fontFamily = displayFontFamily,          fontWeight = FontWeight.Medium,    fontSize = (16 * fontScale).sp, lineHeight = (24 * fontScale).sp),
+        titleSmall = baseline.titleSmall.copy(fontFamily = displayFontFamily,          fontWeight = FontWeight.Medium,    fontSize = (14 * fontScale).sp, lineHeight = (20 * fontScale).sp),
+        bodyLarge = baseline.bodyLarge.copy(fontFamily = bodyFontFamily,          fontWeight = FontWeight.Normal,    fontSize = (16 * fontScale).sp, lineHeight = (24 * fontScale).sp),
+        bodyMedium = baseline.bodyMedium.copy(fontFamily = bodyFontFamily,          fontWeight = FontWeight.Normal,    fontSize = (14 * fontScale).sp, lineHeight = (20 * fontScale).sp),
+        bodySmall = baseline.bodySmall.copy(fontFamily = bodyFontFamily,          fontWeight = FontWeight.Normal,    fontSize = (12 * fontScale).sp, lineHeight = (16 * fontScale).sp),
+        labelLarge = baseline.labelLarge.copy(fontFamily = bodyFontFamily,          fontWeight = FontWeight.Medium,    fontSize = (14 * fontScale).sp, lineHeight = (20 * fontScale).sp),
+        labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily,          fontWeight = FontWeight.Medium,    fontSize = (12 * fontScale).sp, lineHeight = (16 * fontScale).sp),
+        labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily,          fontWeight = FontWeight.Medium,    fontSize = (11 * fontScale).sp, lineHeight = (16 * fontScale).sp),
     )
 }
