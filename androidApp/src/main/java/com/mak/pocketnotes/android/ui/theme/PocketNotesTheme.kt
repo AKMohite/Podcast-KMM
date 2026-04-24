@@ -244,6 +244,8 @@ private val highContrastDarkColorScheme = darkColorScheme(
 
 @Composable
 fun PocketNotesTheme(
+    appTheme: AppTheme = AppTheme.SYSTEM,
+    fontScale: Float = 1f,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
@@ -260,7 +262,7 @@ fun PocketNotesTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = typography,
+        typography = typographyFromDefaults(fontScale),
         shapes = roundShapes,
         content = content
     )
@@ -295,3 +297,5 @@ private fun selectSchemeForContrast(isDark: Boolean): ColorScheme {
         return colorScheme
     } else return colorScheme
 }
+
+enum class AppTheme   { LIGHT, DARK, SYSTEM }
