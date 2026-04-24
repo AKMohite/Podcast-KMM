@@ -75,6 +75,8 @@ kotlin {
                 implementation(libs.androidx.legacy.support) // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
                 implementation(libs.android.sql.driver)
+                implementation("androidx.datastore:datastore-core:1.3.0-alpha07")
+                implementation("androidx.datastore:datastore-tink:1.3.0-alpha07")
             }
         }
 //        val androidUnitTest by getting
