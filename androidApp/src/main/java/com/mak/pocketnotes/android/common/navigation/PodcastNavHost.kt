@@ -1,9 +1,13 @@
 package com.mak.pocketnotes.android.common.navigation
 
+import androidx.annotation.StringRes
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,8 +54,7 @@ internal fun PodcastNavHost(
                     )
                 },
                 state = state,
-                loadNextPodcasts = homeViewModel::loadPodcasts,
-                adaptiveScreenType = adaptiveScreenType
+                loadNextPodcasts = homeViewModel::loadPodcasts
             )
         }
 
@@ -116,4 +119,11 @@ internal fun PodcastNavHost(
             SettingsRoot()
         }
     }
+}
+
+@Composable
+internal fun EmptyScreen(
+    @StringRes title: Int
+) {
+    Text(text = "${stringResource(id = title)} Work in progress", style = MaterialTheme.typography.headlineSmall)
 }
