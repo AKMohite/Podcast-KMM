@@ -13,6 +13,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.rememberDrawerState
@@ -60,7 +61,7 @@ internal fun PodcastNavigationWrapper(
 ) {
     val mediaViewModel: MediaViewModel = koinViewModel()
     val navController = rememberNavController()
-    val adaptiveInfo = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
+    val adaptiveInfo = currentWindowAdaptiveInfoV2()
 
     val sizeClass = adaptiveInfo.windowSizeClass
     val navLayoutType = when {
