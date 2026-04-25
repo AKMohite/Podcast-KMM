@@ -38,15 +38,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.AppTheme
 import com.mak.pocketnotes.domain.models.StreamQuality
 import com.mak.pocketnotes.domain.models.TextSize
+import org.koin.androidx.compose.koinViewModel
+
+
+@Composable
+internal fun SettingsRoot(viewModel: SettingsViewModel = koinViewModel()) {
+    val state   = viewModel.state.collectAsStateWithLifecycle().value
+    val context = LocalContext.current
+
+    /*ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is SettingsEvent.OpenUrl -> {
+                runCatching {
+                    CustomTabsIntent.Builder().setShowTitle(true).build()
+                        .launchUrl(context, Uri.parse(event.url))
+                }.onFailure {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
+                }
+            }
+            SettingsEvent.NavigateToLicenses -> { *//* TODO: navigate to licenses screen *//* }
+        }
+    }*/
+
+    SettingsScreenV2(state = state, onAction = viewModel::onAction)
+}
 
 @Composable
 fun SettingsScreenV2(

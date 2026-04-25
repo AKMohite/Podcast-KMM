@@ -10,17 +10,24 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mak.pocketnotes.android.common.navigation.PodcastNavigationWrapper
+import com.mak.pocketnotes.android.feature.settings.SettingsState
+import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.TextSize
 import com.mak.pocketnotes.service.media.service.MediaPlayerService
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : ComponentActivity() {
 
 //    private val mediaViewModel by viewModel<MediaViewModel>()
+    private val settingsViewModel by viewModel<SettingsViewModel>()
     private var isServiceRunning = false
     private var mediaIntent: Intent? = null
 
@@ -37,7 +44,17 @@ class MainActivity : ComponentActivity() {
         )
         super.onCreate(savedInstanceState)
         setContent {
-            PocketNotesTheme {
+            val settingsState by settingsViewModel.state.collectAsStateWithLifecycle(SettingsState())
+            val fontScale = when (settingsState.settings.textSize) {
+                TextSize.SMALL       -> 0.85f
+                TextSize.MEDIUM      -> 1.00f
+                TextSize.LARGE       -> 1.15f
+                TextSize.EXTRA_LARGE -> 1.30f
+            }
+            PocketNotesTheme(
+                fontScale = fontScale,
+                appTheme = settingsState.settings.theme
+            ) {
                 val isSystemDark = isSystemInDarkTheme()
                 val statusBarColor = if (isSystemDark) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
                 PodcastNavigationWrapper(
