@@ -8,6 +8,7 @@ import app.cash.sqldelight.db.SqlDriver
 import com.google.crypto.tink.Aead
 import com.google.crypto.tink.KeyTemplate
 import com.google.crypto.tink.RegistryConfiguration
+import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.aead.PredefinedAeadParameters
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
 import com.mak.pocketnotes.data.repository.DataStoreSettingsRepository
@@ -27,6 +28,7 @@ actual fun platformModule() = module {
     single<SqlDriver> { AndroidDatabaseDriverFactory(androidContext()).createDriver() }
 
     single<DataStore<AppSettings>> {
+        AeadConfig.register()
         val keysetHandle =
             AndroidKeysetManager.Builder()
                 .withSharedPref(androidContext(), "keyset", "keyset_prefs")
@@ -42,11 +44,11 @@ actual fun platformModule() = module {
                     Aead::class.java,
                 ),
             wrappedSerializer = AppSettingsSerializer(get<Dispatcher>()),
-            associatedData = "settings.json".encodeToByteArray(),
+            associatedData = "pod_settings_data".encodeToByteArray(),
         )
 
         val dataStore = DataStoreFactory.create(serializer = aeadSerializer) {
-            File(androidContext().filesDir, "settings.json")
+            File(androidContext().filesDir, "pod_settings.json")
         }
 
 //        val scope = CoroutineScope(get<Dispatcher>().io + Job())
@@ -56,7 +58,7 @@ actual fun platformModule() = module {
 //            context = get<Dispatcher>().io
 //        ).build()
 //        val dataStore = dataStore(
-//            fileName = "settings.json",
+//            fileName = "pod_settings.json",
 //            serializer = aeadSerializer,
 //            scope = scope,
 //        )

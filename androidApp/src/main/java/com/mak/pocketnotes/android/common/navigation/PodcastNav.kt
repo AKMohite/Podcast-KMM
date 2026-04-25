@@ -45,7 +45,7 @@ import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
 import com.mak.pocketnotes.android.feature.search.SearchScreen
 import com.mak.pocketnotes.android.feature.search.SearchViewModel
-import com.mak.pocketnotes.android.feature.settings.SettingsScreen
+import com.mak.pocketnotes.android.feature.settings.SettingsRoot
 import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -194,7 +194,7 @@ internal fun PodcastNav(
                 EmptyScreen(Subscribed.title)
             }
             composable(Settings.routeWithArgs) {
-                SettingsScreen()
+                SettingsRoot()
             }
         }
     }
