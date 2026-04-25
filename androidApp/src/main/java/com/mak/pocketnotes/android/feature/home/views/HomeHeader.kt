@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.common.navigation.AdaptiveScreenType
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.dimensionTokens
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.launch
@@ -57,57 +58,29 @@ internal fun HomeCarousel(
 @Composable
 internal fun HomeHeader(
     modifier: Modifier = Modifier,
-    adaptiveScreenType: AdaptiveScreenType = AdaptiveScreenType.Compact,
     podcasts: List<Podcast>,
     onPodcastClick: (String) -> Unit
 ) {
+    val token = dimensionTokens()
     if (podcasts.isNotEmpty()) {
-        when(adaptiveScreenType) {
-            AdaptiveScreenType.Compact -> CompactHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
-            AdaptiveScreenType.Medium -> MediumHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
-            else -> LargeHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+        when {
+            token.usePermanentDrawer -> LargeHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+            token.useNavigationRail -> MediumHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+            else -> CompactHomeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
         }
     }
 }
 
 
-private class HomeHeaderAdaptiveProvider: PreviewParameterProvider<AdaptiveScreenType> {
-
-    val data = listOf(
-        Pair(
-            "Mobile",
-            AdaptiveScreenType.Compact
-        ),
-        Pair(
-            "Foldable",
-            AdaptiveScreenType.Medium
-        ),
-        Pair(
-            "Expanded",
-            AdaptiveScreenType.Expanded
-        ),
-    )
-
-    override val values: Sequence<AdaptiveScreenType>
-        get() = data.map { it.second }.asSequence()
-
-    override fun getDisplayName(index: Int): String {
-        return data[index].first
-    }
-}
-
 @Preview
 @Composable
-private fun HomeHeaderPreview(
-    @PreviewParameter(HomeHeaderAdaptiveProvider::class) previewData: AdaptiveScreenType
-) {
+private fun HomeHeaderPreview() {
     PocketNotesTheme {
         Surface {
             HomeHeader(
                 modifier = Modifier.fillMaxWidth(),
                 podcasts = samplePodcasts.take(5),
-                onPodcastClick = {},
-                adaptiveScreenType = previewData
+                onPodcastClick = {}
             )
         }
     }

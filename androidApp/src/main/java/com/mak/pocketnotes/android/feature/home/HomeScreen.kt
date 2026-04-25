@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import com.mak.pocketnotes.android.common.navigation.AdaptiveScreenType
 import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
@@ -34,22 +33,19 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 @Composable
 internal fun HomeScreen(
     state: HomeScreenState,
-    adaptiveScreenType: AdaptiveScreenType,
     gotoDetails: (String) -> Unit,
     loadNextPodcasts: (Boolean) -> Unit,
 ) {
     HomeContent(
         uiState = state,
         loadNextPodcasts = loadNextPodcasts,
-        gotoDetails = gotoDetails,
-        adaptiveScreenType = adaptiveScreenType
+        gotoDetails = gotoDetails
     )
 }
 
 @Composable
 private fun HomeContent(
     modifier: Modifier = Modifier,
-    adaptiveScreenType: AdaptiveScreenType = AdaptiveScreenType.Compact,
     uiState: HomeScreenState,
     loadNextPodcasts: (Boolean) -> Unit,
     gotoDetails: (String) -> Unit
@@ -76,8 +72,7 @@ private fun HomeContent(
                 HomeHeader(
                     modifier = Modifier.fillMaxWidth(),
                     podcasts = uiState.topPodcasts,
-                    onPodcastClick = gotoDetails,
-                    adaptiveScreenType = adaptiveScreenType
+                    onPodcastClick = gotoDetails
                 )
             }
             item("best-podcasts") {

@@ -61,7 +61,16 @@ data class SettingsState(
     val settings: AppSettings   = AppSettings(),
     val isLoading: Boolean      = true,
     val appVersion: String      = "",
-)
+) {
+    fun getFontScale(): Float {
+        return when (settings.textSize) {
+            TextSize.SMALL       -> 0.85f
+            TextSize.MEDIUM      -> 1.00f
+            TextSize.LARGE       -> 1.15f
+            TextSize.EXTRA_LARGE -> 1.30f
+        }
+    }
+}
 
 sealed interface SettingsAction {
     data class OnThemeChange(val theme: AppTheme) : SettingsAction

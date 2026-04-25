@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mak.pocketnotes.android.common.navigation.PodcastNavigation
 import com.mak.pocketnotes.android.common.navigation.PodcastNavigationWrapper
 import com.mak.pocketnotes.android.feature.settings.SettingsState
 import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
@@ -45,19 +46,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val settingsState by settingsViewModel.state.collectAsStateWithLifecycle(SettingsState())
-            val fontScale = when (settingsState.settings.textSize) {
-                TextSize.SMALL       -> 0.85f
-                TextSize.MEDIUM      -> 1.00f
-                TextSize.LARGE       -> 1.15f
-                TextSize.EXTRA_LARGE -> 1.30f
-            }
+            val fontScale = settingsState.getFontScale()
             PocketNotesTheme(
                 fontScale = fontScale,
                 appTheme = settingsState.settings.theme
             ) {
                 val isSystemDark = isSystemInDarkTheme()
                 val statusBarColor = if (isSystemDark) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
-                PodcastNavigationWrapper(
+//                PodcastNavigationWrapper(
+//                    startService = { startMediaService() },
+//                    modifier = Modifier
+//                        .safeDrawingPadding()
+//                )
+                PodcastNavigation(
                     startService = { startMediaService() },
                     modifier = Modifier
                         .safeDrawingPadding()
