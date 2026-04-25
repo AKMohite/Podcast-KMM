@@ -77,6 +77,7 @@
     <string name="nav_settings">Settings</string>
 
     <!-- Discover screen -->
+    <string name="podcast_card_description">%1$s by %2$s. Tap to view.</string>
     <string name="discover_title">Discover</string>
     <string name="discover_trending">Trending Now</string>
     <string name="discover_featured">Featured</string>

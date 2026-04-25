@@ -19,7 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,9 +39,13 @@ internal fun HomeCarouselCard(
     modifier: Modifier = Modifier,
     podcast: Podcast
 ) {
+    val description = stringResource(R.string.podcast_card_description, podcast.title, podcast.publisher)
     Box(
         modifier = modifier
             .height(120.dp)
+            .semantics(mergeDescendants = true) {
+                contentDescription = description
+            }
     ) {
         Spacer(
             modifier = Modifier
