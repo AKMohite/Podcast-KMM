@@ -5,14 +5,9 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.BottomDestination
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.Search
@@ -23,15 +18,13 @@ import com.mak.pocketnotes.android.common.Subscribed
 internal fun PodBottomNavigation(
     bottomBarItems: List<BottomDestination>,
     onBottomNavigate: (BottomDestination) -> Unit,
-    currentScreen: NavDestination?
+    currentKey: NavKey?
 ) {
-    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     NavigationBar {
-        bottomBarItems.forEachIndexed { index, item ->
+        bottomBarItems.forEach { item ->
             NavigationBarItem(
-                selected = currentScreen?.hierarchy?.any { it.route == item.route } == true,
+                selected = currentKey == item,
                 onClick = {
-                    selectedItem = index
                     onBottomNavigate(item)
                 },
                 icon = { Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title)) },
@@ -52,6 +45,6 @@ private fun PodBottomNavigationPreview() {
             Settings
         ),
         onBottomNavigate = {},
-        currentScreen = null
+        currentKey = Home
     )
 }

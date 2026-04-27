@@ -6,11 +6,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.PodcastPlayer
@@ -32,36 +34,30 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-internal fun PodcastNavHost(
-    navController: NavHostController,
+internal fun PodcastNavDisplay(
+    navigationState: NavigationState,
+    navigator: Navigator,
     startService: () -> Unit,
     adaptiveScreenType: AdaptiveScreenType,
     mediaViewModel: MediaViewModel,
     modifier: Modifier = Modifier,
 ) {
-    NavHost(
-        navController = navController,
-        modifier = modifier,
-        startDestination = Home.routeWithArgs
-    ) {
-        composable(Home.routeWithArgs) {
+    val entryProvider : (NavKey) -> NavEntry<NavKey> = entryProvider {
+        entry<Home> {
             val homeViewModel: HomeViewModel = koinViewModel()
             val state by homeViewModel.uiState.collectAsState()
             HomeScreen(
                 gotoDetails = { podcastId ->
-                    navController.navigate(
-                        "${PodcastDetail.route}/$podcastId"
-                    )
+                    navigator.navigate(PodcastDetail(podcastId))
                 },
                 state = state,
                 loadNextPodcasts = homeViewModel::loadPodcasts
             )
         }
 
-        composable(PodcastDetail.routeWithArgs) {
-            val movieId = it.arguments?.getString("podcast_id") ?: ""
+        entry<PodcastDetail> { key ->
             val detailViewModel: PodcastDetailViewModel = koinViewModel(
-                parameters = { parametersOf(movieId) }
+                parameters = { parametersOf(key.podcast_id) }
             )
             PodcastDetailScreen(
                 state = detailViewModel.uiState,
@@ -73,17 +69,15 @@ internal fun PodcastNavHost(
                     }
                 },
                 gotoDetails = { podcastId ->
-                    navController.navigate(
-                        "${PodcastDetail.route}/$podcastId"
-                    )
+                    navigator.navigate(PodcastDetail(podcastId))
                 }
             )
         }
 
-        composable(PodcastPlayer.routeWithArgs) {
+        entry<PodcastPlayer> {
             NowPlayingScreen(
                 progress = mediaViewModel.progress,
-                onCloseClick = { navController.popBackStack() },
+                onCloseClick = { navigator.goBack() },
                 onSliderChange = { updateProgress ->
                     mediaViewModel.onUIEvents(UIEvent.SeekTo(updateProgress))
                 },
@@ -99,26 +93,30 @@ internal fun PodcastNavHost(
             )
         }
 
-        composable(Search.routeWithArgs) {
+        entry<Search> {
             val viewModel: SearchViewModel = koinViewModel()
             val state by viewModel.state.collectAsState()
             SearchScreen(
                 state = state,
                 actions = viewModel,
                 onPodcastClick = { podcastId ->
-                    navController.navigate(
-                        "${PodcastDetail.route}/$podcastId"
-                    )
+                    navigator.navigate(PodcastDetail(podcastId))
                 }
             )
         }
-        composable(Subscribed.routeWithArgs) {
+        entry<Subscribed> {
             EmptyScreen(Subscribed.title)
         }
-        composable(Settings.routeWithArgs) {
+        entry<Settings> {
             SettingsRoot()
         }
     }
+
+    NavDisplay(
+        modifier = modifier,
+        entries = navigationState.toEntries(entryProvider),
+        onBack = { navigator.goBack() }
+    )
 }
 
 @Composable

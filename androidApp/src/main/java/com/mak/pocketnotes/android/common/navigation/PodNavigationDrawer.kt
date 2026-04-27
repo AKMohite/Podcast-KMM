@@ -11,16 +11,11 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.PermanentDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.BottomDestination
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.Search
@@ -33,23 +28,21 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 internal fun PodNavigationDrawer(
     bottomBarItems: List<BottomDestination>,
     onBottomNavigate: (BottomDestination) -> Unit,
-    currentScreen: NavDestination?,
+    currentKey: NavKey?,
     modifier: Modifier = Modifier,
     bottomContent: @Composable ColumnScope.() -> Unit
 ) {
-    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
     PermanentDrawerSheet(
         modifier = modifier
             .sizeIn(minWidth = 200.dp, maxWidth = 250.dp)
     ) {
         Spacer(Modifier.height(24.dp))
-        bottomBarItems.forEachIndexed { index, item ->
+        bottomBarItems.forEach { item ->
             NavigationDrawerItem(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                selected = currentScreen?.hierarchy?.any { it.route == item.route } == true,
+                selected = currentKey == item,
                 onClick = {
-                    selectedItem = index
                     onBottomNavigate(item)
                 },
                 icon = { Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title)) },
@@ -73,7 +66,7 @@ private fun PodNavigationDrawerPreview() {
             Settings
         ),
         onBottomNavigate = {},
-        currentScreen = null,
+        currentKey = Home,
         bottomContent = {
             PermanentMinPlayer(
                 episode = sampleEpisodes[0].asPlayableEpisode(),
