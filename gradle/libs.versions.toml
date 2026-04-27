@@ -17,7 +17,8 @@ kotlinxDatetime = "0.7.1"
 ktor = "3.4.3"
 legacySupportV4 = "1.0.0"
 media3Exoplayer = "1.10.0"
-navigation = "2.9.8"
+nav3Core = "1.0.0"
+lifecycleViewmodelNav3 = "2.10.0-rc01"
 profileinstaller = "1.4.1"
 skie= "0.10.11"
 sqldelight= "2.3.2"
@@ -43,7 +44,9 @@ androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", versi
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Exoplayer" }
 androidx-media3-dash = { module = "androidx.media3:media3-exoplayer-dash", version.ref = "media3Exoplayer" }
 androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "media3Exoplayer" }
-androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
 compose-bom = { group = "androidx.compose", name = "compose-bom-alpha", version.ref = "composeBom" }
 compose-material = { group = "androidx.compose.material3", name = "material3" }
 compose-material-adaptinve = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite" }
@@ -83,7 +86,7 @@ androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomato
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 
 [bundles]
-compose = [ "androidx-navigation", "compose-coil", "compose-material", "compose-material-adaptinve", "compose-ui-preview", "compose-material-icons" ]
+compose = [ "androidx-navigation3-runtime", "androidx-navigation3-ui", "androidx-lifecycle-viewmodel-navigation3", "compose-coil", "compose-material", "compose-material-adaptinve", "compose-ui-preview", "compose-material-icons" ]
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -94,3 +97,4 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

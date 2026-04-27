@@ -68,7 +68,7 @@ internal fun PodcastAppBar(
 private fun PodcastAppBarPreview() {
     PocketNotesTheme {
         PodcastAppBar(
-            currentScreen = PodcastDetail,
+            currentScreen = PodcastDetail("some_id"),
             onNavigateBack = {}
         )
     }

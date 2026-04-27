@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mak.pocketnotes.android.common.navigation.PodcastNavigation
 import com.mak.pocketnotes.android.common.navigation.PodcastNavigationWrapper
 import com.mak.pocketnotes.android.feature.settings.SettingsState
 import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
@@ -58,11 +57,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .safeDrawingPadding()
                 )
-//                PodcastNavigation(
-//                    startService = { startMediaService() },
-//                    modifier = Modifier
-//                        .safeDrawingPadding()
-//                )
             }
         }
     }

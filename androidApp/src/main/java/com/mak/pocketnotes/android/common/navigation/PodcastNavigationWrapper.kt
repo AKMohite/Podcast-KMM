@@ -17,16 +17,11 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
@@ -59,7 +54,6 @@ internal fun PodcastNavigationWrapper(
     modifier: Modifier = Modifier
 ) {
     val mediaViewModel: MediaViewModel = koinViewModel()
-    val navController = rememberNavController()
     val adaptiveInfo = currentWindowAdaptiveInfoV2()
 
     val sizeClass = adaptiveInfo.windowSizeClass
@@ -92,8 +86,13 @@ internal fun PodcastNavigationWrapper(
     }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = backStackEntry?.destination
+    val navigationState = rememberNavigationState(
+        startRoute = Home,
+        topLevelRoutes = setOf(Home, Search, Subscribed, Settings)
+    )
+    val navigator = remember { Navigator(navigationState) }
+
+    val currentKey = navigationState.backStacks[navigationState.topLevelRoute]?.lastOrNull() ?: navigationState.topLevelRoute
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
     val gesturesEnabled = drawerState.isOpen || navLayoutType == NavigationSuiteType.NavigationDrawer
@@ -103,7 +102,7 @@ internal fun PodcastNavigationWrapper(
         Subscribed,
         Settings
     )
-    val isFullScreen = ScreenDestination.isFullScreen(currentScreen?.route)
+    val isFullScreen = ScreenDestination.isFullScreen(currentKey)
     BackHandler(enabled = drawerState.isOpen) {
         coroutineScope.launch {
             drawerState.close()
@@ -129,7 +128,7 @@ internal fun PodcastNavigationWrapper(
                                             .fillMaxWidth()
                                             .wrapContentHeight()
                                             .padding(horizontal = 4.dp)
-                                            .clickable { navController.navigate(PodcastPlayer.route) },
+                                            .clickable { navigator.navigate(PodcastPlayer) },
                                         episode = mediaViewModel.currentSelectedMedia,
                                         play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
                                         next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
@@ -139,12 +138,9 @@ internal fun PodcastNavigationWrapper(
                                 AnimatedVisibility(visible = !isFullScreen) {
                                     PodBottomNavigation(
                                         bottomBarItems = bottomBarItems,
-                                        currentScreen = currentScreen,
+                                        currentKey = navigationState.topLevelRoute,
                                         onBottomNavigate = { destination ->
-                                            navigateToDestination(
-                                                navController,
-                                                destination
-                                            )
+                                            navigator.navigate(destination)
                                         }
                                     )
                                 }
@@ -155,30 +151,24 @@ internal fun PodcastNavigationWrapper(
                         NavigationSuiteType.NavigationRail -> {
                             PodModalWideNavigationRail(
                                 bottomBarItems = bottomBarItems,
-//                                currentScreen = currentScreen,
+                                currentKey = navigationState.topLevelRoute,
                                 onBottomNavigate = { destination ->
-                                    navigateToDestination(
-                                        navController,
-                                        destination
-                                    )
+                                    navigator.navigate(destination)
                                 }
                             )
                         }
 
                         NavigationSuiteType.NavigationDrawer -> PodNavigationDrawer(
                             bottomBarItems = bottomBarItems,
-                            currentScreen = currentScreen,
+                            currentKey = navigationState.topLevelRoute,
                             onBottomNavigate = { destination ->
-                                navigateToDestination(
-                                    navController,
-                                    destination
-                                )
+                                navigator.navigate(destination)
                             },
                             bottomContent = {
                                 AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
                                     PermanentMinPlayer(
                                         modifier = Modifier
-                                            .clickable { navController.navigate(PodcastPlayer.route) },
+                                            .clickable { navigator.navigate(PodcastPlayer) },
                                         episode = mediaViewModel.currentSelectedMedia,
                                         playPause = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
                                         isMediaPlaying = mediaViewModel.isPlaying,
@@ -194,8 +184,9 @@ internal fun PodcastNavigationWrapper(
                 Column(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    PodcastNavHost(
-                        navController = navController,
+                    PodcastNavDisplay(
+                        navigationState = navigationState,
+                        navigator = navigator,
                         startService = startService,
                         adaptiveScreenType = adaptiveScreenType,
                         mediaViewModel = mediaViewModel,
@@ -211,7 +202,7 @@ internal fun PodcastNavigationWrapper(
                                 .wrapContentHeight(Alignment.Bottom)
                                 .weight(1f)
                                 .padding(horizontal = 4.dp)
-                                .clickable { navController.navigate(PodcastPlayer.route) },
+                                .clickable { navigator.navigate(PodcastPlayer) },
                             episode = mediaViewModel.currentSelectedMedia,
                             play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
                             next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
@@ -221,15 +212,5 @@ internal fun PodcastNavigationWrapper(
                 }
             }
         }
-    }
-}
-
-private fun navigateToDestination(navController: NavController, destination: BottomDestination) {
-    navController.navigate(destination.routeWithArgs) {
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
     }
 }
