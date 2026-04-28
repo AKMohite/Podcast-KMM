@@ -49,7 +49,10 @@ internal fun PodcastNavDisplay(
     val entryProvider : (NavKey) -> NavEntry<NavKey> = entryProvider {
         discoverEntry(navigator)
 
-        podcastDetailEntry(startService, mediaViewModel, navigator)
+        podcastDetailEntry(navigator) { episodes ->
+            startService()
+            mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
+        }
 
         nowPlayingEntry(mediaViewModel, navigator)
 

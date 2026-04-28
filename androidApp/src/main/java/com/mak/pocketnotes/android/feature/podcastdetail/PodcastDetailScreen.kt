@@ -53,9 +53,8 @@ import org.koin.core.parameter.parametersOf
 
 
 fun EntryProviderScope<NavKey>.podcastDetailEntry(
-    startService: () -> Unit,
-    mediaViewModel: MediaViewModel,
-    navigator: Navigator
+    navigator: Navigator,
+    startPodcastEpisodes: (List<PodcastEpisode>) -> Unit
 ) {
     entry<PodcastDetail> { key ->
         val detailViewModel: PodcastDetailViewModel = koinViewModel(
@@ -66,8 +65,7 @@ fun EntryProviderScope<NavKey>.podcastDetailEntry(
             episodes = detailViewModel.episodesState,
             startPodcast = {
                 detailViewModel.episodesState.let { episodes ->
-                    startService()
-                    mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
+                    startPodcastEpisodes(episodes)
                 }
             },
             gotoDetails = { podcastId ->
