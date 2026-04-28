@@ -4,8 +4,6 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
-import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
 
 /**
  * Layout tokens that adapt to window size class.
@@ -28,7 +26,7 @@ fun dimensionTokens(): PocketNotesDimensions {
     val info = currentWindowAdaptiveInfoV2()
     val sizeClass = info.windowSizeClass
     return when {
-        sizeClass.isWidthAtLeastBreakpoint(1600) || sizeClass.isWidthAtLeastBreakpoint(1200) || sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND) ->PocketNotesDimensions(
+        sizeClass.isExtraLarge() || sizeClass.isLarge() || sizeClass.isExpanded() ->PocketNotesDimensions(
             screenHorizontalPadding = 32.dp,
             cardMaxWidth            = 900.dp,
             gridColumns             = 4,
@@ -39,7 +37,7 @@ fun dimensionTokens(): PocketNotesDimensions {
             listPaneWeight          = 0.35f,
             detailPaneWeight        = 0.65f,
         )
-        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) -> PocketNotesDimensions(
+        sizeClass.isMedium() -> PocketNotesDimensions(
             screenHorizontalPadding = 24.dp,
             cardMaxWidth            = 600.dp,
             gridColumns             = 3,

@@ -38,7 +38,6 @@ internal fun PodcastNavDisplay(
     navigationState: NavigationState,
     navigator: Navigator,
     startService: () -> Unit,
-    adaptiveScreenType: AdaptiveScreenType,
     mediaViewModel: MediaViewModel,
     modifier: Modifier = Modifier,
 ) {
