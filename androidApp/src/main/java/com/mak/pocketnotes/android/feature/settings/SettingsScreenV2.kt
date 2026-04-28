@@ -44,13 +44,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.R
+import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.AppTheme
 import com.mak.pocketnotes.domain.models.StreamQuality
 import com.mak.pocketnotes.domain.models.TextSize
 import org.koin.androidx.compose.koinViewModel
 
+fun EntryProviderScope<NavKey>.settingsEntry() {
+    entry<Settings> {
+        SettingsRoot()
+    }
+}
 
 @Composable
 internal fun SettingsRoot(viewModel: SettingsViewModel = koinViewModel()) {

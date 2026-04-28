@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.R
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 internal interface ScreenDestination : NavKey {
@@ -58,7 +59,7 @@ object Settings : BottomDestination {
 }
 
 @Serializable
-data class PodcastDetail(val podcast_id: String) : ScreenDestination {
+data class PodcastDetail(@SerialName("podcast_id") val podcastId: String) : ScreenDestination {
     override val title: Int
         get() = R.string.podcast_details
 }

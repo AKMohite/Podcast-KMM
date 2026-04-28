@@ -6,9 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
@@ -23,12 +23,17 @@ import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.common.viewmodel.UIEvent
 import com.mak.pocketnotes.android.feature.home.HomeScreen
 import com.mak.pocketnotes.android.feature.home.HomeViewModel
+import com.mak.pocketnotes.android.feature.home.discoverEntry
 import com.mak.pocketnotes.android.feature.player.NowPlayingScreen
+import com.mak.pocketnotes.android.feature.player.nowPlayingEntry
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailScreen
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
+import com.mak.pocketnotes.android.feature.podcastdetail.podcastDetailEntry
 import com.mak.pocketnotes.android.feature.search.SearchScreen
 import com.mak.pocketnotes.android.feature.search.SearchViewModel
+import com.mak.pocketnotes.android.feature.search.searchEntry
 import com.mak.pocketnotes.android.feature.settings.SettingsRoot
+import com.mak.pocketnotes.android.feature.settings.settingsEntry
 import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -42,73 +47,19 @@ internal fun PodcastNavDisplay(
     modifier: Modifier = Modifier,
 ) {
     val entryProvider : (NavKey) -> NavEntry<NavKey> = entryProvider {
-        entry<Home> {
-            val homeViewModel: HomeViewModel = koinViewModel()
-            val state by homeViewModel.uiState.collectAsState()
-            HomeScreen(
-                gotoDetails = { podcastId ->
-                    navigator.navigate(PodcastDetail(podcastId))
-                },
-                state = state,
-                loadNextPodcasts = homeViewModel::loadPodcasts
-            )
-        }
+        discoverEntry(navigator)
 
-        entry<PodcastDetail> { key ->
-            val detailViewModel: PodcastDetailViewModel = koinViewModel(
-                parameters = { parametersOf(key.podcast_id) }
-            )
-            PodcastDetailScreen(
-                state = detailViewModel.uiState,
-                episodes = detailViewModel.episodesState,
-                startPodcast = {
-                    detailViewModel.episodesState.let { episodes ->
-                        startService()
-                        mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
-                    }
-                },
-                gotoDetails = { podcastId ->
-                    navigator.navigate(PodcastDetail(podcastId))
-                }
-            )
-        }
+        podcastDetailEntry(startService, mediaViewModel, navigator)
 
-        entry<PodcastPlayer> {
-            NowPlayingScreen(
-                progress = mediaViewModel.progress,
-                onCloseClick = { navigator.goBack() },
-                onSliderChange = { updateProgress ->
-                    mediaViewModel.onUIEvents(UIEvent.SeekTo(updateProgress))
-                },
-                playPause = {
-                    mediaViewModel.onUIEvents(UIEvent.PlayPause)
-                },
-                isMediaPLaying = mediaViewModel.isPlaying,
-                episode = mediaViewModel.currentSelectedMedia,
-                previousClick = { },
-                nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                timeElapsed = mediaViewModel.progressString,
-                totalDuration = "where is it?"
-            )
-        }
+        nowPlayingEntry(mediaViewModel, navigator)
 
-        entry<Search> {
-            val viewModel: SearchViewModel = koinViewModel()
-            val state by viewModel.state.collectAsState()
-            SearchScreen(
-                state = state,
-                actions = viewModel,
-                onPodcastClick = { podcastId ->
-                    navigator.navigate(PodcastDetail(podcastId))
-                }
-            )
-        }
+        searchEntry(navigator)
+
         entry<Subscribed> {
             EmptyScreen(Subscribed.title)
         }
-        entry<Settings> {
-            SettingsRoot()
-        }
+
+        settingsEntry()
     }
 
     NavDisplay(
@@ -117,6 +68,7 @@ internal fun PodcastNavDisplay(
         onBack = { navigator.goBack() }
     )
 }
+
 
 @Composable
 internal fun EmptyScreen(
