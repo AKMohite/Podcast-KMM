@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,11 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.common.navigation.AdaptiveScreenType
+import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
+import com.mak.pocketnotes.android.ui.theme.isExpanded
+import com.mak.pocketnotes.android.ui.theme.isMedium
 
 @Composable
 internal fun AdaptiveGridScreen(
-    adaptiveScreenType: AdaptiveScreenType,
+    adaptiveScreenType: WindowAdaptiveInfo = adaptiveScreenInfo(),
     modifier: Modifier = Modifier,
     state: LazyGridState = rememberLazyGridState(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -310,10 +313,11 @@ private val sweets = listOf(
 
 
 @Composable
-private fun rememberColumns(adaptiveScreenType: AdaptiveScreenType) = remember(adaptiveScreenType) {
-    when (adaptiveScreenType) {
-        AdaptiveScreenType.Compact -> GridCells.Fixed(1)
-        AdaptiveScreenType.Medium -> GridCells.Fixed(2)
-        else -> GridCells.Adaptive(240.dp)
+private fun rememberColumns(adaptiveScreenType: WindowAdaptiveInfo) = remember(adaptiveScreenType) {
+    val sizeClass = adaptiveScreenType.windowSizeClass
+    when {
+        sizeClass.isExpanded() -> GridCells.Adaptive(240.dp)
+        sizeClass.isMedium() -> GridCells.Fixed(2)
+        else -> GridCells.Fixed(1)
     }
 }

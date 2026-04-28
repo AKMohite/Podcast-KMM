@@ -2,9 +2,7 @@ package com.mak.pocketnotes.android.feature.home
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import com.mak.pocketnotes.android.common.navigation.AdaptiveScreenType
 import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.junit.Rule
@@ -25,8 +23,7 @@ class HomeScreenTest {
                     curatedPodcasts = sampleCuratedPodcasts
                 ),
                 loadNextPodcasts = {},
-                gotoDetails = {},
-                adaptiveScreenType = AdaptiveScreenType.Compact
+                gotoDetails = {}
             )
         }
 

@@ -12,7 +12,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.rememberDrawerState
@@ -22,11 +21,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowSizeClass
-import androidx.window.core.layout.WindowSizeClass.Companion.HEIGHT_DP_MEDIUM_LOWER_BOUND
-import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_EXPANDED_LOWER_BOUND
-import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
-import com.mak.pocketnotes.android.common.BottomDestination
 import com.mak.pocketnotes.android.common.Home
 import com.mak.pocketnotes.android.common.PodcastPlayer
 import com.mak.pocketnotes.android.common.ScreenDestination
@@ -37,16 +31,11 @@ import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.common.ui.PermanentMinPlayer
 import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.common.viewmodel.UIEvent
+import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
+import com.mak.pocketnotes.android.ui.theme.isExpanded
+import com.mak.pocketnotes.android.ui.theme.isMedium
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
-internal enum class AdaptiveScreenType {
-    Compact, Medium, Expanded, Large, ExtraLarge
-}
-
-private fun WindowSizeClass.isCompact(): Boolean {
-    return isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) || isHeightAtLeastBreakpoint(HEIGHT_DP_MEDIUM_LOWER_BOUND)
-}
 
 @Composable
 internal fun PodcastNavigationWrapper(
@@ -54,35 +43,14 @@ internal fun PodcastNavigationWrapper(
     modifier: Modifier = Modifier
 ) {
     val mediaViewModel: MediaViewModel = koinViewModel()
-    val adaptiveInfo = currentWindowAdaptiveInfoV2()
+    val adaptiveInfo = adaptiveScreenInfo()
 
     val sizeClass = adaptiveInfo.windowSizeClass
     val navLayoutType = when {
         adaptiveInfo.windowPosture.isTabletop -> NavigationSuiteType.NavigationBar
-        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND) -> NavigationSuiteType.NavigationDrawer
-        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) -> NavigationSuiteType.NavigationRail
+        sizeClass.isExpanded() -> NavigationSuiteType.NavigationDrawer
+        sizeClass.isMedium() -> NavigationSuiteType.NavigationRail
         else -> NavigationSuiteType.NavigationBar
-    }
-    val adaptiveScreenType = when {
-        sizeClass.isWidthAtLeastBreakpoint(1600) -> {
-            AdaptiveScreenType.ExtraLarge
-        }
-
-        sizeClass.isWidthAtLeastBreakpoint(1200) -> {
-            AdaptiveScreenType.Large
-        }
-
-        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND) -> {
-            AdaptiveScreenType.Expanded
-        }
-
-        sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) -> {
-            AdaptiveScreenType.Medium
-        }
-
-        else -> {
-            AdaptiveScreenType.Compact
-        }
     }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -188,7 +156,6 @@ internal fun PodcastNavigationWrapper(
                         navigationState = navigationState,
                         navigator = navigator,
                         startService = startService,
-                        adaptiveScreenType = adaptiveScreenType,
                         mediaViewModel = mediaViewModel,
                         modifier = Modifier
                             .fillMaxWidth()
