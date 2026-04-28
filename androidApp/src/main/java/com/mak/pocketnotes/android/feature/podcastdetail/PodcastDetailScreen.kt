@@ -33,15 +33,49 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
+import com.mak.pocketnotes.android.common.PodcastDetail
+import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
+import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.feature.home.views.PodcastRow
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import com.mak.pocketnotes.utils.sample.samplePodcasts
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+
+
+fun EntryProviderScope<NavKey>.podcastDetailEntry(
+    startService: () -> Unit,
+    mediaViewModel: MediaViewModel,
+    navigator: Navigator
+) {
+    entry<PodcastDetail> { key ->
+        val detailViewModel: PodcastDetailViewModel = koinViewModel(
+            parameters = { parametersOf(key.podcastId) }
+        )
+        PodcastDetailScreen(
+            state = detailViewModel.uiState,
+            episodes = detailViewModel.episodesState,
+            startPodcast = {
+                detailViewModel.episodesState.let { episodes ->
+                    startService()
+                    mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
+                }
+            },
+            gotoDetails = { podcastId ->
+                navigator.navigate(PodcastDetail(podcastId))
+            }
+        )
+    }
+}
 
 @Composable
 internal fun PodcastDetailScreen(
