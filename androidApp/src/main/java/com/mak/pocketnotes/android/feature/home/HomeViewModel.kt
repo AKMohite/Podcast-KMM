@@ -54,6 +54,7 @@ class HomeViewModel(
     private fun refreshDiscover() {
         viewModelScope.launch {
             try {
+                _uiState.update { it.copy(refreshing = true) }
 //                TODO handle all exceptions
                 val bestPodcasts = async { refreshBestPodcasts(1) }
                 val curatedPodcasts = async {  refreshCuratedPodcasts(1) }
@@ -61,42 +62,12 @@ class HomeViewModel(
             } catch (t: Throwable) {
                 Log.e("HomeViewModel", "refreshDiscover: ", t)
             }
+            _uiState.update { it.copy(refreshing = false) }
         }
     }
 
     fun loadPodcasts(forceReload: Boolean = false) {
         refreshDiscover()
-//        val state = uiState.value
-//        if (state.loading) return
-//        if (forceReload) currentPage = 1
-//        viewModelScope.launch {
-//            if (currentPage == 1) _uiState.update { current ->
-//                current.copy(refreshing = true)
-//            }
-//            _uiState.update { current ->
-//                current.copy(loading = true)
-//            }
-//            try {
-//                val curatedPodcasts = refreshCuratedPodcasts(1)
-//                currentPage += 1
-//                _uiState.update { current ->
-//                    current.copy(
-//                        loading = false,
-//                        refreshing = false,
-//                        curatedPodcasts = curatedPodcasts
-//                    )
-//                }
-//            } catch (error: Throwable) {
-//                _uiState.update { current ->
-//                    current.copy(
-//                        loading = false,
-//                        refreshing = false,
-//                        loadFinished = true,
-//                        errorMsg = error.localizedMessage
-//                    )
-//                }
-//            }
-//        }
     }
 
 }

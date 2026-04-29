@@ -75,7 +75,9 @@ internal fun PodcastNavigationWrapper(
             drawerState.close()
         }
     }
-    Surface {
+    Surface(
+        modifier = modifier
+    ) {
         NavigationSuiteScaffoldLayout(
             layoutType = navLayoutType,
             navigationSuite = {

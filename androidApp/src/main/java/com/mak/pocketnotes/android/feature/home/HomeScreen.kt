@@ -1,6 +1,5 @@
 package com.mak.pocketnotes.android.feature.home
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -89,11 +88,6 @@ private fun HomeContent(
     ) {
         LazyColumn {
             item("home-header") {
-                /*HomeCarousel(
-                    modifier = Modifier.fillMaxWidth(),
-                    podcasts = uiState.topPodcasts,
-                    onPodcastClick = gotoDetails
-                )*/
                 HomeHeader(
                     modifier = Modifier.fillMaxWidth(),
                     podcasts = uiState.topPodcasts,
@@ -101,15 +95,13 @@ private fun HomeContent(
                 )
             }
             item("best-podcasts") {
-                AnimatedVisibility(visible = uiState.podcasts.isNotEmpty()) {
-                    BestPodcasts(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        gotoDetails = gotoDetails,
-                        podcasts = uiState.getSectionedPodcasts()
-                    )
-                }
+                BestPodcasts(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    gotoDetails = gotoDetails,
+                    podcasts = uiState.getSectionedPodcasts()
+                )
             }
             items(
                 items = uiState.curatedPodcasts,
@@ -126,7 +118,7 @@ private fun HomeContent(
         }
 
         PullRefreshIndicator(
-            refreshing = uiState.refreshing,
+            refreshing = uiState.refreshing || uiState.loading,
             state = refreshState,
             modifier = Modifier.align(Alignment.TopCenter)
         )
