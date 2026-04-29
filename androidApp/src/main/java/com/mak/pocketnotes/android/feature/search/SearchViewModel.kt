@@ -48,16 +48,24 @@ internal class SearchViewModel(
 
     override fun onGenreSelect(genre: Genre) {
         viewModelScope.launch {
-            try {
-                val resultPodcasts = getBestPodcasts(1, genre.id)
-                _state.update {
+            _state.update { it.copy(loading = true) }
+            when(val result = getBestPodcasts(1, genre.id)) {
+                is DomainResult.Success -> {
+                    _state.update {
+                        it.copy(
+                            genrePodcasts = result.data
+                        )
+                    }
+                }
+
+                is DomainResult.Error -> _state.update {
                     it.copy(
-                        genrePodcasts = resultPodcasts
+                        error = result.message
                     )
                 }
-            } catch (t: Throwable) {
-                _state.update { it.copy(error = t.message) }
+                else -> {}
             }
+            _state.update { it.copy(loading = true) }
         }
     }
 

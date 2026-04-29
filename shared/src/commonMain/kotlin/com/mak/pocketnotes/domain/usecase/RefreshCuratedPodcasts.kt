@@ -5,7 +5,9 @@ import com.mak.pocketnotes.data.remote.dto.CuratedPodcastDTO
 import com.mak.pocketnotes.data.remote.dto.SectionPodcastDTO
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.models.CuratedPodcast
+import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.SectionPodcast
+import com.mak.pocketnotes.domain.models.safeCall
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.CuratedPodcastEntity
 import com.mak.pocketnotes.local.database.dao.CuratedSectionEntity
@@ -24,8 +26,8 @@ class RefreshCuratedPodcasts: KoinComponent {
     private val podcastDAO: IPodcastDAO by inject()
 
     @Throws(Exception::class)
-    suspend operator fun invoke(page: Int): List<CuratedPodcast> {
-        val dto = api.getCuratedPodcasts(page).curatedLists ?: return emptyList()
+    suspend operator fun invoke(page: Int): DomainResult<List<CuratedPodcast>> = safeCall {
+        val dto = api.getCuratedPodcasts(page).curatedLists ?: return@safeCall emptyList()
         val (sectionEntities, podcastEntities) = dto.toSectionEntities()
         val podcasts = dto.mapNotNull {
             it.podcasts
@@ -42,7 +44,7 @@ class RefreshCuratedPodcasts: KoinComponent {
             )
         }
         updateLocal(page, sectionEntities, podcastEntities, podcasts)
-        return dto.toCuratedPodcasts()
+        dto.toCuratedPodcasts()
     }
 
     private suspend fun updateLocal(

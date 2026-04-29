@@ -3,7 +3,9 @@ package com.mak.pocketnotes.domain.usecase
 import com.mak.pocketnotes.data.remote.IPocketNotesAPI
 import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.mapper.PocketMapper
+import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.domain.models.safeCall
 import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.local.database.dao.IPodcastDAO
 import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
@@ -23,7 +25,7 @@ class RefreshBestPodcasts: KoinComponent {
     private val mapper: PocketMapper by inject()
 
     @Throws(Exception::class)
-    suspend operator fun invoke(page:Int, genreId: Int? = null): List<Podcast> {
+    suspend operator fun invoke(page:Int, genreId: Int? = null): DomainResult<List<Podcast>> = safeCall {
         val queryMap = mutableMapOf(
             "page" to page.toString()
         )
@@ -41,7 +43,7 @@ class RefreshBestPodcasts: KoinComponent {
         }
         updateLocal(podcasts, page, trendingPodcasts)
 //        WARN: this is for iOS we can remove it after local db for iOS is implemented
-        return mapper.podcast.entityToModels(podcasts)
+        mapper.podcast.entityToModels(podcasts)
     }
 
     private suspend fun updateLocal(

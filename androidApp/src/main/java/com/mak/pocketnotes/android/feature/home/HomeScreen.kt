@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,6 +78,13 @@ private fun HomeContent(
     loadNextPodcasts: (Boolean) -> Unit,
     gotoDetails: (String) -> Unit
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(uiState.errorMsg) {
+        uiState.errorMsg?.let {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
 
     val refreshState = rememberPullRefreshState(
         refreshing = uiState.refreshing,
@@ -121,6 +132,11 @@ private fun HomeContent(
             refreshing = uiState.refreshing || uiState.loading,
             state = refreshState,
             modifier = Modifier.align(Alignment.TopCenter)
+        )
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
 }
