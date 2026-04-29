@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
+import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
@@ -53,14 +54,15 @@ class HomeViewModel(
 
     private fun refreshDiscover() {
         viewModelScope.launch {
-            try {
-                _uiState.update { it.copy(refreshing = true) }
-//                TODO handle all exceptions
-                val bestPodcasts = async { refreshBestPodcasts(1) }
-                val curatedPodcasts = async {  refreshCuratedPodcasts(1) }
-                val (b, c) = awaitAll(bestPodcasts, curatedPodcasts)
-            } catch (t: Throwable) {
-                Log.e("HomeViewModel", "refreshDiscover: ", t)
+            _uiState.update { it.copy(refreshing = true) }
+            val bestPodcasts = async { refreshBestPodcasts(1) }
+            val curatedPodcasts = async { refreshCuratedPodcasts(1) }
+            val (b, c) = awaitAll(bestPodcasts, curatedPodcasts)
+
+            if (b is DomainResult.Error) {
+                _uiState.update { it.copy(errorMsg = b.message) }
+            } else if (c is DomainResult.Error) {
+                _uiState.update { it.copy(errorMsg = c.message) }
             }
             _uiState.update { it.copy(refreshing = false) }
         }
