@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldLayout
@@ -77,105 +76,98 @@ internal fun PodcastNavigationWrapper(
         }
     }
     Surface {
-        ModalNavigationDrawer(
-            modifier = modifier,
-            drawerState = drawerState,
-            gesturesEnabled = gesturesEnabled,
-            drawerContent = {}
-        ) {
-            NavigationSuiteScaffoldLayout(
-                layoutType = navLayoutType,
-                navigationSuite = {
-                    when (navLayoutType) {
-                        NavigationSuiteType.NavigationBar -> {
-                            Column {
-                                // TODO handle this properly
-                                AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
-                                    MiniPlayer(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .wrapContentHeight()
-                                            .padding(horizontal = 4.dp)
-                                            .clickable { navigator.navigate(PodcastPlayer) },
-                                        episode = mediaViewModel.currentSelectedMedia,
-                                        play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                                        next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                                        isMediaPlaying = mediaViewModel.isPlaying
-                                    )
-                                }
-                                AnimatedVisibility(visible = !isFullScreen) {
-                                    PodBottomNavigation(
-                                        bottomBarItems = bottomBarItems,
-                                        currentKey = navigationState.topLevelRoute,
-                                        onBottomNavigate = { destination ->
-                                            navigator.navigate(destination)
-                                        }
-                                    )
-                                }
+        NavigationSuiteScaffoldLayout(
+            layoutType = navLayoutType,
+            navigationSuite = {
+                when (navLayoutType) {
+                    NavigationSuiteType.NavigationBar -> {
+                        Column {
+                            // TODO handle this properly
+                            AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
+                                MiniPlayer(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight()
+                                        .padding(horizontal = 4.dp)
+                                        .clickable { navigator.navigate(PodcastPlayer) },
+                                    episode = mediaViewModel.currentSelectedMedia,
+                                    play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
+                                    next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
+                                    isMediaPlaying = mediaViewModel.isPlaying
+                                )
                             }
-
+                            AnimatedVisibility(visible = !isFullScreen) {
+                                PodBottomNavigation(
+                                    bottomBarItems = bottomBarItems,
+                                    currentKey = navigationState.topLevelRoute,
+                                    onBottomNavigate = { destination ->
+                                        navigator.navigate(destination)
+                                    }
+                                )
+                            }
                         }
 
-                        NavigationSuiteType.NavigationRail -> {
-                            PodModalWideNavigationRail(
-                                bottomBarItems = bottomBarItems,
-                                currentKey = navigationState.topLevelRoute,
-                                onBottomNavigate = { destination ->
-                                    navigator.navigate(destination)
-                                }
-                            )
-                        }
+                    }
 
-                        NavigationSuiteType.NavigationDrawer -> PodNavigationDrawer(
+                    NavigationSuiteType.NavigationRail -> {
+                        PodModalWideNavigationRail(
                             bottomBarItems = bottomBarItems,
                             currentKey = navigationState.topLevelRoute,
                             onBottomNavigate = { destination ->
                                 navigator.navigate(destination)
-                            },
-                            bottomContent = {
-                                AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
-                                    PermanentMinPlayer(
-                                        modifier = Modifier
-                                            .clickable { navigator.navigate(PodcastPlayer) },
-                                        episode = mediaViewModel.currentSelectedMedia,
-                                        playPause = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                                        isMediaPlaying = mediaViewModel.isPlaying,
-                                        previousClick = {},
-                                        nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) }
-                                    )
-                                }
                             }
                         )
                     }
-                },
+
+                    NavigationSuiteType.NavigationDrawer -> PodNavigationDrawer(
+                        bottomBarItems = bottomBarItems,
+                        currentKey = navigationState.topLevelRoute,
+                        onBottomNavigate = { destination ->
+                            navigator.navigate(destination)
+                        },
+                        bottomContent = {
+                            AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
+                                PermanentMinPlayer(
+                                    modifier = Modifier
+                                        .clickable { navigator.navigate(PodcastPlayer) },
+                                    episode = mediaViewModel.currentSelectedMedia,
+                                    playPause = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
+                                    isMediaPlaying = mediaViewModel.isPlaying,
+                                    previousClick = {},
+                                    nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) }
+                                )
+                            }
+                        }
+                    )
+                }
+            },
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    PodcastNavDisplay(
-                        navigationState = navigationState,
-                        navigator = navigator,
-                        startService = startService,
-                        mediaViewModel = mediaViewModel,
+                PodcastNavDisplay(
+                    navigationState = navigationState,
+                    navigator = navigator,
+                    startService = startService,
+                    mediaViewModel = mediaViewModel,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+                // TODO handle this properly
+                AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail && !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
+                    MiniPlayer(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .wrapContentHeight(Alignment.Bottom)
                             .weight(1f)
+                            .padding(horizontal = 4.dp)
+                            .clickable { navigator.navigate(PodcastPlayer) },
+                        episode = mediaViewModel.currentSelectedMedia,
+                        play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
+                        next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
+                        isMediaPlaying = mediaViewModel.isPlaying
                     )
-                    // TODO handle this properly
-                    AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail && !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
-                        MiniPlayer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(Alignment.Bottom)
-                                .weight(1f)
-                                .padding(horizontal = 4.dp)
-                                .clickable { navigator.navigate(PodcastPlayer) },
-                            episode = mediaViewModel.currentSelectedMedia,
-                            play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                            next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                            isMediaPlaying = mediaViewModel.isPlaying
-                        )
-                    }
                 }
             }
         }
