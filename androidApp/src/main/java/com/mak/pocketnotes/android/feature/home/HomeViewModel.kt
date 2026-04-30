@@ -1,6 +1,5 @@
 package com.mak.pocketnotes.android.feature.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.CuratedPodcast
@@ -60,11 +59,10 @@ class HomeViewModel(
             val (b, c) = awaitAll(bestPodcasts, curatedPodcasts)
 
             if (b is DomainResult.Error) {
-                _uiState.update { it.copy(errorMsg = b.message) }
+                _uiState.update { it.copy(errorMsg = b.message, refreshing = false) }
             } else if (c is DomainResult.Error) {
-                _uiState.update { it.copy(errorMsg = c.message) }
+                _uiState.update { it.copy(errorMsg = c.message, refreshing = false) }
             }
-            _uiState.update { it.copy(refreshing = false) }
         }
     }
 
