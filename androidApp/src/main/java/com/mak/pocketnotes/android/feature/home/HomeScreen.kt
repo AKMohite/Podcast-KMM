@@ -98,14 +98,14 @@ private fun HomeContent(
             .pullRefresh(state = refreshState)
     ) {
         LazyColumn {
-            item("home-header") {
+            item(key = "home-header", contentType = "top_carousel") {
                 HomeHeader(
                     modifier = Modifier.fillMaxWidth(),
                     podcasts = uiState.topPodcasts,
                     onPodcastClick = gotoDetails
                 )
             }
-            item("best-podcasts") {
+            item(key = "best-podcasts", contentType = "trending_podcast") {
                 BestPodcasts(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -116,7 +116,8 @@ private fun HomeContent(
             }
             items(
                 items = uiState.curatedPodcasts,
-                key = { podcast: CuratedPodcast -> podcast.id }
+                key = { podcast: CuratedPodcast -> podcast.id },
+                contentType = { "curated_podcast" }
             ) { podcast ->
                 CuratedPodcastRow(
                     modifier = Modifier

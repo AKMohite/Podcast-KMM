@@ -127,7 +127,7 @@ class CuratedPodcastsStore: KoinComponent {
                 id = podcast.podcastId,
                 image = podcast.thumbnail ?: "",
                 title = podcast.podcastTitle,
-                publisher = podcast.publisher ?: ""
+                publisher = podcast.publisher
             )
         }
     }

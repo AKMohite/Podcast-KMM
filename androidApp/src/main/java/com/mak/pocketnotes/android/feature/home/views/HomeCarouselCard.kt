@@ -42,7 +42,7 @@ internal fun HomeCarouselCard(
     val description = stringResource(R.string.podcast_card_description, podcast.title, podcast.publisher)
     Box(
         modifier = modifier
-            .height(120.dp)
+            .height(180.dp)
             .semantics(mergeDescendants = true) {
                 contentDescription = description
             }
@@ -63,7 +63,7 @@ internal fun HomeCarouselCard(
                 contentDescription = podcast.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(dimensionResource(R.dimen.home_carossel_img))
+                    .size(150.dp)
                     .clip(MaterialTheme.shapes.medium),
                 placeholder = debugPlaceholder()
             )
@@ -71,17 +71,21 @@ internal fun HomeCarouselCard(
             Column {
                 Text(
                     text = podcast.title,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = podcast.publisher,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = podcast.genres,
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

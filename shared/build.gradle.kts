@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.androidKMMLibrary)
     id("app.cash.sqldelight") version "2.3.2"
     id("co.touchlab.skie") version "0.10.11"
-    kotlin("plugin.serialization") version "2.3.20"
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {

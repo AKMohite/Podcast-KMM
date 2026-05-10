@@ -1,6 +1,8 @@
 package com.mak.pocketnotes.domain.models
 
-@kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Podcast(
     val id: String,
     val title: String,
