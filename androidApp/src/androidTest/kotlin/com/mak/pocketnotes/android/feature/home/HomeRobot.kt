@@ -16,15 +16,19 @@ class HomeRobot(private val rule: ComposeContentTestRule) {
     }
 
     fun assertTrendingPodcastVisible(text: String) = apply {
+        assertTextIsDisplayed(text)
+    }
+
+    private fun assertTextIsDisplayed(text: String) {
         rule.onNodeWithText(text).assertIsDisplayed()
     }
 
-    fun assertCuratedCategoryVisible(title: String)  = apply {
-        rule.onNodeWithText(title).assertIsDisplayed()
+    fun assertCuratedCategoryVisible(text: String)  = apply {
+        assertTextIsDisplayed(text)
     }
 
     fun assertCuratedPodcastVisible(text: String)  = apply {
-        rule.onNodeWithText(text).assertIsDisplayed()
+        assertTextIsDisplayed(text)
     }
 
 }
