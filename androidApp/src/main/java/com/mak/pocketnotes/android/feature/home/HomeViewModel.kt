@@ -13,80 +13,71 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    val refreshBestPodcasts: RefreshBestPodcasts,
-    val refreshCuratedPodcasts: RefreshCuratedPodcasts,
-    val getBestPodcasts: BestPodcastsStore,
-    val getCuratedPodcasts: CuratedPodcastsStore
-): ViewModel() {
+    private val refreshBestPodcasts: RefreshBestPodcasts,
+    private val refreshCuratedPodcasts: RefreshCuratedPodcasts,
+    private val getBestPodcasts: BestPodcastsStore,
+    private val getCuratedPodcasts: CuratedPodcastsStore
+) : ViewModel() {
 
-    private var _uiState = MutableStateFlow(HomeScreenState())
-    internal val uiState: StateFlow<HomeScreenState>
-        get() = _uiState
+    private val _uiState = MutableStateFlow(HomeScreenState(loading = true))
+    internal val uiState: StateFlow<HomeScreenState> = _uiState.asStateFlow()
 
     init {
-//        loadPodcasts()
-        refreshDiscover()
-        observerPodcasts()
+        observePodcasts()
+        loadPodcasts()
     }
 
-    private fun observerPodcasts() {
-        combine(getBestPodcasts(), getCuratedPodcasts()) { bestPodcasts, curatedPodcasts ->
-            val (topPodcasts, podcasts) = bestPodcasts.take(8).shuffled() to bestPodcasts.drop(4)
+    private fun observePodcasts() {
+        combine(getBestPodcasts(), getCuratedPodcasts()) { best, curated ->
+            val top = best.take(8).shuffled()
+            val main = if (best.size > 4) best.drop(4) else best
+
             _uiState.update { current ->
                 current.copy(
                     loading = false,
                     refreshing = false,
-                    loadFinished = podcasts.isEmpty(),
-                    topPodcasts = topPodcasts,
-                    podcasts = podcasts,
-                    curatedPodcasts = curatedPodcasts
+                    loadFinished = best.isNotEmpty(),
+                    topPodcasts = top,
+                    podcasts = main,
+                    curatedPodcasts = curated
                 )
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun refreshDiscover() {
+    fun loadPodcasts(forceReload: Boolean = false) {
         viewModelScope.launch {
-            _uiState.update { it.copy(refreshing = true) }
-            val bestPodcasts = async { refreshBestPodcasts(1) }
-            val curatedPodcasts = async { refreshCuratedPodcasts(1) }
-            val (b, c) = awaitAll(bestPodcasts, curatedPodcasts)
+            _uiState.update { it.copy(refreshing = true, errorMsg = null) }
+            try {
+                val bestDeferred = async { refreshBestPodcasts(1) }
+                val curatedDeferred = async { refreshCuratedPodcasts(1) }
 
-            if (b is DomainResult.Error) {
-                _uiState.update { it.copy(errorMsg = b.message, refreshing = false) }
-            } else if (c is DomainResult.Error) {
-                _uiState.update { it.copy(errorMsg = c.message, refreshing = false) }
+                val results = awaitAll(bestDeferred, curatedDeferred)
+
+                val errors = results.filterIsInstance<DomainResult.Error>()
+                if (errors.isNotEmpty()) {
+                    _uiState.update { it.copy(
+                        errorMsg = errors.joinToString { e -> e.message.orEmpty() },
+                        refreshing = false
+                    ) }
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        errorMsg = e.message ?: "An unexpected error occurred",
+                        refreshing = false
+                    )
+                }
             }
         }
     }
-
-    fun loadPodcasts(forceReload: Boolean = false) {
-        refreshDiscover()
-    }
-
-}
-
-internal sealed interface HomeState {
-    data object Idle : HomeState
-    data object Loading : HomeState
-    data object Empty : HomeState
-
-    data class Success(
-        val podcasts: List<Podcast> = emptyList(),
-        val topPodcasts: List<Podcast> = emptyList(),
-        val curatedPodcasts: List<CuratedPodcast> = emptyList(),
-        val isPaginating: Boolean = false
-    ) : HomeState {
-        fun getSectionedPodcasts(noOfRows: Int = 4) = podcasts.chunked(noOfRows)
-    }
-
-    data class Error(val message: String) : HomeState
 }
 
 data class HomeScreenState(
