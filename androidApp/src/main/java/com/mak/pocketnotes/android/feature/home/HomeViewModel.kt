@@ -15,7 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -34,16 +36,22 @@ class HomeViewModel(
         loadPodcasts()
     }
 
-    private fun observePodcasts() {
-        combine(getBestPodcasts(), getCuratedPodcasts()) { best, curated ->
-            val top = best.take(8).shuffled()
-            val main = if (best.size > 4) best.drop(4) else best
+    private val fetchBestPodcasts = getBestPodcasts().distinctUntilChanged().map { best ->
+        best.take(8).shuffled() to if (best.size > 4) best.drop(4) else best
+    }
 
+    private val fetchCuratedPodcasts = getCuratedPodcasts().distinctUntilChanged()
+
+    private fun observePodcasts() {
+        combine(
+            fetchBestPodcasts,
+            fetchCuratedPodcasts
+        ) { (top, main), curated ->
             _uiState.update { current ->
                 current.copy(
                     loading = false,
                     refreshing = false,
-                    loadFinished = best.isNotEmpty(),
+                    loadFinished = top.isNotEmpty() || main.isNotEmpty(),
                     topPodcasts = top,
                     podcasts = main,
                     curatedPodcasts = curated
@@ -77,6 +85,10 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    fun onErrorConsumed() {
+        _uiState.update { it.copy(errorMsg = null) }
     }
 }
 
