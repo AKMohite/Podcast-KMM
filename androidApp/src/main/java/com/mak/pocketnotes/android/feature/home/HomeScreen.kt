@@ -14,7 +14,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.Home
@@ -46,14 +46,15 @@ fun EntryProviderScope<NavKey>.discoverEntry(
 ) {
     entry<Home> {
         val homeViewModel: HomeViewModel = koinViewModel()
-        val state by homeViewModel.uiState.collectAsState()
+        val state by homeViewModel.uiState.collectAsStateWithLifecycle()
         HomeScreen(
             gotoDetails = { podcastId ->
                 // this function would be in podcast detail api module
                 navigator.navigate(PodcastDetail(podcastId))
             },
             state = state,
-            loadNextPodcasts = homeViewModel::loadPodcasts
+            loadNextPodcasts = homeViewModel::loadPodcasts,
+            onErrorConsumed = homeViewModel::onErrorConsumed
         )
     }
 }
@@ -63,11 +64,13 @@ internal fun HomeScreen(
     state: HomeScreenState,
     gotoDetails: (String) -> Unit,
     loadNextPodcasts: (Boolean) -> Unit,
+    onErrorConsumed: () -> Unit,
 ) {
     HomeContent(
         uiState = state,
         loadNextPodcasts = loadNextPodcasts,
-        gotoDetails = gotoDetails
+        gotoDetails = gotoDetails,
+        onErrorConsumed = onErrorConsumed
     )
 }
 
@@ -76,13 +79,15 @@ private fun HomeContent(
     modifier: Modifier = Modifier,
     uiState: HomeScreenState,
     loadNextPodcasts: (Boolean) -> Unit,
-    gotoDetails: (String) -> Unit
+    gotoDetails: (String) -> Unit,
+    onErrorConsumed: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(uiState.errorMsg) {
         uiState.errorMsg?.let {
             snackbarHostState.showSnackbar(it)
+            onErrorConsumed()
         }
     }
 
@@ -191,6 +196,7 @@ private fun HomeScreenPreview(
                 uiState = previewData,
                 loadNextPodcasts = {},
                 gotoDetails = {},
+                onErrorConsumed = {}
             )
         }
     }
