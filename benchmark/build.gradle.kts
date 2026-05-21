@@ -10,10 +10,10 @@ kotlin {
 
 android {
     namespace = "com.mak.pocketnotes.android.benchmark"
-    compileSdk = 36
+    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
 
     defaultConfig {
-        minSdk = 24
+        minSdk = Integer.parseInt(libs.versions.minSdk.get())
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

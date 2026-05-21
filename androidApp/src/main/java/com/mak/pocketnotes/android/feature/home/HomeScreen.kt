@@ -2,9 +2,11 @@ package com.mak.pocketnotes.android.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,6 +35,7 @@ import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.dimensionTokens
 import com.mak.pocketnotes.android.util.md2.PullRefreshIndicator
 import com.mak.pocketnotes.android.util.md2.pullRefresh
 import com.mak.pocketnotes.android.util.md2.rememberPullRefreshState
@@ -96,13 +99,20 @@ private fun HomeContent(
         onRefresh = { loadNextPodcasts(true) }
     )
 
+    val tokens = dimensionTokens()
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .pullRefresh(state = refreshState)
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .widthIn(max = tokens.cardMaxWidth)
+                .align(Alignment.TopCenter)
+                .padding(horizontal = tokens.screenHorizontalPadding)
+        ) {
             item(key = "home-header", contentType = "top_carousel") {
                 HomeHeader(
                     modifier = Modifier.fillMaxWidth(),
@@ -114,7 +124,8 @@ private fun HomeContent(
                 BestPodcasts(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
+                        .wrapContentHeight()
+                        .padding(vertical = 8.dp),
                     gotoDetails = gotoDetails,
                     podcasts = uiState.getSectionedPodcasts()
                 )
@@ -127,7 +138,7 @@ private fun HomeContent(
                 CuratedPodcastRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp),
+                        .padding(vertical = 4.dp),
                     podcast = podcast,
                     goToDetails = gotoDetails
                 )

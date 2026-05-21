@@ -29,11 +29,12 @@ internal fun HomeCarousel(
 
     val carouselState = rememberCarouselState { podcasts.size }
     val animationScope = rememberCoroutineScope()
+    val tokens = dimensionTokens()
 
     HorizontalCenteredHeroCarousel(
         state = carouselState,
         modifier = modifier
-            .height(250.dp)
+            .height(tokens.carouselHeight)
             .padding(horizontal = 12.dp),
         itemSpacing = 8.dp,
         contentPadding = PaddingValues(horizontal = 16.dp)
