@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     alias(libs.plugins.androidKMMLibrary)
     id("app.cash.sqldelight") version "2.3.2"
-    id("co.touchlab.skie") version "0.10.11"
+    id("co.touchlab.skie") version "0.10.12"
     alias(libs.plugins.kotlinxSerialization)
 }
 
@@ -37,7 +37,7 @@ kotlin {
 //                This override dependency and configurations exclude is required
 //                for fixing some error in SKIE dependency. May not be need in
 //                future.
-                implementation("co.touchlab:stately-common:2.0.7")
+                implementation(libs.stately.common)
 //                implementation("co.touchlab:stately-collections:2.0.7")
 //                implementation("co.touchlab:stately-concurrency:2.0.7")
 //                implementation("co.touchlab:stately-isolate:2.0.7")
@@ -75,8 +75,8 @@ kotlin {
                 implementation(libs.androidx.legacy.support) // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
                 implementation(libs.android.sql.driver)
-                implementation("androidx.datastore:datastore-core:1.3.0-alpha07")
-                implementation("androidx.datastore:datastore-tink:1.3.0-alpha07")
+                implementation(libs.androidx.datastore.core)
+                implementation(libs.androidx.datastore.tink)
             }
         }
 //        val androidUnitTest by getting
