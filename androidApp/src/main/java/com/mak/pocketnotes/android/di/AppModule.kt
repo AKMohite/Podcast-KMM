@@ -9,11 +9,36 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 internal val appModule = module {
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
-    viewModel { params ->
-        PodcastDetailViewModel(getPodcast = get(), podcastRecommendations = get(), podcastEpisodes = get(), podcastId = params.get())
+    viewModel {
+        HomeViewModel(
+            refreshBestPodcasts = get(),
+            refreshCuratedPodcasts = get(),
+            getBestPodcasts = get(),
+            getCuratedPodcasts = get()
+        )
     }
-    viewModel{ MediaViewModel(serviceHandler = get(), savedStateHandle = get()) }
-    viewModel { SearchViewModel(getGenres = get(), searchPodcast = get(), getBestPodcasts = get()) }
-    viewModel { SettingsViewModel(repository = get()) }
+    viewModel { params ->
+        PodcastDetailViewModel(
+            getPodcast = get(),
+            podcastRecommendations = get(),
+            podcastEpisodes = get(),
+            podcastId = params.get()
+        )
+    }
+    viewModel{
+         MediaViewModel(
+             serviceHandler = get(),
+             savedStateHandle = get()
+         )
+    }
+    viewModel {
+        SearchViewModel(
+            getGenres = get(),
+            searchPodcast = get(),
+            getBestPodcasts = get()
+        )
+    }
+    viewModel {
+        SettingsViewModel(repository = get())
+    }
 }

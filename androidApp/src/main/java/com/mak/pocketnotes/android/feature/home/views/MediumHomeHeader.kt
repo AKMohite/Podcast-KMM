@@ -40,8 +40,6 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-import com.mak.pocketnotes.android.ui.theme.dimensionTokens
-
 @Composable
 internal fun MediumHomeHeader(
     modifier: Modifier = Modifier,
@@ -50,7 +48,6 @@ internal fun MediumHomeHeader(
 ) {
     val pagerState = rememberPagerState(pageCount = { podcasts.size })
     val coroutineScope = rememberCoroutineScope()
-    val tokens = dimensionTokens()
 
     LaunchedEffect(key1 = pagerState.settledPage) {
         launch {
@@ -64,7 +61,7 @@ internal fun MediumHomeHeader(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(tokens.carouselHeight)
+            .height(180.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -113,7 +110,7 @@ internal fun MediumHomeHeader(
                             contentDescription = podcast.title,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(tokens.carouselHeight * 0.8f)
+                                .size(150.dp)
                                 .clip(MaterialTheme.shapes.medium),
                             placeholder = debugPlaceholder()
                         )
@@ -129,7 +126,7 @@ internal fun MediumHomeHeader(
                     .align(Alignment.Center),
                 verticalAlignment = Alignment.Bottom
             ) {
-                Spacer(modifier = Modifier.size(tokens.carouselHeight * 0.9f))
+                Spacer(modifier = Modifier.size(180.dp))
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {

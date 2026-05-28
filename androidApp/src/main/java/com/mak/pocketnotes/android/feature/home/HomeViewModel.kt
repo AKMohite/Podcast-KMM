@@ -24,23 +24,23 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val refreshBestPodcasts: RefreshBestPodcasts,
     private val refreshCuratedPodcasts: RefreshCuratedPodcasts,
-    private val getBestPodcasts: BestPodcastsStore,
-    private val getCuratedPodcasts: CuratedPodcastsStore
+    getBestPodcasts: BestPodcastsStore,
+    getCuratedPodcasts: CuratedPodcastsStore
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenState(loading = true))
     internal val uiState: StateFlow<HomeScreenState> = _uiState.asStateFlow()
-
-    init {
-        observePodcasts()
-        loadPodcasts()
-    }
 
     private val fetchBestPodcasts = getBestPodcasts().distinctUntilChanged().map { best ->
         best.take(8).shuffled() to if (best.size > 4) best.drop(4) else best
     }
 
     private val fetchCuratedPodcasts = getCuratedPodcasts().distinctUntilChanged()
+
+    init {
+        observePodcasts()
+        loadPodcasts()
+    }
 
     private fun observePodcasts() {
         combine(

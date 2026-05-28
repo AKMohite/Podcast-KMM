@@ -38,8 +38,6 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-import com.mak.pocketnotes.android.ui.theme.dimensionTokens
-
 @Composable
 internal fun LargeHomeHeader(
     modifier: Modifier = Modifier,
@@ -48,7 +46,6 @@ internal fun LargeHomeHeader(
 ) {
     val pagerState = rememberPagerState(pageCount = { podcasts.size })
     val coroutineScope = rememberCoroutineScope()
-    val tokens = dimensionTokens()
 
     LaunchedEffect(key1 = pagerState.settledPage) {
         launch {
@@ -62,7 +59,7 @@ internal fun LargeHomeHeader(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(tokens.carouselHeight)
+            .height(200.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -76,7 +73,7 @@ internal fun LargeHomeHeader(
                 val podcast = podcasts[page]
                 Box(modifier = Modifier
                     .fillMaxWidth()
-                    .height(tokens.carouselHeight)
+                    .height(200.dp)
                     .clickable {
                         onPodcastClick(podcast.id)
                     },
@@ -99,7 +96,7 @@ internal fun LargeHomeHeader(
                             contentDescription = podcast.title,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
-                                .size(tokens.carouselHeight * 0.75f)
+                                .size(150.dp)
                                 .clip(MaterialTheme.shapes.medium),
                             placeholder = debugPlaceholder()
                         )
@@ -115,7 +112,7 @@ internal fun LargeHomeHeader(
                     .align(Alignment.Center),
                 verticalAlignment = Alignment.Bottom
             ) {
-                Spacer(modifier = Modifier.size(tokens.carouselHeight * 0.9f))
+                Spacer(modifier = Modifier.size(180.dp))
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
