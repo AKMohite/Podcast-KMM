@@ -24,6 +24,7 @@ class MediaViewModel(
     private var duration by savedStateHandle.saveable { mutableStateOf(0L) }
     internal var progress by savedStateHandle.saveable { mutableStateOf(0f) }
     internal var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
+    internal var durationString by savedStateHandle.saveable { mutableStateOf("00:00") }
     internal var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
     internal var currentSelectedMedia = PlayableEpisode.EMPTY
     private var mediaList by savedStateHandle.saveable { mutableStateOf(listOf<PlayableEpisode>()) }
@@ -71,6 +72,7 @@ class MediaViewModel(
                     is MediaState.Progress -> calculateProgress(mediaState.progress)
                     is MediaState.Ready -> {
                         duration = mediaState.duration
+                        durationString = formatDuration(mediaState.duration)
                         _uiState.value = UIState.Ready
                     }
                 }

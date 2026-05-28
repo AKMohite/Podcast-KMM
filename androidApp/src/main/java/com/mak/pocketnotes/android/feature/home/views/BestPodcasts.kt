@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,19 +25,17 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
-import com.mak.pocketnotes.android.ui.theme.dimensionTokens
-
 @Composable
 internal fun BestPodcasts(
     modifier: Modifier = Modifier,
     podcasts: List<Podcast>,
     gotoDetails: (String) -> Unit
 ) {
-    val tokens = dimensionTokens()
-    val useLargeLayout = tokens.gridColumns > 2
-    val columnFraction = if (useLargeLayout) 0.35f else 0.8f
-    val rowCount = if (useLargeLayout) 4 else 2
-    val maxHeight = if (useLargeLayout) (tokens.carouselHeight * 1.2f) else 150.dp
+    // TODO need to handle this with width class
+    val isTablet = booleanResource(R.bool.is_tablet)
+    val columnFraction = if (isTablet) 0.35f else 0.8f
+    val rowCount = if (isTablet) 4 else 2
+    val maxHeight = if (isTablet) 300.dp else 150.dp
     Column(
         modifier = modifier
     ) {

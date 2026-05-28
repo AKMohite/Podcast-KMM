@@ -3,8 +3,8 @@ package com.mak.pocketnotes.android.feature.player.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +25,9 @@ internal fun PlaybackController(
     onShuffleClick: () -> Unit,
     playPause: () -> Unit,
     previousClick: () -> Unit,
-    nextClick: () -> Unit
+    nextClick: () -> Unit,
+    backwardClick: () -> Unit = {},
+    forwardClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -35,11 +37,11 @@ internal fun PlaybackController(
 //        IconButton(onClick = onShuffleClick) {
 ////            TODO change drawable
 //            Icon(
-//                imageVector = Icons.Filled.Refresh,
+//                imageVector = Icons.Rounded.Refresh,
 //                contentDescription = stringResource(R.string.player_shuffle)
 //            )
 //        }
-        IconButton(onClick = {}) {
+        IconButton(onClick = backwardClick) {
             Icon(
                 painter = painterResource(R.drawable.icon_previous_ten),
                 contentDescription = stringResource(R.string.player_backward)
@@ -53,7 +55,7 @@ internal fun PlaybackController(
         }
         FilledIconButton(onClick = playPause) {
             Icon(
-                imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
+                imageVector = if (isMediaPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
                 contentDescription = stringResource(R.string.player_play_pause)
             )
         }
@@ -63,7 +65,7 @@ internal fun PlaybackController(
                 contentDescription = stringResource(R.string.player_next)
             )
         }
-        IconButton(onClick = {}) {
+        IconButton(onClick = forwardClick) {
             Icon(
                 painter = painterResource(R.drawable.icon_forward_ten),
                 contentDescription = stringResource(R.string.player_forward)
@@ -71,7 +73,7 @@ internal fun PlaybackController(
         }
 //        IconButton(onClick = {}) {
 //            Icon(
-//                imageVector = Icons.Filled.FavoriteBorder,
+//                imageVector = Icons.Rounded.FavoriteBorder,
 //                contentDescription = stringResource(R.string.player_favorite)
 //            )
 //        }

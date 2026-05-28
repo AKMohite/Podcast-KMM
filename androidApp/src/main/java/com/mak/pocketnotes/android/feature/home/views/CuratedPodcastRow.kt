@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,16 +35,15 @@ import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 
-import com.mak.pocketnotes.android.ui.theme.dimensionTokens
-
 @Composable
 internal fun CuratedPodcastRow(
     modifier: Modifier = Modifier,
     podcast: CuratedPodcast,
     goToDetails: (String) -> Unit
 ) {
-    val tokens = dimensionTokens()
-    val columnFraction = if (tokens.gridColumns > 2) 0.35f else 0.8f
+    // TODO need to handle this with width class
+    val isTablet = booleanResource(R.bool.is_tablet)
+    val columnFraction = if (isTablet) 0.35f else 0.8f
     Column(
         modifier = modifier
     ) {
