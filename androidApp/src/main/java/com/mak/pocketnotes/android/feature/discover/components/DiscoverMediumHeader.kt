@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -90,6 +91,10 @@ fun DiscoverMediumHeader(
                 Column(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
+                        .graphicsLayer {
+                            // Pin the text to the visible start of the item (the mask)
+                            translationX = info.maskRect.left
+                        }
                         .padding(16.dp)
                 ) {
                     val titleSize = lerp(14.sp, 22.sp, progress)
