@@ -27,7 +27,7 @@ internal interface BottomDestination : ScreenDestination {
 }
 
 @Serializable
-object Home : BottomDestination {
+object Discover : BottomDestination {
     override val icon: ImageVector
         get() = Icons.Outlined.Home
     override val title: Int
@@ -70,4 +70,4 @@ object PodcastPlayer : ScreenDestination {
         get() = R.string.now_playing
 }
 
-internal val appDestinations = listOf(Home, Search, Subscribed, Settings)
+internal val appDestinations = listOf(Discover, Search, Subscribed, Settings)

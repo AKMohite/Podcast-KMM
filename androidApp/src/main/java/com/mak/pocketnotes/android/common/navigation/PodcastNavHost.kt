@@ -12,7 +12,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
-import com.mak.pocketnotes.android.feature.home.discoverEntry
+import com.mak.pocketnotes.android.feature.discover.discoverEntry
 import com.mak.pocketnotes.android.feature.player.nowPlayingEntry
 import com.mak.pocketnotes.android.feature.podcastdetail.podcastDetailEntry
 import com.mak.pocketnotes.android.feature.search.searchEntry

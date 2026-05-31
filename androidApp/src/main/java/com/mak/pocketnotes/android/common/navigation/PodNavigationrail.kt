@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.BottomDestination
-import com.mak.pocketnotes.android.common.Home
+import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
@@ -140,12 +140,12 @@ internal fun PodModalWideNavigationRail(
 private fun PodNavigationRailPreview() {
     PodNavigationRail(
         bottomBarItems = listOf(
-            Home,
+            Discover,
             Search,
             Subscribed,
             Settings
         ),
         onBottomNavigate = {},
-        currentKey = Home
+        currentKey = Discover
     )
 }
