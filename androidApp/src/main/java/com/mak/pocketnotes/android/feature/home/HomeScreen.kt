@@ -14,7 +14,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,12 +22,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.EntryProviderScope
-import androidx.navigation3.runtime.NavKey
-import com.mak.pocketnotes.android.common.Home
-import com.mak.pocketnotes.android.common.PodcastDetail
-import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.feature.home.views.BestPodcasts
 import com.mak.pocketnotes.android.feature.home.views.CuratedPodcastRow
 import com.mak.pocketnotes.android.feature.home.views.HomeHeader
@@ -39,25 +32,6 @@ import com.mak.pocketnotes.android.util.md2.rememberPullRefreshState
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 import com.mak.pocketnotes.utils.sample.samplePodcasts
-import org.koin.androidx.compose.koinViewModel
-
-fun EntryProviderScope<NavKey>.discoverEntry(
-    navigator: Navigator
-) {
-    entry<Home> {
-        val homeViewModel: HomeViewModel = koinViewModel()
-        val state by homeViewModel.uiState.collectAsStateWithLifecycle()
-        HomeScreen(
-            gotoDetails = { podcastId ->
-                // this function would be in podcast detail api module
-                navigator.navigate(PodcastDetail(podcastId))
-            },
-            state = state,
-            loadNextPodcasts = homeViewModel::loadPodcasts,
-            onErrorConsumed = homeViewModel::onErrorConsumed
-        )
-    }
-}
 
 @Composable
 internal fun HomeScreen(

@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.BottomDestination
-import com.mak.pocketnotes.android.common.Home
+import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
@@ -39,12 +39,12 @@ internal fun PodBottomNavigation(
 private fun PodBottomNavigationPreview() {
     PodBottomNavigation(
         bottomBarItems = listOf(
-            Home,
+            Discover,
             Search,
             Subscribed,
             Settings
         ),
         onBottomNavigate = {},
-        currentKey = Home
+        currentKey = Discover
     )
 }

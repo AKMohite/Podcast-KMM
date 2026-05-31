@@ -20,7 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mak.pocketnotes.android.common.Home
+import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.PodcastPlayer
 import com.mak.pocketnotes.android.common.ScreenDestination
 import com.mak.pocketnotes.android.common.Search
@@ -54,8 +54,8 @@ internal fun PodcastNavigationWrapper(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val navigationState = rememberNavigationState(
-        startRoute = Home,
-        topLevelRoutes = setOf(Home, Search, Subscribed, Settings)
+        startRoute = Discover,
+        topLevelRoutes = setOf(Discover, Search, Subscribed, Settings)
     )
     val navigator = remember { Navigator(navigationState) }
 
@@ -64,7 +64,7 @@ internal fun PodcastNavigationWrapper(
     val coroutineScope = rememberCoroutineScope()
     val gesturesEnabled = drawerState.isOpen || navLayoutType == NavigationSuiteType.NavigationDrawer
     val bottomBarItems = listOf(
-        Home,
+        Discover,
         Search,
         Subscribed,
         Settings
