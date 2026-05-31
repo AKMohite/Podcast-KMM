@@ -25,15 +25,6 @@ internal fun DiscoverHeader(
 }
 
 @Composable
-fun DiscoverMediumHeader(
-    podcasts: List<Podcast>,
-    modifier: Modifier,
-    onPodcastClick: (String) -> Unit
-) {
-    DiscoverCompactHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
-}
-
-@Composable
 fun DiscoverLargeHeader(
     podcasts: List<Podcast>,
     modifier: Modifier,
