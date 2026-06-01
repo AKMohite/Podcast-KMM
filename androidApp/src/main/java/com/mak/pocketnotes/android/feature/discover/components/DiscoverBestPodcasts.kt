@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -39,6 +40,55 @@ internal fun DiscoverBestPodcasts(
     sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
 ) {
 
+    if(sizeClass.isExpanded()) {
+        DiscoverBestPodcastsExpanded(
+            modifier,
+            gotoDetails,
+            podcasts
+        )
+    } else {
+        DiscoverBestPodcastsCompactAndMedium(
+            modifier,
+            gotoDetails,
+            podcasts
+        )
+    }
+}
+
+@Composable
+fun DiscoverBestPodcastsExpanded(
+    modifier: Modifier = Modifier,
+    gotoDetails: (String) -> Unit,
+    podcasts: List<Podcast>,
+) {
+    Column {
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = stringResource(R.string.trending),
+            style = MaterialTheme.typography.titleLarge
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(5),
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(items = podcasts, key = Podcast::id) { podcast ->
+
+            }
+        }
+    }
+}
+
+@Composable
+fun DiscoverBestPodcastsCompactAndMedium(
+    modifier: Modifier = Modifier,
+    gotoDetails: (String) -> Unit,
+    podcasts: List<Podcast>,
+    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+) {
     val columnFraction = when {
         sizeClass.isExpanded() -> 0.3f
         sizeClass.isMedium() -> 0.5f
@@ -48,7 +98,7 @@ internal fun DiscoverBestPodcasts(
         sizeClass.isExpanded() || sizeClass.isMedium() -> 4
         else -> 2
     }
-    
+
     // Calculate maxHeight based on rowCount (approx 80dp per row)
     val maxHeight = when {
         sizeClass.isExpanded() || sizeClass.isMedium() -> 320.dp
