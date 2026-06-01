@@ -1,12 +1,17 @@
 package com.mak.pocketnotes.android.feature.discover.components
 
+import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.window.core.layout.WindowSizeClass
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun DiscoverHeader(
@@ -24,11 +29,16 @@ internal fun DiscoverHeader(
     }
 }
 
+@Preview
+@PreviewScreenSizes
 @Composable
-fun DiscoverLargeHeader(
-    podcasts: List<Podcast>,
-    modifier: Modifier,
-    onPodcastClick: (String) -> Unit
-) {
-    DiscoverCompactHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+private fun DiscoverHeaderPreview() {
+    PocketNotesTheme {
+        Surface {
+            DiscoverHeader(
+                podcasts = samplePodcasts,
+                onPodcastClick = {}
+            )
+        }
+    }
 }

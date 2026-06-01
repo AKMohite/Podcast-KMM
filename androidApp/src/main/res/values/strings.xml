@@ -207,4 +207,5 @@
     <!-- Notification channel -->
     <string name="notification_channel_playback_name">Playback</string>
     <string name="notification_channel_playback_desc">WavePod audio playback controls</string>
+    <string name="play_episodes">Play episodes</string>
 </resources>
