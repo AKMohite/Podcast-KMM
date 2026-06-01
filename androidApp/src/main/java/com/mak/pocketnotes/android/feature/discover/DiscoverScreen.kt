@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
@@ -151,6 +152,7 @@ private class DiscoverScreenStateProvider: PreviewParameterProvider<DiscoverScre
 }
 
 @Preview
+@PreviewScreenSizes
 @Composable
 private fun DiscoverContentPreview(
     @PreviewParameter(DiscoverScreenStateProvider::class) previewData: DiscoverScreenState
