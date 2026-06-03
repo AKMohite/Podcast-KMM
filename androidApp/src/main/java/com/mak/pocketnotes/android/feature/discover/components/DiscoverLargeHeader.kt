@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -193,6 +194,7 @@ private fun LargePodcastCarouselCard(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth(0.35f)
+                .aspectRatio(1f)
                 .padding(end = 48.dp, top = 48.dp, bottom = 48.dp)
                 .align(Alignment.CenterEnd)
                 .clip(MaterialTheme.shapes.medium)

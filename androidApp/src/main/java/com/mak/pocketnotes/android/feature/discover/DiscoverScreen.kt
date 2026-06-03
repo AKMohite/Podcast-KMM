@@ -106,7 +106,7 @@ private fun DiscoverContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(4.dp),
-                        podcast = podcast,
+                        podcastSection = podcast,
                         goToDetails = gotoDetails
                     )
                 }
