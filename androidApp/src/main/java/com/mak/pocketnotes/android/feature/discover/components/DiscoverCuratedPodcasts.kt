@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
@@ -79,60 +81,88 @@ fun DiscoverCuratedPodcastsExpanded(
     goToDetails: (String) -> Unit,
     podcastSection: CuratedPodcast,
 ) {
-    Surface(
+    Column(
         modifier = modifier
-            .fillMaxWidth()
-            .height(240.dp)
-            .clip(MaterialTheme.shapes.large),
-        color = MaterialTheme.colorScheme.inverseSurface,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(240.dp)
+                .clip(MaterialTheme.shapes.large),
+            color = MaterialTheme.colorScheme.inverseSurface,
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 32.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
-                verticalArrangement = Arrangement.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = podcastSection.title,
-                    style = MaterialTheme.typography.headlineMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = podcastSection.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { /* Do something! */ }) {
-                    Text(stringResource(R.string.see_all))
-                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = stringResource(R.string.see_all),
-                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 32.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = podcastSection.title,
+                        style = MaterialTheme.typography.headlineMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = podcastSection.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { /* Do something! */ }) {
+                        Text(stringResource(R.string.see_all))
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = stringResource(R.string.see_all),
+                            modifier = Modifier.size(ButtonDefaults.IconSize),
+                        )
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .width(320.dp)
+                        .fillMaxHeight()
+                        .clipToBounds()
+                ) {
+                    CuratedSlantedGrid(
+                        images = podcastSection.getSectionImages(),
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .offset(x = 50.dp)
                     )
                 }
             }
+        }
 
-            Box(
-                modifier = Modifier
-                    .width(320.dp)
-                    .fillMaxHeight()
-                    .clipToBounds()
+        BoxWithConstraints(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            val spacing = 12.dp
+            val itemWidth = (maxWidth - (spacing * 4)) / 5
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(spacing)
             ) {
-                CuratedSlantedGrid(
-                    images = podcastSection.getSectionImages(),
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .offset(x = 50.dp)
-                )
+                items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
+                    PodcastColumn(
+                        modifier = Modifier
+                            .width(itemWidth)
+                            .clickable { goToDetails(podcast.id) },
+                        title = podcast.title,
+                        publisher = podcast.publisher,
+                        image = podcast.thumbnail
+                    )
+                }
             }
         }
     }
