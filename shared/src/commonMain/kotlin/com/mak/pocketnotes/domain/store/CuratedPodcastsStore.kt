@@ -53,6 +53,7 @@ class CuratedPodcastsStore: KoinComponent {
                                     CuratedPodcast(
                                         id = sectionId,
                                         title = section.sectionTitle,
+                                        description = section.sectionDescription,
                                         podcasts = mapPodcasts(podcasts)
                                     )
                                 }
@@ -137,7 +138,8 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
     val sectionEntities = this.map { section ->
         CuratedSectionEntity(
             id = section.id!!,
-            title = section.title ?: "",
+            title = section.title.orEmpty(),
+            description = section.description.orEmpty(),
             page = 1
         )
     }
@@ -151,28 +153,6 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
         }
     }.flatten()
     return sectionEntities to podcastEntities
-}
-
-private fun List<SectionPodcastDTO>.toCuratedPodcasts(): List<CuratedPodcast> {
-    return this.map {section ->
-        val podcasts = getPodcasts(section.podcasts ?: emptyList())
-        CuratedPodcast(
-            id = section.id!!,
-            title = section.title ?: "",
-            podcasts = podcasts
-        )
-    }
-}
-
-private fun getPodcasts(curatedPodcastDTOS: List<CuratedPodcastDTO>): List<SectionPodcast> {
-    return curatedPodcastDTOS.map { podcast ->
-        SectionPodcast(
-            id = podcast.id!!,
-            title = podcast.title ?: "",
-            image = podcast.thumbnail ?: "",
-            publisher = podcast.publisher ?: ""
-        )
-    }
 }
 
 data class GetCuratedPodcastsQuery(

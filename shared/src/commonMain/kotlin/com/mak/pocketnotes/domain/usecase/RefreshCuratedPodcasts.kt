@@ -65,7 +65,8 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
     val sectionEntities = this.map { section ->
         CuratedSectionEntity(
             id = section.id!!,
-            title = section.title ?: "",
+            title = section.title.orEmpty(),
+            description = section.description.orEmpty(),
             page = 1
         )
     }
@@ -86,7 +87,8 @@ private fun List<SectionPodcastDTO>.toCuratedPodcasts(): List<CuratedPodcast> {
         val podcasts = getPodcasts(section.podcasts ?: emptyList())
         CuratedPodcast(
             id = section.id!!,
-            title = section.title ?: "",
+            title = section.title.orEmpty(),
+            description = section.description.orEmpty(),
             podcasts = podcasts
         )
     }
