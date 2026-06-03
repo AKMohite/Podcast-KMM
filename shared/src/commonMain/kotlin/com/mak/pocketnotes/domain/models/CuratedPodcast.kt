@@ -11,7 +11,7 @@ data class CuratedPodcast(
     }
 
     /**
-     * this images are only for expanded screens to show in curated section header
+     * these images are only for expanded screens to show in curated section header
      */
     fun getSectionImages(targetSize: Int = 9): List<String> {
         if (podcasts.isEmpty()) return emptyList()
