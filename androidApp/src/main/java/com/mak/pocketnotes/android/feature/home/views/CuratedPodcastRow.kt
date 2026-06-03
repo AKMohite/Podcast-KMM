@@ -58,66 +58,11 @@ internal fun CuratedPodcastRow(
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow {
             items(items = podcast.getCuratedPodcasts()) { podcasts ->
-                CuratedPodcastItem(
-                    modifier = Modifier
-                        .fillParentMaxWidth(columnFraction)
-                        .wrapContentHeight()
-                        .padding(4.dp),
-                    podcasts = podcasts,
-                    goToDetails = goToDetails
-                )
+
             }
         }
     }
 }
-
-@Composable
-private fun CuratedPodcastItem(
-    modifier: Modifier = Modifier,
-    podcasts: List<SectionPodcast>,
-    goToDetails: (String) -> Unit
-) {
-    Column(
-        modifier = modifier
-    ) {
-        podcasts.forEach { podcast ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { goToDetails(podcast.id) }
-                    .padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AsyncImage(
-                    model = podcast.image,
-                    contentDescription = podcast.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(dimensionResource(R.dimen.curated_img))
-                        .clip(MaterialTheme.shapes.small),
-                    placeholder = debugPlaceholder()
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Column {
-                    Text(
-                        text = podcast.title,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Text(
-                        text = podcast.publisher,
-                        style = MaterialTheme.typography.labelSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun CuratedPodcastRowPreview() {
@@ -125,19 +70,6 @@ private fun CuratedPodcastRowPreview() {
         Surface {
             CuratedPodcastRow(
                 podcast = sampleCuratedPodcasts[0],
-                goToDetails = {}
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CuratedPodcastItemPreview() {
-    PocketNotesTheme {
-        Surface {
-            CuratedPodcastItem(
-                podcasts = sampleCuratedPodcasts[0].podcasts,
                 goToDetails = {}
             )
         }

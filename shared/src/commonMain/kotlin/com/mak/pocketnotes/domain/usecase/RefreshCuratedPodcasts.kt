@@ -98,9 +98,10 @@ private fun getPodcasts(curatedPodcastDTOS: List<CuratedPodcastDTO>): List<Secti
     return curatedPodcastDTOS.map { podcast ->
         SectionPodcast(
             id = podcast.id!!,
-            title = podcast.title ?: "",
-            image = podcast.thumbnail ?: "",
-            publisher = podcast.publisher ?: ""
+            title = podcast.title.orEmpty(),
+            thumbnail = podcast.thumbnail.orEmpty(),
+            image = podcast.image.orEmpty(),
+            publisher = podcast.publisher.orEmpty()
         )
     }
 }

@@ -126,7 +126,8 @@ class CuratedPodcastsStore: KoinComponent {
         return podcasts.map { podcast ->
             SectionPodcast(
                 id = podcast.podcastId,
-                image = podcast.thumbnail ?: "",
+                thumbnail = podcast.thumbnail.orEmpty(),
+                image = podcast.image.orEmpty(),
                 title = podcast.podcastTitle,
                 publisher = podcast.publisher
             )

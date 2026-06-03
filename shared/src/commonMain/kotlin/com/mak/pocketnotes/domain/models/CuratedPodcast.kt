@@ -9,6 +9,16 @@ data class CuratedPodcast(
     fun getCuratedPodcasts(noOfRows: Int = 2): List<List<SectionPodcast>> {
         return podcasts.chunked(noOfRows)
     }
+
+    /**
+     * this images are only for expanded screens to show in curated section header
+     */
+    fun getSectionImages(targetSize: Int = 9): List<String> {
+        if (podcasts.isEmpty()) return emptyList()
+        return List(targetSize) { index ->
+            podcasts[index % podcasts.size].thumbnail
+        }
+    }
 }
 
 data class SectionPodcast(
@@ -16,5 +26,6 @@ data class SectionPodcast(
     val title: String,
 //    val description: String,
     val image: String,
+    val thumbnail: String,
     val publisher: String
 )

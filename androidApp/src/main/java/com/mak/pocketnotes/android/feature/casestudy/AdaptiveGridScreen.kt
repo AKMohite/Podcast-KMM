@@ -96,7 +96,7 @@ private fun SweetsCard(
 private class AdaptiveItem(
     val id: Int,
     val imageUrl: String,
-    @StringRes val description: Int,
+    @param:StringRes val description: Int,
 )
 private val sweets = listOf(
     AdaptiveItem(
