@@ -275,7 +275,9 @@ fun DiscoverBestPodcastsExpanded(
                         modifier = Modifier
                             .width(itemWidth)
                             .clickable { gotoDetails(podcast.id) },
-                        podcast = podcast
+                        title = podcast.title,
+                        publisher = podcast.publisher,
+                        image = podcast.thumbnail
                     )
                 }
             }
@@ -284,16 +286,18 @@ fun DiscoverBestPodcastsExpanded(
 }
 
 @Composable
-private fun PodcastColumn(
-    podcast: Podcast,
+internal fun PodcastColumn(
+    title: String,
+    publisher: String,
+    image: String,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
     ) {
         AsyncImage(
-            model = podcast.thumbnail,
-            contentDescription = podcast.title,
+            model = image,
+            contentDescription = title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
@@ -303,14 +307,14 @@ private fun PodcastColumn(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = podcast.title,
+            text = title,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = podcast.publisher,
+            text = publisher,
             style = MaterialTheme.typography.labelSmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
