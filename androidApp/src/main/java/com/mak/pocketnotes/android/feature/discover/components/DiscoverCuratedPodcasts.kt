@@ -16,6 +16,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +37,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.isExpanded
@@ -48,7 +54,7 @@ internal fun DiscoverCuratedPodcasts(
     goToDetails: (String) -> Unit
 ) {
     when{
-        sizeClass.isExpanded() -> DiscoverCuratedPodcastsCompactAndMedium(
+        sizeClass.isExpanded() -> DiscoverCuratedPodcastsExpanded(
             modifier,
             goToDetails,
             podcastSection
@@ -58,6 +64,35 @@ internal fun DiscoverCuratedPodcasts(
             goToDetails,
             podcastSection
         )
+    }
+}
+
+@Composable
+fun DiscoverCuratedPodcastsExpanded(
+    modifier: Modifier = Modifier,
+    goToDetails: (String) -> Unit,
+    podcastSection: CuratedPodcast,
+    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass,
+) {
+    Row(
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = podcastSection.title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleLarge
+            )
+            Text(
+                text = podcastSection.description,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
 
