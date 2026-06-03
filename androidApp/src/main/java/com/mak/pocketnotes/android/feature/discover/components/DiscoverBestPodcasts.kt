@@ -49,19 +49,36 @@ internal fun DiscoverBestPodcasts(
     sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
 ) {
 
-    if(sizeClass.isExpanded()) {
-        DiscoverBestPodcastsExpanded(
+    when{
+        sizeClass.isExpanded() -> DiscoverBestPodcastsExpanded(
             modifier,
             gotoDetails,
             podcasts
         )
-    } else {
-        DiscoverBestPodcastsCompactAndMedium(
+        sizeClass.isMedium() -> DiscoverBestPodcastsMedium(
+            modifier,
+            gotoDetails,
+            podcasts
+        )
+        else -> DiscoverBestPodcastsCompact(
             modifier,
             gotoDetails,
             podcasts
         )
     }
+}
+
+@Composable
+fun DiscoverBestPodcastsMedium(
+    modifier: Modifier = Modifier,
+    gotoDetails: (String) -> Unit,
+    podcasts: List<Podcast>,
+) {
+    DiscoverBestPodcastsCompact(
+        modifier,
+        gotoDetails,
+        podcasts
+    )
 }
 
 @Composable
@@ -140,7 +157,7 @@ private fun PodcastColumn(
 }
 
 @Composable
-fun DiscoverBestPodcastsCompactAndMedium(
+fun DiscoverBestPodcastsCompact(
     modifier: Modifier = Modifier,
     gotoDetails: (String) -> Unit,
     podcasts: List<Podcast>,
