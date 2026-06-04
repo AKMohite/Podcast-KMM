@@ -23,9 +23,9 @@ import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.navigation.Navigator
-import com.mak.pocketnotes.android.feature.discover.components.DiscoverBestPodcasts
-import com.mak.pocketnotes.android.feature.discover.components.DiscoverCuratedPodcasts
 import com.mak.pocketnotes.android.feature.discover.components.DiscoverHeader
+import com.mak.pocketnotes.android.feature.discover.components.bestpodcast.DiscoverBestPodcasts
+import com.mak.pocketnotes.android.feature.discover.components.curatedpodcast.DiscoverCuratedPodcasts
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 import com.mak.pocketnotes.utils.sample.samplePodcasts
