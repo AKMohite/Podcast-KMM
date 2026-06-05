@@ -40,13 +40,11 @@ import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
-import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
-import com.mak.pocketnotes.android.feature.home.views.PodcastRow
+import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
-import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -64,9 +62,7 @@ fun EntryProviderScope<NavKey>.podcastDetailEntry(
             state = detailViewModel.uiState,
             episodes = detailViewModel.episodesState,
             startPodcast = {
-                detailViewModel.episodesState.let { episodes ->
-                    startPodcastEpisodes(episodes)
-                }
+                startPodcastEpisodes(detailViewModel.episodesState)
             },
             gotoDetails = { podcastId ->
                 navigator.navigate(PodcastDetail(podcastId))
@@ -137,19 +133,16 @@ private fun PodcastDetailContent(
                             Button(
                                 onClick = startPodcast,
                                 modifier = Modifier.fillMaxWidth(),
-                                elevation = ButtonDefaults.buttonElevation(
-                                    defaultElevation = 0.dp
-                                )
+                                shapes = ButtonDefaults.shapes(),
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.PlayArrow,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                    tint = MaterialTheme.colorScheme.onPrimary
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = stringResource(R.string.start_listening_now),
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    text = stringResource(R.string.start_listening_now)
                                 )
                             }
                             Spacer(modifier = Modifier.height(16.dp))

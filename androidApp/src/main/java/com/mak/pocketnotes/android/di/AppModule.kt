@@ -2,7 +2,6 @@ package com.mak.pocketnotes.android.di
 
 import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.feature.discover.DiscoverViewmodel
-import com.mak.pocketnotes.android.feature.home.HomeViewModel
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
 import com.mak.pocketnotes.android.feature.search.SearchViewModel
 import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
@@ -10,14 +9,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 internal val appModule = module {
-    viewModel {
-        HomeViewModel(
-            refreshBestPodcasts = get(),
-            refreshCuratedPodcasts = get(),
-            getBestPodcasts = get(),
-            getCuratedPodcasts = get()
-        )
-    }
     viewModel {
         DiscoverViewmodel(
             refreshBestPodcasts = get(),
