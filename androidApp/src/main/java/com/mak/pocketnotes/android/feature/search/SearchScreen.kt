@@ -34,7 +34,7 @@ import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.navigation.Navigator
-import com.mak.pocketnotes.android.feature.home.views.PodcastRow
+import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.feature.search.views.GenreCells
 import com.mak.pocketnotes.android.feature.search.views.SearchField

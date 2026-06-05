@@ -3,14 +3,17 @@ package com.mak.pocketnotes.android.feature.home
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithText
+import com.mak.pocketnotes.android.feature.discover.DiscoverScreen
+import com.mak.pocketnotes.android.feature.discover.DiscoverScreenState
 
 class HomeRobot(private val rule: ComposeContentTestRule) {
-    fun setContent(state: HomeScreenState) = apply {
+    fun setContent(state: DiscoverScreenState) = apply {
         rule.setContent {
-            HomeScreen(
+            DiscoverScreen(
                 state = state,
                 loadNextPodcasts = {},
-                gotoDetails = {}
+                gotoDetails = {},
+                onErrorConsumed = {}
             )
         }
     }

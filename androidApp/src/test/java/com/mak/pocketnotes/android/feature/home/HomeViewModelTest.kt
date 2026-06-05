@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.android.feature.home
 
 import app.cash.turbine.test
+import com.mak.pocketnotes.android.feature.discover.DiscoverViewmodel
 import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
@@ -26,7 +27,7 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeViewModelTest {
+class DiscoverViewmodelTest {
 
     private val refreshBestPodcasts = mockk<RefreshBestPodcasts>()
     private val refreshCuratedPodcasts = mockk<RefreshCuratedPodcasts>()
@@ -54,7 +55,7 @@ class HomeViewModelTest {
 
     @Test
     fun `init should refresh discover and observe podcasts`() = runTest {
-        val viewModel = HomeViewModel(
+        val viewModel = DiscoverViewmodel(
             refreshBestPodcasts,
             refreshCuratedPodcasts,
             getBestPodcasts,
@@ -81,7 +82,7 @@ class HomeViewModelTest {
     @Test
     fun `when podcasts are observed, uiState is updated`() = runTest {
         val podcasts = List(10) { mockk<Podcast>(relaxed = true) }
-        val viewModel = HomeViewModel(
+        val viewModel = DiscoverViewmodel(
             refreshBestPodcasts,
             refreshCuratedPodcasts,
             getBestPodcasts,
@@ -96,7 +97,7 @@ class HomeViewModelTest {
             bestPodcastsFlow.value = podcasts
             
             val state = awaitItem()
-            // In HomeViewModel: val (topPodcasts, podcasts) = bestPodcasts.take(8).shuffled() to bestPodcasts.drop(4)
+            // In DiscoverViewmodel: val (topPodcasts, podcasts) = bestPodcasts.take(8).shuffled() to bestPodcasts.drop(4)
             // So state.podcasts should have 6 items (10 - 4)
             assertEquals(6, state.podcasts.size)
             assertEquals(8, state.topPodcasts.size)
@@ -108,7 +109,7 @@ class HomeViewModelTest {
     fun `refreshDiscover updates errorMsg on failure`() = runTest {
         coEvery { refreshBestPodcasts(any(), any()) } returns DomainResult.Error("Network Error")
 
-        val viewModel = HomeViewModel(
+        val viewModel = DiscoverViewmodel(
             refreshBestPodcasts,
             refreshCuratedPodcasts,
             getBestPodcasts,

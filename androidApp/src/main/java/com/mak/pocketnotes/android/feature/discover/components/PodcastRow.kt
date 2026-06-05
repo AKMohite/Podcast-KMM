@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.android.feature.home.views
+package com.mak.pocketnotes.android.feature.discover.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
