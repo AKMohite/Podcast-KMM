@@ -62,6 +62,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -76,6 +79,8 @@ import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isExtraLarge
 import com.mak.pocketnotes.android.ui.theme.isLarge
 import com.mak.pocketnotes.android.ui.theme.isMedium
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import com.mak.pocketnotes.domain.models.PLAYBACK_SPEEDS
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.RepeatMode
@@ -534,20 +539,20 @@ internal fun ExtraLargePlayerLayout(
             )
         }
 
+        // Episode info pane (0.25) — shown only on ExtraLarge
+        EpisodeInfoPanel(
+            episode = state.currentEpisode,
+            modifier = Modifier
+                .weight(0.25f)
+                .fillMaxHeight(),
+        )
+
         // Queue pane (0.35)
         QueuePanel(
             state = state,
             onEvent = onEvent,
             modifier = Modifier
                 .weight(0.35f)
-                .fillMaxHeight(),
-        )
-
-        // Episode info pane (0.25) — shown only on ExtraLarge
-        EpisodeInfoPanel(
-            episode = state.currentEpisode,
-            modifier = Modifier
-                .weight(0.25f)
                 .fillMaxHeight(),
         )
     }
@@ -1095,7 +1100,6 @@ private fun MiniPlayer(
     }
 }
 
-
 private fun formatDuration(ms: Long): String {
     if (ms <= 0L) return "0:00"
     val totalSeconds = ms / 1_000
@@ -1106,5 +1110,29 @@ private fun formatDuration(ms: Long): String {
         "%d:%02d:%02d".format(hours, minutes, seconds)
     } else {
         "%d:%02d".format(minutes, seconds)
+    }
+}
+
+@Preview
+@PreviewScreenSizes
+@Composable
+private fun PlayerContentPreview() {
+    PocketNotesTheme {
+        Surface {
+            PlayerContent(
+                state = PlayerState(
+                    currentEpisode = sampleEpisodes[0],
+                    queue = sampleEpisodes,
+                    currentQueueIndex = 0,
+                    isPlaying = true,
+                    isLoading = false,
+                    positionMs = 50_000L,
+                    durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+                    playbackSpeed = 1.0f,
+                    isShuffleEnabled = false,
+                    repeatMode = RepeatMode.NONE
+                )
+            )
+        }
     }
 }
