@@ -43,31 +43,6 @@ import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.domain.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
-fun EntryProviderScope<NavKey>.nowPlayingEntry(
-    mediaViewModel: MediaViewModel,
-    navigator: Navigator
-) {
-    entry<PodcastPlayer> {
-        NowPlayingScreen(
-            progress = mediaViewModel.progress,
-            onCloseClick = { navigator.goBack() },
-            onSliderChange = { updateProgress ->
-                mediaViewModel.onUIEvents(UIEvent.SeekTo(updateProgress))
-            },
-            playPause = {
-                mediaViewModel.onUIEvents(UIEvent.PlayPause)
-            },
-            isMediaPlaying = mediaViewModel.isPlaying,
-            episode = mediaViewModel.currentSelectedMedia,
-            previousClick = { },
-            nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-            backwardClick = { mediaViewModel.onUIEvents(UIEvent.Backward) },
-            forwardClick = { mediaViewModel.onUIEvents(UIEvent.Forward) },
-            timeElapsed = mediaViewModel.progressString,
-            totalDuration = mediaViewModel.durationString
-        )
-    }
-}
 
 @Composable
 internal fun NowPlayingScreen(
