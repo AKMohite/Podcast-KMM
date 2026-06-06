@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 internal class PlayerViewModel: ViewModel() {
     val playerState: StateFlow<PlayerState> = MutableStateFlow(PlayerState())
+
+    fun onEvent(event: PlayerEvent) {}
 }
 
 internal sealed interface PlayerEvent {
