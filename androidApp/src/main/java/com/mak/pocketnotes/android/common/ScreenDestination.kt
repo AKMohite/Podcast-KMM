@@ -70,4 +70,10 @@ object PodcastPlayer : ScreenDestination {
         get() = R.string.now_playing
 }
 
+@Serializable
+object PlayerQueue : ScreenDestination {
+    override val title: Int
+        get() = R.string.player_queue
+}
+
 internal val appDestinations = listOf(Discover, Search, Subscribed, Settings)
