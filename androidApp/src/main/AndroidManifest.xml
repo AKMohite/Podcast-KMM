@@ -33,5 +33,24 @@
                 <action android:name="androidx.media3.session.MediaSessionService" />
             </intent-filter>
         </service>
+
+        <!-- ── PodcastMediaService ──────────────────────────────────────── -->
+        <!--
+            foregroundServiceType="mediaPlayback" is required on Android 10+
+            for audio playback in the background.
+
+            The MediaLibraryService intent-filter lets Media3 / MediaController
+            discover and connect to this service automatically.
+        -->
+        <service
+            android:name="com.mak.pocketnotes.media.PodcastMediaService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
+
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaLibraryService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest> 

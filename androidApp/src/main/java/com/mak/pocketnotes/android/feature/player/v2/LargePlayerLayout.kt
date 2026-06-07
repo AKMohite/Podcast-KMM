@@ -22,6 +22,7 @@ import com.mak.pocketnotes.android.feature.player.v2.components.PlayerScrubber
 import com.mak.pocketnotes.android.feature.player.v2.components.QueuePanel
 import com.mak.pocketnotes.android.feature.player.v2.components.SecondaryControls
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.PlayerState
 import com.mak.pocketnotes.domain.models.RepeatMode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -83,7 +84,7 @@ internal fun LargePlayerLayout(
                 playbackSpeed = state.playbackSpeed,
                 isShuffleEnabled = state.isShuffleEnabled,
                 repeatMode = state.repeatMode,
-                onSetSpeed = { onEvent(PlayerEvent.OnSetSpeed) },
+                onSetSpeed = { onEvent(PlayerEvent.OnSetSpeed(it)) },
                 onToggleShuffle = { onEvent(PlayerEvent.OnToggleShuffle) },
                 onCycleRepeatMode = { onEvent(PlayerEvent.OnCycleRepeatMode) },
             )

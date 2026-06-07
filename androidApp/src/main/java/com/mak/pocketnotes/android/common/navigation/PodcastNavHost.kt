@@ -15,6 +15,7 @@ import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.feature.discover.discoverEntry
 import com.mak.pocketnotes.android.feature.player.v2.nowPlayingEntry
 import com.mak.pocketnotes.android.feature.podcastdetail.podcastDetailEntry
+import com.mak.pocketnotes.android.feature.queue.playQueueEntry
 import com.mak.pocketnotes.android.feature.search.searchEntry
 import com.mak.pocketnotes.android.feature.settings.settingsEntry
 import com.mak.pocketnotes.domain.models.asPlayableEpisodes
@@ -35,9 +36,11 @@ internal fun PodcastNavDisplay(
             mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
         }
 
-        nowPlayingEntry(mediaViewModel, navigator)
+        nowPlayingEntry(navigator)
 
         searchEntry(navigator)
+
+        playQueueEntry(navigator)
 
         entry<Subscribed> {
             EmptyScreen(Subscribed.title)
