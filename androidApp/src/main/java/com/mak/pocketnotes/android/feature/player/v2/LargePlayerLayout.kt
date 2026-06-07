@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingArtwork
 import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingInfo
@@ -19,6 +21,9 @@ import com.mak.pocketnotes.android.feature.player.v2.components.PlayerControls
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerScrubber
 import com.mak.pocketnotes.android.feature.player.v2.components.QueuePanel
 import com.mak.pocketnotes.android.feature.player.v2.components.SecondaryControls
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.RepeatMode
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LARGE  1200–1599 dp  ·  Large tablet / foldable outer
@@ -92,5 +97,29 @@ internal fun LargePlayerLayout(
                 .weight(0.5f)
                 .fillMaxHeight(),
         )
+    }
+}
+
+@Preview(widthDp = 1300)
+@Composable
+private fun LargePlayerLayoutPreview() {
+    PocketNotesTheme {
+        Surface {
+            LargePlayerLayout(
+                state = PlayerState(
+                    currentEpisode = sampleEpisodes[0],
+                    queue = sampleEpisodes,
+                    currentQueueIndex = 0,
+                    isPlaying = true,
+                    isLoading = false,
+                    positionMs = 50_000L,
+                    durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+                    playbackSpeed = 1.0f,
+                    isShuffleEnabled = false,
+                    repeatMode = RepeatMode.NONE
+                ),
+                onEvent = {}
+            )
+        }
     }
 }

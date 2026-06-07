@@ -12,16 +12,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.QueueMusic
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingArtwork
 import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingInfo
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerControls
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerScrubber
 import com.mak.pocketnotes.android.feature.player.v2.components.SecondaryControls
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.RepeatMode
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 // ─────────────────────────────────────────────────────────────────────────────
 // COMPACT  < 600 dp  ·  Phone portrait
@@ -111,6 +116,31 @@ internal fun CompactPlayer(
             Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = null)
             Spacer(Modifier.width(8.dp))
             Text("Queue (${state.queue.size})")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun CompactPlayerPreview() {
+    PocketNotesTheme {
+        Surface {
+            CompactPlayer(
+                state = PlayerState(
+                    currentEpisode = sampleEpisodes[0],
+                    queue = sampleEpisodes,
+                    currentQueueIndex = 0,
+                    isPlaying = true,
+                    isLoading = false,
+                    positionMs = 50_000L,
+                    durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+                    playbackSpeed = 1.0f,
+                    isShuffleEnabled = false,
+                    repeatMode = RepeatMode.NONE
+                ),
+                onEvent = {},
+                onShowQueue = {}
+            )
         }
     }
 }
