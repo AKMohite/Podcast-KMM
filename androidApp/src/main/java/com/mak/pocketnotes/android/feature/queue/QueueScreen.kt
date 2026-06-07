@@ -46,6 +46,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
@@ -55,7 +57,9 @@ import com.mak.pocketnotes.android.common.PlayerQueue
 import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.feature.player.v2.PlayerState
 import com.mak.pocketnotes.android.feature.player.v2.components.formatDuration
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import org.koin.compose.viewmodel.koinViewModel
 
 fun EntryProviderScope<NavKey>.playQueueEntry(
@@ -341,3 +345,19 @@ private fun SwipeDismissBackground() {
         )
     }
 }
+
+@Preview(showBackground = true)
+@PreviewScreenSizes
+@Composable
+private fun QueueContentPreview() {
+    PocketNotesTheme {
+        QueueContent(
+            state = PlayerState(
+                queue = sampleEpisodes.take(5),
+                currentQueueIndex = 0
+            ),
+            onEvent = {}
+        )
+    }
+}
+

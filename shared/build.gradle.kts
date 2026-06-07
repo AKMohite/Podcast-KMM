@@ -71,6 +71,7 @@ kotlin {
                 implementation(libs.androidx.media3.dash)
                 implementation(libs.androidx.media3.ui)
                 implementation(libs.androidx.media3.session)
+                implementation(libs.kotlinx.coroutines.guava)
 //                TODO can be removed?
                 implementation(libs.androidx.legacy.support) // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
