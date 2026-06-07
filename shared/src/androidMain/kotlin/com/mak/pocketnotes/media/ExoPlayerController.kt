@@ -347,6 +347,9 @@ internal class ExoPlayerController(
         .setMediaMetadata(
             MediaMetadata.Builder()
                 .setTitle(title)
+//                .setAlbumArtist(speaker)
+                .setDisplayTitle(title)
+                .setSubtitle(title)
                 .setArtist(podcastId)
                 .setArtworkUri(thumbnail.toUri())
                 .setDurationMs(duration * 1_000L)
