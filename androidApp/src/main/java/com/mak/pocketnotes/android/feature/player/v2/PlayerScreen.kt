@@ -10,25 +10,29 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
+import com.mak.pocketnotes.android.common.PlayerQueue
 import com.mak.pocketnotes.android.common.PodcastPlayer
 import com.mak.pocketnotes.android.common.navigation.Navigator
-import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isExtraLarge
 import com.mak.pocketnotes.android.ui.theme.isLarge
 import com.mak.pocketnotes.android.ui.theme.isMedium
+import com.mak.pocketnotes.domain.models.PlayerState
 import com.mak.pocketnotes.domain.models.RepeatMode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import org.koin.androidx.compose.koinViewModel
 
 fun EntryProviderScope<NavKey>.nowPlayingEntry(
-    mediaViewModel: MediaViewModel,
     navigator: Navigator
 ) {
     entry<PodcastPlayer> {
-        PlayerScreen()
+        PlayerScreen(
+            onShowQueue = {
+                navigator.navigate(PlayerQueue)
+            }
+        )
     }
 }
 
@@ -52,6 +56,7 @@ internal object PlayerTestTags {
 
 @Composable
 internal fun PlayerScreen(
+    onShowQueue: () -> Unit
 ) {
     val viewModel: PlayerViewModel = koinViewModel()
     val state by viewModel.playerState.collectAsStateWithLifecycle()
@@ -59,7 +64,8 @@ internal fun PlayerScreen(
         modifier = Modifier
             .fillMaxSize(),
         state = state,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        onShowQueue = onShowQueue
     )
 }
 
@@ -67,7 +73,8 @@ internal fun PlayerScreen(
 private fun PlayerContent(
     modifier: Modifier = Modifier,
     state: PlayerState,
-    onEvent: (PlayerEvent) -> Unit
+    onEvent: (PlayerEvent) -> Unit,
+    onShowQueue: () -> Unit
 ) {
     val sizeClass = adaptiveScreenInfo().windowSizeClass
     when {
@@ -89,13 +96,13 @@ private fun PlayerContent(
         sizeClass.isMedium() -> MediumPlayerLayout(
             state = state,
             onEvent = onEvent,
-            onShowQueue = {},
+            onShowQueue = onShowQueue,
             modifier = modifier
         )
         else -> CompactPlayer(
             state = state,
             onEvent = onEvent,
-            onShowQueue = {},
+            onShowQueue = onShowQueue,
             modifier = modifier
         )
     }
@@ -120,7 +127,8 @@ private fun PlayerContentPreview() {
                     isShuffleEnabled = false,
                     repeatMode = RepeatMode.NONE
                 ),
-                onEvent = {}
+                onEvent = {},
+                onShowQueue = {}
             )
         }
     }

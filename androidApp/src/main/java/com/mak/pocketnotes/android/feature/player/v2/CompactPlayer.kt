@@ -27,6 +27,7 @@ import com.mak.pocketnotes.android.feature.player.v2.components.PlayerControls
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerScrubber
 import com.mak.pocketnotes.android.feature.player.v2.components.SecondaryControls
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.domain.models.PlayerState
 import com.mak.pocketnotes.domain.models.RepeatMode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -100,7 +101,7 @@ internal fun CompactPlayer(
             isShuffleEnabled = state.isShuffleEnabled,
             repeatMode = state.repeatMode,
             onSetSpeed = {
-                onEvent(PlayerEvent.OnSetSpeed)
+                onEvent(PlayerEvent.OnSetSpeed(it))
             },
             onToggleShuffle = {
                 onEvent(PlayerEvent.OnToggleShuffle)

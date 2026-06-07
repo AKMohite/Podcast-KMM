@@ -95,7 +95,7 @@ internal fun MediumPlayerLayout(
                 playbackSpeed = state.playbackSpeed,
                 isShuffleEnabled = state.isShuffleEnabled,
                 repeatMode = state.repeatMode,
-                onSetSpeed = { onEvent(PlayerEvent.OnSetSpeed) },
+                onSetSpeed = { onEvent(PlayerEvent.OnSetSpeed(it)) },
                 onToggleShuffle = { onEvent(PlayerEvent.OnToggleShuffle) },
                 onCycleRepeatMode = { onEvent(PlayerEvent.OnCycleRepeatMode) },
             )

@@ -29,8 +29,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.feature.player.v2.PlayerState
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
+import com.mak.pocketnotes.domain.models.PlayerState
 
 @Composable
 private fun MiniPlayer(
@@ -58,7 +58,7 @@ private fun MiniPlayer(
         ) {
             // Thumbnail
             AsyncImage(
-                model = state.currentEpisode.thumbnail,
+                model = state.currentEpisode?.thumbnail,
                 contentDescription = null,
                 modifier = Modifier
                     .size(40.dp)
@@ -69,13 +69,13 @@ private fun MiniPlayer(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = state.currentEpisode.title,
+                    text = state.currentEpisode?.title.orEmpty(),
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = state.currentEpisode.title,
+                    text = state.currentEpisode?.title.orEmpty(),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
