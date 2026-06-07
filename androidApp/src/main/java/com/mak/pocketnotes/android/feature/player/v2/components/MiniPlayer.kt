@@ -24,9 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerState
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
 
@@ -85,7 +87,7 @@ private fun MiniPlayer(
             IconButton(onClick = onTogglePlayPause) {
                 Icon(
                     imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = if (state.isPlaying) "Pause" else "Play",
+                    contentDescription = if (state.isPlaying) stringResource(R.string.action_pause) else stringResource(R.string.action_play),
                 )
             }
 

@@ -207,7 +207,25 @@
     <!-- Notification channel -->
     <string name="notification_channel_playback_name">Playback</string>
     <string name="notification_channel_playback_desc">WavePod audio playback controls</string>
+
+
     <string name="play_episodes">Play episodes</string>
     <string name="most_popular">Most popular</string>
     <string name="see_all">See all</string>
+    <string name="queue_size">Queue (%1$d)</string>
+    <string name="view_queue_size">View queue (%1$d)</string>
+    <string name="about_episode">About this episode</string>
+    <string name="podcast_artwork">Podcast artwork</string>
+    <string name="nothing_playing">Nothing playing</string>
+    <string name="skip_back_10_seconds">Skip back 10 seconds</string>
+    <string name="previous_episode">Previous episode</string>
+    <string name="next_episode">Next episode</string>
+    <string name="skip_forward_30_seconds">Skip forward 30 seconds</string>
+    <string name="up_next">Up Next</string>
+    <string name="episode_size">%1$d episodes</string>
+    <string name="remove_from_queue">Remove %1$s from queue</string>
+    <string name="shuffle_on">Shuffle on</string>
+    <string name="shuffle_off">Shuffle off</string>
+    <string name="repeat_mode_type">Repeat mode: %1$s</string>
+    <string name="playback_speed">%1$sx</string>
 </resources>
