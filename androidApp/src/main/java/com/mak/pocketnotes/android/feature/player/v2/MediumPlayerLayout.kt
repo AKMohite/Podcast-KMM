@@ -2,7 +2,6 @@ package com.mak.pocketnotes.android.feature.player.v2
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,8 +18,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingArtwork
 import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingInfo
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerControls
@@ -100,7 +101,7 @@ internal fun MediumPlayerLayout(
             TextButton(onClick = onShowQueue) {
                 Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = null)
                 Spacer(Modifier.width(4.dp))
-                Text("View queue (${state.queue.size})")
+                Text(stringResource(R.string.view_queue_size, state.queue.size))
             }
         }
     }

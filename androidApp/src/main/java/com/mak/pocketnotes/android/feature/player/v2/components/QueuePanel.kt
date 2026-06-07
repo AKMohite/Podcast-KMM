@@ -28,10 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerEvent
 import com.mak.pocketnotes.android.feature.player.v2.PlayerState
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
@@ -57,11 +59,11 @@ internal fun QueuePanel(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Up Next",
+                text = stringResource(R.string.up_next),
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
-                text = "${state.upcomingEpisodes.size} episodes",
+                text = stringResource(R.string.episode_size, state.upcomingEpisodes.size),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -152,7 +154,7 @@ private fun QueueItemRow(
         IconButton(onClick = onRemove) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Remove ${episode.title} from queue",
+                contentDescription = stringResource(R.string.remove_from_queue, episode.title),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

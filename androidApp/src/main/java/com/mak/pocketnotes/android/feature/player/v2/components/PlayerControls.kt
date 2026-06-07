@@ -26,9 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerEvent
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
 
@@ -59,7 +61,7 @@ internal fun PlayerControls(
         ) {
             Icon(
                 Icons.Default.Replay10,
-                contentDescription = "Skip back 10 seconds",
+                contentDescription = stringResource(R.string.skip_back_10_seconds),
                 modifier = Modifier.size(iconSize + 4.dp),
             )
         }
@@ -74,11 +76,12 @@ internal fun PlayerControls(
         ) {
             Icon(
                 Icons.Default.SkipPrevious,
-                contentDescription = "Previous episode",
+                contentDescription = stringResource(R.string.previous_episode),
                 modifier = Modifier.size(iconSize + 4.dp),
             )
         }
 
+        val playerDescription = if (isPlaying) stringResource(R.string.action_pause) else stringResource(R.string.action_play)
         // Play / Pause (large)
         Box(
             contentAlignment = Alignment.Center,
@@ -95,7 +98,7 @@ internal fun PlayerControls(
                 )
                 .testTag(PlayerTestTags.PLAY_PAUSE_BUTTON)
                 .semantics {
-                    contentDescription = if (isPlaying) "Pause" else "Play"
+                    contentDescription = playerDescription
                 },
         ) {
             if (isLoading) {
@@ -124,7 +127,7 @@ internal fun PlayerControls(
         ) {
             Icon(
                 Icons.Default.SkipNext,
-                contentDescription = "Next episode",
+                contentDescription = stringResource(R.string.next_episode),
                 modifier = Modifier.size(iconSize + 4.dp),
             )
         }
@@ -138,7 +141,7 @@ internal fun PlayerControls(
         ) {
             Icon(
                 Icons.Default.Forward30,
-                contentDescription = "Skip forward 30 seconds",
+                contentDescription = stringResource(R.string.skip_forward_30_seconds),
                 modifier = Modifier.size(iconSize + 4.dp),
             )
         }

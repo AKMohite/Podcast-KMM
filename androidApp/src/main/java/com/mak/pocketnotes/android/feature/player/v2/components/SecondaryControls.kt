@@ -22,8 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
 import com.mak.pocketnotes.domain.models.PLAYBACK_SPEEDS
 import com.mak.pocketnotes.domain.models.RepeatMode
@@ -51,9 +53,11 @@ internal fun SecondaryControls(
             onClick = onToggleShuffle,
             modifier = Modifier.testTag(PlayerTestTags.SHUFFLE_BUTTON),
         ) {
+            val contentDescription =
+                if (isShuffleEnabled) stringResource(R.string.shuffle_on) else stringResource(R.string.shuffle_off)
             Icon(
                 Icons.Default.Shuffle,
-                contentDescription = if (isShuffleEnabled) "Shuffle on" else "Shuffle off",
+                contentDescription = contentDescription,
                 tint = if (isShuffleEnabled) MaterialTheme.colorScheme.primary
                 else LocalContentColor.current.copy(alpha = 0.5f),
             )
@@ -69,7 +73,7 @@ internal fun SecondaryControls(
                     RepeatMode.ONE -> Icons.Default.RepeatOne
                     else -> Icons.Default.Repeat
                 },
-                contentDescription = "Repeat mode: $repeatMode",
+                contentDescription = stringResource(R.string.repeat_mode_type, repeatMode),
                 tint = if (repeatMode != RepeatMode.NONE) MaterialTheme.colorScheme.primary
                 else LocalContentColor.current.copy(alpha = 0.5f),
             )
@@ -93,7 +97,7 @@ private fun SpeedChip(speed: Float, onSetSpeed: (Float) -> Unit) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "${speed}x",
+            text = stringResource(R.string.playback_speed, speed),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Medium,
         )
