@@ -88,10 +88,7 @@ internal fun QueueScreen() {
     val viewModel: QueueViewModel = koinViewModel()
     val state by viewModel.playerState.collectAsStateWithLifecycle()
     QueueContent(
-        state = PlayerState(
-            queue = sampleEpisodes.take(5),
-            currentQueueIndex = 0
-        ),
+        state = state,
         onEvent = {}
     )
 }

@@ -1,5 +1,7 @@
 package com.mak.pocketnotes.android.feature.player.v2
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -59,7 +61,7 @@ internal fun PlayerScreen(
     onShowQueue: () -> Unit
 ) {
     val viewModel: PlayerViewModel = koinViewModel(
-//        viewModelStoreOwner = LocalActivity.current as ComponentActivity
+        viewModelStoreOwner = LocalActivity.current as ComponentActivity
     )
     val state by viewModel.playerState.collectAsStateWithLifecycle()
     PlayerContent(

@@ -28,20 +28,17 @@ import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.ui.MiniPlayer
 import com.mak.pocketnotes.android.common.ui.PermanentMinPlayer
-import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
-import com.mak.pocketnotes.android.common.viewmodel.UIEvent
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
+import com.mak.pocketnotes.domain.models.PlayableEpisode
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun PodcastNavigationWrapper(
     startService: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val mediaViewModel: MediaViewModel = koinViewModel()
     val adaptiveInfo = adaptiveScreenInfo()
 
     val sizeClass = adaptiveInfo.windowSizeClass
@@ -85,17 +82,17 @@ internal fun PodcastNavigationWrapper(
                     NavigationSuiteType.NavigationBar -> {
                         Column {
                             // TODO handle this properly
-                            AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
+                            AnimatedVisibility(visible = !isFullScreen) {
                                 MiniPlayer(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .wrapContentHeight()
                                         .padding(horizontal = 4.dp)
                                         .clickable { navigator.navigate(PodcastPlayer) },
-                                    episode = mediaViewModel.currentSelectedMedia,
-                                    play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                                    next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                                    isMediaPlaying = mediaViewModel.isPlaying
+                                    episode = PlayableEpisode.EMPTY,
+                                    play = {  },
+                                    next = {  },
+                                    isMediaPlaying = true
                                 )
                             }
                             AnimatedVisibility(visible = !isFullScreen) {
@@ -128,15 +125,15 @@ internal fun PodcastNavigationWrapper(
                             navigator.navigate(destination)
                         },
                         bottomContent = {
-                            AnimatedVisibility(visible = !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
+                            AnimatedVisibility(visible = !isFullScreen) {
                                 PermanentMinPlayer(
                                     modifier = Modifier
                                         .clickable { navigator.navigate(PodcastPlayer) },
-                                    episode = mediaViewModel.currentSelectedMedia,
-                                    playPause = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                                    isMediaPlaying = mediaViewModel.isPlaying,
+                                    episode = PlayableEpisode.EMPTY,
+                                    playPause = {  },
+                                    isMediaPlaying = true,
                                     previousClick = {},
-                                    nextClick = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) }
+                                    nextClick = {  }
                                 )
                             }
                         }
@@ -150,14 +147,12 @@ internal fun PodcastNavigationWrapper(
                 PodcastNavDisplay(
                     navigationState = navigationState,
                     navigator = navigator,
-                    startService = startService,
-                    mediaViewModel = mediaViewModel,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 )
                 // TODO handle this properly
-                AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail && !isFullScreen && mediaViewModel.currentSelectedMedia.track.isNotBlank()) {
+                AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail && !isFullScreen) {
                     MiniPlayer(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -165,10 +160,10 @@ internal fun PodcastNavigationWrapper(
                             .weight(1f)
                             .padding(horizontal = 4.dp)
                             .clickable { navigator.navigate(PodcastPlayer) },
-                        episode = mediaViewModel.currentSelectedMedia,
-                        play = { mediaViewModel.onUIEvents(UIEvent.PlayPause) },
-                        next = { mediaViewModel.onUIEvents(UIEvent.SeekToNext) },
-                        isMediaPlaying = mediaViewModel.isPlaying
+                        episode = PlayableEpisode.EMPTY,
+                        play = {  },
+                        next = {  },
+                        isMediaPlaying = true
                     )
                 }
             }

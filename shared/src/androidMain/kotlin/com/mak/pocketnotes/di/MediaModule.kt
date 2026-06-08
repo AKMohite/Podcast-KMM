@@ -5,10 +5,7 @@ import androidx.media3.common.C
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.session.MediaSession
-import com.mak.pocketnotes.media.ExoPlayerController
-import com.mak.pocketnotes.media.PlayerController
 import com.mak.pocketnotes.media.QueueManager
 import com.mak.pocketnotes.service.media.notification.INotificationManager
 import com.mak.pocketnotes.service.media.notification.PodtalkNotificationManager
@@ -40,5 +37,4 @@ val mediaModuleV2 = module {
             .setSeekForwardIncrementMs(30_000L)
             .build()
     }
-    single<PlayerController> { ExoPlayerController(get(), get()) }
 }

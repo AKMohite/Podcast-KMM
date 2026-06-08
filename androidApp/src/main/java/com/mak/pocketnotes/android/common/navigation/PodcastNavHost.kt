@@ -11,30 +11,23 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.mak.pocketnotes.android.common.Subscribed
-import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
 import com.mak.pocketnotes.android.feature.discover.discoverEntry
 import com.mak.pocketnotes.android.feature.player.v2.nowPlayingEntry
 import com.mak.pocketnotes.android.feature.podcastdetail.podcastDetailEntry
 import com.mak.pocketnotes.android.feature.queue.playQueueEntry
 import com.mak.pocketnotes.android.feature.search.searchEntry
 import com.mak.pocketnotes.android.feature.settings.settingsEntry
-import com.mak.pocketnotes.domain.models.asPlayableEpisodes
 
 @Composable
 internal fun PodcastNavDisplay(
     navigationState: NavigationState,
     navigator: Navigator,
-    startService: () -> Unit,
-    mediaViewModel: MediaViewModel,
     modifier: Modifier = Modifier,
 ) {
     val entryProvider : (NavKey) -> NavEntry<NavKey> = entryProvider {
         discoverEntry(navigator)
 
-        podcastDetailEntry(navigator) { episodes ->
-            startService()
-            mediaViewModel.loadMedia(episodes.asPlayableEpisodes())
-        }
+        podcastDetailEntry(navigator)
 
         nowPlayingEntry(navigator)
 

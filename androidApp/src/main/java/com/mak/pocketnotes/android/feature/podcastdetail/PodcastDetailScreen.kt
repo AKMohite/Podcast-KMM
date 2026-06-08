@@ -1,5 +1,7 @@
 package com.mak.pocketnotes.android.feature.podcastdetail
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +48,8 @@ import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
+import com.mak.pocketnotes.android.feature.player.v2.PlayerEvent
+import com.mak.pocketnotes.android.feature.player.v2.PlayerViewModel
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
@@ -59,18 +63,21 @@ import org.koin.core.parameter.parametersOf
 
 
 fun EntryProviderScope<NavKey>.podcastDetailEntry(
-    navigator: Navigator,
-    startPodcastEpisodes: (List<PodcastEpisode>) -> Unit
+    navigator: Navigator
 ) {
     entry<PodcastDetail> { key ->
         val detailViewModel: PodcastDetailViewModel = koinViewModel(
             parameters = { parametersOf(key.podcastId) }
         )
+        val playerViewModel: PlayerViewModel = koinViewModel(
+            viewModelStoreOwner = LocalActivity.current as ComponentActivity
+        )
         PodcastDetailScreen(
             state = detailViewModel.uiState,
             episodes = detailViewModel.episodesState,
             startPodcast = {
-                startPodcastEpisodes(detailViewModel.episodesState)
+                playerViewModel.onEvent(PlayerEvent.OnPlayQueue(detailViewModel.episodesState.take(10)))
+//                startPodcastEpisodes(detailViewModel.episodesState)
             },
             gotoDetails = { podcastId ->
                 navigator.navigate(PodcastDetail(podcastId))

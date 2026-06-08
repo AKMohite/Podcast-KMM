@@ -3,6 +3,7 @@ package com.mak.pocketnotes.android.feature.player.v2
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.domain.models.PlayerState
+import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.media.PlayerController
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +33,7 @@ internal class PlayerViewModel(
             is PlayerEvent.OnSkipToQueueItem -> controller.skipToQueueItem(event.queueIndex)
             PlayerEvent.OnTogglePlayPause -> controller.togglePlayPause()
             PlayerEvent.OnToggleShuffle -> controller.toggleShuffle()
+            is PlayerEvent.OnPlayQueue -> controller.playQueue(event.episodes, event.startIndex)
         }
     }
 }
@@ -54,4 +56,5 @@ internal sealed interface PlayerEvent {
     data class OnSkipToQueueItem(val queueIndex: Int) : PlayerEvent
     data class OnRemoveFromQueue(val index: Int) : PlayerEvent
     data class OnMoveQueueItem(val fromIndex: Int, val toIndex: Int) : PlayerEvent
+    data class OnPlayQueue(val episodes: List<PodcastEpisode>, val startIndex: Int = 0) : PlayerEvent
 }
