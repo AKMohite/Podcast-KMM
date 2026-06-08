@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 @OptIn(SavedStateHandleSaveableApi::class)
-class MediaViewModel(
+class LegacyMediaViewModel(
     private val serviceHandler: IServiceHandler,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
@@ -61,7 +61,7 @@ class MediaViewModel(
 
     private fun mediaHandlerEvents() {
         viewModelScope.launch {
-            serviceHandler.audioState.collectLatest { mediaState ->
+            /*serviceHandler.audioState.collectLatest { mediaState ->
                 when (mediaState) {
                     is MediaState.Buffering -> calculateProgress(mediaState.progress)
                     is MediaState.CurrentPlaying -> currentSelectedMedia =
@@ -76,7 +76,7 @@ class MediaViewModel(
                         _uiState.value = UIState.Ready
                     }
                 }
-            }
+            }*/
         }
     }
 

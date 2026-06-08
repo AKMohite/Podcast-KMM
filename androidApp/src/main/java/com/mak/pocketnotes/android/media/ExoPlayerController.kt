@@ -1,4 +1,5 @@
-package com.mak.pocketnotes.media
+package com.mak.pocketnotes.android.media
+
 
 import android.content.ComponentName
 import android.content.Context
@@ -14,6 +15,9 @@ import com.mak.pocketnotes.domain.models.PlayerError
 import com.mak.pocketnotes.domain.models.PlayerState
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.RepeatMode
+import com.mak.pocketnotes.media.PlayerController
+import com.mak.pocketnotes.media.QueueManager
+import com.mak.pocketnotes.media.QueueOperation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,7 +30,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
-
 
 internal class ExoPlayerController(
     private val context: Context,

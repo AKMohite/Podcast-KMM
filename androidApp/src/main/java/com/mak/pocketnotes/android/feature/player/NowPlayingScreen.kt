@@ -23,16 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.EntryProviderScope
-import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
-import com.mak.pocketnotes.android.common.PodcastPlayer
-import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
-import com.mak.pocketnotes.android.common.viewmodel.MediaViewModel
-import com.mak.pocketnotes.android.common.viewmodel.UIEvent
 import com.mak.pocketnotes.android.feature.player.components.PlaybackController
 import com.mak.pocketnotes.android.feature.player.components.PlayerFooter
 import com.mak.pocketnotes.android.feature.player.components.PlayerHeader
