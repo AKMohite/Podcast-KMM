@@ -228,4 +228,10 @@
     <string name="shuffle_off">Shuffle off</string>
     <string name="repeat_mode_type">Repeat mode: %1$s</string>
     <string name="playback_speed">%1$sx</string>
+    <string name="clear_all">Clear all</string>
+    <string name="empty_player_queue">Your queue is empty</string>
+    <string name="add_episodes_to_queue">Add episodes to listen next</string>
+    <string name="drag_to_reorder">Drag to reorder</string>
+    <string name="play_episode">Play %1$s</string>
+    <string name="remove_queue_episode">Remove from queue</string>
 </resources>
