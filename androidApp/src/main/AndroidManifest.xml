@@ -24,6 +24,20 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.podcast.app.action.SHOW_PLAYER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.podcast.app.action.SHOW_EPISODE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.podcast.app.action.SHOW_QUEUE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service android:name="com.mak.pocketnotes.service.media.service.MediaPlayerService"
@@ -43,7 +57,7 @@
             discover and connect to this service automatically.
         -->
         <service
-            android:name="com.mak.pocketnotes.media.PodcastMediaService"
+            android:name=".media.PodcastMediaService"
             android:exported="true"
             android:foregroundServiceType="mediaPlayback">
 

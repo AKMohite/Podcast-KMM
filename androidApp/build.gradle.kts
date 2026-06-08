@@ -80,6 +80,12 @@ dependencies {
     implementation(libs.koin.android.compose)
     implementation(libs.accompanist.systemuicontroller)
 
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.dash)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.session)
+    implementation(libs.kotlinx.coroutines.guava)
+
     // baseline profile
     implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":baselineprofiles"))

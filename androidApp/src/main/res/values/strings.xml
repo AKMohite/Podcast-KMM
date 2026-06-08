@@ -234,4 +234,5 @@
     <string name="drag_to_reorder">Drag to reorder</string>
     <string name="play_episode">Play %1$s</string>
     <string name="remove_queue_episode">Remove from queue</string>
+    <string name="notification_channel_name">podtalk-notification-channel</string>
 </resources>
