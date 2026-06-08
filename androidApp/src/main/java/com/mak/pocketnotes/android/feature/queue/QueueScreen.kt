@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.PlayerQueue
 import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.feature.player.v2.components.formatDuration
@@ -86,7 +88,10 @@ internal fun QueueScreen() {
     val viewModel: QueueViewModel = koinViewModel()
     val state by viewModel.playerState.collectAsStateWithLifecycle()
     QueueContent(
-        state = state,
+        state = PlayerState(
+            queue = sampleEpisodes.take(5),
+            currentQueueIndex = 0
+        ),
         onEvent = {}
     )
 }
@@ -99,14 +104,14 @@ private fun QueueContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Up Next") },
+                title = { Text(stringResource(R.string.up_next)) },
                 actions = {
                     if (state.queue.isNotEmpty()) {
                         TextButton(
                             onClick = { onEvent(QueueEvent.ClearQueue) },
                             modifier = Modifier.testTag(QueueTestTags.CLEAR_BUTTON),
                         ) {
-                            Text("Clear all")
+                            Text(stringResource(R.string.clear_all))
                         }
                     }
                 },
@@ -150,13 +155,13 @@ private fun QueueContent(
                 )
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    text = "Your queue is empty",
+                    text = stringResource(R.string.empty_player_queue),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "Add episodes to listen next",
+                    text = stringResource(R.string.add_episodes_to_queue),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -258,7 +263,7 @@ private fun DraggableQueueItem(
         // Drag handle — long-press activates drag
         Icon(
             imageVector = Icons.Default.DragHandle,
-            contentDescription = "Drag to reorder",
+            contentDescription = stringResource(R.string.drag_to_reorder),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .size(20.dp)
@@ -322,7 +327,7 @@ private fun DraggableQueueItem(
         ) {
             Icon(
                 Icons.Default.PlayArrow,
-                contentDescription = "Play ${episode.title}",
+                contentDescription = stringResource(R.string.play_episode, episode.title),
                 modifier = Modifier.size(18.dp),
             )
         }
@@ -340,7 +345,7 @@ private fun SwipeDismissBackground() {
     ) {
         Icon(
             imageVector = Icons.Default.Delete,
-            contentDescription = "Remove from queue",
+            contentDescription = stringResource(R.string.remove_queue_episode),
             tint = MaterialTheme.colorScheme.onErrorContainer,
         )
     }

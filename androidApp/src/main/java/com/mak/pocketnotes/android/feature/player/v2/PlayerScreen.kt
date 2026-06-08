@@ -58,7 +58,9 @@ internal object PlayerTestTags {
 internal fun PlayerScreen(
     onShowQueue: () -> Unit
 ) {
-    val viewModel: PlayerViewModel = koinViewModel()
+    val viewModel: PlayerViewModel = koinViewModel(
+//        viewModelStoreOwner = LocalActivity.current as ComponentActivity
+    )
     val state by viewModel.playerState.collectAsStateWithLifecycle()
     PlayerContent(
         modifier = Modifier
