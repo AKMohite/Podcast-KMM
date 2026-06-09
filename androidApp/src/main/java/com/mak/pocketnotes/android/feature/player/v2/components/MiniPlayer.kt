@@ -26,11 +26,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.domain.models.PlayerState
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun MiniPlayer(
@@ -50,45 +53,51 @@ internal fun MiniPlayer(
         tonalElevation = 4.dp,
         onClick = onExpand,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Thumbnail
-            AsyncImage(
-                model = state.currentEpisode?.thumbnail,
-                contentDescription = null,
+            Row(
                 modifier = Modifier
-                    .size(40.dp)
-                    .clip(RoundedCornerShape(6.dp)),
-            )
-
-            Spacer(Modifier.width(12.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = state.currentEpisode?.title.orEmpty(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Thumbnail
+                AsyncImage(
+                    model = state.currentEpisode?.thumbnail,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(6.dp)),
                 )
-                Text(
-                    text = state.currentEpisode?.title.orEmpty(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
 
-            // Mini play/pause
-            IconButton(onClick = onTogglePlayPause) {
-                Icon(
-                    imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = if (state.isPlaying) stringResource(R.string.action_pause) else stringResource(R.string.action_play),
-                )
+                Spacer(Modifier.width(12.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = state.currentEpisode?.title.orEmpty(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = state.currentEpisode?.title.orEmpty(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+
+                // Mini play/pause
+                IconButton(onClick = onTogglePlayPause) {
+                    Icon(
+                        imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        contentDescription = if (state.isPlaying) stringResource(R.string.action_pause) else stringResource(
+                            R.string.action_play
+                        ),
+                    )
+                }
             }
 
             // Progress indicator
@@ -96,9 +105,26 @@ internal fun MiniPlayer(
                 progress = { state.progress },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(2.dp)
-                    .align(Alignment.Bottom),
+                    .padding(start = 60.dp, end = 20.dp)
+                    .height(2.dp),
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun MiniPlayerPreview() {
+    PocketNotesTheme {
+        MiniPlayer(
+            state = PlayerState(
+                currentEpisode = sampleEpisodes[0],
+                durationMs = 100000,
+                positionMs = 5000
+            ),
+            onExpand = {},
+            onTogglePlayPause = {},
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
