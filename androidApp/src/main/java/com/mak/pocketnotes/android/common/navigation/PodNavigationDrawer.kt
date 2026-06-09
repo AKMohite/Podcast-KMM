@@ -69,7 +69,7 @@ private fun PodNavigationDrawerPreview() {
         currentKey = Discover,
         bottomContent = {
             PermanentMinPlayer(
-                episode = sampleEpisodes[0].asPlayableEpisode(),
+                episode = sampleEpisodes[0],
                 playPause = {},
                 isMediaPlaying = false,
                 previousClick = {},
