@@ -206,7 +206,7 @@ internal fun PodcastNavigationWrapper(
                                 navigator.navigate(destination)
                             },
                             bottomContent = {
-                                AnimatedVisibility(visible = !isFullScreen) {
+                                AnimatedVisibility(visible = playerState.currentEpisode != null) {
                                     PermanentMinPlayer(
                                         modifier = Modifier
                                             .clickable { navigator.navigate(PodcastPlayer) },
