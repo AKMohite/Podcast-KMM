@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,20 +33,22 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
-import com.mak.pocketnotes.domain.models.PlayableEpisode
+import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun PermanentMinPlayer(
-    episode: PlayableEpisode,
+    episode: PodcastEpisode?,
     playPause: () -> Unit,
     isMediaPlaying: Boolean,
     previousClick: () -> Unit,
     nextClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (episode == null) return
     Column(
         modifier = modifier
+            .padding(horizontal = 12.dp)
     ) {
         AsyncImage(
             modifier = Modifier
@@ -87,7 +92,7 @@ internal fun PermanentMinPlayer(
             }
             FilledIconButton(onClick = playPause) {
                 Icon(
-                    imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
+                    imageVector = if (isMediaPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                     contentDescription = stringResource(R.string.player_play_pause)
                 )
             }
@@ -107,7 +112,7 @@ private fun PermanentMinPlayerPreview() {
     PocketNotesTheme {
         Surface {
             PermanentMinPlayer(
-                episode = sampleEpisodes[0].asPlayableEpisode(),
+                episode = sampleEpisodes[0],
                 playPause = {},
                 isMediaPlaying = false,
                 previousClick = {},

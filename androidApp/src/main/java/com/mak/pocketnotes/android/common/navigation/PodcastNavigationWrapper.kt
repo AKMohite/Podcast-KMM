@@ -210,7 +210,7 @@ internal fun PodcastNavigationWrapper(
                                     PermanentMinPlayer(
                                         modifier = Modifier
                                             .clickable { navigator.navigate(PodcastPlayer) },
-                                        episode = PlayableEpisode.EMPTY,
+                                        episode = playerState.currentEpisode,
                                         playPause = { },
                                         isMediaPlaying = true,
                                         previousClick = {},
