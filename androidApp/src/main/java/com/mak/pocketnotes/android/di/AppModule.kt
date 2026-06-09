@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.android.di
 
 import com.mak.pocketnotes.android.feature.discover.DiscoverViewmodel
+import com.mak.pocketnotes.android.feature.player.v2.PlayerExpansionViewModel
 import com.mak.pocketnotes.android.feature.player.v2.PlayerViewModel
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
 import com.mak.pocketnotes.android.feature.queue.QueueViewModel
@@ -33,6 +34,7 @@ internal val appModule = module {
             controller = get()
         )
     }
+    viewModel { PlayerExpansionViewModel() }
     viewModel { params ->
         PodcastDetailViewModel(
             getPodcast = get(),

@@ -51,9 +51,7 @@ class MainActivity : ComponentActivity() {
                 appTheme = settingsState.settings.theme
             ) {
                 val isSystemDark = isSystemInDarkTheme()
-                val statusBarColor = if (isSystemDark) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
                 PodcastNavigationWrapper(
-                    startService = { startMediaService() },
                     modifier = Modifier
                         .safeDrawingPadding()
                 )

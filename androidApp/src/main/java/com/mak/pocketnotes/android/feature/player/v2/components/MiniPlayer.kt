@@ -33,7 +33,7 @@ import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
 import com.mak.pocketnotes.domain.models.PlayerState
 
 @Composable
-private fun MiniPlayer(
+internal fun MiniPlayer(
     state: PlayerState,
     onExpand: () -> Unit,
     onTogglePlayPause: () -> Unit,

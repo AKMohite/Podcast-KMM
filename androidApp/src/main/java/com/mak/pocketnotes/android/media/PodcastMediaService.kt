@@ -21,7 +21,7 @@ class PodcastMediaService : MediaLibraryService() {
 
     private val player: Player by inject()
 
-    private var session: MediaLibraryService.MediaLibrarySession? = null
+    private var session: MediaLibrarySession? = null
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
