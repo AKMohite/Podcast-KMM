@@ -31,7 +31,7 @@ import com.mak.pocketnotes.domain.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
-internal fun MiniPlayer(
+internal fun LegacyMiniPlayer(
     isMediaPlaying: Boolean,
     modifier: Modifier = Modifier,
     episode: PlayableEpisode,
@@ -87,7 +87,7 @@ internal fun MiniPlayer(
 private fun MiniPlayerPreview() {
     PocketNotesTheme {
         Surface {
-            MiniPlayer(
+            LegacyMiniPlayer(
                 episode = sampleEpisodes[0].asPlayableEpisode(),
                 play = {},
                 next = {},

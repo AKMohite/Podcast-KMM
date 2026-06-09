@@ -5,6 +5,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation3.runtime.NavKey
@@ -18,9 +19,12 @@ import com.mak.pocketnotes.android.common.Subscribed
 internal fun PodBottomNavigation(
     bottomBarItems: List<BottomDestination>,
     onBottomNavigate: (BottomDestination) -> Unit,
-    currentKey: NavKey?
+    currentKey: NavKey?,
+    modifier: Modifier = Modifier
 ) {
-    NavigationBar {
+    NavigationBar(
+        modifier = modifier
+    ) {
         bottomBarItems.forEach { item ->
             NavigationBarItem(
                 selected = currentKey == item,
@@ -45,6 +49,6 @@ private fun PodBottomNavigationPreview() {
             Settings
         ),
         onBottomNavigate = {},
-        currentKey = Discover
+        currentKey = Discover,
     )
 }
