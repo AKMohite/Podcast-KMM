@@ -34,9 +34,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:designsystem"))
     implementation(platform(libs.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.compose.material)
     implementation(libs.androidx.wear.material3)
     implementation(libs.androidx.wear.ui.tooling)
     implementation(libs.androidx.core.splashscreen)
