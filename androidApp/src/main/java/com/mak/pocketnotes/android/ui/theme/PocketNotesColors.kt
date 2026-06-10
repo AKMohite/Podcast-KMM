@@ -1,219 +1,442 @@
 package com.mak.pocketnotes.android.ui.theme
 
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import app.mak.pocketnotes.core.designsystem.theme.backgroundDark
+import app.mak.pocketnotes.core.designsystem.theme.backgroundDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.backgroundDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.backgroundLight
+import app.mak.pocketnotes.core.designsystem.theme.backgroundLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.backgroundLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.errorContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.errorContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorDark
+import app.mak.pocketnotes.core.designsystem.theme.errorDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorLight
+import app.mak.pocketnotes.core.designsystem.theme.errorLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.errorLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseOnSurfaceDark
+import app.mak.pocketnotes.core.designsystem.theme.inverseOnSurfaceDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseOnSurfaceDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseOnSurfaceLight
+import app.mak.pocketnotes.core.designsystem.theme.inverseOnSurfaceLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseOnSurfaceLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.inversePrimaryDark
+import app.mak.pocketnotes.core.designsystem.theme.inversePrimaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.inversePrimaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.inversePrimaryLight
+import app.mak.pocketnotes.core.designsystem.theme.inversePrimaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.inversePrimaryLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseSurfaceDark
+import app.mak.pocketnotes.core.designsystem.theme.inverseSurfaceDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseSurfaceDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseSurfaceLight
+import app.mak.pocketnotes.core.designsystem.theme.inverseSurfaceLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.inverseSurfaceLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onBackgroundDark
+import app.mak.pocketnotes.core.designsystem.theme.onBackgroundDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onBackgroundDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onBackgroundLight
+import app.mak.pocketnotes.core.designsystem.theme.onBackgroundLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onBackgroundLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.onErrorContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.onErrorContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorDark
+import app.mak.pocketnotes.core.designsystem.theme.onErrorDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorLight
+import app.mak.pocketnotes.core.designsystem.theme.onErrorLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onErrorLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryDark
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryLight
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onPrimaryLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryDark
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryLight
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSecondaryLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceDark
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceLight
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceVariantDark
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceVariantDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceVariantDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceVariantLight
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceVariantLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onSurfaceVariantLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryDark
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryLight
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.onTertiaryLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineDark
+import app.mak.pocketnotes.core.designsystem.theme.outlineDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineLight
+import app.mak.pocketnotes.core.designsystem.theme.outlineLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineVariantDark
+import app.mak.pocketnotes.core.designsystem.theme.outlineVariantDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineVariantDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineVariantLight
+import app.mak.pocketnotes.core.designsystem.theme.outlineVariantLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.outlineVariantLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.primaryContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.primaryContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryDark
+import app.mak.pocketnotes.core.designsystem.theme.primaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryLight
+import app.mak.pocketnotes.core.designsystem.theme.primaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.primaryLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.scrimDark
+import app.mak.pocketnotes.core.designsystem.theme.scrimDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.scrimDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.scrimLight
+import app.mak.pocketnotes.core.designsystem.theme.scrimLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.scrimLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.secondaryContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.secondaryContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryDark
+import app.mak.pocketnotes.core.designsystem.theme.secondaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryLight
+import app.mak.pocketnotes.core.designsystem.theme.secondaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.secondaryLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceBrightDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceBrightDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceBrightDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceBrightLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceBrightLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceBrightLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighestDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighestDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighestDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighestLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighestLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerHighestLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowestDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowestDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowestDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowestLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowestLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowestLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDimDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDimDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDimDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDimLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDimLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceDimLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceVariantDark
+import app.mak.pocketnotes.core.designsystem.theme.surfaceVariantDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceVariantDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceVariantLight
+import app.mak.pocketnotes.core.designsystem.theme.surfaceVariantLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.surfaceVariantLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerDark
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerLight
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerLightMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryDark
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryDarkHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryDarkMediumContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryLight
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryLightHighContrast
+import app.mak.pocketnotes.core.designsystem.theme.tertiaryLightMediumContrast
 
-val primaryLight = Color(0xFF3B608F)
-val onPrimaryLight = Color(0xFFFFFFFF)
-val primaryContainerLight = Color(0xFFD4E3FF)
-val onPrimaryContainerLight = Color(0xFF204876)
-val secondaryLight = Color(0xFF1F6587)
-val onSecondaryLight = Color(0xFFFFFFFF)
-val secondaryContainerLight = Color(0xFFC5E7FF)
-val onSecondaryContainerLight = Color(0xFF004C6A)
-val tertiaryLight = Color(0xFF855317)
-val onTertiaryLight = Color(0xFFFFFFFF)
-val tertiaryContainerLight = Color(0xFFFFDCBD)
-val onTertiaryContainerLight = Color(0xFF683C00)
-val errorLight = Color(0xFF904A42)
-val onErrorLight = Color(0xFFFFFFFF)
-val errorContainerLight = Color(0xFFFFDAD5)
-val onErrorContainerLight = Color(0xFF73342D)
-val backgroundLight = Color(0xFFF8F9FF)
-val onBackgroundLight = Color(0xFF191C20)
-val surfaceLight = Color(0xFFFFF8EF)
-val onSurfaceLight = Color(0xFF1E1B13)
-val surfaceVariantLight = Color(0xFFEEE0CF)
-val onSurfaceVariantLight = Color(0xFF4E4539)
-val outlineLight = Color(0xFF807567)
-val outlineVariantLight = Color(0xFFD2C5B4)
-val scrimLight = Color(0xFF000000)
-val inverseSurfaceLight = Color(0xFF343027)
-val inverseOnSurfaceLight = Color(0xFFF8F0E2)
-val inversePrimaryLight = Color(0xFFA4C9FE)
-val surfaceDimLight = Color(0xFFE1D9CC)
-val surfaceBrightLight = Color(0xFFFFF8EF)
-val surfaceContainerLowestLight = Color(0xFFFFFFFF)
-val surfaceContainerLowLight = Color(0xFFFBF3E5)
-val surfaceContainerLight = Color(0xFFF5EDDF)
-val surfaceContainerHighLight = Color(0xFFEFE7DA)
-val surfaceContainerHighestLight = Color(0xFFE9E2D4)
+internal val lightScheme = lightColorScheme(
+    primary = primaryLight,
+    onPrimary = onPrimaryLight,
+    primaryContainer = primaryContainerLight,
+    onPrimaryContainer = onPrimaryContainerLight,
+    secondary = secondaryLight,
+    onSecondary = onSecondaryLight,
+    secondaryContainer = secondaryContainerLight,
+    onSecondaryContainer = onSecondaryContainerLight,
+    tertiary = tertiaryLight,
+    onTertiary = onTertiaryLight,
+    tertiaryContainer = tertiaryContainerLight,
+    onTertiaryContainer = onTertiaryContainerLight,
+    error = errorLight,
+    onError = onErrorLight,
+    errorContainer = errorContainerLight,
+    onErrorContainer = onErrorContainerLight,
+    background = backgroundLight,
+    onBackground = onBackgroundLight,
+    surface = surfaceLight,
+    onSurface = onSurfaceLight,
+    surfaceVariant = surfaceVariantLight,
+    onSurfaceVariant = onSurfaceVariantLight,
+    outline = outlineLight,
+    outlineVariant = outlineVariantLight,
+    scrim = scrimLight,
+    inverseSurface = inverseSurfaceLight,
+    inverseOnSurface = inverseOnSurfaceLight,
+    inversePrimary = inversePrimaryLight,
+    surfaceDim = surfaceDimLight,
+    surfaceBright = surfaceBrightLight,
+    surfaceContainerLowest = surfaceContainerLowestLight,
+    surfaceContainerLow = surfaceContainerLowLight,
+    surfaceContainer = surfaceContainerLight,
+    surfaceContainerHigh = surfaceContainerHighLight,
+    surfaceContainerHighest = surfaceContainerHighestLight,
+)
 
-val primaryLightMediumContrast = Color(0xFF083764)
-val onPrimaryLightMediumContrast = Color(0xFFFFFFFF)
-val primaryContainerLightMediumContrast = Color(0xFF4A6F9F)
-val onPrimaryContainerLightMediumContrast = Color(0xFFFFFFFF)
-val secondaryLightMediumContrast = Color(0xFF003A53)
-val onSecondaryLightMediumContrast = Color(0xFFFFFFFF)
-val secondaryContainerLightMediumContrast = Color(0xFF327396)
-val onSecondaryContainerLightMediumContrast = Color(0xFFFFFFFF)
-val tertiaryLightMediumContrast = Color(0xFF512E00)
-val onTertiaryLightMediumContrast = Color(0xFFFFFFFF)
-val tertiaryContainerLightMediumContrast = Color(0xFF966225)
-val onTertiaryContainerLightMediumContrast = Color(0xFFFFFFFF)
-val errorLightMediumContrast = Color(0xFF5E231E)
-val onErrorLightMediumContrast = Color(0xFFFFFFFF)
-val errorContainerLightMediumContrast = Color(0xFFA25850)
-val onErrorContainerLightMediumContrast = Color(0xFFFFFFFF)
-val backgroundLightMediumContrast = Color(0xFFF8F9FF)
-val onBackgroundLightMediumContrast = Color(0xFF191C20)
-val surfaceLightMediumContrast = Color(0xFFFFF8EF)
-val onSurfaceLightMediumContrast = Color(0xFF141109)
-val surfaceVariantLightMediumContrast = Color(0xFFEEE0CF)
-val onSurfaceVariantLightMediumContrast = Color(0xFF3D3529)
-val outlineLightMediumContrast = Color(0xFF5A5144)
-val outlineVariantLightMediumContrast = Color(0xFF766C5D)
-val scrimLightMediumContrast = Color(0xFF000000)
-val inverseSurfaceLightMediumContrast = Color(0xFF343027)
-val inverseOnSurfaceLightMediumContrast = Color(0xFFF8F0E2)
-val inversePrimaryLightMediumContrast = Color(0xFFA4C9FE)
-val surfaceDimLightMediumContrast = Color(0xFFCDC6B9)
-val surfaceBrightLightMediumContrast = Color(0xFFFFF8EF)
-val surfaceContainerLowestLightMediumContrast = Color(0xFFFFFFFF)
-val surfaceContainerLowLightMediumContrast = Color(0xFFFBF3E5)
-val surfaceContainerLightMediumContrast = Color(0xFFEFE7DA)
-val surfaceContainerHighLightMediumContrast = Color(0xFFE3DCCE)
-val surfaceContainerHighestLightMediumContrast = Color(0xFFD8D1C4)
+internal val darkScheme = darkColorScheme(
+    primary = primaryDark,
+    onPrimary = onPrimaryDark,
+    primaryContainer = primaryContainerDark,
+    onPrimaryContainer = onPrimaryContainerDark,
+    secondary = secondaryDark,
+    onSecondary = onSecondaryDark,
+    secondaryContainer = secondaryContainerDark,
+    onSecondaryContainer = onSecondaryContainerDark,
+    tertiary = tertiaryDark,
+    onTertiary = onTertiaryDark,
+    tertiaryContainer = tertiaryContainerDark,
+    onTertiaryContainer = onTertiaryContainerDark,
+    error = errorDark,
+    onError = onErrorDark,
+    errorContainer = errorContainerDark,
+    onErrorContainer = onErrorContainerDark,
+    background = backgroundDark,
+    onBackground = onBackgroundDark,
+    surface = surfaceDark,
+    onSurface = onSurfaceDark,
+    surfaceVariant = surfaceVariantDark,
+    onSurfaceVariant = onSurfaceVariantDark,
+    outline = outlineDark,
+    outlineVariant = outlineVariantDark,
+    scrim = scrimDark,
+    inverseSurface = inverseSurfaceDark,
+    inverseOnSurface = inverseOnSurfaceDark,
+    inversePrimary = inversePrimaryDark,
+    surfaceDim = surfaceDimDark,
+    surfaceBright = surfaceBrightDark,
+    surfaceContainerLowest = surfaceContainerLowestDark,
+    surfaceContainerLow = surfaceContainerLowDark,
+    surfaceContainer = surfaceContainerDark,
+    surfaceContainerHigh = surfaceContainerHighDark,
+    surfaceContainerHighest = surfaceContainerHighestDark,
+)
 
-val primaryLightHighContrast = Color(0xFF002D56)
-val onPrimaryLightHighContrast = Color(0xFFFFFFFF)
-val primaryContainerLightHighContrast = Color(0xFF234A79)
-val onPrimaryContainerLightHighContrast = Color(0xFFFFFFFF)
-val secondaryLightHighContrast = Color(0xFF003045)
-val onSecondaryLightHighContrast = Color(0xFFFFFFFF)
-val secondaryContainerLightHighContrast = Color(0xFF004F6E)
-val onSecondaryContainerLightHighContrast = Color(0xFFFFFFFF)
-val tertiaryLightHighContrast = Color(0xFF432500)
-val onTertiaryLightHighContrast = Color(0xFFFFFFFF)
-val tertiaryContainerLightHighContrast = Color(0xFF6C3F01)
-val onTertiaryContainerLightHighContrast = Color(0xFFFFFFFF)
-val errorLightHighContrast = Color(0xFF511A15)
-val onErrorLightHighContrast = Color(0xFFFFFFFF)
-val errorContainerLightHighContrast = Color(0xFF76362F)
-val onErrorContainerLightHighContrast = Color(0xFFFFFFFF)
-val backgroundLightHighContrast = Color(0xFFF8F9FF)
-val onBackgroundLightHighContrast = Color(0xFF191C20)
-val surfaceLightHighContrast = Color(0xFFFFF8EF)
-val onSurfaceLightHighContrast = Color(0xFF000000)
-val surfaceVariantLightHighContrast = Color(0xFFEEE0CF)
-val onSurfaceVariantLightHighContrast = Color(0xFF000000)
-val outlineLightHighContrast = Color(0xFF332B20)
-val outlineVariantLightHighContrast = Color(0xFF51483B)
-val scrimLightHighContrast = Color(0xFF000000)
-val inverseSurfaceLightHighContrast = Color(0xFF343027)
-val inverseOnSurfaceLightHighContrast = Color(0xFFFFFFFF)
-val inversePrimaryLightHighContrast = Color(0xFFA4C9FE)
-val surfaceDimLightHighContrast = Color(0xFFBFB8AB)
-val surfaceBrightLightHighContrast = Color(0xFFFFF8EF)
-val surfaceContainerLowestLightHighContrast = Color(0xFFFFFFFF)
-val surfaceContainerLowLightHighContrast = Color(0xFFF8F0E2)
-val surfaceContainerLightHighContrast = Color(0xFFE9E2D4)
-val surfaceContainerHighLightHighContrast = Color(0xFFDBD4C6)
-val surfaceContainerHighestLightHighContrast = Color(0xFFCDC6B9)
+internal val mediumContrastLightColorScheme = lightColorScheme(
+    primary = primaryLightMediumContrast,
+    onPrimary = onPrimaryLightMediumContrast,
+    primaryContainer = primaryContainerLightMediumContrast,
+    onPrimaryContainer = onPrimaryContainerLightMediumContrast,
+    secondary = secondaryLightMediumContrast,
+    onSecondary = onSecondaryLightMediumContrast,
+    secondaryContainer = secondaryContainerLightMediumContrast,
+    onSecondaryContainer = onSecondaryContainerLightMediumContrast,
+    tertiary = tertiaryLightMediumContrast,
+    onTertiary = onTertiaryLightMediumContrast,
+    tertiaryContainer = tertiaryContainerLightMediumContrast,
+    onTertiaryContainer = onTertiaryContainerLightMediumContrast,
+    error = errorLightMediumContrast,
+    onError = onErrorLightMediumContrast,
+    errorContainer = errorContainerLightMediumContrast,
+    onErrorContainer = onErrorContainerLightMediumContrast,
+    background = backgroundLightMediumContrast,
+    onBackground = onBackgroundLightMediumContrast,
+    surface = surfaceLightMediumContrast,
+    onSurface = onSurfaceLightMediumContrast,
+    surfaceVariant = surfaceVariantLightMediumContrast,
+    onSurfaceVariant = onSurfaceVariantLightMediumContrast,
+    outline = outlineLightMediumContrast,
+    outlineVariant = outlineVariantLightMediumContrast,
+    scrim = scrimLightMediumContrast,
+    inverseSurface = inverseSurfaceLightMediumContrast,
+    inverseOnSurface = inverseOnSurfaceLightMediumContrast,
+    inversePrimary = inversePrimaryLightMediumContrast,
+    surfaceDim = surfaceDimLightMediumContrast,
+    surfaceBright = surfaceBrightLightMediumContrast,
+    surfaceContainerLowest = surfaceContainerLowestLightMediumContrast,
+    surfaceContainerLow = surfaceContainerLowLightMediumContrast,
+    surfaceContainer = surfaceContainerLightMediumContrast,
+    surfaceContainerHigh = surfaceContainerHighLightMediumContrast,
+    surfaceContainerHighest = surfaceContainerHighestLightMediumContrast,
+)
 
-val primaryDark = Color(0xFFA4C9FE)
-val onPrimaryDark = Color(0xFF00315D)
-val primaryContainerDark = Color(0xFF204876)
-val onPrimaryContainerDark = Color(0xFFD4E3FF)
-val secondaryDark = Color(0xFF91CEF5)
-val onSecondaryDark = Color(0xFF00344B)
-val secondaryContainerDark = Color(0xFF004C6A)
-val onSecondaryContainerDark = Color(0xFFC5E7FF)
-val tertiaryDark = Color(0xFFFCB974)
-val onTertiaryDark = Color(0xFF492900)
-val tertiaryContainerDark = Color(0xFF683C00)
-val onTertiaryContainerDark = Color(0xFFFFDCBD)
-val errorDark = Color(0xFFFFB4AA)
-val onErrorDark = Color(0xFF561E19)
-val errorContainerDark = Color(0xFF73342D)
-val onErrorContainerDark = Color(0xFFFFDAD5)
-val backgroundDark = Color(0xFF111318)
-val onBackgroundDark = Color(0xFFE1E2E9)
-val surfaceDark = Color(0xFF16130B)
-val onSurfaceDark = Color(0xFFE9E2D4)
-val surfaceVariantDark = Color(0xFF4E4539)
-val onSurfaceVariantDark = Color(0xFFD2C5B4)
-val outlineDark = Color(0xFF9B8F80)
-val outlineVariantDark = Color(0xFF4E4539)
-val scrimDark = Color(0xFF000000)
-val inverseSurfaceDark = Color(0xFFE9E2D4)
-val inverseOnSurfaceDark = Color(0xFF343027)
-val inversePrimaryDark = Color(0xFF3B608F)
-val surfaceDimDark = Color(0xFF16130B)
-val surfaceBrightDark = Color(0xFF3D392F)
-val surfaceContainerLowestDark = Color(0xFF100E07)
-val surfaceContainerLowDark = Color(0xFF1E1B13)
-val surfaceContainerDark = Color(0xFF221F17)
-val surfaceContainerHighDark = Color(0xFF2D2A21)
-val surfaceContainerHighestDark = Color(0xFF38342B)
+internal val highContrastLightColorScheme = lightColorScheme(
+    primary = primaryLightHighContrast,
+    onPrimary = onPrimaryLightHighContrast,
+    primaryContainer = primaryContainerLightHighContrast,
+    onPrimaryContainer = onPrimaryContainerLightHighContrast,
+    secondary = secondaryLightHighContrast,
+    onSecondary = onSecondaryLightHighContrast,
+    secondaryContainer = secondaryContainerLightHighContrast,
+    onSecondaryContainer = onSecondaryContainerLightHighContrast,
+    tertiary = tertiaryLightHighContrast,
+    onTertiary = onTertiaryLightHighContrast,
+    tertiaryContainer = tertiaryContainerLightHighContrast,
+    onTertiaryContainer = onTertiaryContainerLightHighContrast,
+    error = errorLightHighContrast,
+    onError = onErrorLightHighContrast,
+    errorContainer = errorContainerLightHighContrast,
+    onErrorContainer = onErrorContainerLightHighContrast,
+    background = backgroundLightHighContrast,
+    onBackground = onBackgroundLightHighContrast,
+    surface = surfaceLightHighContrast,
+    onSurface = onSurfaceLightHighContrast,
+    surfaceVariant = surfaceVariantLightHighContrast,
+    onSurfaceVariant = onSurfaceVariantLightHighContrast,
+    outline = outlineLightHighContrast,
+    outlineVariant = outlineVariantLightHighContrast,
+    scrim = scrimLightHighContrast,
+    inverseSurface = inverseSurfaceLightHighContrast,
+    inverseOnSurface = inverseOnSurfaceLightHighContrast,
+    inversePrimary = inversePrimaryLightHighContrast,
+    surfaceDim = surfaceDimLightHighContrast,
+    surfaceBright = surfaceBrightLightHighContrast,
+    surfaceContainerLowest = surfaceContainerLowestLightHighContrast,
+    surfaceContainerLow = surfaceContainerLowLightHighContrast,
+    surfaceContainer = surfaceContainerLightHighContrast,
+    surfaceContainerHigh = surfaceContainerHighLightHighContrast,
+    surfaceContainerHighest = surfaceContainerHighestLightHighContrast,
+)
 
-val primaryDarkMediumContrast = Color(0xFFCADEFF)
-val onPrimaryDarkMediumContrast = Color(0xFF00264B)
-val primaryContainerDarkMediumContrast = Color(0xFF6F93C5)
-val onPrimaryContainerDarkMediumContrast = Color(0xFF000000)
-val secondaryDarkMediumContrast = Color(0xFFB8E2FF)
-val onSecondaryDarkMediumContrast = Color(0xFF00293B)
-val secondaryContainerDarkMediumContrast = Color(0xFF5A98BC)
-val onSecondaryContainerDarkMediumContrast = Color(0xFF000000)
-val tertiaryDarkMediumContrast = Color(0xFFFFD5AD)
-val onTertiaryDarkMediumContrast = Color(0xFF3A1F00)
-val tertiaryContainerDarkMediumContrast = Color(0xFFBF8445)
-val onTertiaryContainerDarkMediumContrast = Color(0xFF000000)
-val errorDarkMediumContrast = Color(0xFFFFD2CC)
-val onErrorDarkMediumContrast = Color(0xFF48130F)
-val errorContainerDarkMediumContrast = Color(0xFFCC7B71)
-val onErrorContainerDarkMediumContrast = Color(0xFF000000)
-val backgroundDarkMediumContrast = Color(0xFF111318)
-val onBackgroundDarkMediumContrast = Color(0xFFE1E2E9)
-val surfaceDarkMediumContrast = Color(0xFF16130B)
-val onSurfaceDarkMediumContrast = Color(0xFFFFFFFF)
-val surfaceVariantDarkMediumContrast = Color(0xFF4E4539)
-val onSurfaceVariantDarkMediumContrast = Color(0xFFE8DAC9)
-val outlineDarkMediumContrast = Color(0xFFBDB0A0)
-val outlineVariantDarkMediumContrast = Color(0xFF9A8F7F)
-val scrimDarkMediumContrast = Color(0xFF000000)
-val inverseSurfaceDarkMediumContrast = Color(0xFFE9E2D4)
-val inverseOnSurfaceDarkMediumContrast = Color(0xFF2D2A21)
-val inversePrimaryDarkMediumContrast = Color(0xFF224977)
-val surfaceDimDarkMediumContrast = Color(0xFF16130B)
-val surfaceBrightDarkMediumContrast = Color(0xFF48443A)
-val surfaceContainerLowestDarkMediumContrast = Color(0xFF090703)
-val surfaceContainerLowDarkMediumContrast = Color(0xFF201D15)
-val surfaceContainerDarkMediumContrast = Color(0xFF2B281F)
-val surfaceContainerHighDarkMediumContrast = Color(0xFF363229)
-val surfaceContainerHighestDarkMediumContrast = Color(0xFF413D34)
+internal val mediumContrastDarkColorScheme = darkColorScheme(
+    primary = primaryDarkMediumContrast,
+    onPrimary = onPrimaryDarkMediumContrast,
+    primaryContainer = primaryContainerDarkMediumContrast,
+    onPrimaryContainer = onPrimaryContainerDarkMediumContrast,
+    secondary = secondaryDarkMediumContrast,
+    onSecondary = onSecondaryDarkMediumContrast,
+    secondaryContainer = secondaryContainerDarkMediumContrast,
+    onSecondaryContainer = onSecondaryContainerDarkMediumContrast,
+    tertiary = tertiaryDarkMediumContrast,
+    onTertiary = onTertiaryDarkMediumContrast,
+    tertiaryContainer = tertiaryContainerDarkMediumContrast,
+    onTertiaryContainer = onTertiaryContainerDarkMediumContrast,
+    error = errorDarkMediumContrast,
+    onError = onErrorDarkMediumContrast,
+    errorContainer = errorContainerDarkMediumContrast,
+    onErrorContainer = onErrorContainerDarkMediumContrast,
+    background = backgroundDarkMediumContrast,
+    onBackground = onBackgroundDarkMediumContrast,
+    surface = surfaceDarkMediumContrast,
+    onSurface = onSurfaceDarkMediumContrast,
+    surfaceVariant = surfaceVariantDarkMediumContrast,
+    onSurfaceVariant = onSurfaceVariantDarkMediumContrast,
+    outline = outlineDarkMediumContrast,
+    outlineVariant = outlineVariantDarkMediumContrast,
+    scrim = scrimDarkMediumContrast,
+    inverseSurface = inverseSurfaceDarkMediumContrast,
+    inverseOnSurface = inverseOnSurfaceDarkMediumContrast,
+    inversePrimary = inversePrimaryDarkMediumContrast,
+    surfaceDim = surfaceDimDarkMediumContrast,
+    surfaceBright = surfaceBrightDarkMediumContrast,
+    surfaceContainerLowest = surfaceContainerLowestDarkMediumContrast,
+    surfaceContainerLow = surfaceContainerLowDarkMediumContrast,
+    surfaceContainer = surfaceContainerDarkMediumContrast,
+    surfaceContainerHigh = surfaceContainerHighDarkMediumContrast,
+    surfaceContainerHighest = surfaceContainerHighestDarkMediumContrast,
+)
 
-val primaryDarkHighContrast = Color(0xFFEAF0FF)
-val onPrimaryDarkHighContrast = Color(0xFF000000)
-val primaryContainerDarkHighContrast = Color(0xFFA1C5FA)
-val onPrimaryContainerDarkHighContrast = Color(0xFF000B1D)
-val secondaryDarkHighContrast = Color(0xFFE2F2FF)
-val onSecondaryDarkHighContrast = Color(0xFF000000)
-val secondaryContainerDarkHighContrast = Color(0xFF8DCAF0)
-val onSecondaryContainerDarkHighContrast = Color(0xFF000D16)
-val tertiaryDarkHighContrast = Color(0xFFFFEDDE)
-val onTertiaryDarkHighContrast = Color(0xFF000000)
-val tertiaryContainerDarkHighContrast = Color(0xFFF7B571)
-val onTertiaryContainerDarkHighContrast = Color(0xFF150800)
-val errorDarkHighContrast = Color(0xFFFFECE9)
-val onErrorDarkHighContrast = Color(0xFF000000)
-val errorContainerDarkHighContrast = Color(0xFFFFAEA4)
-val onErrorContainerDarkHighContrast = Color(0xFF220000)
-val backgroundDarkHighContrast = Color(0xFF111318)
-val onBackgroundDarkHighContrast = Color(0xFFE1E2E9)
-val surfaceDarkHighContrast = Color(0xFF16130B)
-val onSurfaceDarkHighContrast = Color(0xFFFFFFFF)
-val surfaceVariantDarkHighContrast = Color(0xFF4E4539)
-val onSurfaceVariantDarkHighContrast = Color(0xFFFFFFFF)
-val outlineDarkHighContrast = Color(0xFFFCEEDC)
-val outlineVariantDarkHighContrast = Color(0xFFCEC1B0)
-val scrimDarkHighContrast = Color(0xFF000000)
-val inverseSurfaceDarkHighContrast = Color(0xFFE9E2D4)
-val inverseOnSurfaceDarkHighContrast = Color(0xFF000000)
-val inversePrimaryDarkHighContrast = Color(0xFF224977)
-val surfaceDimDarkHighContrast = Color(0xFF16130B)
-val surfaceBrightDarkHighContrast = Color(0xFF545045)
-val surfaceContainerLowestDarkHighContrast = Color(0xFF000000)
-val surfaceContainerLowDarkHighContrast = Color(0xFF221F17)
-val surfaceContainerDarkHighContrast = Color(0xFF343027)
-val surfaceContainerHighDarkHighContrast = Color(0xFF3F3B32)
-val surfaceContainerHighestDarkHighContrast = Color(0xFF4A463C)
+internal val highContrastDarkColorScheme = darkColorScheme(
+    primary = primaryDarkHighContrast,
+    onPrimary = onPrimaryDarkHighContrast,
+    primaryContainer = primaryContainerDarkHighContrast,
+    onPrimaryContainer = onPrimaryContainerDarkHighContrast,
+    secondary = secondaryDarkHighContrast,
+    onSecondary = onSecondaryDarkHighContrast,
+    secondaryContainer = secondaryContainerDarkHighContrast,
+    onSecondaryContainer = onSecondaryContainerDarkHighContrast,
+    tertiary = tertiaryDarkHighContrast,
+    onTertiary = onTertiaryDarkHighContrast,
+    tertiaryContainer = tertiaryContainerDarkHighContrast,
+    onTertiaryContainer = onTertiaryContainerDarkHighContrast,
+    error = errorDarkHighContrast,
+    onError = onErrorDarkHighContrast,
+    errorContainer = errorContainerDarkHighContrast,
+    onErrorContainer = onErrorContainerDarkHighContrast,
+    background = backgroundDarkHighContrast,
+    onBackground = onBackgroundDarkHighContrast,
+    surface = surfaceDarkHighContrast,
+    onSurface = onSurfaceDarkHighContrast,
+    surfaceVariant = surfaceVariantDarkHighContrast,
+    onSurfaceVariant = onSurfaceVariantDarkHighContrast,
+    outline = outlineDarkHighContrast,
+    outlineVariant = outlineVariantDarkHighContrast,
+    scrim = scrimDarkHighContrast,
+    inverseSurface = inverseSurfaceDarkHighContrast,
+    inverseOnSurface = inverseOnSurfaceDarkHighContrast,
+    inversePrimary = inversePrimaryDarkHighContrast,
+    surfaceDim = surfaceDimDarkHighContrast,
+    surfaceBright = surfaceBrightDarkHighContrast,
+    surfaceContainerLowest = surfaceContainerLowestDarkHighContrast,
+    surfaceContainerLow = surfaceContainerLowDarkHighContrast,
+    surfaceContainer = surfaceContainerDarkHighContrast,
+    surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
+    surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
+)
