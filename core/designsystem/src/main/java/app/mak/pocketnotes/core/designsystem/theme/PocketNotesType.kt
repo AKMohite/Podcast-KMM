@@ -1,15 +1,14 @@
-package com.mak.pocketnotes.android.ui.theme
+package app.mak.pocketnotes.core.designsystem.theme
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.mak.pocketnotes.android.R
+import app.mak.pocketnotes.core.designsystem.R
+import androidx.compose.material3.Typography
 
-
-val bodyFontFamily = FontFamily(
+internal val bodyFontFamily = FontFamily(
 //    Font(R.font.satoshi_black, FontWeight.Black, FontStyle.Normal),
 //    Font(R.font.satoshi_black_italic, FontWeight.Black, FontStyle.Italic),
 //    Font(R.font.satoshi_bold, FontWeight.Bold, FontStyle.Normal),
@@ -22,7 +21,7 @@ val bodyFontFamily = FontFamily(
     Font(R.font.satoshi_regular, FontWeight.Normal, FontStyle.Normal),
 )
 
-val displayFontFamily = FontFamily(
+internal val displayFontFamily = FontFamily(
     Font(R.font.cabinet_grotesk_black, FontWeight.Black, FontStyle.Normal),
     Font(R.font.cabinet_grotesk_bold, FontWeight.Bold, FontStyle.Normal),
     Font(R.font.cabinet_grotesk_extrabold, FontWeight.ExtraBold, FontStyle.Normal),
