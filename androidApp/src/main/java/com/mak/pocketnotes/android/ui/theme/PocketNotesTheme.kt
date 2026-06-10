@@ -11,6 +11,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import app.mak.pocketnotes.core.designsystem.theme.roundShapes
 import app.mak.pocketnotes.core.designsystem.theme.typographyFromDefaults
 import com.mak.pocketnotes.domain.models.AppTheme
 
