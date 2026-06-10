@@ -1,6 +1,6 @@
 [versions]
 compileSdk = "37"
-minSdk = "24"
+minSdk = "25"
 wearMinSdk = "30"
 targetSdk = "37"
 versionCode = "1"
