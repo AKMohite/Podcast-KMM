@@ -89,7 +89,7 @@ internal fun QueueScreen() {
     val state by viewModel.playerState.collectAsStateWithLifecycle()
     QueueContent(
         state = state,
-        onEvent = {}
+        onEvent = viewModel::onEvent
     )
 }
 
@@ -206,7 +206,6 @@ private fun QueueContent(
                     isCurrentlyPlaying = isCurrentlyPlaying,
                     isDragging = draggingIndex == index,
                     onPlay = { onPlayItem(index) },
-                    onRemove = { onRemoveItem(index) },
                     onDragStart = { draggingIndex = index },
                     onDrag = { dy -> dragOffsetY += dy },
                     onDragEnd = {
@@ -234,7 +233,6 @@ private fun DraggableQueueItem(
     isCurrentlyPlaying: Boolean,
     isDragging: Boolean,
     onPlay: () -> Unit,
-    onRemove: () -> Unit,
     onDragStart: () -> Unit,
     onDrag: (dy: Float) -> Unit,
     onDragEnd: () -> Unit,
