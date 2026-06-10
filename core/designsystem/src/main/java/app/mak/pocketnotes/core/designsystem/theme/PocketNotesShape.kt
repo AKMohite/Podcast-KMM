@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.android.ui.theme
+package app.mak.pocketnotes.core.designsystem.theme
 
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
