@@ -7,9 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,14 +17,12 @@ import com.mak.pocketnotes.android.common.navigation.PodcastNavigationWrapper
 import com.mak.pocketnotes.android.feature.settings.SettingsState
 import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
-import com.mak.pocketnotes.domain.models.TextSize
 import com.mak.pocketnotes.service.media.service.MediaPlayerService
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : ComponentActivity() {
 
-//    private val mediaViewModel by viewModel<MediaViewModel>()
     private val settingsViewModel by viewModel<SettingsViewModel>()
     private var isServiceRunning = false
     private var mediaIntent: Intent? = null
@@ -50,7 +46,6 @@ class MainActivity : ComponentActivity() {
                 fontScale = fontScale,
                 appTheme = settingsState.settings.theme
             ) {
-                val isSystemDark = isSystemInDarkTheme()
                 PodcastNavigationWrapper(
                     modifier = Modifier
                         .safeDrawingPadding()
