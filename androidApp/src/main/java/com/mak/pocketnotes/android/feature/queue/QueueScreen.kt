@@ -185,20 +185,18 @@ private fun QueueContent(
         ) { index, episode ->
             val isCurrentlyPlaying = index == state.currentQueueIndex
 
-            val dismissState = rememberSwipeToDismissBoxState(
-                confirmValueChange = { dismissValue ->
-                    if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
-                        onRemoveItem(index)
-                        true
-                    } else false
-                },
-            )
+            val dismissState = rememberSwipeToDismissBoxState()
 
             SwipeToDismissBox(
                 state = dismissState,
-//                directions = setOf(DismissDirection.EndToStart),
+                enableDismissFromStartToEnd = false,
                 backgroundContent = {
                     SwipeDismissBackground()
+                },
+                onDismiss = { dismissValue ->
+                    if (dismissValue == SwipeToDismissBoxValue.EndToStart) {
+                        onRemoveItem(index)
+                    }
                 },
                 modifier = Modifier.animateContentSize(),
             ) {
