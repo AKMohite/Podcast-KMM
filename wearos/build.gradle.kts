@@ -1,23 +1,15 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.compose.compiler)
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
-    }
-}
-
 android {
-    namespace = "com.mak.pocketnotes.wearos"
+    namespace = "app.mak.pocketnotes.wearos"
     compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
 
     defaultConfig {
-        applicationId = "com.mak.pocketnotes.wearos"
-        minSdk = 30
+        applicationId = "app.mak.pocketnotes.wearos"
+        minSdk = Integer.parseInt(libs.versions.wearMinSdk.get())
         targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
         versionCode = 1
         versionName = "1.0"
@@ -26,11 +18,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            optimization {
+                enable = false
+            }
         }
     }
     compileOptions {
@@ -44,19 +34,19 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.play.services.wearable)
     implementation(platform(libs.compose.bom))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.wear.material3)
+    implementation(libs.androidx.wear.ui.tooling)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
-    implementation(libs.compose.ui.preview)
-    implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.wear.tooling.preview)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.compose.ui.preview)
+    implementation(libs.play.services.wearable)
     androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.compose.test.junit4)
+    debugImplementation(libs.compose.test.manifest)
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
