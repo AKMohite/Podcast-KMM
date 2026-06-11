@@ -27,7 +27,7 @@ stately = "2.1.0"
 sqldelight= "2.3.2"
 store5 = "5.1.0-alpha08"
 playServicesWearable = "20.0.1"
-composeFoundation = "1.6.2"
+composeWear = "1.6.2"
 wearToolingPreview = "1.0.0"
 activityCompose = "1.13.0"
 coreSplashscreen = "1.2.0"
@@ -85,8 +85,8 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeFoundation" }
-androidx-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeFoundation" }
+androidx-wear-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeWear" }
+androidx-compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeWear" }
 androidx-wear-tooling-preview = { group = "androidx.wear", name = "wear-tooling-preview", version.ref = "wearToolingPreview" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
@@ -98,8 +98,8 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
-androidx-wear-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeFoundation" }
-androidx-wear-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeFoundation" }
+androidx-wear-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeWear" }
+androidx-wear-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeWear" }
 
 [bundles]
 compose = [ "androidx-navigation3-runtime", "androidx-navigation3-ui", "androidx-lifecycle-viewmodel-navigation3", "compose-coil", "compose-material", "compose-material-adaptinve", "compose-ui-preview", "compose-material-icons" ]
