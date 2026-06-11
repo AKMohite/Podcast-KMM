@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 android {
@@ -41,6 +42,8 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.androidx.wear.material3)
     implementation(libs.androidx.wear.ui.tooling)
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.coil)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
