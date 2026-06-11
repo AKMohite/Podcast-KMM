@@ -28,80 +28,82 @@ import androidx.wear.compose.material3.lazy.transformedHeight
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import app.mak.pocketnotes.wearos.R
+import app.mak.pocketnotes.wearos.feature.nowplaying.NowPlayingScreen
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WearApp("Android")
+            WearPocketNotesTheme {
+                NowPlayingScreen {  }
+            }
         }
     }
 }
 
 @Composable
 fun WearApp(greetingName: String) {
-    WearPocketNotesTheme {
-        AppScaffold {
-            val listState = rememberTransformingLazyColumnState()
-            val transformationSpec = rememberTransformationSpec()
-            ScreenScaffold(
-                scrollState = listState,
-                edgeButton = {
-                    EdgeButton(
-                        onClick = { /*TODO*/ },
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                            ),
-                    ) {
-                        Text("More")
-                    }
-                },
-            ) { contentPadding -> // ScreenScaffold provides default padding; adjust as needed
-                TransformingLazyColumn(contentPadding = contentPadding, state = listState) {
-                    item {
-                        ListHeader(
-                            modifier =
-                                Modifier.fillMaxWidth().transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text(text = stringResource(R.string.hello_world, greetingName))
-                        }
-                    }
-                    item {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text("Button A")
-                        }
-                    }
-                    item {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text("Button B")
-                        }
-                    }
-                    item {
-                        Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                            transformation = SurfaceTransformation(transformationSpec),
-                        ) {
-                            Text("Button C")
-                        }
-                    }
 
+    AppScaffold {
+        val listState = rememberTransformingLazyColumnState()
+        val transformationSpec = rememberTransformationSpec()
+        ScreenScaffold(
+            scrollState = listState,
+            edgeButton = {
+                EdgeButton(
+                    onClick = { /*TODO*/ },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        ),
+                ) {
+                    Text("More")
                 }
+            },
+        ) { contentPadding -> // ScreenScaffold provides default padding; adjust as needed
+            TransformingLazyColumn(contentPadding = contentPadding, state = listState) {
+                item {
+                    ListHeader(
+                        modifier =
+                            Modifier.fillMaxWidth().transformedHeight(this, transformationSpec),
+                        transformation = SurfaceTransformation(transformationSpec),
+                    ) {
+                        Text(text = stringResource(R.string.hello_world, greetingName))
+                    }
+                }
+                item {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.fillMaxWidth()
+                            .transformedHeight(this, transformationSpec),
+                        transformation = SurfaceTransformation(transformationSpec),
+                    ) {
+                        Text("Button A")
+                    }
+                }
+                item {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.fillMaxWidth()
+                            .transformedHeight(this, transformationSpec),
+                        transformation = SurfaceTransformation(transformationSpec),
+                    ) {
+                        Text("Button B")
+                    }
+                }
+                item {
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.fillMaxWidth()
+                            .transformedHeight(this, transformationSpec),
+                        transformation = SurfaceTransformation(transformationSpec),
+                    ) {
+                        Text("Button C")
+                    }
+                }
+
             }
         }
     }

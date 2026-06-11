@@ -64,7 +64,7 @@ object NowPlayingTestTags {
 internal fun NowPlayingScreen(
     onNavigateToQueue: () -> Unit
 ) {
-//    TODO()
+//    TODO: Koin inject
     val viewModel: WearPlayerViewmodel = WearPlayerViewmodel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     NowPlayingContent(
@@ -82,10 +82,6 @@ fun NowPlayingContent(
 ) {
     ScreenScaffold(
         timeText = { TimeText() },
-//        vignette = { Vignette(vignettePosition = VignettePosition.TopAndBottom) },
-//        positionIndicator = {
-//            PositionIndicator(scalingLazyListState = rememberScalingLazyListState())
-//        },
         modifier = Modifier.testTag(NowPlayingTestTags.SCREEN),
     ) {
         Box(
@@ -286,10 +282,39 @@ private fun IdleContent(modifier: Modifier = Modifier) {
     showBackground = true
 )
 @Composable
-private fun PlayerContentPreview() {
+private fun PlayerEmptyContentPreview() {
     WearPocketNotesTheme {
         PlayerContent(
             player = WearPlayerState(),
+            onEvent = {},
+            onNavigateToQueue = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Round Watch",
+    device = "id:wearos_small_round",
+    showSystemUi = true,
+    backgroundColor = 0xFF000000,
+    showBackground = true
+)
+@Composable
+private fun PlayerContentPreview() {
+    WearPocketNotesTheme {
+        PlayerContent(
+            player = WearPlayerState(
+                episodeId = "1",
+                episodeTitle = "The Future of Android Development",
+                podcastTitle = "Android Backstage",
+                artworkUrl = "https://picsum.photos/200",
+                isPlaying = true,
+                positionMs = 1200000L,
+                durationMs = 3600000L,
+                playbackSpeed = 1.5f,
+                hasNext = true,
+                hasPrevious = true
+            ),
             onEvent = {},
             onNavigateToQueue = {}
         )
