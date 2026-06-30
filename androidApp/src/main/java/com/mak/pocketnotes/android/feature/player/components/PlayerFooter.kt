@@ -7,15 +7,13 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PlayerFooter(
@@ -57,12 +55,8 @@ internal fun PlayerFooter(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PlayerFooterPreview() {
-    PocketNotesTheme {
-        Surface {
-            PlayerFooter()
-        }
-    }
+    PlayerFooter()
 }

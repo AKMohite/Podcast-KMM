@@ -26,12 +26,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.PlayerState
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -112,19 +111,17 @@ internal fun MiniPlayer(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun MiniPlayerPreview() {
-    PocketNotesTheme {
-        MiniPlayer(
-            state = PlayerState(
-                currentEpisode = sampleEpisodes[0],
-                durationMs = 100000,
-                positionMs = 5000
-            ),
-            onExpand = {},
-            onTogglePlayPause = {},
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
+    MiniPlayer(
+        state = PlayerState(
+            currentEpisode = sampleEpisodes[0],
+            durationMs = 100000,
+            positionMs = 5000
+        ),
+        onExpand = {},
+        onTogglePlayPause = {},
+        modifier = Modifier.fillMaxWidth()
+    )
 }

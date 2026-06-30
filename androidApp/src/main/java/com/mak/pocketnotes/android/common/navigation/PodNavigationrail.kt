@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.BottomDestination
@@ -33,6 +32,7 @@ import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import kotlinx.coroutines.launch
 
 @Composable
@@ -91,14 +91,16 @@ internal fun PodModalWideNavigationRail(
             ) {
                 IconButton(
                     modifier =
-                        Modifier.padding(start = 24.dp).semantics {
-                            stateDescription =
-                                if (state.currentValue == WideNavigationRailValue.Expanded) {
-                                    "Expanded"
-                                } else {
-                                    "Collapsed"
-                                }
-                        },
+                        Modifier
+                            .padding(start = 24.dp)
+                            .semantics {
+                                stateDescription =
+                                    if (state.currentValue == WideNavigationRailValue.Expanded) {
+                                        "Expanded"
+                                    } else {
+                                        "Collapsed"
+                                    }
+                            },
                     onClick = {
                         scope.launch {
                             if (state.targetValue == WideNavigationRailValue.Expanded)
@@ -135,7 +137,7 @@ internal fun PodModalWideNavigationRail(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PodNavigationRailPreview() {
     PodNavigationRail(

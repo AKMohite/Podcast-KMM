@@ -2,15 +2,20 @@ package com.mak.pocketnotes.android.ui.theme
 
 import android.app.UiModeManager
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewWrapper
+import androidx.compose.ui.tooling.preview.PreviewWrapperProvider
 import app.mak.pocketnotes.core.designsystem.theme.roundShapes
 import app.mak.pocketnotes.core.designsystem.theme.typographyFromDefaults
 import com.mak.pocketnotes.domain.models.AppTheme
@@ -70,3 +75,22 @@ private fun selectSchemeForContrast(isDark: Boolean): ColorScheme {
         return colorScheme
     } else return colorScheme
 }
+
+private class MobileThemeProvider : PreviewWrapperProvider {
+    @Composable
+    override fun Wrap(content: @Composable (() -> Unit)) {
+        PocketNotesTheme {
+            Surface {
+                content()
+            }
+        }
+    }
+
+}
+
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.FUNCTION)
+@PreviewWrapper(MobileThemeProvider::class)
+@Preview(name = "Light Mode", showBackground = true)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+annotation class ThemePreviews

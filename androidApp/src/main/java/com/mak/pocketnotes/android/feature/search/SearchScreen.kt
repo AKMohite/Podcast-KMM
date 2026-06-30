@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +25,6 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
@@ -38,7 +36,7 @@ import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.feature.search.views.GenreCells
 import com.mak.pocketnotes.android.feature.search.views.SearchField
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.Genre
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.androidx.compose.koinViewModel
@@ -208,31 +206,30 @@ private fun ResultsContent(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun SearchContentPreview() {
-    PocketNotesTheme {
-        Surface {
-            SearchContent(
-                state = SearchState(genres = listOf(
-                    Genre(1, "genre 1", 3),
-                    Genre(2, "genre 2", 2),
-                    Genre(3, "genre 3", 2),
-                    Genre(4, "genre 4", 3),
-                    Genre(5, "genre 5", 4),
-                    Genre(6, "genre 6", 1),
-                )),
-                actions = object : SearchActions {
-                    override val state: StateFlow<SearchState>
-                        get() = TODO("Not yet implemented")
-                    override fun onSearchTextChange(value: String) = Unit
-                    override fun onGenreSelect(genre: Genre) = Unit
-                    override fun onSearchClick(searchText: String) = Unit
-                    override fun onSearchFocusChanged(focusState: FocusState) = Unit
-                    override fun closeSearch() = Unit
-                },
-                onPodcastClick = {}
+    SearchContent(
+        state = SearchState(
+            genres = listOf(
+                Genre(1, "genre 1", 3),
+                Genre(2, "genre 2", 2),
+                Genre(3, "genre 3", 2),
+                Genre(4, "genre 4", 3),
+                Genre(5, "genre 5", 4),
+                Genre(6, "genre 6", 1),
             )
-        }
-    }
+        ),
+        actions = object : SearchActions {
+            override val state: StateFlow<SearchState>
+                get() = TODO("Not yet implemented")
+
+            override fun onSearchTextChange(value: String) = Unit
+            override fun onGenreSelect(genre: Genre) = Unit
+            override fun onSearchClick(searchText: String) = Unit
+            override fun onSearchFocusChanged(focusState: FocusState) = Unit
+            override fun closeSearch() = Unit
+        },
+        onPodcastClick = {}
+    )
 }

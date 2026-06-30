@@ -16,11 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -75,13 +74,11 @@ internal fun PodcastEpisodeItem(
 
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PodcastEpisodeItemPreview() {
-    PocketNotesTheme {
-        PodcastEpisodeItem(
-            episode = sampleEpisodes[0],
-            showImage = true
-        )
-    }
+    PodcastEpisodeItem(
+        episode = sampleEpisodes[0],
+        showImage = true
+    )
 }

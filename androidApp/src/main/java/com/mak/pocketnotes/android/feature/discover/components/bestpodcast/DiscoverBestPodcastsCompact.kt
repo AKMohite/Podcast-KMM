@@ -13,18 +13,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import com.mak.pocketnotes.domain.models.Podcast
@@ -86,15 +84,11 @@ internal fun DiscoverBestPodcastsCompact(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun DiscoverBestPodcastsCompactPreview() {
-    PocketNotesTheme {
-        Surface {
-            DiscoverBestPodcastsCompact(
-                podcasts = samplePodcasts.take(8),
-                gotoDetails = {}
-            )
-        }
-    }
+    DiscoverBestPodcastsCompact(
+        podcasts = samplePodcasts.take(8),
+        gotoDetails = {}
+    )
 }

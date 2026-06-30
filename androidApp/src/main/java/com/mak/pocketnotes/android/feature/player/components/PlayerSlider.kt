@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PlayerSlider(
@@ -50,17 +48,13 @@ internal fun PlayerSlider(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PlayerSliderPreview() {
-    PocketNotesTheme {
-        Surface {
-            PlayerSlider(
-                currentProgress = 30f,
-                durationRange = 0f..100f,
-                onSliderChange = {},
-                totalDuration = "04:57"
-            )
-        }
-    }
+    PlayerSlider(
+        currentProgress = 30f,
+        durationRange = 0f..100f,
+        onSliderChange = {},
+        totalDuration = "04:57"
+    )
 }
