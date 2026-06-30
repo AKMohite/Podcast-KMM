@@ -8,15 +8,13 @@ import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PlaybackController(
@@ -80,18 +78,14 @@ internal fun PlaybackController(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PlaybackControllerPreview() {
-    PocketNotesTheme {
-        Surface {
-            PlaybackController(
-                isMediaPlaying = false,
-                onShuffleClick = {},
-                playPause = {},
-                previousClick = {},
-                nextClick = {}
-            )
-        }
-    }
+    PlaybackController(
+        isMediaPlaying = false,
+        onShuffleClick = {},
+        playPause = {},
+        previousClick = {},
+        nextClick = {}
+    )
 }

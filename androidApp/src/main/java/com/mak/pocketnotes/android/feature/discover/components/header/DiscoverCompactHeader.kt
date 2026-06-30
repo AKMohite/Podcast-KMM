@@ -28,12 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.delay
@@ -154,12 +153,10 @@ internal fun DiscoverCarouselCard(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun DiscoverCompactHeaderPreview() {
-    PocketNotesTheme {
-        DiscoverCompactHeader(
-            podcasts = samplePodcasts.take(8)
-        ) {}
-    }
+    DiscoverCompactHeader(
+        podcasts = samplePodcasts.take(8)
+    ) {}
 }

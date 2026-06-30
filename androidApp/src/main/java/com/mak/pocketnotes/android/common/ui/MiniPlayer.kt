@@ -13,7 +13,6 @@ import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,11 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -82,17 +80,13 @@ internal fun LegacyMiniPlayer(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun MiniPlayerPreview() {
-    PocketNotesTheme {
-        Surface {
-            LegacyMiniPlayer(
-                episode = sampleEpisodes[0].asPlayableEpisode(),
-                play = {},
-                next = {},
-                isMediaPlaying = false
-            )
-        }
-    }
+    LegacyMiniPlayer(
+        episode = sampleEpisodes[0].asPlayableEpisode(),
+        play = {},
+        next = {},
+        isMediaPlaying = false
+    )
 }

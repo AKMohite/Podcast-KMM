@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.QueueMusic
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,7 +25,7 @@ import com.mak.pocketnotes.android.feature.player.v2.components.NowPlayingInfo
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerControls
 import com.mak.pocketnotes.android.feature.player.v2.components.PlayerScrubber
 import com.mak.pocketnotes.android.feature.player.v2.components.SecondaryControls
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.PlayerState
 import com.mak.pocketnotes.domain.models.RepeatMode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
@@ -124,26 +123,23 @@ internal fun CompactPlayer(
 }
 
 @Preview
+@ThemePreviews
 @Composable
 private fun CompactPlayerPreview() {
-    PocketNotesTheme {
-        Surface {
-            CompactPlayer(
-                state = PlayerState(
-                    currentEpisode = sampleEpisodes[0],
-                    queue = sampleEpisodes,
-                    currentQueueIndex = 0,
-                    isPlaying = true,
-                    isLoading = false,
-                    positionMs = 50_000L,
-                    durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
-                    playbackSpeed = 1.0f,
-                    isShuffleEnabled = false,
-                    repeatMode = RepeatMode.NONE
-                ),
-                onEvent = {},
-                onShowQueue = {}
-            )
-        }
-    }
+    CompactPlayer(
+        state = PlayerState(
+            currentEpisode = sampleEpisodes[0],
+            queue = sampleEpisodes,
+            currentQueueIndex = 0,
+            isPlaying = true,
+            isLoading = false,
+            positionMs = 800_000L,
+            durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+            playbackSpeed = 1.0f,
+            isShuffleEnabled = false,
+            repeatMode = RepeatMode.NONE
+        ),
+        onEvent = {},
+        onShowQueue = {}
+    )
 }

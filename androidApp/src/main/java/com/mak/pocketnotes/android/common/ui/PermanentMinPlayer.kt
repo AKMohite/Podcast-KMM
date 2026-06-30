@@ -9,16 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.outlined.PlayArrow
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,11 +24,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
@@ -106,18 +101,14 @@ internal fun PermanentMinPlayer(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun PermanentMinPlayerPreview() {
-    PocketNotesTheme {
-        Surface {
-            PermanentMinPlayer(
-                episode = sampleEpisodes[0],
-                playPause = {},
-                isMediaPlaying = false,
-                previousClick = {},
-                nextClick = {}
-            )
-        }
-    }
+    PermanentMinPlayer(
+        episode = sampleEpisodes[0],
+        playPause = {},
+        isMediaPlaying = false,
+        previousClick = {},
+        nextClick = {}
+    )
 }

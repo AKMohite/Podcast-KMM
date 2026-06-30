@@ -8,14 +8,12 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun SearchField(
@@ -62,18 +60,14 @@ internal fun SearchField(
     )
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun SearchFieldPreview() {
-    PocketNotesTheme {
-        Surface {
-            SearchField(
-                onKeyboardDoneClick = {},
-                modifier = Modifier,
-                searchText = "asdasd",
-                onSearchTextChanged = {},
-                onClearSearchText = {}
-            )
-        }
-    }
+    SearchField(
+        onKeyboardDoneClick = {},
+        modifier = Modifier,
+        searchText = "asdasd",
+        onSearchTextChanged = {},
+        onClearSearchText = {}
+    )
 }

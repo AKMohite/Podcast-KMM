@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
@@ -30,7 +28,7 @@ import com.mak.pocketnotes.android.feature.player.components.PlaybackController
 import com.mak.pocketnotes.android.feature.player.components.PlayerFooter
 import com.mak.pocketnotes.android.feature.player.components.PlayerHeader
 import com.mak.pocketnotes.android.feature.player.components.PlayerSlider
-import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.domain.models.PlayableEpisode
@@ -256,25 +254,21 @@ private fun NowPlayingExpanded(
     }
 }
 
-@Preview
+@ThemePreviews
 @Composable
 private fun NowPlayingPreview() {
-    PocketNotesTheme {
-        Surface {
-            NowPlayingScreen(
-                episode = sampleEpisodes[0].asPlayableEpisode(),
-                onCloseClick = {},
-                progress = 20f,
-                onSliderChange = {},
-                playPause = {},
-                isMediaPlaying = false,
-                previousClick = {},
-                nextClick = {},
-                backwardClick = {},
-                forwardClick = {},
-                timeElapsed = "03:39",
-                totalDuration = "14:40"
-            )
-        }
-    }
+    NowPlayingScreen(
+        episode = sampleEpisodes[0].asPlayableEpisode(),
+        onCloseClick = {},
+        progress = 20f,
+        onSliderChange = {},
+        playPause = {},
+        isMediaPlaying = false,
+        previousClick = {},
+        nextClick = {},
+        backwardClick = {},
+        forwardClick = {},
+        timeElapsed = "03:39",
+        totalDuration = "14:40"
+    )
 }
