@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.compose.compiler)
@@ -34,6 +36,13 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_21)
+        optIn.add("com.google.android.horologist.annotations.ExperimentalHorologistApi")
+    }
+}
+
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(platform(libs.compose.bom))
@@ -50,6 +59,8 @@ dependencies {
     implementation(libs.androidx.wear.tooling.preview)
     implementation(libs.compose.ui.preview)
     implementation(libs.play.services.wearable)
+    implementation(libs.horologist.media.ui)
+    implementation(libs.horologist.media.ui.material3)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.test.junit4)
     debugImplementation(libs.compose.test.manifest)
