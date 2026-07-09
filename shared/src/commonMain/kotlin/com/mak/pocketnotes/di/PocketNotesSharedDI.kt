@@ -2,7 +2,8 @@ package com.mak.pocketnotes.di
 
 import app.cash.sqldelight.db.SqlDriver
 import com.mak.pocketnotes.PocketDatabase
-import com.mak.pocketnotes.core.remote.di.remoteModule
+import com.mak.pocketnotes.core.common.di.commonModule
+import com.mak.pocketnotes.core.remote.di.ktorModule
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
@@ -76,6 +77,14 @@ private val storeModule = module {
 internal expect fun platformModule(): Module
 
 private val sharedModules =
-    listOf(remoteModule(), dataModule, storeModule, domainModule, platformModule(), localModule)
+    listOf(
+        commonModule,
+        ktorModule(),
+        dataModule,
+        storeModule,
+        domainModule,
+        platformModule(),
+        localModule
+    )
 
 fun getSharedModules() = sharedModules
