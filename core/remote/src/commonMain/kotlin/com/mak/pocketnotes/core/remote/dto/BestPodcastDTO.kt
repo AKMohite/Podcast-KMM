@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class BestPodcastDTO(
+data class BestPodcastDTO(
     @SerialName("has_next")
     val hasNext: Boolean? = null,
     @SerialName("has_previous")
@@ -31,7 +31,7 @@ internal data class BestPodcastDTO(
 )
 
 @Serializable
-internal data class PodcastDTO(
+data class PodcastDTO(
     @SerialName("audio_length_sec")
     val audioLengthSec: Int? = null,
     @SerialName("country")
@@ -93,7 +93,7 @@ internal data class PodcastDTO(
 )
 
 @Serializable
-internal data class ExtraDTO(
+data class ExtraDTO(
     @SerialName("amazon_music_url")
     val amazonMusicUrl: String? = null,
     @SerialName("facebook_handle")
@@ -123,7 +123,7 @@ internal data class ExtraDTO(
 )
 
 @Serializable
-internal data class LookingForDTO(
+data class LookingForDTO(
     @SerialName("cohosts")
     val cohosts: Boolean? = null,
     @SerialName("cross_promotion")

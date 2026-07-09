@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class CuratedPodcastDTO(
+data class CuratedPodcastDTO(
     @SerialName("id")
     val id: String? = null,
     @SerialName("image")

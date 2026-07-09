@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.domain.mapper
 
-import com.mak.pocketnotes.data.remote.dto.EpisodeDTO
-import com.mak.pocketnotes.data.remote.dto.PodcastDTO
+import com.mak.pocketnotes.core.remote.dto.EpisodeDTO
+import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.local.database.dao.EpisodeEntity
@@ -48,7 +48,7 @@ internal class PodcastMapper {
         image = dto.image ?: "",
         thumbnail = dto.thumbnail ?: "",
         publisher = dto.publisher ?: "",
-        episodes = getPodcastEpisodes(dto.episodes, dto.id),
+        episodes = getPodcastEpisodes(dto.episodes, dto.id!!),
 //        listenScore = dto.listenScore?.toString()?.toIntOrNull() ?: 0,
 //        totalEpisodes = dto.totalEpisodes ?: 0,
 //        type = dto.type ?: "",

@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class SectionPodcastDTO(
+data class SectionPodcastDTO(
     @SerialName("description")
     val description: String? = null,
     @SerialName("id")

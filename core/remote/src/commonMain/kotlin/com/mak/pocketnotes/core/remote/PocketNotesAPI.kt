@@ -7,7 +7,7 @@ import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastRecommendationsDTO
 import com.mak.pocketnotes.core.remote.dto.SearchEpisodesDTO
 
-internal interface PocketNotesAPI {
+interface PocketNotesAPI {
     suspend fun getAllGenres(): GenresDTO
     suspend fun getBestPodcasts(queryMap: Map<String, String>): BestPodcastDTO
     suspend fun getCuratedPodcasts(page: Int): CuratedPodcastsDTO

@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.local.database.dao
 
 import com.mak.pocketnotes.PocketDatabase
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.domain.models.SyncRequest
 import com.mak.pocketnotes.local.Last_syncs
 import com.mak.pocketnotes.local.database.dao.LastSyncDAO.Companion.DEFAULT_ID
@@ -13,7 +13,7 @@ internal typealias LastSyncEntity = Last_syncs
 
 internal class LastSyncDAO(
     database: PocketDatabase,
-    private val dispatcher: Dispatcher
+    private val dispatcher: DispatcherProvider
 ): ILastSyncDAO {
 
     private val dbQueries = database.last_sync_entityQueries

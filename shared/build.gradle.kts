@@ -38,6 +38,8 @@ kotlin {
 //                for fixing some error in SKIE dependency. May not be need in
 //                future.
                 implementation(libs.stately.common)
+                api(project(":core:common"))
+                api(project(":core:remote"))
 //                implementation("co.touchlab:stately-collections:2.0.7")
 //                implementation("co.touchlab:stately-concurrency:2.0.7")
 //                implementation("co.touchlab:stately-isolate:2.0.7")

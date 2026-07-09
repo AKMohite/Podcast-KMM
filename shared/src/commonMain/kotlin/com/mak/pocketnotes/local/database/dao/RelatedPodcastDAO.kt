@@ -3,7 +3,7 @@ package com.mak.pocketnotes.local.database.dao
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mak.pocketnotes.PocketDatabase
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.local.Related_podcasts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -12,7 +12,7 @@ internal typealias RelatedPodcastEntity = Related_podcasts
 
 internal class RelatedPodcastDAO(
     database: PocketDatabase,
-    private val dispatcher: Dispatcher
+    private val dispatcher: DispatcherProvider
 ): IRelatedPodcastDAO {
 
     private val dbQuery = database.related_podcast_entityQueries

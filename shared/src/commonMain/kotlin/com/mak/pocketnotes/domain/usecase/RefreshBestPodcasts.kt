@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.domain.usecase
 
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Podcast
@@ -17,8 +17,8 @@ import org.koin.core.component.inject
 
 class RefreshBestPodcasts: KoinComponent {
 
-    private val api: IPocketNotesAPI by inject()
-    private val dispatcher: Dispatcher by inject()
+    private val api: PocketNotesAPI by inject()
+    private val dispatcher: DispatcherProvider by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val podcastDAO: IPodcastDAO by inject()
     private val trendingPodcastDAO: ITrendingPodcastDAO by inject()

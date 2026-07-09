@@ -11,9 +11,9 @@ import com.google.crypto.tink.RegistryConfiguration
 import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.aead.PredefinedAeadParameters
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.data.repository.DataStoreSettingsRepository
 import com.mak.pocketnotes.data.repository.SettingsRepository
-import com.mak.pocketnotes.data.util.Dispatcher
 import com.mak.pocketnotes.domain.models.AppSettings
 import com.mak.pocketnotes.local.database.AndroidDatabaseDriverFactory
 import kotlinx.coroutines.withContext
@@ -43,7 +43,7 @@ actual fun platformModule() = module {
                     RegistryConfiguration.get(),
                     Aead::class.java,
                 ),
-            wrappedSerializer = AppSettingsSerializer(get<Dispatcher>()),
+            wrappedSerializer = AppSettingsSerializer(get<DispatcherProvider>()),
             associatedData = "pod_settings_data".encodeToByteArray(),
         )
 
@@ -68,7 +68,7 @@ actual fun platformModule() = module {
 }
 
 class AppSettingsSerializer(
-    private val dispatcher: Dispatcher
+    private val dispatcher: DispatcherProvider
 ): Serializer<AppSettings> {
     override val defaultValue: AppSettings
         get() = AppSettings()

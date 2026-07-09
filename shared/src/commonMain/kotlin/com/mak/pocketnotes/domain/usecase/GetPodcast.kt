@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.domain.usecase
 
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.store.PodcastStore
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ import org.mobilenativefoundation.store.store5.StoreReadResponse
 class GetPodcast: KoinComponent {
 
     private val store: PodcastStore by inject()
-    private val dispatcher: Dispatcher by inject()
+    private val dispatcher: DispatcherProvider by inject()
 
     operator fun invoke(id: String): Flow<Podcast> {
         return store().stream(StoreReadRequest.cached(id, refresh = false))

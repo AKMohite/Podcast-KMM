@@ -1,9 +1,8 @@
 package com.mak.pocketnotes.domain.store
 
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
-import com.mak.pocketnotes.data.remote.dto.CuratedPodcastDTO
-import com.mak.pocketnotes.data.remote.dto.SectionPodcastDTO
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.remote.PocketNotesAPI
+import com.mak.pocketnotes.core.remote.dto.SectionPodcastDTO
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.domain.models.SyncRequest
@@ -30,9 +29,9 @@ import kotlin.time.Duration.Companion.minutes
 
 class CuratedPodcastsStore: KoinComponent {
 
-    private val api: IPocketNotesAPI by inject()
+    private val api: PocketNotesAPI by inject()
     private val dao: ICuratedPodcastDAO by inject()
-    private val dispatcher: Dispatcher by inject()
+    private val dispatcher: DispatcherProvider by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
     private val curatedPodcastDAO: ICuratedPodcastDAO by inject()
@@ -148,8 +147,8 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
         section.podcasts?.map { podcast ->
             CuratedPodcastEntity(
                 id = "${section.id!!}-${podcast.id!!}",
-                podcast_id = podcast.id,
-                section_id = section.id
+                podcast_id = podcast.id!!,
+                section_id = section.id!!
             )
         }
     }.flatten()

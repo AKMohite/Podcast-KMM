@@ -2,9 +2,7 @@ package com.mak.pocketnotes.di
 
 import app.cash.sqldelight.db.SqlDriver
 import com.mak.pocketnotes.PocketDatabase
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
-import com.mak.pocketnotes.data.remote.PocketNotesAPI
-import com.mak.pocketnotes.data.util.provideDispatcher
+import com.mak.pocketnotes.core.remote.di.remoteModule
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
@@ -36,14 +34,9 @@ import com.mak.pocketnotes.local.database.dao.LastSyncDAO
 import com.mak.pocketnotes.local.database.dao.PodcastDAO
 import com.mak.pocketnotes.local.database.dao.RelatedPodcastDAO
 import com.mak.pocketnotes.local.database.dao.TrendingPodcastDAO
-import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private fun networkModule(enableNetworkingLogs: Boolean = false) = module {
-    single<Json> { createJson() }
-    single { createHttpClient(get(), enableNetworkLogs = enableNetworkingLogs) }
-}
 
 private val localModule = module {
     single<DatabaseTransactionRunner> { SQLDatabaseTransactionRunner(get()) }
@@ -60,11 +53,6 @@ private val localModule = module {
 private val dataModule = module {
     factory { PodcastMapper() }
     factory { PocketMapper(get()) }
-    factory<IPocketNotesAPI> { PocketNotesAPI(get(), get()) }
-}
-
-private val utilModule = module {
-    factory { provideDispatcher() }
 }
 
 private val domainModule = module {
@@ -87,6 +75,7 @@ private val storeModule = module {
 
 internal expect fun platformModule(): Module
 
-private val sharedModules = listOf(networkModule(), dataModule, utilModule, storeModule, domainModule, platformModule(), localModule)
+private val sharedModules =
+    listOf(remoteModule(), dataModule, storeModule, domainModule, platformModule(), localModule)
 
 fun getSharedModules() = sharedModules

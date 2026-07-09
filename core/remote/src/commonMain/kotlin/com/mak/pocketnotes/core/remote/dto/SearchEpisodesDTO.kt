@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class SearchEpisodesDTO(
+data class SearchEpisodesDTO(
     @SerialName("count")
     val count: Int?,
     @SerialName("next_offset")

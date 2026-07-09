@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.data.repository
 
 import androidx.datastore.core.DataStore
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.domain.models.AppSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 internal class DataStoreSettingsRepository(
     private val dataStore: DataStore<AppSettings>,
-    private val dispatcher: Dispatcher
+    private val dispatcher: DispatcherProvider
 ): SettingsRepository {
 
 //    private companion object Keys {

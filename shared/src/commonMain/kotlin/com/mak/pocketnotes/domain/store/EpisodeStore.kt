@@ -1,8 +1,8 @@
 package com.mak.pocketnotes.domain.store
 
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
-import com.mak.pocketnotes.data.remote.dto.PodcastDTO
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.remote.PocketNotesAPI
+import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.SyncRequest
@@ -29,11 +29,11 @@ typealias EpisodeParams = Pair<String, Long>
 
 internal class EpisodeStore: KoinComponent {
 
-    private val api: IPocketNotesAPI by inject()
+    private val api: PocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val episodeDAO: IEpisodeDAO by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
-    private val dispatcher: Dispatcher by inject()
+    private val dispatcher: DispatcherProvider by inject()
     private val mapper: PodcastMapper by inject()
 
     operator fun invoke() = StoreBuilder

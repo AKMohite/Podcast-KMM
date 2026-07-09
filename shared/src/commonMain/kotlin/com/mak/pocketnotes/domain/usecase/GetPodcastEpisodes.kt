@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.domain.usecase
 
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.store.EpisodeStore
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ import kotlin.time.Clock
 
 class GetPodcastEpisodes: KoinComponent {
     private val store: EpisodeStore by inject()
-    private val dispatcher: Dispatcher by inject()
+    private val dispatcher: DispatcherProvider by inject()
 
     operator fun invoke(id: String, timeStamp: Long = Clock.System.now().toEpochMilliseconds()): Flow<List<PodcastEpisode>> {
         return store()

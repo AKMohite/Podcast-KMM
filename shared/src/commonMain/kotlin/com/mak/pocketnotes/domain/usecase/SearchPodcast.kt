@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.domain.usecase
 
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
+import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.SearchResults
 import com.mak.pocketnotes.utils.sample.samplePodcasts
@@ -8,7 +8,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class SearchPodcast: KoinComponent {
-    private val api: IPocketNotesAPI by inject()
+    private val api: PocketNotesAPI by inject()
     private val mapper: PocketMapper by inject()
 
     @Throws(Exception::class)

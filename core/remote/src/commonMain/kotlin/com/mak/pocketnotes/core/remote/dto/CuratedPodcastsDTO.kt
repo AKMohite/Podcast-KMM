@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class CuratedPodcastsDTO(
+data class CuratedPodcastsDTO(
     @SerialName("curated_lists")
     val curatedLists: List<SectionPodcastDTO>? = emptyList(),
     @SerialName("has_next")

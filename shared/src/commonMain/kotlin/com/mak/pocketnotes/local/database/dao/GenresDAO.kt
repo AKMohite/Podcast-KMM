@@ -3,7 +3,7 @@ package com.mak.pocketnotes.local.database.dao
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mak.pocketnotes.PocketDatabase
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.local.Genres
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -13,7 +13,7 @@ internal typealias GenreEntity = Genres
 
 internal class GenresDAO(
     database: PocketDatabase,
-    private val dispatcher: Dispatcher
+    private val dispatcher: DispatcherProvider
 ): IGenresDAO {
 
     private val dbQuery = database.genre_entityQueries

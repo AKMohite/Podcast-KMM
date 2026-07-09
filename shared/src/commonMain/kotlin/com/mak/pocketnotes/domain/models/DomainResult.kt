@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.domain.models
 
-import com.mak.pocketnotes.domain.exception.PocketException
+import com.mak.pocketnotes.core.common.exception.PocketException
 
 sealed interface DomainResult<out T> {
     data object Loading: DomainResult<Nothing>

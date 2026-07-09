@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class EpisodeDTO(
+data class EpisodeDTO(
     @SerialName("audio")
     val audio: String? = null,
     @SerialName("audio_length_sec")

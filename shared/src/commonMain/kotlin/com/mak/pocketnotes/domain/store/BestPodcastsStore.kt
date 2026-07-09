@@ -1,8 +1,8 @@
 package com.mak.pocketnotes.domain.store
 
-import com.mak.pocketnotes.data.remote.IPocketNotesAPI
-import com.mak.pocketnotes.data.remote.dto.BestPodcastDTO
-import com.mak.pocketnotes.data.util.Dispatcher
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.remote.PocketNotesAPI
+import com.mak.pocketnotes.core.remote.dto.BestPodcastDTO
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.SyncRequest
@@ -27,13 +27,13 @@ import org.mobilenativefoundation.store.store5.Validator
 import kotlin.time.Duration.Companion.minutes
 
 class BestPodcastsStore: KoinComponent {
-    private val api: IPocketNotesAPI by inject()
+    private val api: PocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
     private val podcastDAO: IPodcastDAO by inject()
     private val trendingPodcastDAO: ITrendingPodcastDAO by inject()
     private val lastSyncDAO: ILastSyncDAO by inject()
     private val mapper: PodcastMapper by inject()
-    private val dispatcher: Dispatcher by inject()
+    private val dispatcher: DispatcherProvider by inject()
 
     operator fun invoke(query: GetGenreQuery = GetGenreQuery()): Flow<List<Podcast>> = StoreBuilder
         .from<Unit, BestPodcastDTO, List<Podcast>>(
