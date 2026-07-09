@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKMMLibrary)
-    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -10,10 +9,9 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.mak.pocketnotes.core.remote"
+        namespace = "com.mak.pocketnotes.core.common"
         compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
         minSdk = Integer.parseInt(libs.versions.minSdk.get())
-
         withHostTestBuilder {
         }
 
@@ -31,7 +29,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "core:remoteKit"
+    val xcfName = "core:commonKit"
 
     iosX64 {
         binaries.framework {
@@ -59,12 +57,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core:common"))
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.content.negotiation)
-                implementation(libs.ktor.serialization)
-                //Use api so that the android app can use it as well
-                implementation(libs.koin.core)
+                // Add KMP dependencies here
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 
@@ -78,8 +72,6 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
-                implementation(libs.ktor.client.android)
-                implementation(libs.koin.android)
             }
         }
 
@@ -95,7 +87,6 @@ kotlin {
                 // part of KMP’s default source set hierarchy. Note that this source set depends
                 // on common by default and will correctly pull the iOS artifacts of any
                 // KMP dependencies declared in commonMain.
-                implementation(libs.ktor.client.ios)
             }
         }
     }
