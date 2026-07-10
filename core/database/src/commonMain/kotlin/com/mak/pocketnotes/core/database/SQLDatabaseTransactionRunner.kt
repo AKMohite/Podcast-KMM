@@ -17,6 +17,6 @@ internal class SQLDatabaseTransactionRunner(
     }
 }
 
-internal interface DatabaseTransactionRunner {
+interface DatabaseTransactionRunner {
     operator fun <T> invoke(block: () -> T): T
 }

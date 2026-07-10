@@ -1,10 +1,9 @@
 package com.mak.pocketnotes.core.database.dao
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.queries.Last_syncs
 import com.mak.pocketnotes.core.database.queries.PocketDatabase
-import com.mak.pocketnotes.domain.models.SyncRequest
-import com.mak.pocketnotes.local.database.dao.LastSyncDAO.Companion.DEFAULT_ID
 import kotlinx.coroutines.withContext
 import kotlin.time.Clock
 import kotlin.time.Duration
@@ -44,13 +43,9 @@ internal class LastSyncDAO(
         return@withContext lastSync.timestamp > requestBefore
     }
 
-    companion object {
-        const val DEFAULT_ID = "N/A"
-    }
-
 }
 
-internal interface ILastSyncDAO {
+interface ILastSyncDAO {
     suspend fun getLastSyncFor(
         requestType: SyncRequest,
         entityId: String = DEFAULT_ID
@@ -62,4 +57,8 @@ internal interface ILastSyncDAO {
         entityId: String = DEFAULT_ID,
         threshold: Duration
     ): Boolean
+
+    companion object {
+        const val DEFAULT_ID = "N/A"
+    }
 }

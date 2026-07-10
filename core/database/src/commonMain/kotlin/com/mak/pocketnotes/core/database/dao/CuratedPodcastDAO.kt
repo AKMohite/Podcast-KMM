@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 
-internal typealias CuratedSectionEntity = Curated_sections
-internal typealias CuratedPodcastEntity = Curated_podcasts
+typealias CuratedSectionEntity = Curated_sections
+typealias CuratedPodcastEntity = Curated_podcasts
 
 internal class CuratedPodcastDAO(
     database: PocketDatabase,
@@ -46,7 +46,7 @@ internal class CuratedPodcastDAO(
 
 }
 
-internal interface ICuratedPodcastDAO {
+interface ICuratedPodcastDAO {
     fun insertCuratedPodcasts(
         sections: List<CuratedSectionEntity>,
         podcasts: List<CuratedPodcastEntity>

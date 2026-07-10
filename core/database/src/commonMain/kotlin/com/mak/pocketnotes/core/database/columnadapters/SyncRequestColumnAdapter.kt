@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.core.database.columnadapters
 
 import app.cash.sqldelight.ColumnAdapter
-import com.mak.pocketnotes.domain.models.SyncRequest
+import com.mak.pocketnotes.core.common.models.SyncRequest
 
 internal object SyncRequestColumnAdapter : ColumnAdapter<SyncRequest, String> {
     override fun decode(databaseValue: String): SyncRequest {

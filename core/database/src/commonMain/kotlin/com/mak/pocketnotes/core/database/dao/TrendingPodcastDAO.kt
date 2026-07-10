@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 
-internal typealias TrendingPodcastEntity = Trending_podcasts
+typealias TrendingPodcastEntity = Trending_podcasts
 
 internal class TrendingPodcastDAO(
     database: PocketDatabase,
@@ -38,7 +38,7 @@ internal class TrendingPodcastDAO(
     }
 }
 
-internal interface ITrendingPodcastDAO {
+interface ITrendingPodcastDAO {
     fun getBestPodcasts(): Flow<List<PodcastEntity>>
     fun upsertPage(entities: List<TrendingPodcastEntity>)
     fun deletePage(page: Int)

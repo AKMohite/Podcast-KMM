@@ -60,6 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":core:common"))
+                implementation(libs.koin.core)
                 implementation(libs.sqldelight.extensions)
                 implementation(libs.sqldelight.primitive)
             }
@@ -72,6 +73,7 @@ kotlin {
 
         androidMain {
             dependencies {
+                implementation(libs.koin.android)
                 implementation(libs.android.sql.driver)
             }
         }

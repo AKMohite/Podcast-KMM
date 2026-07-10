@@ -8,7 +8,7 @@ import com.mak.pocketnotes.core.database.queries.PocketDatabase
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Instant
 
-internal typealias EpisodeEntity = Episodes
+typealias EpisodeEntity = Episodes
 
 internal class EpisodeDAO(
     database: PocketDatabase,
@@ -55,7 +55,7 @@ internal class EpisodeDAO(
     }
 }
 
-internal interface IEpisodeDAO {
+interface IEpisodeDAO {
     fun insert(entity: EpisodeEntity)
     fun insertEpisodes(entities: List<EpisodeEntity>)
     fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>>

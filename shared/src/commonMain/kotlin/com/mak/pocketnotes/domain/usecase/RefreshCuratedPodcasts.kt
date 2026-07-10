@@ -1,6 +1,12 @@
 package com.mak.pocketnotes.domain.usecase
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
+import com.mak.pocketnotes.core.database.dao.CuratedPodcastEntity
+import com.mak.pocketnotes.core.database.dao.CuratedSectionEntity
+import com.mak.pocketnotes.core.database.dao.ICuratedPodcastDAO
+import com.mak.pocketnotes.core.database.dao.IPodcastDAO
+import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.CuratedPodcastDTO
 import com.mak.pocketnotes.core.remote.dto.SectionPodcastDTO
@@ -8,12 +14,6 @@ import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.domain.models.safeCall
-import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
-import com.mak.pocketnotes.local.database.dao.CuratedPodcastEntity
-import com.mak.pocketnotes.local.database.dao.CuratedSectionEntity
-import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
-import com.mak.pocketnotes.local.database.dao.IPodcastDAO
-import com.mak.pocketnotes.local.database.dao.PodcastEntity
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

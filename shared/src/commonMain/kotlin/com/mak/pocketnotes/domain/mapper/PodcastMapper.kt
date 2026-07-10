@@ -1,12 +1,12 @@
 package com.mak.pocketnotes.domain.mapper
 
+import com.mak.pocketnotes.core.database.dao.EpisodeEntity
+import com.mak.pocketnotes.core.database.dao.PodcastEntity
+import com.mak.pocketnotes.core.database.dao.RelatedPodcastEntity
 import com.mak.pocketnotes.core.remote.dto.EpisodeDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.PodcastEpisode
-import com.mak.pocketnotes.local.database.dao.EpisodeEntity
-import com.mak.pocketnotes.local.database.dao.PodcastEntity
-import com.mak.pocketnotes.local.database.dao.RelatedPodcastEntity
 import kotlin.time.Instant
 
 internal class PodcastMapper {

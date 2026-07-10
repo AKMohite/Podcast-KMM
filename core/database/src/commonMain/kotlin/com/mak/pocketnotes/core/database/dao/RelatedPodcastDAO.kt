@@ -8,7 +8,7 @@ import com.mak.pocketnotes.core.database.queries.Related_podcasts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-internal typealias RelatedPodcastEntity = Related_podcasts
+typealias RelatedPodcastEntity = Related_podcasts
 
 internal class RelatedPodcastDAO(
     database: PocketDatabase,
@@ -42,7 +42,7 @@ internal class RelatedPodcastDAO(
     }
 }
 
-internal interface IRelatedPodcastDAO {
+interface IRelatedPodcastDAO {
     fun insertPodcast(podcast: RelatedPodcastEntity)
     fun insertPodcasts(podcasts: List<RelatedPodcastEntity>)
     suspend fun removePodcasts(): Long

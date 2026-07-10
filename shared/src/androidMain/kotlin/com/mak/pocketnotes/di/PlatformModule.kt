@@ -4,7 +4,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.Serializer
 import androidx.datastore.tink.AeadSerializer
-import app.cash.sqldelight.db.SqlDriver
 import com.google.crypto.tink.Aead
 import com.google.crypto.tink.KeyTemplate
 import com.google.crypto.tink.RegistryConfiguration
@@ -15,7 +14,6 @@ import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.data.repository.DataStoreSettingsRepository
 import com.mak.pocketnotes.data.repository.SettingsRepository
 import com.mak.pocketnotes.domain.models.AppSettings
-import com.mak.pocketnotes.local.database.AndroidDatabaseDriverFactory
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
@@ -25,7 +23,6 @@ import java.io.InputStream
 import java.io.OutputStream
 
 actual fun platformModule() = module {
-    single<SqlDriver> { AndroidDatabaseDriverFactory(androidContext()).createDriver() }
 
     single<DataStore<AppSettings>> {
         AeadConfig.register()

@@ -40,6 +40,7 @@ kotlin {
                 implementation(libs.stately.common)
                 api(project(":core:common"))
                 api(project(":core:remote"))
+                api(project(":core:database"))
 //                implementation("co.touchlab:stately-collections:2.0.7")
 //                implementation("co.touchlab:stately-concurrency:2.0.7")
 //                implementation("co.touchlab:stately-isolate:2.0.7")
@@ -49,13 +50,9 @@ kotlin {
 
 
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.content.negotiation)
                 implementation(libs.ktor.serialization)
                 //Use api so that the android app can use it as well
                 implementation(libs.koin.core)
-                implementation(libs.sqldelight.extensions)
-                implementation(libs.sqldelight.primitive)
                 implementation(libs.store5)
                 implementation(libs.kotlinx.datetime)
             }
@@ -77,7 +74,6 @@ kotlin {
 //                TODO can be removed?
                 implementation(libs.androidx.legacy.support) // Needed MediaSessionCompat.Token
                 implementation(libs.androidx.coil)
-                implementation(libs.android.sql.driver)
                 implementation(libs.androidx.datastore.core)
                 implementation(libs.androidx.datastore.tink)
             }
@@ -90,8 +86,6 @@ kotlin {
         val iosMain by creating {
             dependsOn(commonMain)
             dependencies {
-                implementation(libs.ktor.client.ios)
-                implementation(libs.ios.sql.driver)
             }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)

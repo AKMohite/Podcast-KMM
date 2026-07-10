@@ -1,17 +1,17 @@
 package com.mak.pocketnotes.domain.store
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.common.models.SyncRequest
+import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
+import com.mak.pocketnotes.core.database.dao.ILastSyncDAO
+import com.mak.pocketnotes.core.database.dao.IPodcastDAO
+import com.mak.pocketnotes.core.database.dao.ITrendingPodcastDAO
+import com.mak.pocketnotes.core.database.dao.PodcastEntity
+import com.mak.pocketnotes.core.database.dao.TrendingPodcastEntity
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.BestPodcastDTO
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.domain.models.SyncRequest
-import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
-import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
-import com.mak.pocketnotes.local.database.dao.IPodcastDAO
-import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
-import com.mak.pocketnotes.local.database.dao.PodcastEntity
-import com.mak.pocketnotes.local.database.dao.TrendingPodcastEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map

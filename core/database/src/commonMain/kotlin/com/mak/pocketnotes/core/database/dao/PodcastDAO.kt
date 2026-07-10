@@ -8,7 +8,7 @@ import com.mak.pocketnotes.core.database.queries.Podcasts
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-internal typealias PodcastEntity = Podcasts
+typealias PodcastEntity = Podcasts
 
 internal class PodcastDAO(
     database: PocketDatabase,
@@ -41,7 +41,7 @@ internal class PodcastDAO(
     }
 }
 
-internal interface IPodcastDAO {
+interface IPodcastDAO {
     fun insertPodcast(podcast: PodcastEntity)
     fun insertPodcasts(podcasts: List<PodcastEntity>)
     suspend fun removePodcasts(): Long

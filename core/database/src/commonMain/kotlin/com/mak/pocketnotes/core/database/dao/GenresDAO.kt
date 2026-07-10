@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 
-internal typealias GenreEntity = Genres
+typealias GenreEntity = Genres
 
 internal class GenresDAO(
     database: PocketDatabase,
@@ -37,7 +37,7 @@ internal class GenresDAO(
     }
 }
 
-internal interface IGenresDAO {
+interface IGenresDAO {
     fun insertGenres(genres: List<GenreEntity>)
     fun removeGenres()
     fun getGenres(): Flow<List<GenreEntity>>

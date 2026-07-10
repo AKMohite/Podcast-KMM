@@ -1,8 +1,7 @@
 package com.mak.pocketnotes.di
 
-import app.cash.sqldelight.db.SqlDriver
-import com.mak.pocketnotes.PocketDatabase
 import com.mak.pocketnotes.core.common.di.commonModule
+import com.mak.pocketnotes.core.database.di.localModule
 import com.mak.pocketnotes.core.remote.di.ktorModule
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
@@ -18,38 +17,9 @@ import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
-import com.mak.pocketnotes.local.database.DatabaseTransactionRunner
-import com.mak.pocketnotes.local.database.PocketNotesDatabase
-import com.mak.pocketnotes.local.database.SQLDatabaseTransactionRunner
-import com.mak.pocketnotes.local.database.dao.CuratedPodcastDAO
-import com.mak.pocketnotes.local.database.dao.EpisodeDAO
-import com.mak.pocketnotes.local.database.dao.GenresDAO
-import com.mak.pocketnotes.local.database.dao.ICuratedPodcastDAO
-import com.mak.pocketnotes.local.database.dao.IEpisodeDAO
-import com.mak.pocketnotes.local.database.dao.IGenresDAO
-import com.mak.pocketnotes.local.database.dao.ILastSyncDAO
-import com.mak.pocketnotes.local.database.dao.IPodcastDAO
-import com.mak.pocketnotes.local.database.dao.IRelatedPodcastDAO
-import com.mak.pocketnotes.local.database.dao.ITrendingPodcastDAO
-import com.mak.pocketnotes.local.database.dao.LastSyncDAO
-import com.mak.pocketnotes.local.database.dao.PodcastDAO
-import com.mak.pocketnotes.local.database.dao.RelatedPodcastDAO
-import com.mak.pocketnotes.local.database.dao.TrendingPodcastDAO
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-
-private val localModule = module {
-    single<DatabaseTransactionRunner> { SQLDatabaseTransactionRunner(get()) }
-    single<PocketDatabase> { PocketNotesDatabase(get<SqlDriver>()).build() }
-    single<ILastSyncDAO> { LastSyncDAO(get(), get()) }
-    single<IGenresDAO> { GenresDAO(get(), get()) }
-    single<IPodcastDAO> { PodcastDAO(get(), get()) }
-    single<IEpisodeDAO> { EpisodeDAO(get(), get()) }
-    single<IRelatedPodcastDAO> { RelatedPodcastDAO(get(), get()) }
-    single<ICuratedPodcastDAO> { CuratedPodcastDAO(get(), get()) }
-    single<ITrendingPodcastDAO> { TrendingPodcastDAO(get(), get()) }
-}
 
 private val dataModule = module {
     factory { PodcastMapper() }
@@ -80,11 +50,11 @@ private val sharedModules =
     listOf(
         commonModule,
         ktorModule(),
+        localModule,
         dataModule,
         storeModule,
         domainModule,
-        platformModule(),
-        localModule
+        platformModule()
     )
 
 fun getSharedModules() = sharedModules
