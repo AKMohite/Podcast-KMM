@@ -1,8 +1,8 @@
 plugins {
-    kotlin("multiplatform")
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKMMLibrary)
-    id("app.cash.sqldelight") version "2.3.2"
-    id("co.touchlab.skie") version "0.10.13"
+    alias(libs.plugins.sqldelight)
+    alias(libs.plugins.skie)
     alias(libs.plugins.kotlinxSerialization)
 }
 
