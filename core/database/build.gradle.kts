@@ -59,6 +59,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project(":core:common"))
                 implementation(libs.sqldelight.extensions)
                 implementation(libs.sqldelight.primitive)
             }

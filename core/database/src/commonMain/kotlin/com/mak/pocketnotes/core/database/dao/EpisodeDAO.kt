@@ -1,0 +1,66 @@
+package com.mak.pocketnotes.core.database.dao
+
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
+import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.database.queries.Episodes
+import com.mak.pocketnotes.core.database.queries.PocketDatabase
+import kotlinx.coroutines.flow.Flow
+import kotlin.time.Instant
+
+internal typealias EpisodeEntity = Episodes
+
+internal class EpisodeDAO(
+    database: PocketDatabase,
+    private val dispatcher: DispatcherProvider
+) : IEpisodeDAO {
+
+    private val dbQuery = database.podcast_episode_entityQueries
+
+    override fun insert(entity: EpisodeEntity) {
+        dbQuery.insert(entity)
+    }
+
+    override fun insertEpisodes(entities: List<EpisodeEntity>) {
+        for (entity in entities) {
+            insert(entity)
+        }
+    }
+
+    override fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>> {
+        return dbQuery.getEpisodes(podcastId)
+            .asFlow()
+            .mapToList(dispatcher.io)
+    }
+
+    override fun getEpisodes(
+        podcastId: String,
+        nextEpisodeDate: Instant
+    ): Flow<List<EpisodeEntity>> {
+        return dbQuery.getPaginatedEpisodes(podcastId, nextEpisodeDate = nextEpisodeDate)
+            .asFlow()
+            .mapToList(dispatcher.io)
+    }
+
+    override fun removeEpisodes(podcastId: String) {
+        dbQuery.deleteWithId(podcastId)
+    }
+
+    override fun removeEpisodes(podcastId: String, nextDate: Instant) {
+        dbQuery.removeEpisode(podcastId, nextDate)
+    }
+
+    override fun removeEpisodes() {
+        dbQuery.deleteAll()
+    }
+}
+
+internal interface IEpisodeDAO {
+    fun insert(entity: EpisodeEntity)
+    fun insertEpisodes(entities: List<EpisodeEntity>)
+    fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>>
+    fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
+    fun removeEpisodes(podcastId: String)
+    fun removeEpisodes()
+    fun removeEpisodes(podcastId: String, nextDate: Instant)
+}
