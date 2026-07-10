@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKMMLibrary)
+    id("app.cash.sqldelight") version "2.3.2"
 }
 
 kotlin {
@@ -58,7 +59,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                // Add KMP dependencies here
+                implementation(libs.sqldelight.extensions)
+                implementation(libs.sqldelight.primitive)
             }
         }
 
@@ -69,9 +71,7 @@ kotlin {
 
         androidMain {
             dependencies {
-                // Add Android-specific dependencies here. Note that this source set depends on
-                // commonMain by default and will correctly pull the Android artifacts of any KMP
-                // dependencies declared in commonMain.
+                implementation(libs.android.sql.driver)
             }
         }
 
@@ -82,13 +82,17 @@ kotlin {
 
         iosMain {
             dependencies {
-                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
-                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
-                // part of KMP’s default source set hierarchy. Note that this source set depends
-                // on common by default and will correctly pull the iOS artifacts of any
-                // KMP dependencies declared in commonMain.
+                implementation(libs.ios.sql.driver)
             }
         }
     }
 
+}
+
+sqldelight {
+    databases {
+        create("PocketDatabase") {
+            packageName.set("com.mak.pocketnotes.core.database.queries")
+        }
+    }
 }
