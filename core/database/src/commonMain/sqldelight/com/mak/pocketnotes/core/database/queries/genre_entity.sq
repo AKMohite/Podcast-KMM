@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS `genres` (
+    `id` INTEGER AS kotlin.Int PRIMARY KEY NOT NULL,
+    `title` TEXT NOT NULL,
+    `parent_id` INTEGER AS kotlin.Int
+);
+
+insert:
+INSERT OR REPLACE INTO genres (id, title, parent_id) VALUES ?;
+
+getGenres:
+SELECT * FROM genres;
+
+getGenreByIds:
+SELECT * FROM genres WHERE id IN (:ids);
+
+deleteAll:
+DELETE FROM genres;
