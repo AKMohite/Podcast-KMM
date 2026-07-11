@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.android.feature.discover.components
+package com.mak.pocketnotes.android.feature.discover.components.header
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,7 +30,7 @@ import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
-import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlin.math.max
 
@@ -41,8 +41,9 @@ fun DiscoverMediumHeader(
     onPodcastClick: (String) -> Unit
 ) {
     BoxWithConstraints(
-        modifier = modifier.fillMaxWidth()
-        .padding(vertical = 16.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
     ) {
         val preferredWidth = maxWidth * 0.7f
         val state = rememberCarouselState(

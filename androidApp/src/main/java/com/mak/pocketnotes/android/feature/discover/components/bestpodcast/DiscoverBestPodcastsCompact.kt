@@ -25,7 +25,7 @@ import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
-import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable

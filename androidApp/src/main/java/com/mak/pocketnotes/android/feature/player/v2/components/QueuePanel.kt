@@ -36,8 +36,8 @@ import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.player.v2.PlayerEvent
 import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.PlayerState
-import com.mak.pocketnotes.domain.models.PodcastEpisode
 
 @Composable
 internal fun QueuePanel(

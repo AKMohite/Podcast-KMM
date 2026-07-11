@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKMMLibrary)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -59,6 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 // Add KMP dependencies here
+                implementation(libs.kotlinx.serialization.json)
             }
         }
 

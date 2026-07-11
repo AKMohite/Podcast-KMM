@@ -59,8 +59,8 @@ import com.mak.pocketnotes.android.common.PlayerQueue
 import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.feature.player.v2.components.formatDuration
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.PlayerState
-import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import org.koin.compose.viewmodel.koinViewModel
 

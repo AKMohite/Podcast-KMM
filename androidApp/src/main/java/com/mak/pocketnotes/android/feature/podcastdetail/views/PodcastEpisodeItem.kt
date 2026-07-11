@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
@@ -54,7 +54,7 @@ internal fun PodcastEpisodeItem(
                     .padding(4.dp)
             ) {
                 Text(
-                    text = episode.readableTime(),
+                    text = "episode.readableTime()",
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Thin
                 )

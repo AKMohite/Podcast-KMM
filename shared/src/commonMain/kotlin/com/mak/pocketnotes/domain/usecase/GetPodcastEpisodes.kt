@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.domain.usecase
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.store.EpisodeStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter

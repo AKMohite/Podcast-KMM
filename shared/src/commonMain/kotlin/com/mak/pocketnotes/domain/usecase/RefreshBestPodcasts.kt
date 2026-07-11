@@ -6,10 +6,10 @@ import com.mak.pocketnotes.core.database.dao.IPodcastDAO
 import com.mak.pocketnotes.core.database.dao.ITrendingPodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastEntity
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.DomainResult
-import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.models.safeCall
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent

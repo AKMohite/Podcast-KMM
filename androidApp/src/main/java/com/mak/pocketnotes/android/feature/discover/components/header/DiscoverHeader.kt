@@ -7,10 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.window.core.layout.WindowSizeClass
+import com.mak.pocketnotes.android.feature.discover.components.header.DiscoverLargeHeader
+import com.mak.pocketnotes.android.feature.discover.components.header.DiscoverMediumHeader
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
-import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
@@ -22,8 +24,17 @@ internal fun DiscoverHeader(
 ) {
     if (podcasts.isNotEmpty()) {
         when {
-            sizeClass.isExpanded() -> DiscoverLargeHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
-            sizeClass.isMedium() -> DiscoverMediumHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
+            sizeClass.isExpanded() -> DiscoverLargeHeader(
+                podcasts = podcasts,
+                modifier = modifier,
+                onPodcastClick = onPodcastClick
+            )
+
+            sizeClass.isMedium() -> DiscoverMediumHeader(
+                podcasts = podcasts,
+                modifier = modifier,
+                onPodcastClick = onPodcastClick
+            )
             else -> DiscoverCompactHeader(podcasts = podcasts, modifier = modifier, onPodcastClick = onPodcastClick)
         }
     }

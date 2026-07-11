@@ -2,9 +2,9 @@ package com.mak.pocketnotes.android.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.DomainResult
-import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts

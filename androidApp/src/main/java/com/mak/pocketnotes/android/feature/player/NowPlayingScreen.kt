@@ -31,7 +31,7 @@ import com.mak.pocketnotes.android.feature.player.components.PlayerSlider
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
 import com.mak.pocketnotes.android.ui.theme.isExpanded
-import com.mak.pocketnotes.domain.models.PlayableEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 

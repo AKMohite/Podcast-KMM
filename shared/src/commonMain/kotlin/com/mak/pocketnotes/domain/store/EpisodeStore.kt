@@ -6,10 +6,10 @@ import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.IEpisodeDAO
 import com.mak.pocketnotes.core.database.dao.ILastSyncDAO
 import com.mak.pocketnotes.core.database.dao.ILastSyncDAO.Companion.DEFAULT_ID
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
-import com.mak.pocketnotes.domain.models.PodcastEpisode
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext

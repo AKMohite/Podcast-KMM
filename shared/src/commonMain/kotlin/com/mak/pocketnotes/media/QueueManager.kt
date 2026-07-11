@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.media
 
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 
 
 /**

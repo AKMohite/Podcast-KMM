@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastEpisodes
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations

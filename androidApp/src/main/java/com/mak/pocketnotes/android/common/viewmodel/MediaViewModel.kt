@@ -6,13 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
-import com.mak.pocketnotes.domain.models.PlayableEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PlayableEpisode
 import com.mak.pocketnotes.service.media.service.IServiceHandler
 import com.mak.pocketnotes.service.media.service.MediaEvent
-import com.mak.pocketnotes.service.media.service.MediaState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 

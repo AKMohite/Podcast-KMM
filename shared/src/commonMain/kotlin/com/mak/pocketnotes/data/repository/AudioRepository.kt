@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.data.repository
 
-import com.mak.pocketnotes.domain.models.PlayableEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PlayableEpisode
 import com.mak.pocketnotes.domain.repository.IAudioRepository
 
 class AudioRepository : IAudioRepository {

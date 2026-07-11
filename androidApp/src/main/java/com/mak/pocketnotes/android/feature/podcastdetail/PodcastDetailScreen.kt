@@ -55,8 +55,8 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isLarge
-import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.domain.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf

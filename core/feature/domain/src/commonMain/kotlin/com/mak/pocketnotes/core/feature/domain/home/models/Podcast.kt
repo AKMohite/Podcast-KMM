@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.domain.models
+package com.mak.pocketnotes.core.feature.domain.home.models
 
 import kotlinx.serialization.Serializable
 

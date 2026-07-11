@@ -1,5 +1,7 @@
 package com.mak.pocketnotes.domain.models
 
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
+
 data class PlayerState(
     val currentEpisode: PodcastEpisode? = null,
     val queue: List<PodcastEpisode> = emptyList(),

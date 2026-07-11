@@ -58,7 +58,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                // Add KMP dependencies here
+                implementation(project(":core:feature:domain"))
+                implementation(libs.store5)
             }
         }
 

@@ -17,6 +17,7 @@ horologist = "0.8.3-alpha"
 koin = "4.2.2"
 kotlin = "2.4.0"
 kotlinxDatetime = "0.8.0"
+kotlinxSerializationJson = "1.11.0"
 ktor = "3.5.1"
 legacySupportV4 = "1.0.0"
 media3Exoplayer = "1.10.1"
@@ -73,6 +74,7 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-ios = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }

@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
-import com.mak.pocketnotes.domain.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable

@@ -3,10 +3,10 @@ package com.mak.pocketnotes.android.feature.search
 import androidx.compose.ui.focus.FocusState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Genre
-import com.mak.pocketnotes.domain.models.Podcast
-import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.usecase.GetGenres
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast

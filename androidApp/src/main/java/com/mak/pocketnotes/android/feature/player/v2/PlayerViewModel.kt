@@ -2,8 +2,8 @@ package com.mak.pocketnotes.android.feature.player.v2
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.PlayerState
-import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.media.PlayerController
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -1,8 +1,8 @@
-package com.mak.pocketnotes.domain.models
+package com.mak.pocketnotes.core.feature.domain.home.models
 
-import io.ktor.util.date.GMTDate
+import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class PodcastEpisode(
     val id: String,
     val podcastId: String = "",
@@ -16,11 +16,11 @@ data class PodcastEpisode(
     val audio: String,
     val duration: Int // in seconds
 ) {
-    fun readableTime(): String {
-        if (uploadedAt <= 0) return ""
-        val gmtDate = GMTDate(uploadedAt)
-        return "${gmtDate.month.value} ${gmtDate.dayOfMonth}"
-    }
+//    fun readableTime(): String {
+//        if (uploadedAt <= 0) return ""
+//        val gmtDate = GMTDate(uploadedAt)
+//        return "${gmtDate.month.value} ${gmtDate.dayOfMonth}"
+//    }
 
     fun readableDuration(): String {
         val hours = duration / 3600;

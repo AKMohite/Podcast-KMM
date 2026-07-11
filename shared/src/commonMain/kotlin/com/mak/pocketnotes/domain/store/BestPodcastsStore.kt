@@ -8,10 +8,10 @@ import com.mak.pocketnotes.core.database.dao.IPodcastDAO
 import com.mak.pocketnotes.core.database.dao.ITrendingPodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastEntity
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.BestPodcastDTO
 import com.mak.pocketnotes.domain.mapper.PodcastMapper
-import com.mak.pocketnotes.domain.models.Podcast
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
-import com.mak.pocketnotes.domain.models.PlayableEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.PlayableEpisode
 import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable

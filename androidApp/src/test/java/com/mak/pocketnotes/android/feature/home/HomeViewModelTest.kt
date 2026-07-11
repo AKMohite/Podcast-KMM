@@ -3,7 +3,6 @@ package com.mak.pocketnotes.android.feature.home
 import app.cash.turbine.test
 import com.mak.pocketnotes.android.feature.discover.DiscoverViewmodel
 import com.mak.pocketnotes.domain.models.DomainResult
-import com.mak.pocketnotes.domain.models.Podcast
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts

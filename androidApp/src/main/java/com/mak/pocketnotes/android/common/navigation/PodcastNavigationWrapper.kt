@@ -52,7 +52,6 @@ import com.mak.pocketnotes.android.feature.player.v2.components.MiniPlayer
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
-import com.mak.pocketnotes.domain.models.PlayableEpisode
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 

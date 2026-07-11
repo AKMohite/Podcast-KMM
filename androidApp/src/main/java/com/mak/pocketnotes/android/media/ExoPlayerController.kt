@@ -11,9 +11,9 @@ import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
+import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.PlayerError
 import com.mak.pocketnotes.domain.models.PlayerState
-import com.mak.pocketnotes.domain.models.PodcastEpisode
 import com.mak.pocketnotes.domain.models.RepeatMode
 import com.mak.pocketnotes.media.PlayerController
 import com.mak.pocketnotes.media.QueueManager
