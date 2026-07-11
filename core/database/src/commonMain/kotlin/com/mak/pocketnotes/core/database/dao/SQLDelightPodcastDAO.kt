@@ -10,10 +10,10 @@ import kotlinx.coroutines.withContext
 
 typealias PodcastEntity = Podcasts
 
-internal class PodcastDAO(
+internal class SQLDelightPodcastDAO(
     database: PocketDatabase,
     private val dispatcher: DispatcherProvider
-) : IPodcastDAO {
+) : PodcastDAO {
     private val dbQuery = database.podcast_entityQueries
 
     override fun insertPodcast(podcast: Podcasts) {
@@ -41,7 +41,7 @@ internal class PodcastDAO(
     }
 }
 
-interface IPodcastDAO {
+interface PodcastDAO {
     fun insertPodcast(podcast: PodcastEntity)
     fun insertPodcasts(podcasts: List<PodcastEntity>)
     suspend fun removePodcasts(): Long

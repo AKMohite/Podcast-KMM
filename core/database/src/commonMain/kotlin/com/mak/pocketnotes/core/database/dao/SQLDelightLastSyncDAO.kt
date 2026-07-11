@@ -10,10 +10,10 @@ import kotlin.time.Duration
 
 internal typealias LastSyncEntity = Last_syncs
 
-internal class LastSyncDAO(
+internal class SQLDelightLastSyncDAO(
     database: PocketDatabase,
     private val dispatcher: DispatcherProvider
-) : ILastSyncDAO {
+) : LastSyncDAO {
 
     private val dbQueries = database.last_sync_entityQueries
 
@@ -45,7 +45,7 @@ internal class LastSyncDAO(
 
 }
 
-interface ILastSyncDAO {
+interface LastSyncDAO {
     suspend fun getLastSyncFor(
         requestType: SyncRequest,
         entityId: String = DEFAULT_ID

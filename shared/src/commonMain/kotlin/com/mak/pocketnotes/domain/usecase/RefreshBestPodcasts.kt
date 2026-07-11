@@ -2,9 +2,9 @@ package com.mak.pocketnotes.domain.usecase
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
-import com.mak.pocketnotes.core.database.dao.IPodcastDAO
-import com.mak.pocketnotes.core.database.dao.ITrendingPodcastDAO
+import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
+import com.mak.pocketnotes.core.database.dao.TrendingPodcastDAO
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastEntity
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
@@ -20,8 +20,8 @@ class RefreshBestPodcasts: KoinComponent {
     private val api: PocketNotesAPI by inject()
     private val dispatcher: DispatcherProvider by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
-    private val podcastDAO: IPodcastDAO by inject()
-    private val trendingPodcastDAO: ITrendingPodcastDAO by inject()
+    private val podcastDAO: PodcastDAO by inject()
+    private val trendingPodcastDAO: TrendingPodcastDAO by inject()
     private val mapper: PocketMapper by inject()
 
     @Throws(Exception::class)

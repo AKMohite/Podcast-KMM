@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.flowOn
 
 typealias GenreEntity = Genres
 
-internal class GenresDAO(
+internal class SQLDelightGenresDAO(
     database: PocketDatabase,
     private val dispatcher: DispatcherProvider
-) : IGenresDAO {
+) : GenresDAO {
 
     private val dbQuery = database.genre_entityQueries
 
@@ -37,7 +37,7 @@ internal class GenresDAO(
     }
 }
 
-interface IGenresDAO {
+interface GenresDAO {
     fun insertGenres(genres: List<GenreEntity>)
     fun removeGenres()
     fun getGenres(): Flow<List<GenreEntity>>

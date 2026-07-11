@@ -3,11 +3,11 @@ package com.mak.pocketnotes.domain.store
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
+import com.mak.pocketnotes.core.database.dao.CuratedPodcastDAO
 import com.mak.pocketnotes.core.database.dao.CuratedPodcastEntity
 import com.mak.pocketnotes.core.database.dao.CuratedSectionEntity
-import com.mak.pocketnotes.core.database.dao.ICuratedPodcastDAO
-import com.mak.pocketnotes.core.database.dao.ILastSyncDAO
-import com.mak.pocketnotes.core.database.dao.IPodcastDAO
+import com.mak.pocketnotes.core.database.dao.LastSyncDAO
+import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.database.queries.CuratedSectionWithPodcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
@@ -30,12 +30,12 @@ import kotlin.time.Duration.Companion.minutes
 class CuratedPodcastsStore: KoinComponent {
 
     private val api: PocketNotesAPI by inject()
-    private val dao: ICuratedPodcastDAO by inject()
+    private val dao: CuratedPodcastDAO by inject()
     private val dispatcher: DispatcherProvider by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
-    private val lastSyncDAO: ILastSyncDAO by inject()
-    private val curatedPodcastDAO: ICuratedPodcastDAO by inject()
-    private val podcastDAO: IPodcastDAO by inject()
+    private val lastSyncDAO: LastSyncDAO by inject()
+    private val curatedPodcastDAO: CuratedPodcastDAO by inject()
+    private val podcastDAO: PodcastDAO by inject()
 
     operator fun invoke(query: GetCuratedPodcastsQuery = GetCuratedPodcastsQuery()) = StoreBuilder
         .from<Int, List<SectionPodcastDTO>, List<CuratedPodcast>>(

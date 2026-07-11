@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.flowOn
 typealias CuratedSectionEntity = Curated_sections
 typealias CuratedPodcastEntity = Curated_podcasts
 
-internal class CuratedPodcastDAO(
+internal class SQLDelightCuratedPodcastDAO(
     database: PocketDatabase,
     private val dispatcher: DispatcherProvider
-) : ICuratedPodcastDAO {
+) : CuratedPodcastDAO {
     private val sectionQuery = database.curated_section_entityQueries
     private val podcastQuery = database.curated_podcast_entityQueries
 
@@ -46,7 +46,7 @@ internal class CuratedPodcastDAO(
 
 }
 
-interface ICuratedPodcastDAO {
+interface CuratedPodcastDAO {
     fun insertCuratedPodcasts(
         sections: List<CuratedSectionEntity>,
         podcasts: List<CuratedPodcastEntity>

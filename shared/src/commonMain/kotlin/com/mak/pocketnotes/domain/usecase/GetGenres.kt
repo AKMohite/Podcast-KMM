@@ -4,8 +4,8 @@ import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.GenreEntity
-import com.mak.pocketnotes.core.database.dao.IGenresDAO
-import com.mak.pocketnotes.core.database.dao.ILastSyncDAO
+import com.mak.pocketnotes.core.database.dao.GenresDAO
+import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.GenreDTO
 import com.mak.pocketnotes.domain.models.DomainResult
@@ -29,8 +29,8 @@ class GetGenres: KoinComponent {
     private val dispatcher: DispatcherProvider by inject()
     private val api: PocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
-    private val genresDAO: IGenresDAO by inject()
-    private val lastSyncDAO: ILastSyncDAO by inject()
+    private val genresDAO: GenresDAO by inject()
+    private val lastSyncDAO: LastSyncDAO by inject()
 
     operator fun invoke(): Flow<DomainResult<List<Genre>>> = StoreBuilder
         .from<Unit, List<GenreDTO>, List<Genre>>(

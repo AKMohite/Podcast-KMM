@@ -2,10 +2,10 @@ package com.mak.pocketnotes.domain.usecase
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
+import com.mak.pocketnotes.core.database.dao.CuratedPodcastDAO
 import com.mak.pocketnotes.core.database.dao.CuratedPodcastEntity
 import com.mak.pocketnotes.core.database.dao.CuratedSectionEntity
-import com.mak.pocketnotes.core.database.dao.ICuratedPodcastDAO
-import com.mak.pocketnotes.core.database.dao.IPodcastDAO
+import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.CuratedPodcastDTO
@@ -22,8 +22,8 @@ class RefreshCuratedPodcasts: KoinComponent {
     private val dispatcher: DispatcherProvider by inject()
     private val api: PocketNotesAPI by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
-    private val curatedPodcastDAO: ICuratedPodcastDAO by inject()
-    private val podcastDAO: IPodcastDAO by inject()
+    private val curatedPodcastDAO: CuratedPodcastDAO by inject()
+    private val podcastDAO: PodcastDAO by inject()
 
     @Throws(Exception::class)
     suspend operator fun invoke(page: Int): DomainResult<List<CuratedPodcast>> = safeCall {

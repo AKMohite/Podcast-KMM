@@ -4,6 +4,13 @@ import app.cash.sqldelight.adapter.primitive.IntColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
 import com.mak.pocketnotes.core.database.columnadapters.InstantStringColumnAdapter
 import com.mak.pocketnotes.core.database.columnadapters.SyncRequestColumnAdapter
+import com.mak.pocketnotes.core.database.dao.CuratedPodcastDAO
+import com.mak.pocketnotes.core.database.dao.EpisodeDAO
+import com.mak.pocketnotes.core.database.dao.GenresDAO
+import com.mak.pocketnotes.core.database.dao.LastSyncDAO
+import com.mak.pocketnotes.core.database.dao.PodcastDAO
+import com.mak.pocketnotes.core.database.dao.RelatedPodcastDAO
+import com.mak.pocketnotes.core.database.dao.TrendingPodcastDAO
 import com.mak.pocketnotes.core.database.queries.Curated_sections
 import com.mak.pocketnotes.core.database.queries.Episodes
 import com.mak.pocketnotes.core.database.queries.Genres
@@ -33,4 +40,14 @@ internal class PocketNotesDatabase(
             )
         )
     }
+}
+
+interface PocketNotesDB {
+    fun getCuratedPodcastDao(): CuratedPodcastDAO
+    fun getPodcastDao(): PodcastDAO
+    fun getEpisodeDao(): EpisodeDAO
+    fun getGenreDao(): GenresDAO
+    fun getLastSyncDao(): LastSyncDAO
+    fun getRelatedPodcastDao(): RelatedPodcastDAO
+    fun getTrendingPodcastDao(): TrendingPodcastDAO
 }

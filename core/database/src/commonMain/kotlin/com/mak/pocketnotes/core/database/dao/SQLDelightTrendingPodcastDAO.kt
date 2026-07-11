@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.flowOn
 
 typealias TrendingPodcastEntity = Trending_podcasts
 
-internal class TrendingPodcastDAO(
+internal class SQLDelightTrendingPodcastDAO(
     database: PocketDatabase,
     private val dispatcher: DispatcherProvider
-) : ITrendingPodcastDAO {
+) : TrendingPodcastDAO {
     private val dbQuery = database.trending_podcastQueries
 
     override fun getBestPodcasts(): Flow<List<PodcastEntity>> = dbQuery.getTrendingPodcasts()
@@ -38,7 +38,7 @@ internal class TrendingPodcastDAO(
     }
 }
 
-interface ITrendingPodcastDAO {
+interface TrendingPodcastDAO {
     fun getBestPodcasts(): Flow<List<PodcastEntity>>
     fun upsertPage(entities: List<TrendingPodcastEntity>)
     fun deletePage(page: Int)

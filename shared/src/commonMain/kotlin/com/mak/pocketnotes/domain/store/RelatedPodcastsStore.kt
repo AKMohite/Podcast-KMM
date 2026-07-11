@@ -3,9 +3,9 @@ package com.mak.pocketnotes.domain.store
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
-import com.mak.pocketnotes.core.database.dao.ILastSyncDAO
-import com.mak.pocketnotes.core.database.dao.IPodcastDAO
-import com.mak.pocketnotes.core.database.dao.IRelatedPodcastDAO
+import com.mak.pocketnotes.core.database.dao.LastSyncDAO
+import com.mak.pocketnotes.core.database.dao.PodcastDAO
+import com.mak.pocketnotes.core.database.dao.RelatedPodcastDAO
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
@@ -25,10 +25,10 @@ import kotlin.time.Duration.Companion.hours
 internal class RelatedPodcastsStore: KoinComponent {
 
     private val api: PocketNotesAPI by inject()
-    private val podcastDAO: IPodcastDAO by inject()
+    private val podcastDAO: PodcastDAO by inject()
     private val transactionRunner: DatabaseTransactionRunner by inject()
-    private val relatedPodcastDAO: IRelatedPodcastDAO by inject()
-    private val lastSyncDAO: ILastSyncDAO by inject()
+    private val relatedPodcastDAO: RelatedPodcastDAO by inject()
+    private val lastSyncDAO: LastSyncDAO by inject()
     private val dispatcher: DispatcherProvider by inject()
     private val mapper: PodcastMapper by inject()
 

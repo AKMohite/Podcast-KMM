@@ -10,10 +10,10 @@ import kotlin.time.Instant
 
 typealias EpisodeEntity = Episodes
 
-internal class EpisodeDAO(
+internal class SQLDelightEpisodeDAO(
     database: PocketDatabase,
     private val dispatcher: DispatcherProvider
-) : IEpisodeDAO {
+) : EpisodeDAO {
 
     private val dbQuery = database.podcast_episode_entityQueries
 
@@ -55,7 +55,7 @@ internal class EpisodeDAO(
     }
 }
 
-interface IEpisodeDAO {
+interface EpisodeDAO {
     fun insert(entity: EpisodeEntity)
     fun insertEpisodes(entities: List<EpisodeEntity>)
     fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>>
