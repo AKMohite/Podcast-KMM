@@ -42,6 +42,7 @@ kotlin {
                 api(project(":core:remote"))
                 api(project(":core:database"))
                 api(project(":core:feature:domain"))
+                api(project(":core:feature:data"))
 //                implementation("co.touchlab:stately-collections:2.0.7")
 //                implementation("co.touchlab:stately-concurrency:2.0.7")
 //                implementation("co.touchlab:stately-isolate:2.0.7")

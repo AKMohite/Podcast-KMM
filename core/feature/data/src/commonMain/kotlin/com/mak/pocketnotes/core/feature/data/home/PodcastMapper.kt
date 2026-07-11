@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.domain.mapper
+package com.mak.pocketnotes.core.feature.data.home
 
 import com.mak.pocketnotes.core.database.dao.EpisodeEntity
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
@@ -9,7 +9,7 @@ import com.mak.pocketnotes.core.remote.dto.EpisodeDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import kotlin.time.Instant
 
-internal class PodcastMapper {
+class PodcastMapper {
 
     fun jsonToModels(dtos: List<PodcastDTO>): List<Podcast> {
         return dtos.map { dto ->

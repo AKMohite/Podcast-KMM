@@ -17,7 +17,8 @@ internal class SQLDelightTrendingPodcastDAO(
 ) : TrendingPodcastDAO {
     private val dbQuery = database.trending_podcastQueries
 
-    override fun getBestPodcasts(): Flow<List<PodcastEntity>> = dbQuery.getTrendingPodcasts()
+    override fun getBestPodcasts(page: Int): Flow<List<PodcastEntity>> =
+        dbQuery.getTrendingPodcasts(page)
         .asFlow()
         .mapToList(dispatcher.io)
         .distinctUntilChanged()
@@ -39,7 +40,7 @@ internal class SQLDelightTrendingPodcastDAO(
 }
 
 interface TrendingPodcastDAO {
-    fun getBestPodcasts(): Flow<List<PodcastEntity>>
+    fun getBestPodcasts(page: Int = 1): Flow<List<PodcastEntity>>
     fun upsertPage(entities: List<TrendingPodcastEntity>)
     fun deletePage(page: Int)
     fun deleteAll()

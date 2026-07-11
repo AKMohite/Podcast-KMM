@@ -59,7 +59,12 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":core:feature:domain"))
+                implementation(project(":core:common"))
+                implementation(project(":core:remote"))
+                implementation(project(":core:database"))
                 implementation(libs.store5)
+                implementation(libs.koin.core)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 

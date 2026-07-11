@@ -6,10 +6,10 @@ import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.RelatedPodcastDAO
+import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
-import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext

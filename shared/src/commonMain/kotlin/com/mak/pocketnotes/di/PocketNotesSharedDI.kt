@@ -2,9 +2,9 @@ package com.mak.pocketnotes.di
 
 import com.mak.pocketnotes.core.common.di.commonModule
 import com.mak.pocketnotes.core.database.di.localModule
+import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.remote.di.ktorModule
 import com.mak.pocketnotes.domain.mapper.PocketMapper
-import com.mak.pocketnotes.domain.mapper.PodcastMapper
 import com.mak.pocketnotes.domain.store.BestPodcastsStore
 import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
 import com.mak.pocketnotes.domain.store.EpisodeStore
