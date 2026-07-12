@@ -44,7 +44,7 @@ internal class OfflineFirstBestPodcastRepository(
                 },
                 sourceOfTruth = SourceOfTruth.of(
                     reader = { param ->
-                        fetchPodcasts(param)
+                        observePodcasts(param)
                     },
                     writer = { param, dto ->
                         updatePodcasts(dto, param)
@@ -64,8 +64,8 @@ internal class OfflineFirstBestPodcastRepository(
             .build()
     }
 
-    override fun stream(param: BestQueryParam): Flow<List<Podcast>> = store
-        .stream(StoreReadRequest.cached(param, false))
+    override fun refresh(param: BestQueryParam): Flow<List<Podcast>> = store
+        .stream(StoreReadRequest.cached(param, param.forceRefresh))
         .map { response ->
             when (response) {
                 is StoreReadResponse.Data -> {
@@ -105,7 +105,7 @@ internal class OfflineFirstBestPodcastRepository(
         updateLocal(param.page, podcasts, trendingPodcasts)
     }
 
-    private fun fetchPodcasts(param: BestQueryParam): Flow<List<Podcast>> =
+    override fun observePodcasts(param: BestQueryParam): Flow<List<Podcast>> =
         trendingPodcastDAO.getBestPodcasts(param.page)
             .map { entities -> mapper.entityToModels(entities) }
             .flowOn(dispatcher.computation)

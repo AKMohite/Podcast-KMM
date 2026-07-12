@@ -5,5 +5,7 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import kotlinx.coroutines.flow.Flow
 
 interface BestPodcastRepository {
-    fun stream(param: BestQueryParam): Flow<List<Podcast>>
+    fun refresh(param: BestQueryParam): Flow<List<Podcast>>
+
+    fun observePodcasts(param: BestQueryParam): Flow<List<Podcast>>
 }
