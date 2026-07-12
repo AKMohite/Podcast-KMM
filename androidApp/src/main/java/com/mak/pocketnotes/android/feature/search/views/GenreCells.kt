@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
-import com.mak.pocketnotes.domain.models.Genre
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 
 @Composable
 internal fun GenreCells(

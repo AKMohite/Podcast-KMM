@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.domain.models
+package com.mak.pocketnotes.core.common.models
 
 import com.mak.pocketnotes.core.common.exception.PocketException
 import kotlinx.coroutines.CancellationException

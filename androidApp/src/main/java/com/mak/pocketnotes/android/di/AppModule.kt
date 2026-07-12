@@ -43,7 +43,7 @@ internal val appModule = module {
     }
     viewModel {
         SearchViewModel(
-            getGenres = get(),
+            genreRepository = get(),
             searchPodcast = get(),
             bestPodcastRepository = get()
         )

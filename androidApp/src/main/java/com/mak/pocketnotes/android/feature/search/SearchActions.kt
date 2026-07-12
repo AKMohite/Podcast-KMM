@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.android.feature.search
 
 import androidx.compose.ui.focus.FocusState
-import com.mak.pocketnotes.domain.models.Genre
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 import kotlinx.coroutines.flow.StateFlow
 
 internal interface SearchActions {

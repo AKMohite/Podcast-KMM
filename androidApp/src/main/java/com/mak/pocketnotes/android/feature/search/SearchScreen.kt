@@ -37,7 +37,7 @@ import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeIte
 import com.mak.pocketnotes.android.feature.search.views.GenreCells
 import com.mak.pocketnotes.android.feature.search.views.SearchField
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
-import com.mak.pocketnotes.domain.models.Genre
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 import kotlinx.coroutines.flow.StateFlow
 import org.koin.androidx.compose.koinViewModel
 

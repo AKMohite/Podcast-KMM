@@ -2,13 +2,13 @@ package com.mak.pocketnotes.android.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.common.models.DomainResult
 import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcastsParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
-import com.mak.pocketnotes.domain.models.DomainResult
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow

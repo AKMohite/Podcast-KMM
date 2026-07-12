@@ -6,9 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
-import com.mak.pocketnotes.domain.models.DomainResult
-import com.mak.pocketnotes.domain.models.Genre
-import com.mak.pocketnotes.domain.usecase.GetGenres
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
+import com.mak.pocketnotes.core.feature.domain.search.repository.GenreRepository
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class SearchViewModel(
-    private val getGenres: GetGenres,
+    private val genreRepository: GenreRepository,
     private val searchPodcast: SearchPodcast,
     private val bestPodcastRepository: BestPodcastRepository
 ): ViewModel(), SearchActions {
@@ -32,13 +31,13 @@ internal class SearchViewModel(
     }
 
     private fun getAllGenres() {
-        getGenres()
+        genreRepository.refresh()
             .map { result ->
-                when(result) {
-                    is DomainResult.Error -> _state.update { it.copy(error = result.message) }
-                    DomainResult.Loading -> _state.update { it.copy(loading = true) }
-                    is DomainResult.Success -> _state.update { it.copy(genres = result.data) }
-                }
+//                when(result) {
+//                    is DomainResult.Error -> _state.update { it.copy(error = result.message) }
+//                    DomainResult.Loading -> _state.update { it.copy(loading = true) }
+//                    is DomainResult.Success -> _state.update { it.copy(genres = result.data) }
+//                }
             }.launchIn(viewModelScope)
     }
 
