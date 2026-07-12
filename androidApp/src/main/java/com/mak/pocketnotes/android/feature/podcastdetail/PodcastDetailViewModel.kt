@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
-import com.mak.pocketnotes.domain.usecase.GetPodcastEpisodes
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onStart
 internal class PodcastDetailViewModel(
     val podcastRepository: PodcastRepository,
     val podcastRecommendations: GetPodcastRecommendations,
-    val podcastEpisodes: GetPodcastEpisodes,
+    val episodeRepository: EpisodeRepository,
     podcastId: String
 ): ViewModel() {
 
@@ -35,7 +35,7 @@ internal class PodcastDetailViewModel(
     }
 
     private fun loadEpisodes(podcastId: String, nextEpisodeDate: Long? = null) {
-        podcastEpisodes(podcastId)
+        episodeRepository.refresh(Pair(podcastId, nextEpisodeDate ?: 0L))
             .onEach {
                 _episodes = it
             }
