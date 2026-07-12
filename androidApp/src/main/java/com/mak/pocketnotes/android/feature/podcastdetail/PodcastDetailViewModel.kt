@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
-import com.mak.pocketnotes.domain.usecase.GetPodcast
+import com.mak.pocketnotes.core.feature.domain.home.repository.PodcastRepository
 import com.mak.pocketnotes.domain.usecase.GetPodcastEpisodes
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import kotlinx.coroutines.flow.combine
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 
 internal class PodcastDetailViewModel(
-    val getPodcast: GetPodcast,
+    val podcastRepository: PodcastRepository,
     val podcastRecommendations: GetPodcastRecommendations,
     val podcastEpisodes: GetPodcastEpisodes,
     podcastId: String
@@ -43,7 +43,7 @@ internal class PodcastDetailViewModel(
     }
 
     private fun loadPodcast(podcastId: String) {
-        getPodcast(podcastId)
+        podcastRepository.refresh(podcastId)
             .combine(podcastRecommendations(podcastId)) { podcast, recommendations ->
                 _uiState = uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
                 loadEpisodes(podcastId)

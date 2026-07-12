@@ -35,7 +35,7 @@ internal val appModule = module {
     viewModel { PlayerExpansionViewModel() }
     viewModel { params ->
         PodcastDetailViewModel(
-            getPodcast = get(),
+            podcastRepository = get(),
             podcastRecommendations = get(),
             podcastEpisodes = get(),
             podcastId = params.get()

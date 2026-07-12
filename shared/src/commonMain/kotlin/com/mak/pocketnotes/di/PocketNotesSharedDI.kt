@@ -6,10 +6,8 @@ import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.remote.di.ktorModule
 import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.store.EpisodeStore
-import com.mak.pocketnotes.domain.store.PodcastStore
 import com.mak.pocketnotes.domain.store.RelatedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.GetGenres
-import com.mak.pocketnotes.domain.usecase.GetPodcast
 import com.mak.pocketnotes.domain.usecase.GetPodcastEpisodes
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
@@ -24,14 +22,12 @@ private val dataModule = module {
 
 private val domainModule = module {
     factory { GetGenres() }
-    factory { GetPodcast() }
     factory { GetPodcastEpisodes() }
     factory { GetPodcastRecommendations() }
     factory { SearchPodcast() }
 }
 
 private val storeModule = module {
-    factory { PodcastStore() }
     factory { EpisodeStore() }
     factory { RelatedPodcastsStore() }
 }

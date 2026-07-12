@@ -2,8 +2,10 @@ package com.mak.pocketnotes.core.feature.data.di
 
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstBestPodcastRepository
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstCuratedPodcastRepository
+import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
+import com.mak.pocketnotes.core.feature.domain.home.repository.PodcastRepository
 import org.koin.dsl.module
 
 val homeDataModule = module {
@@ -27,6 +29,18 @@ val homeDataModule = module {
             curatedPodcastDAO = get(),
             lastSyncDAO = get(),
             dispatcher = get()
+        )
+    }
+
+    factory<PodcastRepository> {
+        OfflineFirstPodcastRepository(
+            api = get(),
+            transactionRunner = get(),
+            podcastDAO = get(),
+            episodeDAO = get(),
+            lastSyncDAO = get(),
+            dispatcher = get(),
+            mapper = get()
         )
     }
 }
