@@ -9,7 +9,7 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
-import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.RelatedPodcastRepository
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onStart
 
 internal class PodcastDetailViewModel(
     val podcastRepository: PodcastRepository,
-    val podcastRecommendations: GetPodcastRecommendations,
+    val relatedPodcastRepository: RelatedPodcastRepository,
     val episodeRepository: EpisodeRepository,
     podcastId: String
 ): ViewModel() {
@@ -44,8 +44,11 @@ internal class PodcastDetailViewModel(
 
     private fun loadPodcast(podcastId: String) {
         podcastRepository.refresh(podcastId)
-            .combine(podcastRecommendations(podcastId)) { podcast, recommendations ->
-                _uiState = uiState.copy(loading = false, podcast = podcast.copy(recommendations = recommendations))
+            .combine(relatedPodcastRepository.refresh(podcastId)) { podcast, recommendations ->
+                _uiState = uiState.copy(
+                    loading = false,
+                    podcast = podcast.copy(recommendations = recommendations.related)
+                )
                 loadEpisodes(podcastId)
             }
             .onStart {

@@ -2,12 +2,11 @@ package com.mak.pocketnotes.di
 
 import com.mak.pocketnotes.core.common.di.commonModule
 import com.mak.pocketnotes.core.database.di.localModule
+import com.mak.pocketnotes.core.feature.data.di.coreDataModule
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.remote.di.ktorModule
 import com.mak.pocketnotes.domain.mapper.PocketMapper
-import com.mak.pocketnotes.domain.store.RelatedPodcastsStore
 import com.mak.pocketnotes.domain.usecase.GetGenres
-import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -20,12 +19,7 @@ private val dataModule = module {
 
 private val domainModule = module {
     factory { GetGenres() }
-    factory { GetPodcastRecommendations() }
     factory { SearchPodcast() }
-}
-
-private val storeModule = module {
-    factory { RelatedPodcastsStore() }
 }
 
 internal expect fun platformModule(): Module
@@ -36,7 +30,7 @@ private val sharedModules =
         ktorModule(),
         localModule,
         dataModule,
-        storeModule,
+        coreDataModule,
         domainModule,
         platformModule()
     )

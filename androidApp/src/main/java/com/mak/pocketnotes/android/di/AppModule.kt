@@ -36,7 +36,7 @@ internal val appModule = module {
     viewModel { params ->
         PodcastDetailViewModel(
             podcastRepository = get(),
-            podcastRecommendations = get(),
+            relatedPodcastRepository = get(),
             episodeRepository = get(),
             podcastId = params.get()
         )

@@ -4,13 +4,15 @@ import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstBestPod
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstCuratedPodcastRepository
 import com.mak.pocketnotes.core.feature.data.podcastdetails.repository.OfflineFirstEpisodeRepository
 import com.mak.pocketnotes.core.feature.data.podcastdetails.repository.OfflineFirstPodcastRepository
+import com.mak.pocketnotes.core.feature.data.podcastdetails.repository.OfflineFirstRelatedPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.RelatedPodcastRepository
 import org.koin.dsl.module
 
-val homeDataModule = module {
+val coreDataModule = module {
     factory<BestPodcastRepository> {
         OfflineFirstBestPodcastRepository(
             api = get(),
@@ -51,6 +53,18 @@ val homeDataModule = module {
             api = get(),
             transactionRunner = get(),
             episodeDAO = get(),
+            lastSyncDAO = get(),
+            dispatcher = get(),
+            mapper = get()
+        )
+    }
+
+    factory<RelatedPodcastRepository> {
+        OfflineFirstRelatedPodcastRepository(
+            api = get(),
+            transactionRunner = get(),
+            podcastDAO = get(),
+            relatedPodcastDAO = get(),
             lastSyncDAO = get(),
             dispatcher = get(),
             mapper = get()

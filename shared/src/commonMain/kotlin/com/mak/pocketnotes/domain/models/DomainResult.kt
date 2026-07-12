@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.domain.models
 
 import com.mak.pocketnotes.core.common.exception.PocketException
+import kotlinx.coroutines.CancellationException
 
 sealed interface DomainResult<out T> {
     data object Loading: DomainResult<Nothing>
@@ -11,6 +12,8 @@ sealed interface DomainResult<out T> {
 suspend fun <T> safeCall(call: suspend () -> T): DomainResult<T> {
     return try {
         DomainResult.Success(call())
+    } catch (e: CancellationException) {
+        throw e
     } catch (e: PocketException) {
         DomainResult.Error(e.message, e)
     } catch (e: Throwable) {
