@@ -18,10 +18,8 @@ internal val appModule = module {
 
     viewModel {
         DiscoverViewmodel(
-            refreshBestPodcasts = get(),
-            refreshCuratedPodcasts = get(),
-            getBestPodcasts = get(),
-            getCuratedPodcasts = get()
+            bestPodcastsRepository = get(),
+            curatedPodcastsRepository = get()
         )
     }
     viewModel {
@@ -47,7 +45,7 @@ internal val appModule = module {
         SearchViewModel(
             getGenres = get(),
             searchPodcast = get(),
-            getBestPodcasts = get()
+            bestPodcastRepository = get()
         )
     }
     viewModel {

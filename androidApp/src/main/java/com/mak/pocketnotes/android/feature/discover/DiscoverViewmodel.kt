@@ -2,13 +2,13 @@ package com.mak.pocketnotes.android.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcastsParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
+import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
 import com.mak.pocketnotes.domain.models.DomainResult
-import com.mak.pocketnotes.domain.store.BestPodcastsStore
-import com.mak.pocketnotes.domain.store.CuratedPodcastsStore
-import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
-import com.mak.pocketnotes.domain.usecase.RefreshCuratedPodcasts
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,20 +22,22 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DiscoverViewmodel(
-    private val refreshBestPodcasts: RefreshBestPodcasts,
-    private val refreshCuratedPodcasts: RefreshCuratedPodcasts,
-    getBestPodcasts: BestPodcastsStore,
-    getCuratedPodcasts: CuratedPodcastsStore
+    private val bestPodcastsRepository: BestPodcastRepository,
+    private val curatedPodcastsRepository: CuratedPodcastRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DiscoverScreenState(loading = true))
     internal val uiState: StateFlow<DiscoverScreenState> = _uiState.asStateFlow()
 
-    private val fetchBestPodcasts = getBestPodcasts().distinctUntilChanged().map { best ->
+    private val fetchBestPodcasts =
+        bestPodcastsRepository.observePodcasts(BestQueryParam()).distinctUntilChanged()
+            .map { best ->
         best.take(8).shuffled() to if (best.size > 4) best.drop(4) else best
     }
 
-    private val fetchCuratedPodcasts = getCuratedPodcasts().distinctUntilChanged()
+    private val fetchCuratedPodcasts = curatedPodcastsRepository.observePodcasts(
+        CuratedPodcastsParam()
+    ).distinctUntilChanged()
 
     init {
         observePodcasts()
@@ -62,10 +64,17 @@ class DiscoverViewmodel(
 
     fun loadPodcasts(forceReload: Boolean = false) {
         viewModelScope.launch {
-            _uiState.update { it.copy(refreshing = true, errorMsg = null) }
+            _uiState.update {
+                it.copy(
+                    refreshing = true,
+                    errorMsg = "Not implemented need to remove this exception"
+                )
+            }
+            return@launch // TODO observe refresh flows
             try {
-                val bestDeferred = async { refreshBestPodcasts(1) }
-                val curatedDeferred = async { refreshCuratedPodcasts(1) }
+                val bestDeferred = async { bestPodcastsRepository.refresh(BestQueryParam()) }
+                val curatedDeferred =
+                    async { curatedPodcastsRepository.refresh(CuratedPodcastsParam()) }
 
                 val results = awaitAll(bestDeferred, curatedDeferred)
 

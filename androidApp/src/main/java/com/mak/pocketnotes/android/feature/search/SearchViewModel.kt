@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.domain.models.DomainResult
 import com.mak.pocketnotes.domain.models.Genre
 import com.mak.pocketnotes.domain.usecase.GetGenres
-import com.mak.pocketnotes.domain.usecase.RefreshBestPodcasts
 import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 internal class SearchViewModel(
     private val getGenres: GetGenres,
     private val searchPodcast: SearchPodcast,
-    private val getBestPodcasts: RefreshBestPodcasts
+    private val bestPodcastRepository: BestPodcastRepository
 ): ViewModel(), SearchActions {
 
     private val _state = MutableStateFlow(SearchState())
@@ -49,23 +49,26 @@ internal class SearchViewModel(
     override fun onGenreSelect(genre: Genre) {
         viewModelScope.launch {
             _state.update { it.copy(loading = true) }
-            when(val result = getBestPodcasts(1, genre.id)) {
-                is DomainResult.Success -> {
-                    _state.update {
-                        it.copy(
-                            genrePodcasts = result.data
-                        )
-                    }
-                }
-
-                is DomainResult.Error -> _state.update {
-                    it.copy(
-                        error = result.message
-                    )
-                }
-                else -> {}
-            }
-            _state.update { it.copy(loading = true) }
+//            when(val result = bestPodcastRepository.observePodcasts(BestQueryParam(
+//                page = 1,
+//                genreId = genre.id
+//            ))) {
+//                is DomainResult.Success -> {
+//                    _state.update {
+//                        it.copy(
+//                            genrePodcasts = result.data
+//                        )
+//                    }
+//                }
+//
+//                is DomainResult.Error -> _state.update {
+//                    it.copy(
+//                        error = result.message
+//                    )
+//                }
+//                else -> {}
+//            }
+//            _state.update { it.copy(loading = true) }
         }
     }
 
