@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
-import com.mak.pocketnotes.core.feature.domain.home.repository.PodcastRepository
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
 import com.mak.pocketnotes.domain.usecase.GetPodcastEpisodes
 import com.mak.pocketnotes.domain.usecase.GetPodcastRecommendations
 import kotlinx.coroutines.flow.combine

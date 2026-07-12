@@ -1,4 +1,4 @@
-package com.mak.pocketnotes.core.feature.data.home.repository
+package com.mak.pocketnotes.core.feature.data.podcastdetails.repository
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
@@ -8,7 +8,7 @@ import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
-import com.mak.pocketnotes.core.feature.domain.home.repository.PodcastRepository
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import kotlinx.coroutines.flow.Flow
@@ -36,10 +36,10 @@ internal class OfflineFirstPodcastRepository(
 
     private val store by lazy {
         StoreBuilder.from<String, PodcastDTO, Podcast>(
-            fetcher = Fetcher.of { podcastId ->
+            fetcher = Fetcher.Companion.of { podcastId ->
                 fetchPodcast(podcastId)
             },
-            sourceOfTruth = SourceOfTruth.of(
+            sourceOfTruth = SourceOfTruth.Companion.of(
                 reader = { podcastId ->
                     observePodcast(podcastId)
                 },
@@ -52,7 +52,7 @@ internal class OfflineFirstPodcastRepository(
                 }
             )
         ).validator(
-            Validator.by { podcast ->
+            Validator.Companion.by { podcast ->
                 return@by needsRefresh(podcast)
             }
         ).build()

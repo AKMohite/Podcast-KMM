@@ -2,10 +2,10 @@ package com.mak.pocketnotes.core.feature.data.di
 
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstBestPodcastRepository
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstCuratedPodcastRepository
-import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstPodcastRepository
+import com.mak.pocketnotes.core.feature.data.podcastdetails.repository.OfflineFirstPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
-import com.mak.pocketnotes.core.feature.domain.home.repository.PodcastRepository
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
 import org.koin.dsl.module
 
 val homeDataModule = module {
