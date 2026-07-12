@@ -10,10 +10,11 @@ import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.database.queries.CuratedSectionWithPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcastsParam
+import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.SectionPodcastDTO
-import com.mak.pocketnotes.domain.models.CuratedPodcast
-import com.mak.pocketnotes.domain.models.SectionPodcast
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -37,7 +38,7 @@ class CuratedPodcastsStore: KoinComponent {
     private val curatedPodcastDAO: CuratedPodcastDAO by inject()
     private val podcastDAO: PodcastDAO by inject()
 
-    operator fun invoke(query: GetCuratedPodcastsQuery = GetCuratedPodcastsQuery()) = StoreBuilder
+    operator fun invoke(query: CuratedPodcastsParam = CuratedPodcastsParam()) = StoreBuilder
         .from<Int, List<SectionPodcastDTO>, List<CuratedPodcast>>(
             fetcher = Fetcher.of {  page ->
                 api.getCuratedPodcasts(page).curatedLists ?: emptyList()
@@ -154,8 +155,3 @@ private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectio
     }.flatten()
     return sectionEntities to podcastEntities
 }
-
-data class GetCuratedPodcastsQuery(
-    val page: Int = 1,
-    val forceRefresh: Boolean = false
-)

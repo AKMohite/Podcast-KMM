@@ -7,12 +7,12 @@ import com.mak.pocketnotes.core.database.dao.CuratedPodcastEntity
 import com.mak.pocketnotes.core.database.dao.CuratedSectionEntity
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
+import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.CuratedPodcastDTO
 import com.mak.pocketnotes.core.remote.dto.SectionPodcastDTO
-import com.mak.pocketnotes.domain.models.CuratedPodcast
 import com.mak.pocketnotes.domain.models.DomainResult
-import com.mak.pocketnotes.domain.models.SectionPodcast
 import com.mak.pocketnotes.domain.models.safeCall
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent

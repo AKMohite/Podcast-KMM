@@ -38,8 +38,8 @@ import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
 import com.mak.pocketnotes.android.feature.discover.components.bestpodcast.PodcastColumn
-import com.mak.pocketnotes.domain.models.CuratedPodcast
-import com.mak.pocketnotes.domain.models.SectionPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
 
 @Composable
 internal fun DiscoverCuratedPodcastsExpanded(

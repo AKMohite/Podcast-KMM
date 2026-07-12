@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.window.core.layout.WindowSizeClass
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.isExpanded
-import com.mak.pocketnotes.domain.models.CuratedPodcast
+import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
 import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 
 @Composable
