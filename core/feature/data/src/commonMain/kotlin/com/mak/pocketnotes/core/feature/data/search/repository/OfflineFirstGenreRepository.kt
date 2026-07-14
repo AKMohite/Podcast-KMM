@@ -106,7 +106,7 @@ class OfflineFirstGenreRepository(
         }
     }
 
-    private suspend fun fetch(): List<GenreDTO> = api.getAllGenres().genres ?: emptyList()
+    private suspend fun fetch(): List<GenreDTO> = api.getAllGenres().getOrThrow().genres.orEmpty()
 
     private fun List<GenreDTO>.asGenreEntities(): List<GenreEntity> {
         return map { dto ->

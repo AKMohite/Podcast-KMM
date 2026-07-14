@@ -9,6 +9,7 @@ import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastDAO
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastEntity
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
+import com.mak.pocketnotes.core.feature.data.utils.exception
 import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
@@ -71,6 +72,9 @@ internal class OfflineFirstBestPodcastRepository(
                 is StoreReadResponse.Data -> {
                     response.value
                 }
+                is StoreReadResponse.Error -> {
+                    throw response.exception()
+                }
 
                 else -> {
                     emptyList()
@@ -117,7 +121,7 @@ internal class OfflineFirstBestPodcastRepository(
         param.genreId?.let { id ->
             queryMap["genre_id"] = id.toString()
         }
-        return api.getBestPodcasts(queryMap)
+        return api.getBestPodcasts(queryMap).getOrThrow()
     }
 
     private suspend fun delete(param: BestQueryParam) {

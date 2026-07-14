@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.core.remote.utils
 
+import com.mak.pocketnotes.core.common.models.DomainException
 import com.mak.pocketnotes.core.common.models.ErrorType
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestTimeoutException
@@ -13,6 +14,13 @@ import kotlinx.serialization.SerializationException
 
 // Define Result and Error types if not already present
 sealed interface RemoteResult<out T> {
+    fun getOrThrow(): T {
+        return when (this) {
+            is Failure -> throw DomainException(error)
+            is Success -> this.data
+        }
+    }
+
     data class Success<out T>(val data: T) : RemoteResult<T>
     data class Failure(val error: ErrorType) : RemoteResult<Nothing>
 }

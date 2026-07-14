@@ -111,7 +111,7 @@ internal class OfflineFirstPodcastRepository(
         }
     }
 
-    private suspend fun fetchPodcast(podcastId: String): PodcastDTO =
-        api.getPodcastDetails(podcastId)
+    private suspend fun fetchPodcast(podcastId: String): PodcastDTO = api
+        .getPodcastDetails(podcastId).getOrThrow()
 
 }

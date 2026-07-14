@@ -124,7 +124,7 @@ class OfflineFirstEpisodeRepository(
         val query = mapOf(
             "next_episode_pub_date" to (nextEpisodeDate.toString())
         )
-        return api.getPodcastDetails(podcastId, queryMap = query)
+        return api.getPodcastDetails(podcastId, queryMap = query).getOrThrow()
     }
 
 }

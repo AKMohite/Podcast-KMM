@@ -10,6 +10,7 @@ import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.PodcastEntity
 import com.mak.pocketnotes.core.database.queries.CuratedSectionWithPodcast
+import com.mak.pocketnotes.core.feature.data.utils.exception
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcastsParam
 import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
@@ -41,7 +42,8 @@ internal class OfflineFirstCuratedPodcastRepository(
         StoreBuilder
             .from<CuratedPodcastsParam, List<SectionPodcastDTO>, List<CuratedPodcast>>(
                 fetcher = Fetcher.of { param ->
-                    api.getCuratedPodcasts(param.page).curatedLists ?: emptyList()
+                    api.getCuratedPodcasts(param.page)
+                        .getOrThrow().curatedLists.orEmpty()
                 },
                 sourceOfTruth = SourceOfTruth.of(
                     reader = { param ->
@@ -70,6 +72,9 @@ internal class OfflineFirstCuratedPodcastRepository(
             when (response) {
                 is StoreReadResponse.Data -> {
                     response.value
+                }
+                is StoreReadResponse.Error -> {
+                    throw response.exception()
                 }
 
                 else -> {

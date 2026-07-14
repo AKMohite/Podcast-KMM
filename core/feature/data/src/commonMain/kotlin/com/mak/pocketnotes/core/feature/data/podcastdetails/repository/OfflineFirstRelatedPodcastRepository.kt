@@ -122,7 +122,8 @@ internal class OfflineFirstRelatedPodcastRepository(
         }
     }
 
-    private suspend fun fetch(podcastId: String): List<PodcastDTO> =
-        api.getPodcastRecommendations(podcastId).recommendations ?: emptyList()
+    private suspend fun fetch(podcastId: String): List<PodcastDTO> = api
+        .getPodcastRecommendations(podcastId)
+        .getOrThrow().recommendations.orEmpty()
 
 }
