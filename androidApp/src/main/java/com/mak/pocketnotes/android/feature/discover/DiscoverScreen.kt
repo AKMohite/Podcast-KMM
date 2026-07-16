@@ -78,13 +78,13 @@ private fun DiscoverContent(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
             onRefresh = { loadNextPodcasts(true) },
-            isRefreshing = uiState.refreshing,
+            isRefreshing = uiState.isPullToRefreshing,
         ) {
             LazyColumn {
                 item(key = "discover-header", contentType = "top_banner") {
                     DiscoverHeader(
                         modifier = Modifier.fillMaxWidth(),
-                        podcasts = uiState.topPodcasts,
+                        podcasts = uiState.bannerPodcastsSection,
                         onPodcastClick = gotoDetails
                     )
                 }
@@ -94,11 +94,11 @@ private fun DiscoverContent(
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         gotoDetails = gotoDetails,
-                        podcasts = uiState.getSectionedPodcasts()
+                        podcasts = uiState.trendingPodcastsSection
                     )
                 }
                 items(
-                    items = uiState.curatedPodcasts,
+                    items = uiState.curatedPodcastsSection,
                     key = { category -> category.id },
                     contentType = { "curated_podcast" }
                 ) { podcast ->

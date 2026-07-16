@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.core.feature.data.home.repository
 
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
+import com.mak.pocketnotes.core.common.models.SectionState
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
@@ -65,8 +66,7 @@ internal class OfflineFirstBestPodcastRepository(
             .build()
     }
 
-    override fun refresh(param: BestQueryParam): Flow<List<Podcast>> = store
-        .stream(StoreReadRequest.cached(param, param.forceRefresh))
+    override fun refresh(param: BestQueryParam): Flow<List<Podcast>> = getStoreStream(param)
         .map { response ->
             when (response) {
                 is StoreReadResponse.Data -> {
@@ -81,6 +81,67 @@ internal class OfflineFirstBestPodcastRepository(
                 }
             }
         }
+
+    override fun refreshSection(param: BestQueryParam): Flow<SectionState<List<Podcast>>> {
+        var lastKnownGoodPage: List<Podcast>? = null
+        return getStoreStream(param)
+            .map { response ->
+                when (response) {
+                    is StoreReadResponse.Loading ->
+                        lastKnownGoodPage?.let { SectionState.Success(it, isRefreshing = true) }
+                            ?: SectionState.Loading
+
+                    is StoreReadResponse.Data -> {
+                        val page = response.value
+                        lastKnownGoodPage = page
+                        SectionState.Success(page)
+                    }
+
+                    is StoreReadResponse.NoNewData ->
+                        lastKnownGoodPage?.let { SectionState.Success(it) } ?: SectionState.Loading
+
+                    is StoreReadResponse.Error ->
+                        SectionState.Error(
+                            response.exception().type,
+                            cachedData = lastKnownGoodPage
+                        )
+
+                    else -> SectionState.Loading // exhaustiveness fallback if StoreReadResponse has more cases than assumed above
+                }
+            }
+    }
+
+    override fun refreshBannerSection(param: BestQueryParam): Flow<SectionState<List<Podcast>>> {
+        var lastKnownGoodPage: List<Podcast>? = null
+        return getStoreStream(param)
+            .map { response ->
+                when (response) {
+                    is StoreReadResponse.Loading ->
+                        lastKnownGoodPage?.let { SectionState.Success(it, isRefreshing = true) }
+                            ?: SectionState.Loading
+
+                    is StoreReadResponse.Data -> {
+                        val page = response.value.take(8)
+                        lastKnownGoodPage = page
+                        SectionState.Success(page)
+                    }
+
+                    is StoreReadResponse.NoNewData ->
+                        lastKnownGoodPage?.let { SectionState.Success(it) } ?: SectionState.Loading
+
+                    is StoreReadResponse.Error ->
+                        SectionState.Error(
+                            response.exception().type,
+                            cachedData = lastKnownGoodPage
+                        )
+
+                    else -> SectionState.Loading // exhaustiveness fallback if StoreReadResponse has more cases than assumed above
+                }
+            }
+    }
+
+    private fun getStoreStream(param: BestQueryParam): Flow<StoreReadResponse<List<Podcast>>> =
+        store.stream(StoreReadRequest.cached(param, param.forceRefresh))
 
     private suspend fun needsRefresh(podcasts: List<Podcast>): Boolean {
         if (podcasts.isEmpty()) {
