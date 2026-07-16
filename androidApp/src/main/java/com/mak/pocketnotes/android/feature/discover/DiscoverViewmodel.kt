@@ -2,32 +2,28 @@ package com.mak.pocketnotes.android.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mak.pocketnotes.core.common.models.DomainResult
 import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcastsParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class DiscoverViewmodel(
     private val bestPodcastsRepository: BestPodcastRepository,
     private val curatedPodcastsRepository: CuratedPodcastRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(DiscoverScreenState(loading = true))
-    internal val uiState: StateFlow<DiscoverScreenState> = _uiState.asStateFlow()
+    private val isRefreshing = MutableStateFlow(false)
 
     private val fetchBestPodcasts =
         bestPodcastsRepository.observePodcasts(BestQueryParam()).distinctUntilChanged()
@@ -39,61 +35,36 @@ class DiscoverViewmodel(
         CuratedPodcastsParam()
     ).distinctUntilChanged()
 
-    init {
-        observePodcasts()
-        loadPodcasts()
-    }
 
-    private fun observePodcasts() {
-        combine(
-            fetchBestPodcasts,
-            fetchCuratedPodcasts
-        ) { (top, main), curated ->
-            _uiState.update { current ->
-                current.copy(
-                    loading = false,
-                    refreshing = false,
-                    loadFinished = top.isNotEmpty() || main.isNotEmpty(),
-                    topPodcasts = top,
-                    podcasts = main,
-                    curatedPodcasts = curated
+    private val _uiState = MutableStateFlow(DiscoverScreenState(loading = true))
+    internal val uiState: StateFlow<DiscoverScreenState> = combine(
+        isRefreshing.flatMapLatest { bestPodcastsRepository.refresh(BestQueryParam(forceRefresh = it)) },
+        isRefreshing.flatMapLatest {
+            curatedPodcastsRepository.refresh(
+                CuratedPodcastsParam(
+                    forceRefresh = it
                 )
-            }
-        }.launchIn(viewModelScope)
-    }
+            )
+        }
+    ) { best, curated ->
+        val (banner, trending) = best.take(8)
+            .shuffled() to if (best.size > 4) best.drop(4) else best
+        DiscoverScreenState(
+            refreshing = false,
+            topPodcasts = banner,
+            podcasts = trending,
+            curatedPodcasts = curated
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = DiscoverScreenState(loading = true)
+    )
+
+
 
     fun loadPodcasts(forceReload: Boolean = false) {
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    refreshing = true,
-                    errorMsg = "Not implemented need to remove this exception"
-                )
-            }
-            return@launch // TODO observe refresh flows
-            try {
-                val bestDeferred = async { bestPodcastsRepository.refresh(BestQueryParam()) }
-                val curatedDeferred =
-                    async { curatedPodcastsRepository.refresh(CuratedPodcastsParam()) }
-
-                val results = awaitAll(bestDeferred, curatedDeferred)
-
-                val errors = results.filterIsInstance<DomainResult.Error>()
-                if (errors.isNotEmpty()) {
-                    _uiState.update { it.copy(
-                        errorMsg = errors.joinToString { e -> e.message.orEmpty() },
-                        refreshing = false
-                    ) }
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        errorMsg = e.message ?: "An unexpected error occurred",
-                        refreshing = false
-                    )
-                }
-            }
-        }
+        isRefreshing.value = forceReload
     }
 
     fun onErrorConsumed() {
