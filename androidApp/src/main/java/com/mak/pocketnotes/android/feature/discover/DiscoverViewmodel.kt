@@ -2,6 +2,7 @@ package com.mak.pocketnotes.android.feature.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.common.models.ErrorType
 import com.mak.pocketnotes.core.common.models.SectionState
 import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
@@ -15,9 +16,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class DiscoverViewmodel(
     private val bestPodcastsRepository: BestPodcastRepository,
@@ -25,16 +27,23 @@ class DiscoverViewmodel(
 ) : ViewModel() {
 
     private val isRefreshing = MutableStateFlow(false)
+    private val errorMsg = MutableStateFlow<ErrorType?>(null)
+
     internal val uiState: StateFlow<DiscoverScreenState> = combine(
         refreshBanner(),
         refreshBestPodcasts(),
-        refreshCuratedPodcasts()
-    ) { bannerSection, bestSection, curatedSection ->
+        refreshCuratedPodcasts(),
+        errorMsg
+    ) { bannerSection, bestSection, curatedSection, error ->
+        val isPullToRefreshing =
+            bannerSection.isInFlight() || bestSection.isInFlight() || curatedSection.isInFlight()
+        isRefreshing.value = isPullToRefreshing
         DiscoverScreenState(
-            isPullToRefreshing = false,
+            isPullToRefreshing = isPullToRefreshing,
             bannerPodcastsSection = bannerSection,
             trendingPodcastsSection = bestSection,
-            curatedPodcastsSection = curatedSection
+            curatedPodcastsSection = curatedSection,
+            errorType = error
         )
     }.stateIn(
         scope = viewModelScope,
@@ -47,6 +56,10 @@ class DiscoverViewmodel(
         )
     )
 
+    init {
+        isRefreshing.value = true
+    }
+
     private fun refreshCuratedPodcasts(): Flow<SectionState<List<CuratedPodcast>>> =
         isRefreshing.flatMapLatest {
             curatedPodcastsRepository.refreshSection(
@@ -54,41 +67,40 @@ class DiscoverViewmodel(
                     forceRefresh = it
                 )
             )
-        }
+        }.onEach { updateError(it) }
 
     private fun refreshBestPodcasts(): Flow<SectionState<List<Podcast>>> =
         isRefreshing.flatMapLatest {
             bestPodcastsRepository.refreshSection(
                 BestQueryParam(forceRefresh = it)
             )
-        }
+        }.onEach { updateError(it) }
 
     private fun refreshBanner(): Flow<SectionState<List<Podcast>>> = isRefreshing.flatMapLatest {
-        bestPodcastsRepository.refreshBannerSection(
+        bestPodcastsRepository.observePodcasts(
             BestQueryParam(forceRefresh = it)
-        )
-    }
-
-    init {
-        viewModelScope.launch {
-            uiState.collect {
-                if (it.hasSectionInFlight()) {
-                    isRefreshing.update { true }
-                } else {
-                    isRefreshing.update { false }
-                }
+        ).map { podcasts ->
+            if (podcasts.isEmpty()) {
+                SectionState.Empty
+            } else {
+                SectionState.Success(podcasts)
             }
+        }
+    }.onEach { updateError(it) }
+
+    private fun updateError(state: SectionState<*>) {
+        if (state is SectionState.Error) {
+            errorMsg.update { state.type }
         }
     }
 
 
-
-    fun loadPodcasts(forceReload: Boolean = false) {
-        isRefreshing.value = forceReload
+    fun refreshPodcasts() {
+        isRefreshing.value = true
     }
 
     fun onErrorConsumed() {
-//        _uiState.update { it.copy(errorMsg = null) }
+        errorMsg.update { null }
     }
 }
 
@@ -97,11 +109,28 @@ internal data class DiscoverScreenState(
     val trendingPodcastsSection: SectionState<List<Podcast>>,
     val curatedPodcastsSection: SectionState<List<CuratedPodcast>>,
     val isPullToRefreshing: Boolean,
+    val errorType: ErrorType? = null,
 ) {
     /** True if any region is actively loading or mid a background refresh - used to know when
      * a PullToRefresh-triggered fetch has fully settled (see HomeViewModel). */
     internal fun hasSectionInFlight(): Boolean =
         bannerPodcastsSection.isInFlight() || trendingPodcastsSection.isInFlight() || curatedPodcastsSection.isInFlight()
 
-//    fun hasNoData(): Boolean =
+    fun initialLoading(): Boolean =
+        isInitialLoading(bannerPodcastsSection, trendingPodcastsSection, curatedPodcastsSection)
+}
+
+private fun isInitialLoading(
+    banner: SectionState<*>,
+    trending: SectionState<*>,
+    curated: SectionState<*>
+): Boolean {
+    return banner.isInitial() && trending.isInitial() && curated.isInitial()
+}
+
+private fun SectionState<*>.isInitial(): Boolean = when (this) {
+    is SectionState.Loading -> true
+    is SectionState.Error<*> -> (this.cachedData as? List<*>)?.isEmpty() ?: true
+    is SectionState.Success<*> -> (this.data as? List<*>)?.isEmpty() ?: true
+    is SectionState.Empty -> true
 }

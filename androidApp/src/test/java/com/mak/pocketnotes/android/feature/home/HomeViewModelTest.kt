@@ -122,7 +122,7 @@ class DiscoverViewmodelTest {
             advanceUntilIdle()
 
             val errorState = awaitItem()
-            assertEquals("Network Error", errorState.errorMsg)
+            assertEquals("Network Error", errorState.errorType)
             assertFalse(errorState.refreshing)
             cancelAndIgnoreRemainingEvents()
         }

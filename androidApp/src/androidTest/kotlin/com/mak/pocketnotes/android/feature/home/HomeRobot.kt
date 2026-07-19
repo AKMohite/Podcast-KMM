@@ -11,7 +11,7 @@ class HomeRobot(private val rule: ComposeContentTestRule) {
         rule.setContent {
             DiscoverScreen(
                 state = state,
-                loadNextPodcasts = {},
+                refreshPodcasts = {},
                 gotoDetails = {},
                 onErrorConsumed = {}
             )

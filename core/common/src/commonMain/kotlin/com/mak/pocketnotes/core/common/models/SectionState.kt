@@ -14,7 +14,6 @@ sealed interface SectionState<out T> {
 
     fun isInFlight(): Boolean = when (this) {
         is Loading -> true
-        is Success -> isRefreshing
         else -> false
     }
 }
