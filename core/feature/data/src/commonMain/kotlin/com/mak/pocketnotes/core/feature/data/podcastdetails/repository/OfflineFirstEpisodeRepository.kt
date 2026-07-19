@@ -23,6 +23,7 @@ import org.mobilenativefoundation.store.store5.StoreBuilder
 import org.mobilenativefoundation.store.store5.StoreReadRequest
 import org.mobilenativefoundation.store.store5.StoreReadResponse
 import org.mobilenativefoundation.store.store5.Validator
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
 
@@ -60,7 +61,7 @@ class OfflineFirstEpisodeRepository(
             )
             .validator(
                 Validator.by { episodes ->
-                    needsRefresh(episodes)
+                    isDataFresh(episodes)
                 }
             ).build()
     }
@@ -76,9 +77,9 @@ class OfflineFirstEpisodeRepository(
         }
         .flowOn(dispatcher.io)
 
-    private suspend fun needsRefresh(episodes: List<PodcastEpisode>): Boolean =
+    private suspend fun isDataFresh(episodes: List<PodcastEpisode>): Boolean =
         withContext(dispatcher.io) {
-            if (episodes.isEmpty()) return@withContext true
+            if (episodes.isEmpty()) return@withContext false
             lastSyncDAO.isRequestValid(
                 requestType = SyncRequest.PODCAST_EPISODES,
                 threshold = 1.days,
@@ -86,9 +87,12 @@ class OfflineFirstEpisodeRepository(
             )
         }
 
-    private suspend fun delete(podcastId: String, nextDate: Long) {
+    private suspend fun delete(podcastId: String, nextDate: Long?) {
         withContext(dispatcher.io) {
-            episodeDAO.removeEpisodes(podcastId, Instant.fromEpochMilliseconds(nextDate))
+            val nextDate = nextDate?.let {
+                Instant.fromEpochMilliseconds(it)
+            } ?: Instant.DISTANT_PAST
+            episodeDAO.removeEpisodes(podcastId, nextDate)
         }
     }
 
@@ -110,20 +114,22 @@ class OfflineFirstEpisodeRepository(
 
     private fun observeEpisodes(
         podcastId: String,
-        nextEpisodeDate: Long
+        nextEpisodeDate: Long?
     ): Flow<List<PodcastEpisode>> = episodeDAO.getEpisodes(
         podcastId = podcastId,
-        nextEpisodeDate = nextEpisodeDate.let { Instant.fromEpochMilliseconds(it) })
+        nextEpisodeDate = nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) }
+            ?: Clock.System.now())
         .map { mapper.episodeEntityToModels(it) }
         .flowOn(dispatcher.computation)
 
     private suspend fun fetchEpisodes(
-        nextEpisodeDate: Long,
+        nextEpisodeDate: Long?,
         podcastId: String
     ): PodcastDTO {
-        val query = mapOf(
-            "next_episode_pub_date" to (nextEpisodeDate.toString())
-        )
+        val query = mutableMapOf<String, String>()
+        nextEpisodeDate?.let {
+            query["next_episode_pub_date"] = it.toString()
+        }
         return api.getPodcastDetails(podcastId, queryMap = query).getOrThrow()
     }
 

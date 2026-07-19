@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import androidx.window.core.layout.WindowSizeClass
@@ -72,11 +74,12 @@ fun EntryProviderScope<NavKey>.podcastDetailEntry(
         val playerViewModel: PlayerViewModel = koinViewModel(
             viewModelStoreOwner = LocalActivity.current as ComponentActivity
         )
+        val state by detailViewModel.uiState.collectAsStateWithLifecycle()
         PodcastDetailScreen(
-            state = detailViewModel.uiState,
-            episodes = detailViewModel.episodesState,
+            state = state,
+            episodes = state.episodes,
             startPodcast = {
-                playerViewModel.onEvent(PlayerEvent.OnPlayQueue(detailViewModel.episodesState.take(10)))
+                playerViewModel.onEvent(PlayerEvent.OnPlayQueue(state.episodes.take(10)))
 //                startPodcastEpisodes(detailViewModel.episodesState)
             },
             gotoDetails = { podcastId ->

@@ -57,7 +57,7 @@ internal class OfflineFirstRelatedPodcastRepository(
                 )
             ).validator(
                 Validator.by { relatedPodcasts ->
-                    needsRefresh(relatedPodcasts)
+                    isDataFresh(relatedPodcasts)
                 }
             ).build()
     }
@@ -79,9 +79,9 @@ internal class OfflineFirstRelatedPodcastRepository(
             }
             .flowOn(dispatcher.computation)
 
-    private suspend fun needsRefresh(relatedPodcasts: RelatedPodcasts): Boolean =
+    private suspend fun isDataFresh(relatedPodcasts: RelatedPodcasts): Boolean =
         withContext(dispatcher.io) {
-            if (relatedPodcasts.related.isEmpty()) return@withContext true
+            if (relatedPodcasts.related.isEmpty()) return@withContext false
             lastSyncDAO.isRequestValid(
                 requestType = SyncRequest.PODCAST_RECOMMENDATIONS,
                 threshold = if (relatedPodcasts.related.isNotEmpty()) 4.days else 1.hours,
