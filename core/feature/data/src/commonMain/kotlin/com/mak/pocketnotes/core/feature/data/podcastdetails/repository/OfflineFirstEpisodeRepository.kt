@@ -7,8 +7,8 @@ import com.mak.pocketnotes.core.database.dao.EpisodeDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO.Companion.DEFAULT_ID
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
+import com.mak.pocketnotes.core.feature.domain.home.models.EpisodeQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
-import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeParams
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
@@ -38,7 +38,7 @@ class OfflineFirstEpisodeRepository(
 
     private val store by lazy {
         StoreBuilder
-            .from<EpisodeParams, PodcastDTO, List<PodcastEpisode>>(
+            .from<EpisodeQueryParam, PodcastDTO, List<PodcastEpisode>>(
                 fetcher = Fetcher.of { (podcastId, nextEpisodeDate) ->
                     fetchEpisodes(nextEpisodeDate, podcastId)
                 },
@@ -66,10 +66,10 @@ class OfflineFirstEpisodeRepository(
             ).build()
     }
 
-    override fun observeEpisodes(params: EpisodeParams): Flow<List<PodcastEpisode>> =
-        observeEpisodes(params.first, params.second)
+    override fun observeEpisodes(params: EpisodeQueryParam): Flow<List<PodcastEpisode>> =
+        observeEpisodes(params.podcastId, params.nextEpisodeDate)
 
-    override fun refresh(params: EpisodeParams): Flow<List<PodcastEpisode>> = store
+    override fun refresh(params: EpisodeQueryParam): Flow<List<PodcastEpisode>> = store
         .stream(StoreReadRequest.cached(key = params, refresh = false))
         .filterIsInstance<StoreReadResponse.Data<List<PodcastEpisode>>>()
         .map { response ->

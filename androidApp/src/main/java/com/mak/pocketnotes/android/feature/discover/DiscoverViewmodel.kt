@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -66,20 +67,20 @@ class DiscoverViewmodel(
                 CuratedPodcastsParam(
                     forceRefresh = it
                 )
-            )
+            ).distinctUntilChanged()
         }.onEach { updateError(it) }
 
     private fun refreshBestPodcasts(): Flow<SectionState<List<Podcast>>> =
         isRefreshing.flatMapLatest {
             bestPodcastsRepository.refreshSection(
                 BestQueryParam(forceRefresh = it)
-            )
+            ).distinctUntilChanged()
         }.onEach { updateError(it) }
 
     private fun refreshBanner(): Flow<SectionState<List<Podcast>>> = isRefreshing.flatMapLatest {
         bestPodcastsRepository.observePodcasts(
             BestQueryParam(forceRefresh = it)
-        ).map { podcasts ->
+        ).distinctUntilChanged().map { podcasts ->
             if (podcasts.isEmpty()) {
                 SectionState.Empty
             } else {

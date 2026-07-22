@@ -2,6 +2,7 @@ package com.mak.pocketnotes.android.feature.podcastdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.feature.domain.home.models.EpisodeQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
@@ -56,7 +57,12 @@ internal class PodcastDetailViewModel(
 
     private fun loadEpisodes(nextEpisodeDate: Long? = null) {
         _uiState.update { it.copy(loadingMore = true) }
-        episodeRepository.refresh(Pair(podcastId, nextEpisodeDate))
+        episodeRepository.refresh(
+            EpisodeQueryParam(
+                podcastId = podcastId,
+                nextEpisodeDate = nextEpisodeDate
+            )
+        )
             .onEach { newEpisodes ->
                 _uiState.update { state ->
                     state.copy(
