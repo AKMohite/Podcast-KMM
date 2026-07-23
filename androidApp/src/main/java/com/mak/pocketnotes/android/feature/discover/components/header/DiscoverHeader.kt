@@ -19,7 +19,7 @@ internal fun DiscoverHeader(
     podcasts: List<Podcast>,
     modifier: Modifier = Modifier,
     onPodcastClick: (String) -> Unit,
-    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+    sizeClass: WindowSizeClass
 ) {
     if (podcasts.isNotEmpty()) {
         when {
@@ -51,7 +51,8 @@ private fun DiscoverHeaderPreview() {
         Surface {
             DiscoverHeader(
                 podcasts = samplePodcasts,
-                onPodcastClick = {}
+                onPodcastClick = {},
+                sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
             )
         }
     }

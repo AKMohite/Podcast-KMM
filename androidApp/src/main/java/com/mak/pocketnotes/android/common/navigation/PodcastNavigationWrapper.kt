@@ -50,7 +50,7 @@ import com.mak.pocketnotes.android.feature.player.v2.PlayerScreen
 import com.mak.pocketnotes.android.feature.player.v2.PlayerViewModel
 import com.mak.pocketnotes.android.feature.player.v2.components.MiniPlayer
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
-import com.mak.pocketnotes.android.ui.theme.isExpanded
+import com.mak.pocketnotes.android.ui.theme.isLarge
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -74,7 +74,7 @@ internal fun PodcastNavigationWrapper(
     val sizeClass = adaptiveInfo.windowSizeClass
     val navLayoutType = when {
         adaptiveInfo.windowPosture.isTabletop -> NavigationSuiteType.NavigationBar
-        sizeClass.isExpanded() -> NavigationSuiteType.NavigationDrawer
+        sizeClass.isLarge() -> NavigationSuiteType.NavigationDrawer
         sizeClass.isMedium() -> NavigationSuiteType.NavigationRail
         else -> NavigationSuiteType.NavigationBar
     }

@@ -15,6 +15,10 @@ kotlin {
     }
 }
 
+composeCompiler {
+    stabilityConfigurationFiles.add(project.layout.projectDirectory.file("compose-stability.conf"))
+}
+
 android {
     namespace = "com.mak.pocketnotes.android"
     compileSdk = Integer.parseInt(libs.versions.compileSdk.get())

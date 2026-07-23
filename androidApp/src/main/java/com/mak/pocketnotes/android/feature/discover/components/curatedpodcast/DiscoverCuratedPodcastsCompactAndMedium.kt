@@ -2,7 +2,6 @@ package com.mak.pocketnotes.android.feature.discover.components.curatedpodcast
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
+import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
 import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
@@ -39,43 +38,39 @@ internal fun DiscoverCuratedPodcastsCompactAndMedium(
     modifier: Modifier = Modifier,
     goToDetails: (String) -> Unit,
     podcastSection: CuratedPodcast,
-    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass,
+    sizeClass: WindowSizeClass,
 ) {
-    val columnFraction = when {
-        sizeClass.isMedium() -> 0.5f
-        else -> 0.8f
+
+    val itemWidth = when {
+        sizeClass.isExpanded() -> 360.dp   // Fits comfortably on foldables/medium displays
+        sizeClass.isMedium() -> 280.dp // Larger width for desktop/tablets
+        else -> 180.dp                          // WindowWidthSizeClass.COMPACT (Standard mobile)
     }
 
-    BoxWithConstraints(
-        modifier = modifier
-    ) {
-        val itemWidth = maxWidth * columnFraction
-
-        Column {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = podcastSection.title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = if (sizeClass.isMedium()) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
-            )
-            LazyHorizontalGrid(
-                rows = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 160.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
-                    CuratedPodcastItem(
-                        modifier = Modifier
-                            .width(itemWidth)
-                            .clickable { goToDetails(podcast.id) },
-                        podcast = podcast
-                    )
-                }
+    Column(modifier = modifier) {
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = podcastSection.title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = if (sizeClass.isMedium()) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
+        )
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 160.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
+                CuratedPodcastItem(
+                    modifier = Modifier
+                        .width(itemWidth)
+                        .clickable { goToDetails(podcast.id) },
+                    podcast = podcast
+                )
             }
         }
     }

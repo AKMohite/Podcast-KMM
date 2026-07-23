@@ -15,7 +15,7 @@ import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 @Composable
 internal fun DiscoverCuratedPodcasts(
     modifier: Modifier = Modifier,
-    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass,
+    sizeClass: WindowSizeClass,
     podcastSection: CuratedPodcast,
     goToDetails: (String) -> Unit
 ) {
@@ -28,7 +28,8 @@ internal fun DiscoverCuratedPodcasts(
         else -> DiscoverCuratedPodcastsCompactAndMedium(
             modifier,
             goToDetails,
-            podcastSection
+            podcastSection,
+            sizeClass
         )
     }
 }
@@ -41,7 +42,8 @@ private fun DiscoverCuratedPodcastsPreview() {
         Surface {
             DiscoverCuratedPodcasts(
                 podcastSection = sampleCuratedPodcasts[0],
-                goToDetails = {}
+                goToDetails = {},
+                sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
             )
         }
     }

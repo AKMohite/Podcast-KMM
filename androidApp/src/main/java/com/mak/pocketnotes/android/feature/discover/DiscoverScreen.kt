@@ -16,6 +16,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
+import androidx.window.core.layout.WindowSizeClass
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.PodcastDetail
@@ -68,6 +70,8 @@ internal fun DiscoverScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val resources = LocalResources.current
+    val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+
     LaunchedEffect(state.errorType) {
         state.errorType?.let { type ->
             onErrorConsumed()
@@ -89,7 +93,8 @@ internal fun DiscoverScreen(
             modifier = Modifier.padding(padding),
             uiState = state,
             refreshPodcasts = refreshPodcasts,
-            gotoDetails = gotoDetails
+            gotoDetails = gotoDetails,
+            sizeClass = sizeClass
         )
     }
 }
@@ -110,7 +115,8 @@ private fun DiscoverContent(
     modifier: Modifier = Modifier,
     uiState: DiscoverScreenState,
     refreshPodcasts: () -> Unit,
-    gotoDetails: (String) -> Unit
+    gotoDetails: (String) -> Unit,
+    sizeClass: WindowSizeClass
 ) {
     PullToRefreshBox(
         modifier = modifier
@@ -120,7 +126,7 @@ private fun DiscoverContent(
         isRefreshing = uiState.isPullToRefreshing,
     ) {
         if (uiState.initialLoading()) {
-            DiscoverShimmer()
+            DiscoverShimmer(sizeClass = sizeClass)
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 // Banner Section
@@ -130,7 +136,8 @@ private fun DiscoverContent(
                         DiscoverHeader(
                             modifier = Modifier.fillMaxWidth(),
                             podcasts = podcasts,
-                            onPodcastClick = gotoDetails
+                            onPodcastClick = gotoDetails,
+                            sizeClass = sizeClass
                         )
                     }
                 )
@@ -144,7 +151,8 @@ private fun DiscoverContent(
                                 .fillMaxWidth()
                                 .wrapContentHeight(),
                             gotoDetails = gotoDetails,
-                            podcasts = podcasts
+                            podcasts = podcasts,
+                            sizeClass = sizeClass
                         )
                     }
                 )
@@ -168,7 +176,8 @@ private fun DiscoverContent(
                                 .fillMaxWidth()
                                 .padding(4.dp),
                             podcastSection = podcast,
-                            goToDetails = gotoDetails
+                            goToDetails = gotoDetails,
+                            sizeClass = sizeClass
                         )
                     }
                 } else if (curatedState is SectionState.Empty) {

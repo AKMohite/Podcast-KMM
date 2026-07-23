@@ -32,7 +32,7 @@ internal fun DiscoverBestPodcasts(
     modifier: Modifier = Modifier,
     gotoDetails: (String) -> Unit,
     podcasts: List<Podcast>,
-    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+    sizeClass: WindowSizeClass
 ) {
 
     when{
@@ -49,7 +49,8 @@ internal fun DiscoverBestPodcasts(
         else -> DiscoverBestPodcastsCompact(
             modifier,
             gotoDetails,
-            podcasts
+            podcasts,
+            sizeClass
         )
     }
 }
@@ -100,7 +101,8 @@ private fun DiscoverBestPodcastsPreview() {
         Surface {
             DiscoverBestPodcasts(
                 podcasts = samplePodcasts.take(8),
-                gotoDetails = {}
+                gotoDetails = {},
+                sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
             )
         }
     }

@@ -30,7 +30,7 @@ import com.mak.pocketnotes.android.ui.theme.isMedium
 
 @Composable
 internal fun DiscoverShimmer(
-    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+    sizeClass: WindowSizeClass
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -166,6 +166,6 @@ internal fun Modifier.shimmerBackground(): Modifier = composed {
 @Composable
 private fun DiscoverShimmerPreview() {
     PocketNotesTheme {
-        DiscoverShimmer()
+        DiscoverShimmer(sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass)
     }
 }

@@ -33,7 +33,7 @@ internal fun DiscoverBestPodcastsCompact(
     modifier: Modifier = Modifier,
     gotoDetails: (String) -> Unit,
     podcasts: List<Podcast>,
-    sizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+    sizeClass: WindowSizeClass
 ) {
     val columnFraction = when {
         sizeClass.isExpanded() -> 0.3f
@@ -89,6 +89,7 @@ internal fun DiscoverBestPodcastsCompact(
 private fun DiscoverBestPodcastsCompactPreview() {
     DiscoverBestPodcastsCompact(
         podcasts = samplePodcasts.take(8),
-        gotoDetails = {}
+        gotoDetails = {},
+        sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
     )
 }
