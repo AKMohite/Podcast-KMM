@@ -25,6 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
@@ -38,8 +42,11 @@ import com.mak.pocketnotes.android.feature.discover.components.bestpodcast.Disco
 import com.mak.pocketnotes.android.feature.discover.components.curatedpodcast.DiscoverCuratedPodcasts
 import com.mak.pocketnotes.android.feature.discover.components.header.DiscoverHeader
 import com.mak.pocketnotes.android.feature.discover.components.loading.DiscoverShimmer
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.core.common.models.ErrorType
 import com.mak.pocketnotes.core.common.models.SectionState
+import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -218,32 +225,44 @@ private fun EmptyStateMessage(message: String) {
     }
 }
 
-/*
-private class DiscoverScreenStateProvider: PreviewParameterProvider<DiscoverScreenState> {
+
+private class DiscoverScreenStateProvider : PreviewParameterProvider<DiscoverScreenState> {
 
     val data = listOf(
         Pair(
             "Loading",
             DiscoverScreenState(
-                loading = true,
+                bannerPodcastsSection = SectionState.Loading,
+                trendingPodcastsSection = SectionState.Loading,
+                curatedPodcastsSection = SectionState.Loading,
+                isPullToRefreshing = false
             )
         ),
         Pair(
             "Refreshing",
             DiscoverScreenState(
-                refreshing = true
+                bannerPodcastsSection = SectionState.Success(samplePodcasts),
+                trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
+                curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
+                isPullToRefreshing = true
             )
         ),
         Pair(
             "Empty",
-            DiscoverScreenState()
+            DiscoverScreenState(
+                bannerPodcastsSection = SectionState.Empty,
+                trendingPodcastsSection = SectionState.Empty,
+                curatedPodcastsSection = SectionState.Empty,
+                isPullToRefreshing = false
+            )
         ),
         Pair(
             "Success",
             DiscoverScreenState(
-                podcasts = samplePodcasts,
-                topPodcasts = samplePodcasts.take(3),
-                curatedPodcasts = sampleCuratedPodcasts
+                bannerPodcastsSection = SectionState.Success(samplePodcasts),
+                trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
+                curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
+                isPullToRefreshing = false
             )
         )
     )
@@ -265,9 +284,9 @@ private fun DiscoverContentPreview(
     PocketNotesTheme {
         DiscoverContent(
             uiState = previewData,
-            loadNextPodcasts = {},
+            refreshPodcasts = {},
             gotoDetails = {},
-            onErrorConsumed = {}
+            sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
         )
     }
-}*/
+}
