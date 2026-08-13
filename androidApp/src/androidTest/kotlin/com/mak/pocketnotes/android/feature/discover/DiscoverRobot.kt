@@ -7,12 +7,16 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.test.platform.app.InstrumentationRegistry
+import com.mak.pocketnotes.android.R
 
 internal fun discoverRobot(rule: ComposeContentTestRule, block: DiscoverRobot.() -> Unit) {
     DiscoverRobot(rule).block()
 }
 
 internal class DiscoverRobot(private val rule: ComposeContentTestRule) {
+
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
     fun setContent(
         state: DiscoverScreenState,
@@ -51,10 +55,10 @@ internal class DiscoverRobot(private val rule: ComposeContentTestRule) {
     }
 
     fun assertRetryVisible() = apply {
-        rule.onNodeWithText("Retry").assertIsDisplayed()
+        rule.onNodeWithText(context.getString(R.string.action_retry)).assertIsDisplayed()
     }
 
     fun clickRetry() = apply {
-        rule.onNodeWithText("Retry").performClick()
+        rule.onNodeWithText(context.getString(R.string.action_retry)).performClick()
     }
 }
