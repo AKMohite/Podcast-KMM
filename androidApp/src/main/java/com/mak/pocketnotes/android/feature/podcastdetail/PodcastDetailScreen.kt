@@ -55,7 +55,6 @@ import com.mak.pocketnotes.android.feature.player.v2.PlayerViewModel
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.adaptiveScreenInfo
-import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isLarge
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
@@ -118,7 +117,7 @@ private fun PodcastDetailContent(
         contentAlignment = Alignment.Center
     ) {
         uiState.podcast?.let { podcast ->
-            if (sizeClass.isExpanded()) {
+            if (sizeClass.isLarge()) {
                 PodcastDetailExpanded(
                     podcast = podcast,
                     episodes = episodes,

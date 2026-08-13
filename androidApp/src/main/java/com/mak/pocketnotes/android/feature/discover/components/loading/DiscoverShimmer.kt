@@ -30,10 +30,11 @@ import com.mak.pocketnotes.android.ui.theme.isMedium
 
 @Composable
 internal fun DiscoverShimmer(
+    modifier: Modifier = Modifier,
     sizeClass: WindowSizeClass
 ) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         when {
             sizeClass.isExpanded() -> DiscoverShimmerLarge()

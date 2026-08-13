@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.feature.discover
 
+import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -49,6 +51,11 @@ import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 
+
+data object DiscoverScreenTestTag {
+    const val SHIMMER = "discover:shimmer"
+    const val CONTENT = "discover:content"
+}
 
 fun EntryProviderScope<NavKey>.discoverEntry(
     navigator: Navigator
@@ -81,9 +88,10 @@ internal fun DiscoverScreen(
 
     LaunchedEffect(state.errorType) {
         state.errorType?.let { type ->
+            val message = type.toUserMessage(resources)
             onErrorConsumed()
             val result = snackbarHostState.showSnackbar(
-                message = type.toUserMessage(),
+                message = message,
                 actionLabel = resources.getString(R.string.action_retry),
                 duration = SnackbarDuration.Short
             )
@@ -106,14 +114,14 @@ internal fun DiscoverScreen(
     }
 }
 
-internal fun ErrorType.toUserMessage(): String {
+internal fun ErrorType.toUserMessage(resources: Resources): String {
     return when (this) {
-        ErrorType.NOT_FOUND -> "Podcast not found"
-        ErrorType.SERVER_ERROR -> "Server error"
-        ErrorType.UNAUTHORIZED -> "Unauthorized"
-        ErrorType.NO_CONNECTIVITY -> "No connectivity"
-        ErrorType.PARSE -> "Parse error"
-        ErrorType.UNKNOWN -> "Unknown error"
+        ErrorType.NOT_FOUND -> resources.getString(R.string.error_not_found)
+        ErrorType.SERVER_ERROR -> resources.getString(R.string.error_server)
+        ErrorType.UNAUTHORIZED -> resources.getString(R.string.error_unauthorized)
+        ErrorType.NO_CONNECTIVITY -> resources.getString(R.string.error_no_internet)
+        ErrorType.PARSE -> resources.getString(R.string.error_serialization)
+        ErrorType.UNKNOWN -> resources.getString(R.string.error_unknown)
     }
 }
 
@@ -133,9 +141,16 @@ private fun DiscoverContent(
         isRefreshing = uiState.isPullToRefreshing,
     ) {
         if (uiState.initialLoading()) {
-            DiscoverShimmer(sizeClass = sizeClass)
+            DiscoverShimmer(
+                modifier = Modifier.testTag(DiscoverScreenTestTag.SHIMMER),
+                sizeClass = sizeClass
+            )
         } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(DiscoverScreenTestTag.CONTENT)
+            ) {
                 // Banner Section
                 renderSection(
                     state = uiState.bannerPodcastsSection,

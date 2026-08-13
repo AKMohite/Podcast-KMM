@@ -11,23 +11,24 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class DiscoverViewmodel(
     private val bestPodcastsRepository: BestPodcastRepository,
     private val curatedPodcastsRepository: CuratedPodcastRepository
 ) : ViewModel() {
 
-    private val isRefreshing = MutableStateFlow(false)
+    private val refreshTrigger = MutableSharedFlow<Boolean>(replay = 1).apply { tryEmit(false) }
     private val errorMsg = MutableStateFlow<ErrorType?>(null)
 
     internal val uiState: StateFlow<DiscoverScreenState> = combine(
@@ -36,11 +37,8 @@ class DiscoverViewmodel(
         refreshCuratedPodcasts(),
         errorMsg
     ) { bannerSection, bestSection, curatedSection, error ->
-        val isPullToRefreshing =
-            bannerSection.isInFlight() || bestSection.isInFlight() || curatedSection.isInFlight()
-        isRefreshing.value = isPullToRefreshing
         DiscoverScreenState(
-            isPullToRefreshing = isPullToRefreshing,
+            isPullToRefreshing = bannerSection.isInFlight() || bestSection.isInFlight() || curatedSection.isInFlight(),
             bannerPodcastsSection = bannerSection,
             trendingPodcastsSection = bestSection,
             curatedPodcastsSection = curatedSection,
@@ -57,12 +55,8 @@ class DiscoverViewmodel(
         )
     )
 
-    init {
-        isRefreshing.value = true
-    }
-
     private fun refreshCuratedPodcasts(): Flow<SectionState<List<CuratedPodcast>>> =
-        isRefreshing.flatMapLatest {
+        refreshTrigger.flatMapLatest {
             curatedPodcastsRepository.refreshSection(
                 CuratedPodcastsParam(
                     forceRefresh = it
@@ -71,22 +65,16 @@ class DiscoverViewmodel(
         }.onEach { updateError(it) }
 
     private fun refreshBestPodcasts(): Flow<SectionState<List<Podcast>>> =
-        isRefreshing.flatMapLatest {
+        refreshTrigger.flatMapLatest {
             bestPodcastsRepository.refreshSection(
                 BestQueryParam(forceRefresh = it)
             ).distinctUntilChanged()
         }.onEach { updateError(it) }
 
-    private fun refreshBanner(): Flow<SectionState<List<Podcast>>> = isRefreshing.flatMapLatest {
-        bestPodcastsRepository.observePodcasts(
+    private fun refreshBanner(): Flow<SectionState<List<Podcast>>> = refreshTrigger.flatMapLatest {
+        bestPodcastsRepository.refreshBannerSection(
             BestQueryParam(forceRefresh = it)
-        ).distinctUntilChanged().map { podcasts ->
-            if (podcasts.isEmpty()) {
-                SectionState.Empty
-            } else {
-                SectionState.Success(podcasts)
-            }
-        }
+        ).distinctUntilChanged()
     }.onEach { updateError(it) }
 
     private fun updateError(state: SectionState<*>) {
@@ -97,7 +85,9 @@ class DiscoverViewmodel(
 
 
     fun refreshPodcasts() {
-        isRefreshing.value = true
+        viewModelScope.launch {
+            refreshTrigger.emit(true)
+        }
     }
 
     fun onErrorConsumed() {
@@ -131,7 +121,7 @@ private fun isInitialLoading(
 
 private fun SectionState<*>.isInitial(): Boolean = when (this) {
     is SectionState.Loading -> true
-    is SectionState.Error<*> -> (this.cachedData as? List<*>)?.isEmpty() ?: true
-    is SectionState.Success<*> -> (this.data as? List<*>)?.isEmpty() ?: true
+    is SectionState.Error<*> -> (this.cachedData as? Collection<*>)?.isEmpty() ?: true
+    is SectionState.Success<*> -> (this.data as? Collection<*>)?.isEmpty() ?: true
     is SectionState.Empty -> true
 }

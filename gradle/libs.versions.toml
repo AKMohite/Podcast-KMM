@@ -7,7 +7,7 @@ versionCode = "1"
 versionName = "0.0.1"
 
 accompanist = "0.36.0"
-agp = "9.2.1"
+agp = "9.3.1"
 coil = "2.7.0"
 composeBom = "2026.06.01"
 coroutines = "1.11.0"
@@ -38,7 +38,6 @@ espressoCore = "3.7.0"
 uiautomator = "2.4.0"
 benchmarkMacroJunit4 = "1.4.1"
 baselineprofile = "1.5.0-alpha06"
-mockk = "1.14.11"
 turbine = "1.2.1"
 junit4 = "4.13.2"
 
@@ -99,7 +98,6 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
