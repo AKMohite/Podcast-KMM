@@ -2,6 +2,8 @@ package com.mak.pocketnotes.android.feature.discover
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -45,7 +47,7 @@ internal class DiscoverRobot(private val rule: ComposeContentTestRule) {
     }
 
     fun assertPodcastVisible(title: String) = apply {
-        rule.onNodeWithText(title).assertIsDisplayed()
+        rule.onAllNodesWithText(title).onFirst().assertIsDisplayed()
     }
 
     fun assertRetryVisible() = apply {

@@ -1,6 +1,6 @@
 package com.mak.pocketnotes.android.feature.discover
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import com.mak.pocketnotes.core.common.models.ErrorType
 import com.mak.pocketnotes.core.common.models.SectionState
 import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
