@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.wear.material3)
     implementation(libs.androidx.wear.ui.tooling)
     implementation(libs.compose.material.icons)
+    implementation(libs.koin.android.compose)
     implementation(libs.compose.coil)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.ui)
