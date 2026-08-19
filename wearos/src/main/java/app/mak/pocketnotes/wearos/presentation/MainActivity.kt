@@ -28,7 +28,7 @@ import androidx.wear.compose.material3.lazy.transformedHeight
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import app.mak.pocketnotes.wearos.R
-import app.mak.pocketnotes.wearos.feature.nowplaying.NowPlayingScreen
+import app.mak.pocketnotes.wearos.feature.home.HomeScreen
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +36,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WearPocketNotesTheme {
-                NowPlayingScreen {  }
+                HomeScreen(
+                    navigateTo = {}
+                )
             }
         }
     }
@@ -67,7 +69,9 @@ fun WearApp(greetingName: String) {
                 item {
                     ListHeader(
                         modifier =
-                            Modifier.fillMaxWidth().transformedHeight(this, transformationSpec),
+                            Modifier
+                                .fillMaxWidth()
+                                .transformedHeight(this, transformationSpec),
                         transformation = SurfaceTransformation(transformationSpec),
                     ) {
                         Text(text = stringResource(R.string.hello_world, greetingName))
@@ -76,7 +80,8 @@ fun WearApp(greetingName: String) {
                 item {
                     Button(
                         onClick = { /*TODO*/ },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .transformedHeight(this, transformationSpec),
                         transformation = SurfaceTransformation(transformationSpec),
                     ) {
@@ -86,7 +91,8 @@ fun WearApp(greetingName: String) {
                 item {
                     Button(
                         onClick = { /*TODO*/ },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .transformedHeight(this, transformationSpec),
                         transformation = SurfaceTransformation(transformationSpec),
                     ) {
@@ -96,7 +102,8 @@ fun WearApp(greetingName: String) {
                 item {
                     Button(
                         onClick = { /*TODO*/ },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .transformedHeight(this, transformationSpec),
                         transformation = SurfaceTransformation(transformationSpec),
                     ) {

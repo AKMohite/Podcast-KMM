@@ -2,4 +2,8 @@
     <string name="app_name">Pocketnotes</string>
     <string name="hello_world">Hello, %1$s!</string>
     <string name="empty_now_player">Open the Podcast app on your phone to start playing</string>
+    <string name="home_podcasts">Podcasts</string>
+    <string name="home_downloads">Downloads</string>
+    <string name="home_subscribed">Subscribed</string>
+    <string name="home_settings">Settings</string>
 </resources>
