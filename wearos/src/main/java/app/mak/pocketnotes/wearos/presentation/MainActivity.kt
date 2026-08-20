@@ -28,7 +28,7 @@ import androidx.wear.compose.material3.lazy.transformedHeight
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import app.mak.pocketnotes.wearos.R
-import app.mak.pocketnotes.wearos.feature.home.HomeScreen
+import app.mak.pocketnotes.wearos.feature.trendingpodcasts.TrendingPodcastsScreen
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,9 +36,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WearPocketNotesTheme {
-                HomeScreen(
-                    navigateTo = {}
-                )
+//                HomeScreen(
+//                    navigateTo = {}
+//                )
+                TrendingPodcastsScreen()
             }
         }
     }
