@@ -1,6 +1,9 @@
 package app.mak.pocketnotes.wearos.feature.home
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
@@ -12,15 +15,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
-import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
-import androidx.wear.compose.material.Chip
-import androidx.wear.compose.material.ChipDefaults
-import androidx.wear.compose.material.Icon
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
-import androidx.wear.tooling.preview.devices.WearDevices
+import androidx.compose.ui.unit.dp
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumnState
+import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
+import androidx.wear.compose.material3.AppScaffold
+import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.ButtonDefaults
+import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.ScreenScaffold
+import androidx.wear.compose.material3.SurfaceTransformation
+import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.lazy.TransformationSpec
+import androidx.wear.compose.material3.lazy.rememberTransformationSpec
+import androidx.wear.compose.material3.lazy.transformedHeight
+import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import app.mak.pocketnotes.wearos.R
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 
@@ -34,19 +45,28 @@ sealed interface HomeNavigation {
 @Composable
 internal fun HomeScreen(
     modifier: Modifier = Modifier,
+    state: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+    contentPadding: PaddingValues = PaddingValues(),
     navigateTo: (HomeNavigation) -> Unit
 ) {
-    ScalingLazyColumn(
-        state = rememberScalingLazyListState(),
+    val transformationSpec = rememberTransformationSpec()
+
+    TransformingLazyColumn(
+        state = state,
+        contentPadding = contentPadding,
         modifier = modifier
             .fillMaxWidth()
     ) {
 
         item {
+            Spacer(Modifier.height(8.dp))
+        }
+        item {
             HomeChip(
                 title = stringResource(R.string.home_podcasts),
                 icon = Icons.Default.Podcasts,
-                onClick = { navigateTo(HomeNavigation.Podcasts) }
+                onClick = { navigateTo(HomeNavigation.Podcasts) },
+                transformationSpec = transformationSpec
             )
         }
 
@@ -54,7 +74,8 @@ internal fun HomeScreen(
             HomeChip(
                 title = stringResource(R.string.home_downloads),
                 icon = Icons.Default.Download,
-                onClick = { navigateTo(HomeNavigation.Downloads) }
+                onClick = { navigateTo(HomeNavigation.Downloads) },
+                transformationSpec = transformationSpec
             )
         }
 
@@ -62,7 +83,8 @@ internal fun HomeScreen(
             HomeChip(
                 title = stringResource(R.string.home_subscribed),
                 icon = Icons.Default.Subscriptions,
-                onClick = { navigateTo(HomeNavigation.Subscribed) }
+                onClick = { navigateTo(HomeNavigation.Subscribed) },
+                transformationSpec = transformationSpec
             )
         }
 
@@ -70,49 +92,60 @@ internal fun HomeScreen(
             HomeChip(
                 title = stringResource(R.string.home_settings),
                 icon = Icons.Default.Settings,
-                onClick = { navigateTo(HomeNavigation.Settings) }
+                onClick = { navigateTo(HomeNavigation.Settings) },
+                transformationSpec = transformationSpec
             )
         }
     }
 }
 
 @Composable
-fun HomeChip(
+fun TransformingLazyColumnItemScope.HomeChip(
     title: String,
     icon: ImageVector,
+    transformationSpec: TransformationSpec,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    Chip(
+    Button(
         onClick = onClick,
         label = {
             Text(
                 text = title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.button,
-                color = MaterialTheme.colors.onPrimary
+                style = MaterialTheme.typography.labelMedium,
             )
         },
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .transformedHeight(this, transformationSpec),
+        transformation = SurfaceTransformation(transformationSpec),
         icon = {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                modifier = Modifier.size(ChipDefaults.IconSize),
+                modifier = Modifier.size(ButtonDefaults.IconSize),
             )
         }
     )
 }
 
-@Preview(device = WearDevices.SMALL_ROUND)
+@WearPreviewDevices
 @Composable
 private fun WatchListPreview() {
     WearPocketNotesTheme {
-        HomeScreen(
-            modifier = Modifier,
-            navigateTo = {}
-        )
+        AppScaffold {
+            val listState = rememberTransformingLazyColumnState()
+            ScreenScaffold(
+                scrollState = listState,
+            ) { contentPadding ->
+                HomeScreen(
+                    state = listState,
+                    contentPadding = contentPadding,
+                    navigateTo = {}
+                )
+            }
+        }
     }
 }
