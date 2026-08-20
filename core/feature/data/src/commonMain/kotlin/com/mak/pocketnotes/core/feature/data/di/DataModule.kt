@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.core.feature.data.di
 
+import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstBestPodcastRepository
 import com.mak.pocketnotes.core.feature.data.home.repository.OfflineFirstCuratedPodcastRepository
 import com.mak.pocketnotes.core.feature.data.podcastdetails.repository.OfflineFirstEpisodeRepository
@@ -15,6 +16,7 @@ import com.mak.pocketnotes.core.feature.domain.search.repository.GenreRepository
 import org.koin.dsl.module
 
 val coreDataModule = module {
+    factory { PodcastMapper() }
     factory<BestPodcastRepository> {
         OfflineFirstBestPodcastRepository(
             api = get(),

@@ -1,7 +1,7 @@
 package com.mak.pocketnotes.domain.usecase
 
+import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
-import com.mak.pocketnotes.domain.mapper.PocketMapper
 import com.mak.pocketnotes.domain.models.SearchResults
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.core.component.KoinComponent
@@ -9,7 +9,7 @@ import org.koin.core.component.inject
 
 class SearchPodcast: KoinComponent {
     private val api: PocketNotesAPI by inject()
-    private val mapper: PocketMapper by inject()
+    private val mapper: PodcastMapper by inject()
 
     @Throws(Exception::class)
     suspend operator fun invoke(query: String): SearchResults {
@@ -23,7 +23,10 @@ class SearchPodcast: KoinComponent {
             "type" to "podcast"
         )
         val episodeDTOs = api.search(episodeQuery).getOrThrow().results.orEmpty()
-        val episodes = mapper.podcast.getPodcastEpisodes(episodeDTOs, throw IllegalArgumentException("Where can I get podcast ids for episodes?"))
+        val episodes = mapper.getPodcastEpisodes(
+            episodeDTOs,
+            throw IllegalArgumentException("Where can I get podcast ids for episodes?")
+        )
 //        val podcasts = api.search(podcastQuery)
         val podcasts = samplePodcasts
         return SearchResults(episodes, podcasts)
