@@ -95,13 +95,13 @@ class WearMainActivity : ComponentActivity() {
                                 TrendingPodcastsScreen(
                                     state = listState,
                                     contentPadding = PaddingValues(),
-                                    onClick = {
-                                        backStack.add(WearRoute.PodcastDetailsRoute(""))
+                                    onClick = { id ->
+                                        backStack.add(WearRoute.PodcastDetailsRoute(id))
                                     }
                                 )
                             }
-                            entry<WearRoute.PodcastDetailsRoute> {
-                                PodcastDetailsScreen()
+                            entry<WearRoute.PodcastDetailsRoute> { route ->
+                                PodcastDetailsScreen(route.id)
                             }
                             entry<WearRoute.DownloadsRoute> {
                                 Text("Downloads")
