@@ -21,7 +21,7 @@ import com.mak.pocketnotes.service.media.service.MediaPlayerService
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainActivity : ComponentActivity() {
+class AppMainActivity : ComponentActivity() {
 
     private val settingsViewModel by viewModel<SettingsViewModel>()
     private var isServiceRunning = false

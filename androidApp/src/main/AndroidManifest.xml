@@ -19,7 +19,7 @@
         <profileable android:shell="true"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".AppMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

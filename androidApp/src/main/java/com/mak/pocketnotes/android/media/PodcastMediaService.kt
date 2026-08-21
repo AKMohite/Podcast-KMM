@@ -12,7 +12,7 @@ import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
-import com.mak.pocketnotes.android.MainActivity
+import com.mak.pocketnotes.android.AppMainActivity
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.service.media.Constants.PLAYBACK_NOTIFICATION_CHANNEL_ID
 import org.koin.android.ext.android.inject
@@ -41,7 +41,7 @@ class PodcastMediaService : MediaLibraryService() {
     }
 
     fun playerPendingIntent(context: Context): PendingIntent {
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, AppMainActivity::class.java).apply {
             action = "com.podcast.app.action.SHOW_PLAYER"
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }

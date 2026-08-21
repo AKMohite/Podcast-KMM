@@ -63,7 +63,7 @@ sealed interface WearRoute : NavKey {
     data object SettingsRoute : WearRoute
 }
 
-class MainActivity : ComponentActivity() {
+class WearMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
