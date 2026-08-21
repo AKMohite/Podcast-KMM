@@ -91,7 +91,7 @@ fun TransformingLazyColumnItemScope.PodcastChip(
         transformation = SurfaceTransformation(transformationSpec),
         icon = {
             AsyncImage(
-                model = podcast.image,
+                model = podcast.thumbnail,
                 contentDescription = podcast.title,
                 modifier = Modifier
                     .size(ButtonDefaults.IconSize)
