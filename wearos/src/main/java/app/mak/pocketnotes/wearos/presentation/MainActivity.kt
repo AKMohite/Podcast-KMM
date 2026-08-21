@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material3.AppScaffold
@@ -26,9 +30,7 @@ import androidx.wear.compose.material3.SurfaceTransformation
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.lazy.rememberTransformationSpec
 import androidx.wear.compose.material3.lazy.transformedHeight
-import androidx.wear.compose.navigation.SwipeDismissableNavHost
-import androidx.wear.compose.navigation.composable
-import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import androidx.wear.compose.navigation3.rememberSwipeDismissableSceneStrategy
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import app.mak.pocketnotes.wearos.R
@@ -37,6 +39,29 @@ import app.mak.pocketnotes.wearos.feature.home.HomeNavigation
 import app.mak.pocketnotes.wearos.feature.home.HomeScreen
 import app.mak.pocketnotes.wearos.feature.trendingpodcasts.TrendingPodcastsScreen
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
+import kotlinx.serialization.Serializable
+
+
+@Serializable
+sealed interface WearRoute : NavKey {
+    @Serializable
+    data object HomeRoute : WearRoute
+
+    @Serializable
+    data object TrendingPodcastsRoute : WearRoute
+
+    @Serializable
+    data class PodcastDetailsRoute(val id: String) : WearRoute
+
+    @Serializable
+    data object DownloadsRoute : WearRoute
+
+    @Serializable
+    data object SubscribedRoute : WearRoute
+
+    @Serializable
+    data object SettingsRoute : WearRoute
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,46 +70,50 @@ class MainActivity : ComponentActivity() {
             WearPocketNotesTheme {
                 AppScaffold {
                     val listState = rememberTransformingLazyColumnState()
-                    val navController = rememberSwipeDismissableNavController()
-                    SwipeDismissableNavHost(
-                        navController = navController,
-                        startDestination = "home"
-                    ) {
-                        composable("home") {
-                            HomeScreen(
-                                columnState = listState,
-                                contentPadding = PaddingValues(),
-                                navigateTo = { navigation ->
-                                    when (navigation) {
-                                        HomeNavigation.Podcasts -> navController.navigate("trending")
-                                        HomeNavigation.Downloads -> navController.navigate("downloads")
-                                        HomeNavigation.Subscribed -> navController.navigate("subscribed")
-                                        HomeNavigation.Settings -> navController.navigate("settings")
-                                    }
-                                }
-                            )
-                        }
-                        composable("trending") {
-                            TrendingPodcastsScreen(
-                                onClick = {
-                                    navController.navigate("details")
-                                }
-                            )
-                        }
-                        composable("details") {
-                            PodcastDetailsScreen()
-                        }
-                        composable("downloads") {
-                            Text("Downloads")
-                        }
-                        composable("subscribed") {
-                            Text("Subscribed")
-                        }
-                        composable("settings") {
-                            Text("Settings")
-                        }
+                    val backStack = rememberNavBackStack(WearRoute.HomeRoute)
+                    val strategy = rememberSwipeDismissableSceneStrategy<NavKey>()
 
-                    }
+                    NavDisplay(
+                        backStack = backStack,
+                        sceneStrategies = listOf(strategy),
+                        entryProvider = entryProvider {
+                            entry<WearRoute.HomeRoute> {
+                                HomeScreen(
+                                    columnState = listState,
+                                    contentPadding = PaddingValues(),
+                                    navigateTo = { navigation ->
+                                        when (navigation) {
+                                            HomeNavigation.Podcasts -> backStack.add(WearRoute.TrendingPodcastsRoute)
+                                            HomeNavigation.Downloads -> backStack.add(WearRoute.DownloadsRoute)
+                                            HomeNavigation.Subscribed -> backStack.add(WearRoute.SubscribedRoute)
+                                            HomeNavigation.Settings -> backStack.add(WearRoute.SettingsRoute)
+                                        }
+                                    }
+                                )
+                            }
+                            entry<WearRoute.TrendingPodcastsRoute> {
+                                TrendingPodcastsScreen(
+                                    state = listState,
+                                    contentPadding = PaddingValues(),
+                                    onClick = {
+                                        backStack.add(WearRoute.PodcastDetailsRoute(""))
+                                    }
+                                )
+                            }
+                            entry<WearRoute.PodcastDetailsRoute> {
+                                PodcastDetailsScreen()
+                            }
+                            entry<WearRoute.DownloadsRoute> {
+                                Text("Downloads")
+                            }
+                            entry<WearRoute.SubscribedRoute> {
+                                Text("Subscribed")
+                            }
+                            entry<WearRoute.SettingsRoute> {
+                                Text("Settings")
+                            }
+                        }
+                    )
                 }
             }
         }

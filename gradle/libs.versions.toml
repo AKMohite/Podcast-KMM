@@ -21,7 +21,7 @@ kotlinxSerializationJson = "1.11.0"
 ktor = "3.5.1"
 legacySupportV4 = "1.0.0"
 media3Exoplayer = "1.10.1"
-nav3Core = "1.1.4"
+nav3Core = "1.1.6"
 lifecycleViewmodelNav3 = "2.11.0"
 profileinstaller = "1.4.1"
 skie = "0.10.13"
@@ -43,6 +43,7 @@ junit4 = "4.13.2"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+androidx-compose-wear-navigation3 = { module = "androidx.wear.compose:compose-navigation3", version.ref = "composeWear" }
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 androidx-datastore-tink = { module = "androidx.datastore:datastore-tink", version.ref = "datastore" }
 androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
@@ -101,7 +102,6 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-wear-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeWear" }
-androidx-wear-navigation = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "composeWear" }
 androidx-wear-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeWear" }
 
 [bundles]
