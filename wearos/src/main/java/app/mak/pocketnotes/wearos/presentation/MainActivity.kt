@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("home") {
                             HomeScreen(
-                                state = listState,
+                                columnState = listState,
                                 contentPadding = PaddingValues(),
                                 navigateTo = { navigation ->
                                     when (navigation) {

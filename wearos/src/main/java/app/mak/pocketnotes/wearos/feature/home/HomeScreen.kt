@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
@@ -45,56 +46,60 @@ sealed interface HomeNavigation {
 @Composable
 internal fun HomeScreen(
     modifier: Modifier = Modifier,
-    state: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+    columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
     contentPadding: PaddingValues = PaddingValues(),
     navigateTo: (HomeNavigation) -> Unit
 ) {
     val transformationSpec = rememberTransformationSpec()
-
-    TransformingLazyColumn(
-        state = state,
-        contentPadding = contentPadding,
-        modifier = modifier
-            .fillMaxWidth()
+    ScreenScaffold(
+        scrollState = columnState,
     ) {
+        TransformingLazyColumn(
+            state = columnState,
+            contentPadding = contentPadding,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(it)
+        ) {
 
-        item {
-            Spacer(Modifier.height(8.dp))
-        }
-        item {
-            HomeChip(
-                title = stringResource(R.string.home_podcasts),
-                icon = Icons.Default.Podcasts,
-                onClick = { navigateTo(HomeNavigation.Podcasts) },
-                transformationSpec = transformationSpec
-            )
-        }
+            item {
+                Spacer(Modifier.height(8.dp))
+            }
+            item {
+                HomeChip(
+                    title = stringResource(R.string.home_podcasts),
+                    icon = Icons.Default.Podcasts,
+                    onClick = { navigateTo(HomeNavigation.Podcasts) },
+                    transformationSpec = transformationSpec
+                )
+            }
 
-        item {
-            HomeChip(
-                title = stringResource(R.string.home_downloads),
-                icon = Icons.Default.Download,
-                onClick = { navigateTo(HomeNavigation.Downloads) },
-                transformationSpec = transformationSpec
-            )
-        }
+            item {
+                HomeChip(
+                    title = stringResource(R.string.home_downloads),
+                    icon = Icons.Default.Download,
+                    onClick = { navigateTo(HomeNavigation.Downloads) },
+                    transformationSpec = transformationSpec
+                )
+            }
 
-        item {
-            HomeChip(
-                title = stringResource(R.string.home_subscribed),
-                icon = Icons.Default.Subscriptions,
-                onClick = { navigateTo(HomeNavigation.Subscribed) },
-                transformationSpec = transformationSpec
-            )
-        }
+            item {
+                HomeChip(
+                    title = stringResource(R.string.home_subscribed),
+                    icon = Icons.Default.Subscriptions,
+                    onClick = { navigateTo(HomeNavigation.Subscribed) },
+                    transformationSpec = transformationSpec
+                )
+            }
 
-        item {
-            HomeChip(
-                title = stringResource(R.string.home_settings),
-                icon = Icons.Default.Settings,
-                onClick = { navigateTo(HomeNavigation.Settings) },
-                transformationSpec = transformationSpec
-            )
+            item {
+                HomeChip(
+                    title = stringResource(R.string.home_settings),
+                    icon = Icons.Default.Settings,
+                    onClick = { navigateTo(HomeNavigation.Settings) },
+                    transformationSpec = transformationSpec
+                )
+            }
         }
     }
 }
@@ -141,7 +146,7 @@ private fun WatchListPreview() {
                 scrollState = listState,
             ) { contentPadding ->
                 HomeScreen(
-                    state = listState,
+                    columnState = listState,
                     contentPadding = contentPadding,
                     navigateTo = {}
                 )
