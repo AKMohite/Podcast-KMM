@@ -33,7 +33,8 @@ import org.koin.androidx.compose.koinViewModel
 fun TrendingPodcastsScreen(
     modifier: Modifier = Modifier,
     state: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-    contentPadding: PaddingValues = PaddingValues()
+    contentPadding: PaddingValues = PaddingValues(),
+    onClick: (String) -> Unit
 ) {
     val viewModel = koinViewModel<TrendingPodcastsViewModel>()
     val podcastState by viewModel.state.collectAsStateWithLifecycle()
@@ -56,7 +57,7 @@ fun TrendingPodcastsScreen(
         items(items = podcastState, key = { podcast -> podcast.id }) { podcast ->
             PodcastChip(
                 podcast = podcast,
-                onClick = {},
+                onClick = onClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .transformedHeight(this, transformationSpec),

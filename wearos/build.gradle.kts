@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.wear.tooling.preview)
     implementation(libs.compose.ui.preview)
+    implementation(libs.androidx.wear.navigation)
     implementation(libs.play.services.wearable)
     implementation(libs.horologist.media.ui)
     implementation(libs.horologist.media.ui.material3)
