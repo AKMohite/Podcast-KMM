@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 
 internal class PodcastDetailViewModel(
     val podcastRepository: PodcastRepository,
-    private val podcastId: String
+    podcastId: String
 ) : ViewModel() {
 
     internal val uiState: StateFlow<PodcastDetailState> = podcastRepository.refresh(podcastId)
