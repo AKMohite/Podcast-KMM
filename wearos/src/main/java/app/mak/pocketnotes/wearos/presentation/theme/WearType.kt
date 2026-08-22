@@ -4,7 +4,8 @@ import androidx.wear.compose.material3.Typography
 import app.mak.pocketnotes.core.designsystem.theme.typographyFromDefaults
 
 val type = typographyFromDefaults()
-val wearTypography = Typography(
+val wearTypography =
+  Typography(
     displayLarge = type.displayLarge,
     displayMedium = type.displayMedium,
     displaySmall = type.displaySmall,
@@ -17,4 +18,4 @@ val wearTypography = Typography(
     bodyLarge = type.bodyLarge,
     bodyMedium = type.bodyMedium,
     bodySmall = type.bodySmall,
-)
+  )

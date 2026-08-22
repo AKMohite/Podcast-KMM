@@ -25,7 +25,8 @@ import app.mak.pocketnotes.core.designsystem.theme.surfaceContainerLowDarkMedium
 import app.mak.pocketnotes.core.designsystem.theme.tertiaryContainerDarkMediumContrast
 import app.mak.pocketnotes.core.designsystem.theme.tertiaryDark
 
-internal val wearColorScheme = ColorScheme(
+internal val wearColorScheme =
+  ColorScheme(
     primary = primaryDark,
     primaryDim = primaryDark,
     onPrimary = onTertiaryDark,
@@ -52,4 +53,4 @@ internal val wearColorScheme = ColorScheme(
     surfaceContainerHigh = surfaceContainerHighDarkMediumContrast,
     outline = outlineDark,
     outlineVariant = outlineVariantDark,
-)
+  )

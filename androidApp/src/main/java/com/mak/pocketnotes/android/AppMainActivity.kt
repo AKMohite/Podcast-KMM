@@ -20,56 +20,57 @@ import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.service.media.service.MediaPlayerService
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class AppMainActivity : ComponentActivity() {
+  private val settingsViewModel by viewModel<SettingsViewModel>()
+  private var isServiceRunning = false
+  private var mediaIntent: Intent? = null
 
-    private val settingsViewModel by viewModel<SettingsViewModel>()
-    private var isServiceRunning = false
-    private var mediaIntent: Intent? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.auto(
-                lightScrim = Color.Transparent.toArgb(), // Color for light theme
-                darkScrim = Color.Transparent.toArgb()  // Color for dark theme
-            ),
-            navigationBarStyle = SystemBarStyle.auto(
-                lightScrim = Color.Transparent.toArgb(), // Color for light theme
-                darkScrim = Color.Transparent.toArgb()  // Color for dark theme
-            )
+  override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge(
+      statusBarStyle =
+        SystemBarStyle.auto(
+          lightScrim = Color.Transparent.toArgb(), // Color for light theme
+          darkScrim = Color.Transparent.toArgb(), // Color for dark theme
+        ),
+      navigationBarStyle =
+        SystemBarStyle.auto(
+          lightScrim = Color.Transparent.toArgb(), // Color for light theme
+          darkScrim = Color.Transparent.toArgb(), // Color for dark theme
+        ),
+    )
+    super.onCreate(savedInstanceState)
+    setContent {
+      val settingsState by settingsViewModel.state.collectAsStateWithLifecycle(SettingsState())
+      val fontScale = settingsState.getFontScale()
+      PocketNotesTheme(
+        fontScale = fontScale,
+        appTheme = settingsState.settings.theme,
+      ) {
+        PodcastNavigationWrapper(
+          modifier =
+            Modifier
+              .safeDrawingPadding(),
         )
-        super.onCreate(savedInstanceState)
-        setContent {
-            val settingsState by settingsViewModel.state.collectAsStateWithLifecycle(SettingsState())
-            val fontScale = settingsState.getFontScale()
-            PocketNotesTheme(
-                fontScale = fontScale,
-                appTheme = settingsState.settings.theme
-            ) {
-                PodcastNavigationWrapper(
-                    modifier = Modifier
-                        .safeDrawingPadding()
-                )
-            }
-        }
+      }
     }
+  }
 
-    override fun onDestroy() {
-        mediaIntent?.let { stopService(it) }
-        isServiceRunning = false
-        mediaIntent = null
-        super.onDestroy()
-    }
+  override fun onDestroy() {
+    mediaIntent?.let { stopService(it) }
+    isServiceRunning = false
+    mediaIntent = null
+    super.onDestroy()
+  }
 
-    private fun startMediaService() {
-        if (!isServiceRunning) {
-            mediaIntent = Intent(this, MediaPlayerService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(mediaIntent)
-            } else {
-                startService(mediaIntent)
-            }
-        }
-        isServiceRunning = true
+  private fun startMediaService() {
+    if (!isServiceRunning) {
+      mediaIntent = Intent(this, MediaPlayerService::class.java)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        startForegroundService(mediaIntent)
+      } else {
+        startService(mediaIntent)
+      }
     }
+    isServiceRunning = true
+  }
 }

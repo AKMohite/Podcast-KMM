@@ -14,27 +14,31 @@ import com.mak.pocketnotes.service.media.service.PodtalkServiceHandler
 import org.koin.dsl.module
 
 @UnstableApi
-val mediaModule = module {
+val mediaModule =
+  module {
     single<INotificationManager> { PodtalkNotificationManager(get(), get()) }
     single<MediaSession> {
-        MediaSession.Builder(get(), get()).build()
+      MediaSession.Builder(get(), get()).build()
     }
     single<IServiceHandler> { PodtalkServiceHandler(get()) }
-}
+  }
 
-val mediaModuleV2 = module {
+val mediaModuleV2 =
+  module {
     single { QueueManager() }
     single<Player> {
-        ExoPlayer.Builder(get())
-            .setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
-                    .setUsage(C.USAGE_MEDIA).build(),
-                true,
-            )
-            .setHandleAudioBecomingNoisy(true)
-            .setSeekBackIncrementMs(10_000L)
-            .setSeekForwardIncrementMs(30_000L)
-            .build()
+      ExoPlayer
+        .Builder(get())
+        .setAudioAttributes(
+          AudioAttributes
+            .Builder()
+            .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
+            .setUsage(C.USAGE_MEDIA)
+            .build(),
+          true,
+        ).setHandleAudioBecomingNoisy(true)
+        .setSeekBackIncrementMs(10_000L)
+        .setSeekForwardIncrementMs(30_000L)
+        .build()
     }
-}
+  }

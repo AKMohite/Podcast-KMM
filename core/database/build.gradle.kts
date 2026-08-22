@@ -1,101 +1,100 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidKMMLibrary)
-    alias(libs.plugins.sqldelight)
+  alias(libs.plugins.kotlinMultiplatform)
+  alias(libs.plugins.androidKMMLibrary)
+  alias(libs.plugins.sqldelight)
 }
 
 kotlin {
 
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
-    android {
-        namespace = "com.mak.pocketnotes.core.database"
-        compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
-        minSdk = Integer.parseInt(libs.versions.minSdk.get())
+  // Target declarations - add or remove as needed below. These define
+  // which platforms this KMP module supports.
+  // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
+  android {
+    namespace = "com.mak.pocketnotes.core.database"
+    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+    minSdk = Integer.parseInt(libs.versions.minSdk.get())
 
-        withHostTestBuilder {
-        }
-
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }.configure {
-            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
+    withHostTestBuilder {
     }
 
-    // For iOS targets, this is also where you should
-    // configure native binary output. For more information, see:
-    // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
+    withDeviceTestBuilder {
+      sourceSetTreeName = "test"
+    }.configure {
+      instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+  }
 
-    // A step-by-step guide on how to include this library in an XCode
-    // project can be found here:
-    // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "core:databaseKit"
+  // For iOS targets, this is also where you should
+  // configure native binary output. For more information, see:
+  // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
 
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
+  // A step-by-step guide on how to include this library in an XCode
+  // project can be found here:
+  // https://developer.android.com/kotlin/multiplatform/migrate
+  val xcfName = "core:databaseKit"
+
+  iosX64 {
+    binaries.framework {
+      baseName = xcfName
+    }
+  }
+
+  iosArm64 {
+    binaries.framework {
+      baseName = xcfName
+    }
+  }
+
+  iosSimulatorArm64 {
+    binaries.framework {
+      baseName = xcfName
+    }
+  }
+
+  // Source set declarations.
+  // Declaring a target automatically creates a source set with the same name. By default, the
+  // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
+  // common to share sources between related targets.
+  // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation(project(":core:common"))
+        implementation(libs.koin.core)
+        implementation(libs.sqldelight.extensions)
+        implementation(libs.sqldelight.primitive)
+      }
     }
 
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
+    commonTest {
+      dependencies {
+      }
     }
 
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
+    androidMain {
+      dependencies {
+        implementation(libs.koin.android)
+        implementation(libs.android.sql.driver)
+      }
     }
 
-    // Source set declarations.
-    // Declaring a target automatically creates a source set with the same name. By default, the
-    // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
-    // common to share sources between related targets.
-    // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(project(":core:common"))
-                implementation(libs.koin.core)
-                implementation(libs.sqldelight.extensions)
-                implementation(libs.sqldelight.primitive)
-            }
-        }
-
-        commonTest {
-            dependencies {
-            }
-        }
-
-        androidMain {
-            dependencies {
-                implementation(libs.koin.android)
-                implementation(libs.android.sql.driver)
-            }
-        }
-
-        getByName("androidDeviceTest") {
-            dependencies {
-            }
-        }
-
-        iosMain {
-            dependencies {
-                implementation(libs.ios.sql.driver)
-            }
-        }
+    getByName("androidDeviceTest") {
+      dependencies {
+      }
     }
 
+    iosMain {
+      dependencies {
+        implementation(libs.ios.sql.driver)
+      }
+    }
+  }
 }
 
 sqldelight {
-    databases {
-        create("PocketDatabase") {
-            packageName.set("com.mak.pocketnotes.core.database.queries")
-        }
+  databases {
+    create("PocketDatabase") {
+      packageName.set("com.mak.pocketnotes.core.database.queries")
     }
+  }
 }

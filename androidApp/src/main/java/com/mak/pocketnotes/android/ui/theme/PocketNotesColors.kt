@@ -213,7 +213,8 @@ import app.mak.pocketnotes.core.designsystem.theme.tertiaryLight
 import app.mak.pocketnotes.core.designsystem.theme.tertiaryLightHighContrast
 import app.mak.pocketnotes.core.designsystem.theme.tertiaryLightMediumContrast
 
-internal val lightScheme = lightColorScheme(
+internal val lightScheme =
+  lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
     primaryContainer = primaryContainerLight,
@@ -249,9 +250,10 @@ internal val lightScheme = lightColorScheme(
     surfaceContainer = surfaceContainerLight,
     surfaceContainerHigh = surfaceContainerHighLight,
     surfaceContainerHighest = surfaceContainerHighestLight,
-)
+  )
 
-internal val darkScheme = darkColorScheme(
+internal val darkScheme =
+  darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
     primaryContainer = primaryContainerDark,
@@ -287,9 +289,10 @@ internal val darkScheme = darkColorScheme(
     surfaceContainer = surfaceContainerDark,
     surfaceContainerHigh = surfaceContainerHighDark,
     surfaceContainerHighest = surfaceContainerHighestDark,
-)
+  )
 
-internal val mediumContrastLightColorScheme = lightColorScheme(
+internal val mediumContrastLightColorScheme =
+  lightColorScheme(
     primary = primaryLightMediumContrast,
     onPrimary = onPrimaryLightMediumContrast,
     primaryContainer = primaryContainerLightMediumContrast,
@@ -325,9 +328,10 @@ internal val mediumContrastLightColorScheme = lightColorScheme(
     surfaceContainer = surfaceContainerLightMediumContrast,
     surfaceContainerHigh = surfaceContainerHighLightMediumContrast,
     surfaceContainerHighest = surfaceContainerHighestLightMediumContrast,
-)
+  )
 
-internal val highContrastLightColorScheme = lightColorScheme(
+internal val highContrastLightColorScheme =
+  lightColorScheme(
     primary = primaryLightHighContrast,
     onPrimary = onPrimaryLightHighContrast,
     primaryContainer = primaryContainerLightHighContrast,
@@ -363,9 +367,10 @@ internal val highContrastLightColorScheme = lightColorScheme(
     surfaceContainer = surfaceContainerLightHighContrast,
     surfaceContainerHigh = surfaceContainerHighLightHighContrast,
     surfaceContainerHighest = surfaceContainerHighestLightHighContrast,
-)
+  )
 
-internal val mediumContrastDarkColorScheme = darkColorScheme(
+internal val mediumContrastDarkColorScheme =
+  darkColorScheme(
     primary = primaryDarkMediumContrast,
     onPrimary = onPrimaryDarkMediumContrast,
     primaryContainer = primaryContainerDarkMediumContrast,
@@ -401,9 +406,10 @@ internal val mediumContrastDarkColorScheme = darkColorScheme(
     surfaceContainer = surfaceContainerDarkMediumContrast,
     surfaceContainerHigh = surfaceContainerHighDarkMediumContrast,
     surfaceContainerHighest = surfaceContainerHighestDarkMediumContrast,
-)
+  )
 
-internal val highContrastDarkColorScheme = darkColorScheme(
+internal val highContrastDarkColorScheme =
+  darkColorScheme(
     primary = primaryDarkHighContrast,
     onPrimary = onPrimaryDarkHighContrast,
     primaryContainer = primaryContainerDarkHighContrast,
@@ -439,4 +445,4 @@ internal val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainer = surfaceContainerDarkHighContrast,
     surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
-)
+  )

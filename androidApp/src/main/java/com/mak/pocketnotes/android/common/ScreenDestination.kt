@@ -13,67 +13,68 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 internal interface ScreenDestination : NavKey {
-    @get:StringRes
-    val title: Int
-    companion object {
-        fun isFullScreen(key: NavKey?): Boolean {
-            return key is PodcastPlayer || key is PodcastDetail
-        }
-    }
+  @get:StringRes
+  val title: Int
+
+  companion object {
+    fun isFullScreen(key: NavKey?): Boolean = key is PodcastPlayer || key is PodcastDetail
+  }
 }
 
 internal interface BottomDestination : ScreenDestination {
-    val icon: ImageVector
+  val icon: ImageVector
 }
 
 @Serializable
 object Discover : BottomDestination {
-    override val icon: ImageVector
-        get() = Icons.Outlined.Home
-    override val title: Int
-        get() = R.string.bottom_discover
+  override val icon: ImageVector
+    get() = Icons.Outlined.Home
+  override val title: Int
+    get() = R.string.bottom_discover
 }
 
 @Serializable
 object Search : BottomDestination {
-    override val icon: ImageVector
-        get() = Icons.Outlined.Search
-    override val title: Int
-        get() = R.string.bottom_search
+  override val icon: ImageVector
+    get() = Icons.Outlined.Search
+  override val title: Int
+    get() = R.string.bottom_search
 }
 
 @Serializable
 object Subscribed : BottomDestination {
-    override val icon: ImageVector
-        get() = Icons.Outlined.Star
-    override val title: Int
-        get() = R.string.bottom_subscribed
+  override val icon: ImageVector
+    get() = Icons.Outlined.Star
+  override val title: Int
+    get() = R.string.bottom_subscribed
 }
 
 @Serializable
 object Settings : BottomDestination {
-    override val icon: ImageVector
-        get() = Icons.Outlined.Settings
-    override val title: Int
-        get() = R.string.bottom_settings
+  override val icon: ImageVector
+    get() = Icons.Outlined.Settings
+  override val title: Int
+    get() = R.string.bottom_settings
 }
 
 @Serializable
-data class PodcastDetail(@SerialName("podcast_id") val podcastId: String) : ScreenDestination {
-    override val title: Int
-        get() = R.string.podcast_details
+data class PodcastDetail(
+  @SerialName("podcast_id") val podcastId: String,
+) : ScreenDestination {
+  override val title: Int
+    get() = R.string.podcast_details
 }
 
 @Serializable
 object PodcastPlayer : ScreenDestination {
-    override val title: Int
-        get() = R.string.now_playing
+  override val title: Int
+    get() = R.string.now_playing
 }
 
 @Serializable
 object PlayerQueue : ScreenDestination {
-    override val title: Int
-        get() = R.string.player_queue
+  override val title: Int
+    get() = R.string.player_queue
 }
 
 internal val appDestinations = listOf(Discover, Search, Subscribed, Settings)

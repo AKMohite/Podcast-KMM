@@ -13,43 +13,26 @@ import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOW
 @Composable
 fun adaptiveScreenInfo() = currentWindowAdaptiveInfoV2()
 
+private fun WindowSizeClass.isCompact(): Boolean =
+  isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) || isHeightAtLeastBreakpoint(
+    HEIGHT_DP_MEDIUM_LOWER_BOUND
+  )
 
-private fun WindowSizeClass.isCompact(): Boolean {
-    return isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND) || isHeightAtLeastBreakpoint(HEIGHT_DP_MEDIUM_LOWER_BOUND)
-}
+fun WindowSizeClass.isExpanded(): Boolean = isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND)
 
-fun WindowSizeClass.isExpanded(): Boolean {
-    return isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND)
-}
+fun WindowSizeClass.isMedium(): Boolean = isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND)
 
-fun WindowSizeClass.isMedium(): Boolean {
-    return isWidthAtLeastBreakpoint(WIDTH_DP_MEDIUM_LOWER_BOUND)
-}
+fun WindowSizeClass.isExtraLarge(): Boolean =
+  isWidthAtLeastBreakpoint(WIDTH_DP_EXTRA_LARGE_LOWER_BOUND)
 
-fun WindowSizeClass.isExtraLarge(): Boolean {
-    return isWidthAtLeastBreakpoint(WIDTH_DP_EXTRA_LARGE_LOWER_BOUND)
-}
+fun WindowSizeClass.isLarge(): Boolean = isWidthAtLeastBreakpoint(WIDTH_DP_LARGE_LOWER_BOUND)
 
-fun WindowSizeClass.isLarge(): Boolean {
-    return isWidthAtLeastBreakpoint(WIDTH_DP_LARGE_LOWER_BOUND)
-}
+fun Dp.isExpanded(): Boolean = isInBoxConstraints(WIDTH_DP_EXPANDED_LOWER_BOUND)
 
-fun Dp.isExpanded(): Boolean {
-    return isInBoxConstraints(WIDTH_DP_EXPANDED_LOWER_BOUND)
-}
+fun Dp.isMedium(): Boolean = isInBoxConstraints(WIDTH_DP_MEDIUM_LOWER_BOUND)
 
-fun Dp.isMedium(): Boolean {
-    return isInBoxConstraints(WIDTH_DP_MEDIUM_LOWER_BOUND)
-}
+fun Dp.isLarge(): Boolean = isInBoxConstraints(WIDTH_DP_LARGE_LOWER_BOUND)
 
-fun Dp.isLarge(): Boolean {
-    return isInBoxConstraints(WIDTH_DP_LARGE_LOWER_BOUND)
-}
+fun Dp.isExtraLarge(): Boolean = isInBoxConstraints(WIDTH_DP_EXTRA_LARGE_LOWER_BOUND)
 
-fun Dp.isExtraLarge(): Boolean {
-    return isInBoxConstraints(WIDTH_DP_EXTRA_LARGE_LOWER_BOUND)
-}
-
-private fun Dp.isInBoxConstraints(windowSizeWidth: Int): Boolean {
-    return this.value >= windowSizeWidth
-}
+private fun Dp.isInBoxConstraints(windowSizeWidth: Int): Boolean = this.value >= windowSizeWidth

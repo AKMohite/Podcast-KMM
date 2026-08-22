@@ -13,32 +13,30 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 internal class PodcastDetailViewModel(
-    private val podcastRepository: PodcastRepository,
-    private val episodeRepository: EpisodeRepository,
-    podcastId: String
+  private val podcastRepository: PodcastRepository,
+  private val episodeRepository: EpisodeRepository,
+  podcastId: String,
 ) : ViewModel() {
-
-    internal val uiState: StateFlow<PodcastDetailState> = combine(
-        podcastRepository.refresh(podcastId),
-        episodeRepository.refresh(
-            EpisodeQueryParam(
-                podcastId = podcastId,
-                nextEpisodeDate = null
-            )
-        )
+  internal val uiState: StateFlow<PodcastDetailState> =
+    combine(
+      podcastRepository.refresh(podcastId),
+      episodeRepository.refresh(
+        EpisodeQueryParam(
+          podcastId = podcastId,
+          nextEpisodeDate = null,
+        ),
+      ),
     ) { podcast, episodes ->
-        PodcastDetailState(podcast = podcast, loading = false, episodes = episodes)
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = PodcastDetailState(loading = true)
-        )
+      PodcastDetailState(podcast = podcast, loading = false, episodes = episodes)
+    }.stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(5000),
+      initialValue = PodcastDetailState(loading = true),
+    )
 }
 
-
 internal data class PodcastDetailState(
-    val loading: Boolean = false,
-    val podcast: Podcast? = null,
-    val episodes: List<PodcastEpisode> = emptyList(),
+  val loading: Boolean = false,
+  val podcast: Podcast? = null,
+  val episodes: List<PodcastEpisode> = emptyList(),
 )

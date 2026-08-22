@@ -12,36 +12,40 @@ import kotlinx.coroutines.flow.flowOn
 typealias TrendingPodcastEntity = Trending_podcasts
 
 internal class SQLDelightTrendingPodcastDAO(
-    database: PocketDatabase,
-    private val dispatcher: DispatcherProvider
+  database: PocketDatabase,
+  private val dispatcher: DispatcherProvider,
 ) : TrendingPodcastDAO {
-    private val dbQuery = database.trending_podcastQueries
+  private val dbQuery = database.trending_podcastQueries
 
-    override fun getBestPodcasts(page: Int): Flow<List<PodcastEntity>> =
-        dbQuery.getTrendingPodcasts(page)
-        .asFlow()
-        .mapToList(dispatcher.io)
-        .distinctUntilChanged()
-        .flowOn(dispatcher.io)
+  override fun getBestPodcasts(page: Int): Flow<List<PodcastEntity>> =
+    dbQuery
+      .getTrendingPodcasts(page)
+      .asFlow()
+      .mapToList(dispatcher.io)
+      .distinctUntilChanged()
+      .flowOn(dispatcher.io)
 
-    override fun upsertPage(entities: List<TrendingPodcastEntity>) {
-        entities.forEach { entity ->
-            dbQuery.insertPodcast(entity.id, entity.podcast_id, entity.page)
-        }
+  override fun upsertPage(entities: List<TrendingPodcastEntity>) {
+    entities.forEach { entity ->
+      dbQuery.insertPodcast(entity.id, entity.podcast_id, entity.page)
     }
+  }
 
-    override fun deletePage(page: Int) {
-        dbQuery.deletePage(page)
-    }
+  override fun deletePage(page: Int) {
+    dbQuery.deletePage(page)
+  }
 
-    override fun deleteAll() {
-        dbQuery.deleteAll()
-    }
+  override fun deleteAll() {
+    dbQuery.deleteAll()
+  }
 }
 
 interface TrendingPodcastDAO {
-    fun getBestPodcasts(page: Int = 1): Flow<List<PodcastEntity>>
-    fun upsertPage(entities: List<TrendingPodcastEntity>)
-    fun deletePage(page: Int)
-    fun deleteAll()
+  fun getBestPodcasts(page: Int = 1): Flow<List<PodcastEntity>>
+
+  fun upsertPage(entities: List<TrendingPodcastEntity>)
+
+  fun deletePage(page: Int)
+
+  fun deleteAll()
 }

@@ -6,5 +6,5 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 
 internal actual fun Module.databasePlatformModule() {
-    single<SqlDriver> { AndroidDatabaseDriverFactory(androidContext()).createDriver() }
+  single<SqlDriver> { AndroidDatabaseDriverFactory(androidContext()).createDriver() }
 }

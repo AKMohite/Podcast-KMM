@@ -7,28 +7,36 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SearchPodcast: KoinComponent {
-    private val api: PocketNotesAPI by inject()
-    private val mapper: PodcastMapper by inject()
+class SearchPodcast : KoinComponent {
+  private val api: PocketNotesAPI by inject()
+  private val mapper: PodcastMapper by inject()
 
-    @Throws(Exception::class)
-    suspend operator fun invoke(query: String): SearchResults {
-        val episodeQuery = mapOf(
-            "q" to query,
-            "type" to "episode"
-        )
+  @Throws(Exception::class)
+  suspend operator fun invoke(query: String): SearchResults {
+    val episodeQuery =
+      mapOf(
+        "q" to query,
+        "type" to "episode",
+      )
 //        TODO add podcast results too
-        val podcastQuery = mapOf(
-            "q" to query,
-            "type" to "podcast"
-        )
-        val episodeDTOs = api.search(episodeQuery).getOrThrow().results.orEmpty()
-        val episodes = mapper.getPodcastEpisodes(
-            episodeDTOs,
-            throw IllegalArgumentException("Where can I get podcast ids for episodes?")
-        )
+    val podcastQuery =
+      mapOf(
+        "q" to query,
+        "type" to "podcast",
+      )
+    val episodeDTOs =
+      api
+        .search(episodeQuery)
+        .getOrThrow()
+        .results
+        .orEmpty()
+    val episodes =
+      mapper.getPodcastEpisodes(
+        episodeDTOs,
+        throw IllegalArgumentException("Where can I get podcast ids for episodes?"),
+      )
 //        val podcasts = api.search(podcastQuery)
-        val podcasts = samplePodcasts
-        return SearchResults(episodes, podcasts)
-    }
+    val podcasts = samplePodcasts
+    return SearchResults(episodes, podcasts)
+  }
 }

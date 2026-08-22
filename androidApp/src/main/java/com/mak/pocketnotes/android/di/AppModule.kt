@@ -12,43 +12,44 @@ import com.mak.pocketnotes.media.PlayerController
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-internal val appModule = module {
+internal val appModule =
+  module {
 
     single<PlayerController> { ExoPlayerController(get(), get()) }
 
     viewModel {
-        DiscoverViewmodel(
-            bestPodcastsRepository = get(),
-            curatedPodcastsRepository = get()
-        )
+      DiscoverViewmodel(
+        bestPodcastsRepository = get(),
+        curatedPodcastsRepository = get(),
+      )
     }
     viewModel {
-        QueueViewModel(
-            controller = get()
-        )
+      QueueViewModel(
+        controller = get(),
+      )
     }
     viewModel {
-        PlayerViewModel(
-            controller = get()
-        )
+      PlayerViewModel(
+        controller = get(),
+      )
     }
     viewModel { PlayerExpansionViewModel() }
     viewModel { params ->
-        PodcastDetailViewModel(
-            podcastRepository = get(),
-            relatedPodcastRepository = get(),
-            episodeRepository = get(),
-            podcastId = params.get()
-        )
+      PodcastDetailViewModel(
+        podcastRepository = get(),
+        relatedPodcastRepository = get(),
+        episodeRepository = get(),
+        podcastId = params.get(),
+      )
     }
     viewModel {
-        SearchViewModel(
-            genreRepository = get(),
-            searchPodcast = get(),
-            bestPodcastRepository = get()
-        )
+      SearchViewModel(
+        genreRepository = get(),
+        searchPodcast = get(),
+        bestPodcastRepository = get(),
+      )
     }
     viewModel {
-        SettingsViewModel(repository = get())
+      SettingsViewModel(repository = get())
     }
-}
+  }

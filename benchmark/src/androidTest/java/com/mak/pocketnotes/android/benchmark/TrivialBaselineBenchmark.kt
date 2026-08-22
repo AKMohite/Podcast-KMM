@@ -10,30 +10,31 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TrivialBaselineBenchmark {
+  @get:Rule
+  val rule = BaselineProfileRule()
 
-    @get:Rule
-    val rule = BaselineProfileRule()
+  @Test
+  fun trivialStartup() {
+    trackStartup()
+  }
 
-    @Test
-    fun trivialStartup() {
-        trackStartup()
+  private fun trackStartup() {
+    rule.collect(
+      packageName = APP_TO_BENCHMARK,
+    ) {
+      val intent = Intent()
+      intent.component =
+        ComponentName(
+          // pkg =
+          APP_TO_BENCHMARK,
+          // cls =
+          "com.mak.pocketnotes.android.MainActivity",
+        )
+      startActivityAndWait(intent)
     }
+  }
 
-    private fun trackStartup() {
-        rule.collect(
-            packageName = APP_TO_BENCHMARK
-        ) {
-            val intent = Intent()
-            intent.component = ComponentName(
-                /* pkg = */ APP_TO_BENCHMARK,
-                /* cls = */ "com.mak.pocketnotes.android.MainActivity"
-            )
-            startActivityAndWait(intent)
-        }
-    }
-
-    companion object {
-        const val APP_TO_BENCHMARK = "com.mak.pocketnotes.android"
-    }
-
+  companion object {
+    const val APP_TO_BENCHMARK = "com.mak.pocketnotes.android"
+  }
 }

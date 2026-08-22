@@ -9,22 +9,25 @@ import androidx.media3.session.MediaSessionService
 import com.mak.pocketnotes.service.media.notification.INotificationManager
 import org.koin.android.ext.android.inject
 
-class MediaPlayerService: MediaSessionService() {
+class MediaPlayerService : MediaSessionService() {
+  private val mediaSession: MediaSession by inject()
 
-    private val mediaSession: MediaSession by inject()
+  private val notificationManager: INotificationManager by inject()
 
-    private val notificationManager: INotificationManager by inject()
-
-    @UnstableApi
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.startNotification(
-                mediaSession = mediaSession,
-                mediaService = this
-            )
-        }
-        return super.onStartCommand(intent, flags, startId)
+  @UnstableApi
+  override fun onStartCommand(
+    intent: Intent?,
+    flags: Int,
+    startId: Int,
+  ): Int {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      notificationManager.startNotification(
+        mediaSession = mediaSession,
+        mediaService = this,
+      )
     }
+    return super.onStartCommand(intent, flags, startId)
+  }
 
 //    app removed from recent
 //    override fun onTaskRemoved(rootIntent: Intent?) {
@@ -36,24 +39,23 @@ class MediaPlayerService: MediaSessionService() {
 //        super.onTaskRemoved(rootIntent)
 //    }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? {
-        return mediaSession
-    }
+  override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? =
+    mediaSession
 
-    override fun onDestroy() {
-        releaseSession()
-        super.onDestroy()
-    }
+  override fun onDestroy() {
+    releaseSession()
+    super.onDestroy()
+  }
 
-    private fun releaseSession() {
-        mediaSession.apply {
-            release()
-            if (player.playbackState != Player.STATE_IDLE) {
+  private fun releaseSession() {
+    mediaSession.apply {
+      release()
+      if (player.playbackState != Player.STATE_IDLE) {
 //                TODO check seek to save in preferences
-                player.seekTo(0)
-                player.playWhenReady = false
-                player.stop()
-            }
-        }
+        player.seekTo(0)
+        player.playWhenReady = false
+        player.stop()
+      }
     }
+  }
 }

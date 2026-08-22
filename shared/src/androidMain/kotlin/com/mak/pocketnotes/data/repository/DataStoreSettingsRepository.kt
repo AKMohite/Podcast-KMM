@@ -9,11 +9,10 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 internal class DataStoreSettingsRepository(
-    private val dataStore: DataStore<AppSettings>,
-    private val dispatcher: DispatcherProvider
-): SettingsRepository {
-
-//    private companion object Keys {
+  private val dataStore: DataStore<AppSettings>,
+  private val dispatcher: DispatcherProvider,
+) : SettingsRepository {
+  //    private companion object Keys {
 //        val THEME           = stringPreferencesKey("theme")
 //        val LANGUAGE        = stringPreferencesKey("language")
 //        val TEXT_SIZE       = stringPreferencesKey("text_size")
@@ -23,10 +22,10 @@ internal class DataStoreSettingsRepository(
 //        val STREAM_QUALITY  = stringPreferencesKey("stream_quality")
 //    }
 
-    override fun getSettings(): Flow<AppSettings> {
-        return dataStore.data
-            .catch { emit(AppSettings()) }
-            .flowOn(dispatcher.io)
+  override fun getSettings(): Flow<AppSettings> {
+    return dataStore.data
+      .catch { emit(AppSettings()) }
+      .flowOn(dispatcher.io)
 //            .map { prefs ->
 //                AppSettings(
 //                    theme                   = prefs[THEME]?.let { AppTheme.valueOf(it) } ?: AppTheme.SYSTEM,
@@ -38,9 +37,10 @@ internal class DataStoreSettingsRepository(
 //                    streamingQuality        = prefs[STREAM_QUALITY]?.let { StreamQuality.valueOf(it) } ?: StreamQuality.MEDIUM,
 //                )
 //            }
-    }
+  }
 
-    override suspend fun updateSettings(settings: AppSettings): Unit = withContext(dispatcher.io) {
+  override suspend fun updateSettings(settings: AppSettings): Unit =
+    withContext(dispatcher.io) {
 //        dataStore.edit { prefs ->
 //            prefs[THEME]          = settings.theme.name
 //            prefs[LANGUAGE]       = settings.language
@@ -50,8 +50,8 @@ internal class DataStoreSettingsRepository(
 //            prefs[DELETE_PLAYED]  = settings.episodeDeleteAfterPlayed
 //            prefs[STREAM_QUALITY] = settings.streamingQuality.name
 //        }
-        dataStore.updateData { _ ->
-            settings
-        }
+      dataStore.updateData { _ ->
+        settings
+      }
     }
 }

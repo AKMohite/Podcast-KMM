@@ -11,40 +11,43 @@ import kotlinx.coroutines.withContext
 typealias PodcastEntity = Podcasts
 
 internal class SQLDelightPodcastDAO(
-    database: PocketDatabase,
-    private val dispatcher: DispatcherProvider
+  database: PocketDatabase,
+  private val dispatcher: DispatcherProvider,
 ) : PodcastDAO {
-    private val dbQuery = database.podcast_entityQueries
+  private val dbQuery = database.podcast_entityQueries
 
-    override fun insertPodcast(podcast: Podcasts) {
-        dbQuery.insertPodcast(podcast)
+  override fun insertPodcast(podcast: Podcasts) {
+    dbQuery.insertPodcast(podcast)
+  }
+
+  override fun insertPodcasts(podcasts: List<PodcastEntity>) {
+    podcasts.forEach { podcast ->
+      insertPodcast(podcast)
+    }
+  }
+
+  override suspend fun removePodcasts() =
+    withContext(dispatcher.io) {
+      dbQuery.removeAllPodcasts().await()
     }
 
-    override fun insertPodcasts(podcasts: List<PodcastEntity>) {
-        podcasts.forEach { podcast ->
-            insertPodcast(podcast)
-        }
-    }
+  override fun getPodcast(id: String): Flow<PodcastEntity> =
+    dbQuery
+      .getPodcastById(id)
+      .asFlow()
+      .mapToOne(dispatcher.io)
 
-    override suspend fun removePodcasts() = withContext(dispatcher.io) {
-        dbQuery.removeAllPodcasts().await()
-    }
-
-    override fun getPodcast(id: String): Flow<PodcastEntity> {
-        return dbQuery.getPodcastById(id)
-            .asFlow()
-            .mapToOne(dispatcher.io)
-    }
-
-    override suspend fun removePodcast(podcastId: String): Long {
-        return dbQuery.delete(podcastId).await()
-    }
+  override suspend fun removePodcast(podcastId: String): Long = dbQuery.delete(podcastId).await()
 }
 
 interface PodcastDAO {
-    fun insertPodcast(podcast: PodcastEntity)
-    fun insertPodcasts(podcasts: List<PodcastEntity>)
-    suspend fun removePodcasts(): Long
-    fun getPodcast(id: String): Flow<PodcastEntity>
-    suspend fun removePodcast(podcastId: String): Long
+  fun insertPodcast(podcast: PodcastEntity)
+
+  fun insertPodcasts(podcasts: List<PodcastEntity>)
+
+  suspend fun removePodcasts(): Long
+
+  fun getPodcast(id: String): Flow<PodcastEntity>
+
+  suspend fun removePodcast(podcastId: String): Long
 }

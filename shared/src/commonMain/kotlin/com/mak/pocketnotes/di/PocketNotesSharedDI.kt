@@ -8,20 +8,21 @@ import com.mak.pocketnotes.domain.usecase.SearchPodcast
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-private val domainModule = module {
+private val domainModule =
+  module {
     factory { SearchPodcast() }
-}
+  }
 
 internal expect fun platformModule(): Module
 
 private val sharedModules =
-    listOf(
-        commonModule,
-        ktorModule(),
-        localModule,
-        coreDataModule,
-        domainModule,
-        platformModule()
-    )
+  listOf(
+    commonModule,
+    ktorModule(),
+    localModule,
+    coreDataModule,
+    domainModule,
+    platformModule(),
+  )
 
 fun getSharedModules() = sharedModules

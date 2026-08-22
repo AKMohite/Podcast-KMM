@@ -14,44 +14,45 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TrivialStartupBenchmark {
+  @get:Rule
+  val rule = MacrobenchmarkRule()
 
-    @get:Rule
-    val rule = MacrobenchmarkRule()
+  @Test
+  fun trivialStartupNoProfile() {
+    trackStartup(CompilationMode.None())
+  }
 
-    @Test
-    fun trivialStartupNoProfile() {
-        trackStartup(CompilationMode.None())
-    }
+  @Test
+  fun trivialStartupWithProfile() {
+    trackStartup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))
+  }
 
-    @Test
-    fun trivialStartupWithProfile() {
-        trackStartup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))
-    }
-
-    private fun trackStartup(mode: CompilationMode) {
-        rule.measureRepeated(
-            packageName = APP_TO_BENCHMARK,
-            metrics = listOf(StartupTimingMetric()),
-            startupMode = StartupMode.COLD,
-            compilationMode = mode, // don't care yet
-            iterations = 8,
-            setupBlock = {
+  private fun trackStartup(mode: CompilationMode) {
+    rule.measureRepeated(
+      packageName = APP_TO_BENCHMARK,
+      metrics = listOf(StartupTimingMetric()),
+      startupMode = StartupMode.COLD,
+      compilationMode = mode, // don't care yet
+      iterations = 8,
+      setupBlock = {
 //        killProcess()
-                pressHome()
-            },
-            measureBlock = {
-                val intent = Intent()
-                intent.component = ComponentName(
-                    /* pkg = */ APP_TO_BENCHMARK,
-                    /* cls = */ "com.mak.pocketnotes.android.MainActivity"
-                )
-                startActivityAndWait(intent)
-            }
-        )
-    }
+        pressHome()
+      },
+      measureBlock = {
+        val intent = Intent()
+        intent.component =
+          ComponentName(
+            // pkg =
+            APP_TO_BENCHMARK,
+            // cls =
+            "com.mak.pocketnotes.android.MainActivity",
+          )
+        startActivityAndWait(intent)
+      },
+    )
+  }
 
-    companion object {
-        const val APP_TO_BENCHMARK = "com.mak.pocketnotes.android"
-    }
-
+  companion object {
+    const val APP_TO_BENCHMARK = "com.mak.pocketnotes.android"
+  }
 }

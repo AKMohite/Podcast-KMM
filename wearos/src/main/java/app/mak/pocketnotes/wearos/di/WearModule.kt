@@ -5,17 +5,18 @@ import app.mak.pocketnotes.wearos.feature.trendingpodcasts.WearTrendingPodcastsV
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val viewmodelModule = module {
+val viewmodelModule =
+  module {
     viewModel {
-        WearTrendingPodcastsViewModel(
-            podcastRepository = get()
-        )
+      WearTrendingPodcastsViewModel(
+        podcastRepository = get(),
+      )
     }
     viewModel { params ->
-        PodcastDetailViewModel(
-            podcastRepository = get(),
-            episodeRepository = get(),
-            podcastId = params.get()
-        )
+      PodcastDetailViewModel(
+        podcastRepository = get(),
+        episodeRepository = get(),
+        podcastId = params.get(),
+      )
     }
-}
+  }

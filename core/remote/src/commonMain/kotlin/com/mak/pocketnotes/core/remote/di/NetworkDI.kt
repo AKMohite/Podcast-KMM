@@ -1,6 +1,5 @@
 package com.mak.pocketnotes.core.remote.di
 
-
 import com.mak.pocketnotes.core.common.exception.ExceptionType
 import com.mak.pocketnotes.core.common.exception.PocketAPIException
 import com.mak.pocketnotes.core.common.exception.UnknownAPIException
@@ -17,60 +16,71 @@ import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-internal fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
+internal fun createJson() =
+  Json {
+    isLenient = true
+    ignoreUnknownKeys = true
+  }
 
-internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): HttpClient {
-    return HttpClient {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                useAlternativeNames = false
-            })
-        }
-        defaultRequest {
-            url {
-                protocol = URLProtocol.HTTPS
-                host = API_HOST
-                header("X-ListenAPI-Key", API_KEY)
+internal fun createHttpClient(
+  json: Json,
+  enableNetworkLogs: Boolean = false,
+): HttpClient =
+  HttpClient {
+    install(ContentNegotiation) {
+      json(
+        Json {
+          ignoreUnknownKeys = true
+          useAlternativeNames = false
+        },
+      )
+    }
+    defaultRequest {
+      url {
+        protocol = URLProtocol.HTTPS
+        host = API_HOST
+        header("X-ListenAPI-Key", API_KEY)
 //                path("api/")
 //                parametersOf("api_key", "")
-            }
-        }
+      }
+    }
 
-        HttpResponseValidator {
-            handleResponseExceptionWithRequest { exception, request ->
+    HttpResponseValidator {
+      handleResponseExceptionWithRequest { exception, request ->
                 /*val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
                 val exceptionResponse = clientException.response
                 if (exceptionResponse.status == HttpStatusCode.NotFound) {
                     val exceptionResponseText = exceptionResponse.bodyAsText()
                     throw MissingPageException(exceptionResponse, exceptionResponseText)
                 }*/
-                throw handleKtorExceptions(exception) ?: UnknownAPIException(throwable = exception)
-            }
-        }
+        throw handleKtorExceptions(exception) ?: UnknownAPIException(throwable = exception)
+      }
     }
-}
+  }
 
 private suspend fun handleKtorExceptions(exception: Throwable): Throwable? {
 //        todo check for ktor exceptions instead java
-    return when (exception) {
-        is ClientRequestException -> {
-            handleAPIExceptions(exception)
-        }
-//            is java.net.SocketTimeoutException -> RequestTimeoutException(throwable = exception)
-//            is java.io.IOException -> NoNetworkException()
-        else -> null
+  return when (exception) {
+    is ClientRequestException -> {
+      handleAPIExceptions(exception)
     }
+
+    //            is java.net.SocketTimeoutException -> RequestTimeoutException(throwable = exception)
+//            is java.io.IOException -> NoNetworkException()
+    else -> {
+      null
+    }
+  }
 }
 
 private suspend fun handleAPIExceptions(exception: ClientRequestException): Throwable? {
-    val exceptionResponse = exception.response
-    val error = getErrorDTO(exceptionResponse)
-    return PocketAPIException(
-        code = exceptionResponse.status.value,
-        errorMsg = error?.message ?: ExceptionType.UNKNOWN.message,
-        throwable = exception
-    )
+  val exceptionResponse = exception.response
+  val error = getErrorDTO(exceptionResponse)
+  return PocketAPIException(
+    code = exceptionResponse.status.value,
+    errorMsg = error?.message ?: ExceptionType.UNKNOWN.message,
+    throwable = exception,
+  )
 }
 
 /*suspend inline fun <T> safeApiCall(responseFunction: () -> T): ResultWrapper<T> {
@@ -81,17 +91,16 @@ private suspend fun handleAPIExceptions(exception: ClientRequestException): Thro
     }
 }*/
 
-private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? {
-    return try {
-        exceptionResponse.body<ErrorDTO>()
-    } catch (e: Throwable) {
+private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? =
+  try {
+    exceptionResponse.body<ErrorDTO>()
+  } catch (e: Throwable) {
 //        might throw json parse exception
-        null
-    }
-}
+    null
+  }
 
-//const val a = BuildCo
+// const val a = BuildCo
 private const val API_HOST = "listen-api-test.listennotes.com"
 
-//private const val API_HOST = "listen-api.listennotes.com"
+// private const val API_HOST = "listen-api.listennotes.com"
 private const val API_KEY = ""

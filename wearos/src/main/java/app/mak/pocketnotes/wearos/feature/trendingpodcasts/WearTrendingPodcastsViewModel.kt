@@ -8,12 +8,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 
 class WearTrendingPodcastsViewModel(
-    private val podcastRepository: BestPodcastRepository
+  private val podcastRepository: BestPodcastRepository,
 ) : ViewModel() {
-    val state = podcastRepository.refresh(BestQueryParam())
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
+  val state =
+    podcastRepository
+      .refresh(BestQueryParam())
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList(),
+      )
 }

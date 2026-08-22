@@ -4,10 +4,8 @@ import app.cash.sqldelight.ColumnAdapter
 import com.mak.pocketnotes.core.common.models.SyncRequest
 
 internal object SyncRequestColumnAdapter : ColumnAdapter<SyncRequest, String> {
-    override fun decode(databaseValue: String): SyncRequest {
-        return SyncRequest.entries.first { it.name == databaseValue }
-    }
+  override fun decode(databaseValue: String): SyncRequest =
+    SyncRequest.entries.first { it.name == databaseValue }
 
-    override fun encode(value: SyncRequest): String = value.name
-
+  override fun encode(value: SyncRequest): String = value.name
 }

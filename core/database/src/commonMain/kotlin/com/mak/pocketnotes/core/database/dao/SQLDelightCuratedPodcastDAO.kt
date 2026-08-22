@@ -15,43 +15,44 @@ typealias CuratedSectionEntity = Curated_sections
 typealias CuratedPodcastEntity = Curated_podcasts
 
 internal class SQLDelightCuratedPodcastDAO(
-    database: PocketDatabase,
-    private val dispatcher: DispatcherProvider
+  database: PocketDatabase,
+  private val dispatcher: DispatcherProvider,
 ) : CuratedPodcastDAO {
-    private val sectionQuery = database.curated_section_entityQueries
-    private val podcastQuery = database.curated_podcast_entityQueries
+  private val sectionQuery = database.curated_section_entityQueries
+  private val podcastQuery = database.curated_podcast_entityQueries
 
-    override fun insertCuratedPodcasts(
-        sections: List<CuratedSectionEntity>,
-        podcasts: List<CuratedPodcastEntity>
-    ) {
-        sections.forEach { section ->
-            sectionQuery.insertCuratedSection(section)
-        }
-        podcasts.forEach { podcast ->
-            podcastQuery.insertCuratedPodcast(podcast)
-        }
+  override fun insertCuratedPodcasts(
+    sections: List<CuratedSectionEntity>,
+    podcasts: List<CuratedPodcastEntity>,
+  ) {
+    sections.forEach { section ->
+      sectionQuery.insertCuratedSection(section)
     }
-
-    override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> {
-        return sectionQuery.curatedSectionWithPodcast().asFlow()
-            .distinctUntilChanged()
-            .mapToList(dispatcher.io)
-            .flowOn(dispatcher.io)
+    podcasts.forEach { podcast ->
+      podcastQuery.insertCuratedPodcast(podcast)
     }
+  }
 
-    override fun deletePage(page: Int) {
-        sectionQuery.deletePage(page)
-    }
+  override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> =
+    sectionQuery
+      .curatedSectionWithPodcast()
+      .asFlow()
+      .distinctUntilChanged()
+      .mapToList(dispatcher.io)
+      .flowOn(dispatcher.io)
 
+  override fun deletePage(page: Int) {
+    sectionQuery.deletePage(page)
+  }
 }
 
 interface CuratedPodcastDAO {
-    fun insertCuratedPodcasts(
-        sections: List<CuratedSectionEntity>,
-        podcasts: List<CuratedPodcastEntity>
-    )
+  fun insertCuratedPodcasts(
+    sections: List<CuratedSectionEntity>,
+    podcasts: List<CuratedPodcastEntity>,
+  )
 
-    fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>>
-    fun deletePage(page: Int)
+  fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>>
+
+  fun deletePage(page: Int)
 }

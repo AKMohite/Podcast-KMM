@@ -18,36 +18,37 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class SearchViewModel(
-    private val genreRepository: GenreRepository,
-    private val searchPodcast: SearchPodcast,
-    private val bestPodcastRepository: BestPodcastRepository
-): ViewModel(), SearchActions {
+  private val genreRepository: GenreRepository,
+  private val searchPodcast: SearchPodcast,
+  private val bestPodcastRepository: BestPodcastRepository,
+) : ViewModel(),
+  SearchActions {
+  private val _state = MutableStateFlow(SearchState())
+  override val state: StateFlow<SearchState> = _state.asStateFlow()
 
-    private val _state = MutableStateFlow(SearchState())
-    override val state: StateFlow<SearchState> = _state.asStateFlow()
+  init {
+    getAllGenres()
+  }
 
-    init {
-        getAllGenres()
-    }
-
-    private fun getAllGenres() {
-        genreRepository.refresh()
-            .map { result ->
+  private fun getAllGenres() {
+    genreRepository
+      .refresh()
+      .map { result ->
 //                when(result) {
 //                    is DomainResult.Error -> _state.update { it.copy(error = result.message) }
 //                    DomainResult.Loading -> _state.update { it.copy(loading = true) }
 //                    is DomainResult.Success -> _state.update { it.copy(genres = result.data) }
 //                }
-            }.launchIn(viewModelScope)
-    }
+      }.launchIn(viewModelScope)
+  }
 
-    override fun onSearchTextChange(value: String) {
+  override fun onSearchTextChange(value: String) {
 //        TODO Not yet implemented
-    }
+  }
 
-    override fun onGenreSelect(genre: Genre) {
-        viewModelScope.launch {
-            _state.update { it.copy(loading = true) }
+  override fun onGenreSelect(genre: Genre) {
+    viewModelScope.launch {
+      _state.update { it.copy(loading = true) }
 //            when(val result = bestPodcastRepository.observePodcasts(BestQueryParam(
 //                page = 1,
 //                genreId = genre.id
@@ -68,55 +69,56 @@ internal class SearchViewModel(
 //                else -> {}
 //            }
 //            _state.update { it.copy(loading = true) }
-        }
     }
+  }
 
-    override fun onSearchClick(searchText: String) {
-        viewModelScope.launch {
-            try {
-                val results = searchPodcast(searchText)
-                _state.update {
-                    it.copy(
-                        episodes = results.episodes,
-                        podcasts = results.podcasts,
-                        genrePodcasts = emptyList()
-                    )
-                }
-            } catch (t: Throwable) {
-                _state.update { it.copy(error = t.message) }
-            }
+  override fun onSearchClick(searchText: String) {
+    viewModelScope.launch {
+      try {
+        val results = searchPodcast(searchText)
+        _state.update {
+          it.copy(
+            episodes = results.episodes,
+            podcasts = results.podcasts,
+            genrePodcasts = emptyList(),
+          )
         }
+      } catch (t: Throwable) {
+        _state.update { it.copy(error = t.message) }
+      }
     }
+  }
 
-    override fun onSearchFocusChanged(focusState: FocusState) {
-    }
+  override fun onSearchFocusChanged(focusState: FocusState) {
+  }
 
-    override fun closeSearch() {
-        viewModelScope.launch {
-            _state.update { it.searchCleared() }
-        }
+  override fun closeSearch() {
+    viewModelScope.launch {
+      _state.update { it.searchCleared() }
     }
+  }
 }
 
 internal data class SearchState(
-    val searchText: String = "",
-    val selectedGenre: String = "",
-    val genres: List<Genre> = emptyList(),
-    val podcasts: List<Podcast> = emptyList(),
-    val genrePodcasts: List<Podcast> = emptyList(),
-    val episodes: List<PodcastEpisode> = emptyList(),
-    val error: String? = null,
-    val loading: Boolean = false
+  val searchText: String = "",
+  val selectedGenre: String = "",
+  val genres: List<Genre> = emptyList(),
+  val podcasts: List<Podcast> = emptyList(),
+  val genrePodcasts: List<Podcast> = emptyList(),
+  val episodes: List<PodcastEpisode> = emptyList(),
+  val error: String? = null,
+  val loading: Boolean = false,
 ) {
-    fun canShowGenres(): Boolean {
-        return genres.isNotEmpty() && (!arePodcastsAvailable() && !areEpisodesAvailable() && !areGenrePodcastsAvailable())
-    }
+  fun canShowGenres(): Boolean =
+    genres.isNotEmpty() && (!arePodcastsAvailable() && !areEpisodesAvailable() && !areGenrePodcastsAvailable())
 
-    fun areEpisodesAvailable() = episodes.isNotEmpty()
-    fun arePodcastsAvailable() = podcasts.isNotEmpty()
-    fun areGenrePodcastsAvailable() = genrePodcasts.isNotEmpty()
-    fun isResultAvailable() = arePodcastsAvailable() || areEpisodesAvailable()
-    fun searchCleared(): SearchState {
-        return this.copy(episodes = emptyList(), podcasts = emptyList())
-    }
+  fun areEpisodesAvailable() = episodes.isNotEmpty()
+
+  fun arePodcastsAvailable() = podcasts.isNotEmpty()
+
+  fun areGenrePodcastsAvailable() = genrePodcasts.isNotEmpty()
+
+  fun isResultAvailable() = arePodcastsAvailable() || areEpisodesAvailable()
+
+  fun searchCleared(): SearchState = this.copy(episodes = emptyList(), podcasts = emptyList())
 }

@@ -1,42 +1,42 @@
 plugins {
-    id("com.android.library")
+  id("com.android.library")
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-    }
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+  }
 }
 
 android {
-    namespace = "com.mak.pocketnotes.android.benchmark"
-    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+  namespace = "com.mak.pocketnotes.android.benchmark"
+  compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
 
-    defaultConfig {
-        minSdk = Integer.parseInt(libs.versions.minSdk.get())
+  defaultConfig {
+    minSdk = Integer.parseInt(libs.versions.minSdk.get())
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles("consumer-rules.pro")
+  }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+  buildTypes {
+    release {
+      isMinifyEnabled = false
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "proguard-rules.pro",
+      )
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+  }
 }
 
 dependencies {
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.benchmark:benchmark-macro-junit4:1.4.1")
+  testImplementation("junit:junit:4.13.2")
+  androidTestImplementation("androidx.test.ext:junit:1.3.0")
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+  androidTestImplementation("androidx.benchmark:benchmark-macro-junit4:1.4.1")
 }

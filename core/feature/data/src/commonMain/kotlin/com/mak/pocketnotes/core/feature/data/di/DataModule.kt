@@ -15,73 +15,74 @@ import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.Related
 import com.mak.pocketnotes.core.feature.domain.search.repository.GenreRepository
 import org.koin.dsl.module
 
-val coreDataModule = module {
+val coreDataModule =
+  module {
     factory { PodcastMapper() }
     factory<BestPodcastRepository> {
-        OfflineFirstBestPodcastRepository(
-            api = get(),
-            transactionRunner = get(),
-            podcastDAO = get(),
-            trendingPodcastDAO = get(),
-            lastSyncDAO = get(),
-            mapper = get(),
-            dispatcher = get()
-        )
+      OfflineFirstBestPodcastRepository(
+        api = get(),
+        transactionRunner = get(),
+        podcastDAO = get(),
+        trendingPodcastDAO = get(),
+        lastSyncDAO = get(),
+        mapper = get(),
+        dispatcher = get(),
+      )
     }
 
     factory<CuratedPodcastRepository> {
-        OfflineFirstCuratedPodcastRepository(
-            api = get(),
-            transactionRunner = get(),
-            podcastDAO = get(),
-            curatedPodcastDAO = get(),
-            lastSyncDAO = get(),
-            dispatcher = get()
-        )
+      OfflineFirstCuratedPodcastRepository(
+        api = get(),
+        transactionRunner = get(),
+        podcastDAO = get(),
+        curatedPodcastDAO = get(),
+        lastSyncDAO = get(),
+        dispatcher = get(),
+      )
     }
 
     factory<PodcastRepository> {
-        OfflineFirstPodcastRepository(
-            api = get(),
-            transactionRunner = get(),
-            podcastDAO = get(),
-            episodeDAO = get(),
-            lastSyncDAO = get(),
-            dispatcher = get(),
-            mapper = get()
-        )
+      OfflineFirstPodcastRepository(
+        api = get(),
+        transactionRunner = get(),
+        podcastDAO = get(),
+        episodeDAO = get(),
+        lastSyncDAO = get(),
+        dispatcher = get(),
+        mapper = get(),
+      )
     }
 
     factory<EpisodeRepository> {
-        OfflineFirstEpisodeRepository(
-            api = get(),
-            transactionRunner = get(),
-            episodeDAO = get(),
-            lastSyncDAO = get(),
-            dispatcher = get(),
-            mapper = get()
-        )
+      OfflineFirstEpisodeRepository(
+        api = get(),
+        transactionRunner = get(),
+        episodeDAO = get(),
+        lastSyncDAO = get(),
+        dispatcher = get(),
+        mapper = get(),
+      )
     }
 
     factory<RelatedPodcastRepository> {
-        OfflineFirstRelatedPodcastRepository(
-            api = get(),
-            transactionRunner = get(),
-            podcastDAO = get(),
-            relatedPodcastDAO = get(),
-            lastSyncDAO = get(),
-            dispatcher = get(),
-            mapper = get()
-        )
+      OfflineFirstRelatedPodcastRepository(
+        api = get(),
+        transactionRunner = get(),
+        podcastDAO = get(),
+        relatedPodcastDAO = get(),
+        lastSyncDAO = get(),
+        dispatcher = get(),
+        mapper = get(),
+      )
     }
 
     factory<GenreRepository> {
-        OfflineFirstGenreRepository(
-            api = get(),
-            transactionRunner = get(),
-            genresDAO = get(),
-            lastSyncDAO = get(),
-            dispatcher = get()
-        )
+      OfflineFirstGenreRepository(
+        api = get(),
+        transactionRunner = get(),
+        genresDAO = get(),
+        lastSyncDAO = get(),
+        dispatcher = get(),
+      )
     }
-}
+  }

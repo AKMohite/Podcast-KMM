@@ -22,7 +22,8 @@ import com.mak.pocketnotes.core.database.queries.PocketDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val localModule = module {
+val localModule =
+  module {
     databasePlatformModule()
     single<DatabaseTransactionRunner> { SQLDatabaseTransactionRunner(get()) }
     single<PocketDatabase> { PocketNotesDatabase(get<SqlDriver>()).build() }
@@ -33,6 +34,6 @@ val localModule = module {
     single<RelatedPodcastDAO> { SQLDelightRelatedPodcastDAO(get(), get()) }
     single<CuratedPodcastDAO> { SQLDelightCuratedPodcastDAO(get(), get()) }
     single<TrendingPodcastDAO> { SQLDelightTrendingPodcastDAO(get(), get()) }
-}
+  }
 
 internal expect fun Module.databasePlatformModule()

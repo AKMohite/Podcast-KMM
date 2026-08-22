@@ -1,106 +1,106 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.kotlinxSerialization)
+  alias(libs.plugins.androidApplication)
+  alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.baselineprofile)
+  alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
-        optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
-        optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
-    }
+  compilerOptions {
+    jvmTarget.set(JvmTarget.JVM_21)
+    optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
+    optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+  }
 }
 
 composeCompiler {
-    stabilityConfigurationFiles.add(project.layout.projectDirectory.file("compose-stability.conf"))
+  stabilityConfigurationFiles.add(project.layout.projectDirectory.file("compose-stability.conf"))
 }
 
 android {
-    namespace = "com.mak.pocketnotes.android"
-    compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
-    defaultConfig {
-        applicationId = "com.mak.pocketnotes.android"
-        minSdk = Integer.parseInt(libs.versions.minSdk.get())
-        targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
-        versionCode = Integer.parseInt(libs.versions.versionCode.get())
-        versionName = libs.versions.versionName.get()
+  namespace = "com.mak.pocketnotes.android"
+  compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+  defaultConfig {
+    applicationId = "com.mak.pocketnotes.android"
+    minSdk = Integer.parseInt(libs.versions.minSdk.get())
+    targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
+    versionCode = Integer.parseInt(libs.versions.versionCode.get())
+    versionName = libs.versions.versionName.get()
+  }
+  buildFeatures {
+    compose = true
+  }
+  packaging {
+    resources {
+      excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
-    buildFeatures {
-        compose = true
+  }
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = true
+      isShrinkResources = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
 
-        create("staging") {
+    create("staging") {
 //            initWith(getByName("debug"))
-            applicationIdSuffix = ".debugStaging"
-            isMinifyEnabled = true
-            isShrinkResources = true
+      applicationIdSuffix = ".debugStaging"
+      isMinifyEnabled = true
+      isShrinkResources = true
 //            isDebuggable = true
-            matchingFallbacks += listOf("debug")
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-
-        create("benchmark") {
-            initWith(getByName("release"))
-            matchingFallbacks += listOf("release")
-            signingConfig = signingConfigs.findByName("debug")
-            isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "dontobfuscate.pro")
-        }
+      matchingFallbacks += listOf("debug")
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+    create("benchmark") {
+      initWith(getByName("release"))
+      matchingFallbacks += listOf("release")
+      signingConfig = signingConfigs.findByName("debug")
+      isDebuggable = false
+      isMinifyEnabled = true
+      isShrinkResources = true
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "dontobfuscate.pro")
     }
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+  }
 }
 
 baselineProfile {
-    dexLayoutOptimization = true
-    baselineProfileRulesRewrite = true
-    baselineProfileOutputDir = "../../src/main/baselineprofiles"
+  dexLayoutOptimization = true
+  baselineProfileRulesRewrite = true
+  baselineProfileOutputDir = "../../src/main/baselineprofiles"
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
-    implementation(project(":shared"))
-    implementation(platform(libs.compose.bom))
-    implementation(libs.bundles.compose)
-    debugImplementation(libs.compose.ui.tooling)
-    implementation(libs.koin.android.compose)
-    implementation(libs.accompanist.systemuicontroller)
+  implementation(project(":core:designsystem"))
+  implementation(project(":shared"))
+  implementation(platform(libs.compose.bom))
+  implementation(libs.bundles.compose)
+  debugImplementation(libs.compose.ui.tooling)
+  implementation(libs.koin.android.compose)
+  implementation(libs.accompanist.systemuicontroller)
 
-    implementation(libs.androidx.media3.exoplayer)
-    implementation(libs.androidx.media3.dash)
-    implementation(libs.androidx.media3.ui)
-    implementation(libs.androidx.media3.session)
-    implementation(libs.kotlinx.coroutines.guava)
+  implementation(libs.androidx.media3.exoplayer)
+  implementation(libs.androidx.media3.dash)
+  implementation(libs.androidx.media3.ui)
+  implementation(libs.androidx.media3.session)
+  implementation(libs.kotlinx.coroutines.guava)
 
-    // baseline profile
-    implementation(libs.androidx.profileinstaller)
-    baselineProfile(project(":baselineprofiles"))
+  // baseline profile
+  implementation(libs.androidx.profileinstaller)
+  baselineProfile(project(":baselineprofiles"))
 
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.compose.test.junit4)
-    debugImplementation(libs.compose.test.manifest)
+  androidTestImplementation(platform(libs.compose.bom))
+  androidTestImplementation(libs.compose.test.junit4)
+  debugImplementation(libs.compose.test.manifest)
 
-    testImplementation(libs.junit4)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.junit4)
+  testImplementation(libs.turbine)
+  testImplementation(libs.kotlinx.coroutines.test)
 }

@@ -1,5 +1,6 @@
 # PocketNote
-KMM project where all podcasts are listed 
+
+KMM project where all podcasts are listed
 
 ## Android
 | Home                              | Details                                      | Episodes                                  |

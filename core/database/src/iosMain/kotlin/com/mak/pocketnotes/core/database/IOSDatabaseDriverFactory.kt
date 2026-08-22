@@ -6,7 +6,5 @@ import com.mak.pocketnotes.core.database.DatabaseDriverFactory.Companion.LOCAL_D
 import com.mak.pocketnotes.core.database.queries.PocketDatabase
 
 internal class IOSDatabaseDriverFactory : DatabaseDriverFactory {
-    override fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(PocketDatabase.Schema, LOCAL_DB)
-    }
+  override fun createDriver(): SqlDriver = NativeSqliteDriver(PocketDatabase.Schema, LOCAL_DB)
 }

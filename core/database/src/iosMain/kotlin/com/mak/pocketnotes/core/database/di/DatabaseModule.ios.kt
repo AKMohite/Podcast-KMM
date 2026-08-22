@@ -5,5 +5,5 @@ import com.mak.pocketnotes.core.database.IOSDatabaseDriverFactory
 import org.koin.core.module.Module
 
 internal actual fun Module.databasePlatformModule() {
-    single<SqlDriver> { IOSDatabaseDriverFactory().createDriver() }
+  single<SqlDriver> { IOSDatabaseDriverFactory().createDriver() }
 }
