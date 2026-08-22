@@ -17,6 +17,17 @@ KMM project where all podcasts are listed
 |----------------------------------|------------------------------------|-------------------------------|---------------------------------------|
 | ![](art/android/mobile_home.png) | ![](art/android/foldable_home.png) | ![](art/android/tab_home.png) | ![](art/android/tab_home_curated.png) |
 
+## Wear OS
+
+| Podcasts                        | Details (Top header)                   | Details (Episode List)                  |
+|---------------------------------|----------------------------------------|-----------------------------------------|
+| ![](art/wear/wear-podcasts.png) | ![](art/wear/wear-podcast-detail-.png) | ![](art/wear/wear-podcast-detail-1.png) |
+
+## Other Platforms
+
+- **Android TV**: 🚧 Work In Progress (WIP)
+- **Android Auto**: 🚧 Work In Progress (WIP)
+
 ## Development Tools
 
 This project uses several tools to ensure code quality and documentation consistency.
