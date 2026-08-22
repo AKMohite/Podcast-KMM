@@ -11,11 +11,17 @@ plugins {
   alias(libs.plugins.sqldelight).apply(false)
   alias(libs.plugins.skie).apply(false)
   alias(libs.plugins.spotless).apply(false)
+  alias(libs.plugins.kover).apply(false)
 }
 
 allprojects {
   pluginManager.apply(
     rootProject.libs.plugins.spotless
+      .get()
+      .pluginId
+  )
+  pluginManager.apply(
+    rootProject.libs.plugins.kover
       .get()
       .pluginId
   )
@@ -59,6 +65,16 @@ allprojects {
   tasks.whenTaskAdded {
     if (name == "spotlessCheck") {
       enabled = false
+    }
+  }
+
+  // Kover configuration for all projects
+  extensions.configure<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension> {
+    reports {
+      total {
+        xml { onCheck = true }
+        html { title = "${project.name} Coverage Report" }
+      }
     }
   }
 }
