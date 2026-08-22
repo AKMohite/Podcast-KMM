@@ -101,7 +101,11 @@ class WearMainActivity : ComponentActivity() {
                                 )
                             }
                             entry<WearRoute.PodcastDetailsRoute> { route ->
-                                PodcastDetailsScreen(id = route.id)
+                                PodcastDetailsScreen(
+                                    id = route.id,
+                                    columnState = listState,
+                                    contentPadding = PaddingValues()
+                                )
                             }
                             entry<WearRoute.DownloadsRoute> {
                                 Text("Downloads")

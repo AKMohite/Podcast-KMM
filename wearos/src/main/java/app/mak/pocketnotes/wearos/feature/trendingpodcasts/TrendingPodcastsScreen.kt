@@ -2,6 +2,7 @@ package app.mak.pocketnotes.wearos.feature.trendingpodcasts
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.SurfaceTransformation
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.lazy.TransformationSpec
@@ -40,29 +42,35 @@ fun TrendingPodcastsScreen(
     val podcastState by viewModel.state.collectAsStateWithLifecycle()
     val transformationSpec = rememberTransformationSpec()
 
-    TransformingLazyColumn(
-        state = state,
-        contentPadding = contentPadding,
-        modifier = modifier.fillMaxWidth()
+    ScreenScaffold(
+        scrollState = state,
     ) {
-        item {
-            Text(
-                text = stringResource(id = R.string.home_podcasts),
-                color = MaterialTheme.colorScheme.onSecondary,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = modifier.fillMaxWidth(),
-            )
-        }
-        items(items = podcastState, key = { podcast -> podcast.id }) { podcast ->
-            PodcastChip(
-                podcast = podcast,
-                onClick = onClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .transformedHeight(this, transformationSpec),
-                transformationSpec = transformationSpec
-            )
+        TransformingLazyColumn(
+            state = state,
+            contentPadding = contentPadding,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(it)
+        ) {
+            item {
+                Text(
+                    text = stringResource(id = R.string.home_podcasts),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = modifier.fillMaxWidth(),
+                )
+            }
+            items(items = podcastState, key = { podcast -> podcast.id }) { podcast ->
+                PodcastChip(
+                    podcast = podcast,
+                    onClick = onClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .transformedHeight(this, transformationSpec),
+                    transformationSpec = transformationSpec
+                )
+            }
         }
     }
 }
