@@ -17,5 +17,45 @@ KMM project where all podcasts are listed
 |----------------------------------|------------------------------------|-------------------------------|---------------------------------------|
 | ![](art/android/mobile_home.png) | ![](art/android/foldable_home.png) | ![](art/android/tab_home.png) | ![](art/android/tab_home_curated.png) |
 
+## Development Tools
+
+This project uses several tools to ensure code quality and documentation consistency.
+
+### Code Formatting (Spotless)
+
+To fix code formatting across the entire project:
+
+```bash
+./gradlew spotlessApply
+```
+
+### Static Analysis (Detekt)
+
+To run code smell analysis:
+
+```bash
+./gradlew detekt
+```
+
+### Test Coverage (Kover)
+
+To generate an HTML test coverage report:
+
+```bash
+./gradlew koverHtmlReport
+```
+
+Reports can be found in `[module]/build/reports/kover/html`.
+
+### API Documentation (Dokka)
+
+To generate the API documentation:
+
+```bash
+./gradlew dokkaGenerate
+```
+
+The documentation will be generated in `build/dokka/html`.
+
 ### References
 - App icon from [Icon kitchen](https://icon.kitchen/)
