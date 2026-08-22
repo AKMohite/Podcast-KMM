@@ -1,10 +1,7 @@
 package app.mak.pocketnotes.wearos.feature.home
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
@@ -25,6 +22,7 @@ import androidx.wear.compose.material3.AppScaffold
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.Icon
+import androidx.wear.compose.material3.ListHeaderDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.SurfaceTransformation
@@ -47,7 +45,6 @@ sealed interface HomeNavigation {
 internal fun HomeScreen(
     modifier: Modifier = Modifier,
     columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-    contentPadding: PaddingValues = PaddingValues(),
     navigateTo: (HomeNavigation) -> Unit
 ) {
     val transformationSpec = rememberTransformationSpec()
@@ -56,15 +53,14 @@ internal fun HomeScreen(
     ) {
         TransformingLazyColumn(
             state = columnState,
-            contentPadding = contentPadding,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(it)
+            contentPadding = PaddingValues(
+                top = ListHeaderDefaults.minimumTopListContentPadding,
+                bottom = ListHeaderDefaults.minimumBottomListContentPadding,
+                start = 8.dp,
+                end = 8.dp
+            ),
+            modifier = modifier.fillMaxWidth()
         ) {
-
-            item {
-                Spacer(Modifier.height(8.dp))
-            }
             item {
                 HomeChip(
                     title = stringResource(R.string.home_podcasts),
@@ -144,10 +140,9 @@ private fun WatchListPreview() {
             val listState = rememberTransformingLazyColumnState()
             ScreenScaffold(
                 scrollState = listState,
-            ) { contentPadding ->
+            ) {
                 HomeScreen(
                     columnState = listState,
-                    contentPadding = contentPadding,
                     navigateTo = {}
                 )
             }

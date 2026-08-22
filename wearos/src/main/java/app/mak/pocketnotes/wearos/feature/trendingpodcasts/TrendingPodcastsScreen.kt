@@ -2,7 +2,6 @@ package app.mak.pocketnotes.wearos.feature.trendingpodcasts
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,6 +10,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
@@ -19,6 +19,8 @@ import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.ButtonDefaults
+import androidx.wear.compose.material3.ListHeader
+import androidx.wear.compose.material3.ListHeaderDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.SurfaceTransformation
@@ -35,7 +37,6 @@ import org.koin.androidx.compose.koinViewModel
 fun TrendingPodcastsScreen(
     modifier: Modifier = Modifier,
     state: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-    contentPadding: PaddingValues = PaddingValues(),
     onClick: (String) -> Unit
 ) {
     val viewModel = koinViewModel<TrendingPodcastsViewModel>()
@@ -47,19 +48,29 @@ fun TrendingPodcastsScreen(
     ) {
         TransformingLazyColumn(
             state = state,
-            contentPadding = contentPadding,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(it)
+            contentPadding = PaddingValues(
+                top = ListHeaderDefaults.minimumTopListContentPadding,
+                bottom = ListHeaderDefaults.minimumBottomListContentPadding,
+                start = 8.dp,
+                end = 8.dp
+            ),
+            modifier = modifier.fillMaxWidth()
         ) {
             item {
-                Text(
-                    text = stringResource(id = R.string.home_podcasts),
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = modifier.fillMaxWidth(),
-                )
+                ListHeader(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .transformedHeight(this, transformationSpec),
+                    transformation = SurfaceTransformation(transformationSpec)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.home_podcasts),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
             items(items = podcastState, key = { podcast -> podcast.id }) { podcast ->
                 PodcastChip(

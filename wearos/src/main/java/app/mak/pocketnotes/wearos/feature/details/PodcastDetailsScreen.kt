@@ -1,10 +1,7 @@
 package app.mak.pocketnotes.wearos.feature.details
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +17,7 @@ import androidx.wear.compose.foundation.lazy.TransformingLazyColumnState
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material3.ListHeader
+import androidx.wear.compose.material3.ListHeaderDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.SurfaceTransformation
@@ -38,7 +36,6 @@ fun PodcastDetailsScreen(
     id: String,
     modifier: Modifier = Modifier,
     columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-    contentPadding: PaddingValues = PaddingValues()
 ) {
     val detailViewModel: PodcastDetailViewModel = koinViewModel(
         parameters = { parametersOf(id) }
@@ -47,7 +44,6 @@ fun PodcastDetailsScreen(
     PodcastDetailsContent(
         uiState = state,
         columnState = columnState,
-        contentPadding = contentPadding,
         modifier = modifier
     )
 }
@@ -57,7 +53,6 @@ private fun PodcastDetailsContent(
     uiState: PodcastDetailState,
     modifier: Modifier = Modifier,
     columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-    contentPadding: PaddingValues = PaddingValues()
 ) {
     val transformationSpec = rememberTransformationSpec()
     ScreenScaffold(
@@ -65,14 +60,14 @@ private fun PodcastDetailsContent(
     ) {
         TransformingLazyColumn(
             state = columnState,
-            contentPadding = contentPadding,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(it)
+            contentPadding = PaddingValues(
+                top = ListHeaderDefaults.minimumTopListContentPadding,
+                bottom = ListHeaderDefaults.minimumBottomListContentPadding,
+                start = 8.dp,
+                end = 8.dp
+            ),
+            modifier = modifier.fillMaxWidth()
         ) {
-            item {
-                Spacer(Modifier.height(8.dp))
-            }
             item {
                 ListHeader(
                     modifier = Modifier

@@ -8,7 +8,6 @@ package app.mak.pocketnotes.wearos.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -80,7 +79,6 @@ class WearMainActivity : ComponentActivity() {
                             entry<WearRoute.HomeRoute> {
                                 HomeScreen(
                                     columnState = listState,
-                                    contentPadding = PaddingValues(),
                                     navigateTo = { navigation ->
                                         when (navigation) {
                                             HomeNavigation.Podcasts -> backStack.add(WearRoute.TrendingPodcastsRoute)
@@ -94,7 +92,6 @@ class WearMainActivity : ComponentActivity() {
                             entry<WearRoute.TrendingPodcastsRoute> {
                                 TrendingPodcastsScreen(
                                     state = listState,
-                                    contentPadding = PaddingValues(),
                                     onClick = { id ->
                                         backStack.add(WearRoute.PodcastDetailsRoute(id))
                                     }
@@ -103,8 +100,7 @@ class WearMainActivity : ComponentActivity() {
                             entry<WearRoute.PodcastDetailsRoute> { route ->
                                 PodcastDetailsScreen(
                                     id = route.id,
-                                    columnState = listState,
-                                    contentPadding = PaddingValues()
+                                    columnState = listState
                                 )
                             }
                             entry<WearRoute.DownloadsRoute> {
