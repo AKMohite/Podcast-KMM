@@ -1,5 +1,6 @@
 package app.mak.pocketnotes.wearos.feature.details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -9,12 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnState
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
-import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.Text
 import coil.compose.AsyncImage
@@ -45,14 +46,16 @@ private fun PodcastDetailsContent(
         modifier = modifier.fillMaxWidth()
     ) {
         item {
+            AsyncImage(
+                model = uiState.podcast?.thumbnail,
+                contentDescription = uiState.podcast?.title,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(MaterialTheme.shapes.extraSmall)
+            )
+        }
+        item {
             Column {
-                AsyncImage(
-                    model = uiState.podcast?.thumbnail,
-                    contentDescription = uiState.podcast?.title,
-                    modifier = Modifier
-                        .size(ButtonDefaults.IconSize)
-                        .clip(MaterialTheme.shapes.extraSmall)
-                )
                 Text(
                     text = uiState.podcast?.title.orEmpty(),
                     textAlign = TextAlign.Center,
@@ -78,7 +81,9 @@ private fun EpisodeChip(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .fillMaxWidth()
     ) {
         Text(
             text = episode.title,

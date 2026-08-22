@@ -14,6 +14,7 @@ val viewmodelModule = module {
     viewModel { params ->
         PodcastDetailViewModel(
             podcastRepository = get(),
+            episodeRepository = get(),
             podcastId = params.get()
         )
     }

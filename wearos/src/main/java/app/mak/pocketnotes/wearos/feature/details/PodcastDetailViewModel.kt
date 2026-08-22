@@ -2,22 +2,32 @@ package app.mak.pocketnotes.wearos.feature.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mak.pocketnotes.core.feature.domain.home.models.EpisodeQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 internal class PodcastDetailViewModel(
-    val podcastRepository: PodcastRepository,
+    private val podcastRepository: PodcastRepository,
+    private val episodeRepository: EpisodeRepository,
     podcastId: String
 ) : ViewModel() {
 
-    internal val uiState: StateFlow<PodcastDetailState> = podcastRepository.refresh(podcastId)
-        .map { podcast ->
-            PodcastDetailState(podcast = podcast, loading = false, episodes = podcast.episodes)
+    internal val uiState: StateFlow<PodcastDetailState> = combine(
+        podcastRepository.refresh(podcastId),
+        episodeRepository.refresh(
+            EpisodeQueryParam(
+                podcastId = podcastId,
+                nextEpisodeDate = null
+            )
+        )
+    ) { podcast, episodes ->
+        PodcastDetailState(podcast = podcast, loading = false, episodes = episodes)
         }
         .stateIn(
             scope = viewModelScope,
