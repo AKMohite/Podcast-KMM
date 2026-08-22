@@ -24,7 +24,11 @@ allprojects {
     kotlin {
       target("**/*.kt")
       targetExclude("**/build/**/*.kt")
-      ktlint()
+      ktlint(libs.versions.ktlint.get()).editorConfigOverride(
+        mapOf(
+          "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
+        ),
+      )
     }
     kotlinGradle {
       target("*.gradle.kts")
