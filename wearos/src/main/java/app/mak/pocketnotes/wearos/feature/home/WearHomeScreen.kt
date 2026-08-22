@@ -44,7 +44,7 @@ sealed interface HomeNavigation {
 }
 
 @Composable
-internal fun HomeScreen(
+internal fun WearHomeScreen(
     modifier: Modifier = Modifier,
     columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
     navigateTo: (HomeNavigation) -> Unit
@@ -159,7 +159,7 @@ private fun WatchListPreview() {
             ScreenScaffold(
                 scrollState = listState,
             ) {
-                HomeScreen(
+                WearHomeScreen(
                     columnState = listState,
                     navigateTo = {}
                 )

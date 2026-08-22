@@ -1,4 +1,4 @@
-package app.mak.pocketnotes.wearos.feature.details
+package app.mak.pocketnotes.wearos.feature.trendingpodcasts
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -16,50 +17,37 @@ import androidx.wear.compose.foundation.lazy.TransformingLazyColumnItemScope
 import androidx.wear.compose.foundation.lazy.TransformingLazyColumnState
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
+import androidx.wear.compose.material3.Button
+import androidx.wear.compose.material3.ButtonDefaults
 import androidx.wear.compose.material3.ListHeader
 import androidx.wear.compose.material3.ListHeaderDefaults
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.SurfaceTransformation
 import androidx.wear.compose.material3.Text
-import androidx.wear.compose.material3.TitleCard
 import androidx.wear.compose.material3.lazy.TransformationSpec
 import androidx.wear.compose.material3.lazy.rememberTransformationSpec
 import androidx.wear.compose.material3.lazy.transformedHeight
+import app.mak.pocketnotes.wearos.R
 import coil.compose.AsyncImage
-import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 @Composable
-fun PodcastDetailsScreen(
-    id: String,
+fun WearTrendingPodcastsScreen(
     modifier: Modifier = Modifier,
-    columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+    state: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+    onClick: (String) -> Unit
 ) {
-    val detailViewModel: PodcastDetailViewModel = koinViewModel(
-        parameters = { parametersOf(id) }
-    )
-    val state by detailViewModel.uiState.collectAsStateWithLifecycle()
-    PodcastDetailsContent(
-        uiState = state,
-        columnState = columnState,
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun PodcastDetailsContent(
-    uiState: PodcastDetailState,
-    modifier: Modifier = Modifier,
-    columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-) {
+    val viewModel = koinViewModel<WearTrendingPodcastsViewModel>()
+    val podcastState by viewModel.state.collectAsStateWithLifecycle()
     val transformationSpec = rememberTransformationSpec()
+
     ScreenScaffold(
-        scrollState = columnState,
+        scrollState = state,
     ) {
         TransformingLazyColumn(
-            state = columnState,
+            state = state,
             contentPadding = PaddingValues(
                 top = ListHeaderDefaults.minimumTopListContentPadding,
                 bottom = ListHeaderDefaults.minimumBottomListContentPadding,
@@ -75,49 +63,22 @@ private fun PodcastDetailsContent(
                         .transformedHeight(this, transformationSpec),
                     transformation = SurfaceTransformation(transformationSpec)
                 ) {
-                    AsyncImage(
-                        model = uiState.podcast?.thumbnail,
-                        contentDescription = uiState.podcast?.title,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(MaterialTheme.shapes.medium)
-                    )
-                }
-            }
-            item {
-                ListHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .transformedHeight(this, transformationSpec),
-                    transformation = SurfaceTransformation(transformationSpec)
-                ) {
                     Text(
-                        text = uiState.podcast?.title.orEmpty(),
+                        text = stringResource(id = R.string.home_podcasts),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
-            item {
-                ListHeader(
+            items(items = podcastState, key = { podcast -> podcast.id }) { podcast ->
+                PodcastChip(
+                    podcast = podcast,
+                    onClick = onClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .transformedHeight(this, transformationSpec),
-                    transformation = SurfaceTransformation(transformationSpec)
-                ) {
-                    Text(
-                        text = uiState.podcast?.publisher.orEmpty(),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-
-            items(items = uiState.episodes, key = { episode -> episode.id }) { episode ->
-                EpisodeChip(
-                    episode = episode,
                     transformationSpec = transformationSpec
                 )
             }
@@ -126,30 +87,35 @@ private fun PodcastDetailsContent(
 }
 
 @Composable
-private fun TransformingLazyColumnItemScope.EpisodeChip(
-    episode: PodcastEpisode,
-    transformationSpec: TransformationSpec,
-    modifier: Modifier = Modifier
+fun TransformingLazyColumnItemScope.PodcastChip(
+    podcast: Podcast,
+    onClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    transformationSpec: TransformationSpec
 ) {
-    TitleCard(
-        onClick = { /* TODO */ },
-        title = {
+
+    Button(
+        onClick = { onClick(podcast.id) },
+        label = {
             Text(
-                text = episode.title,
+                text = podcast.title,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 2,
-            )
-        },
-        subtitle = {
-            Text(
-                text = episode.readableDuration(),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.titleSmall,
             )
         },
         modifier = modifier
             .fillMaxWidth()
             .transformedHeight(this, transformationSpec),
         transformation = SurfaceTransformation(transformationSpec),
+        icon = {
+            AsyncImage(
+                model = podcast.thumbnail,
+                contentDescription = podcast.title,
+                modifier = Modifier
+                    .size(ButtonDefaults.IconSize)
+                    .clip(MaterialTheme.shapes.extraSmall)
+            )
+        }
     )
 }

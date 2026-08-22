@@ -33,10 +33,10 @@ import androidx.wear.compose.navigation3.rememberSwipeDismissableSceneStrategy
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import androidx.wear.compose.ui.tooling.preview.WearPreviewFontScales
 import app.mak.pocketnotes.wearos.R
-import app.mak.pocketnotes.wearos.feature.details.PodcastDetailsScreen
+import app.mak.pocketnotes.wearos.feature.details.WearPodcastDetailsScreen
 import app.mak.pocketnotes.wearos.feature.home.HomeNavigation
-import app.mak.pocketnotes.wearos.feature.home.HomeScreen
-import app.mak.pocketnotes.wearos.feature.trendingpodcasts.TrendingPodcastsScreen
+import app.mak.pocketnotes.wearos.feature.home.WearHomeScreen
+import app.mak.pocketnotes.wearos.feature.trendingpodcasts.WearTrendingPodcastsScreen
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 import kotlinx.serialization.Serializable
 
@@ -77,7 +77,7 @@ class WearMainActivity : ComponentActivity() {
                         sceneStrategies = listOf(strategy),
                         entryProvider = entryProvider {
                             entry<WearRoute.HomeRoute> {
-                                HomeScreen(
+                                WearHomeScreen(
                                     columnState = listState,
                                     navigateTo = { navigation ->
                                         when (navigation) {
@@ -90,7 +90,7 @@ class WearMainActivity : ComponentActivity() {
                                 )
                             }
                             entry<WearRoute.TrendingPodcastsRoute> {
-                                TrendingPodcastsScreen(
+                                WearTrendingPodcastsScreen(
                                     state = listState,
                                     onClick = { id ->
                                         backStack.add(WearRoute.PodcastDetailsRoute(id))
@@ -98,7 +98,7 @@ class WearMainActivity : ComponentActivity() {
                                 )
                             }
                             entry<WearRoute.PodcastDetailsRoute> { route ->
-                                PodcastDetailsScreen(
+                                WearPodcastDetailsScreen(
                                     id = route.id,
                                     columnState = listState
                                 )

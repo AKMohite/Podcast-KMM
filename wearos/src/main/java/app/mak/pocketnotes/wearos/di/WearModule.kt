@@ -1,13 +1,13 @@
 package app.mak.pocketnotes.wearos.di
 
 import app.mak.pocketnotes.wearos.feature.details.PodcastDetailViewModel
-import app.mak.pocketnotes.wearos.feature.trendingpodcasts.TrendingPodcastsViewModel
+import app.mak.pocketnotes.wearos.feature.trendingpodcasts.WearTrendingPodcastsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewmodelModule = module {
     viewModel {
-        TrendingPodcastsViewModel(
+        WearTrendingPodcastsViewModel(
             podcastRepository = get()
         )
     }
