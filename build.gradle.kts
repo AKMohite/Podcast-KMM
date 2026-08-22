@@ -26,13 +26,18 @@ allprojects {
       targetExclude("**/build/**/*.kt")
       ktlint(libs.versions.ktlint.get()).editorConfigOverride(
         mapOf(
+          "ktlint_code_style" to "android_studio",
           "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
         ),
       )
     }
     kotlinGradle {
       target("*.gradle.kts")
-      ktlint()
+      ktlint(libs.versions.ktlint.get()).editorConfigOverride(
+        mapOf(
+          "ktlint_code_style" to "android_studio",
+        ),
+      )
     }
     format("xml") {
       target("**/*.xml")
