@@ -19,9 +19,9 @@ KMM project where all podcasts are listed
 
 ## Wear OS
 
-| Podcasts                        | Details (Top header)                   | Details (Episode List)                  |
-|---------------------------------|----------------------------------------|-----------------------------------------|
-| ![](art/wear/wear-podcasts.png) | ![](art/wear/wear-podcast-detail-.png) | ![](art/wear/wear-podcast-detail-1.png) |
+| Podcasts                        | Details (Top header)                    | Details (Episode List)                  |
+|---------------------------------|-----------------------------------------|-----------------------------------------|
+| ![](art/wear/wear-podcasts.png) | ![](art/wear/wear-podcast-detail-1.png) | ![](art/wear/wear-podcast-detail-2.png) |
 
 ## Other Platforms
 
