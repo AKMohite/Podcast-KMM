@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 @UnstableApi
 class PodtalkNotificationAdapter(
   private val context: Context,
-  private val pendingIntent: PendingIntent?,
+  private val pendingIntent: PendingIntent?
 ) : PlayerNotificationManager.MediaDescriptionAdapter {
   private var currentMediaImage: String? = null
   private var currentBitmap: Bitmap? = null
@@ -37,7 +37,7 @@ class PodtalkNotificationAdapter(
 
   override fun getCurrentLargeIcon(
     player: Player,
-    callback: PlayerNotificationManager.BitmapCallback,
+    callback: PlayerNotificationManager.BitmapCallback
   ): Bitmap? {
     val image = player.mediaMetadata.artworkUri.toString()
     return if (currentMediaImage != image) {
@@ -54,19 +54,18 @@ class PodtalkNotificationAdapter(
     }
   }
 
-  private suspend fun resolveBitmap(image: String): Bitmap? =
-    withContext(Dispatchers.IO) {
-      val loader = ImageLoader(context)
-      val request =
-        ImageRequest
-          .Builder(context)
-          .data(image)
-          .allowHardware(false) // Disable hardware bitmaps.
-          .diskCachePolicy(CachePolicy.ENABLED)
-          .build()
-      val result = (loader.execute(request) as? SuccessResult)?.drawable
-      (result as? BitmapDrawable)?.bitmap
-    }
+  private suspend fun resolveBitmap(image: String): Bitmap? = withContext(Dispatchers.IO) {
+    val loader = ImageLoader(context)
+    val request =
+      ImageRequest
+        .Builder(context)
+        .data(image)
+        .allowHardware(false) // Disable hardware bitmaps.
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .build()
+    val result = (loader.execute(request) as? SuccessResult)?.drawable
+    (result as? BitmapDrawable)?.bitmap
+  }
 
   fun onDestroy() {
     serviceJob.cancel()

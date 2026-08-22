@@ -33,99 +33,99 @@ import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.R
 
 internal data class SettingsOption(
-    val title: String,
-    val iconResId: ImageVector,
-    val onClick: () -> Unit
+  val title: String,
+  val iconResId: ImageVector,
+  val onClick: () -> Unit
 )
 
 private val settingsOption = listOf(
-    SettingsOption(
-        title = "Rate App",
-        iconResId = Icons.Outlined.Star,
-        onClick = {}
-    ),
-    SettingsOption(
-        title = "Contact us",
-        iconResId = Icons.Outlined.Email,
-        onClick = {}
-    ),
-    SettingsOption(
-        title = "Terms of Service",
-        iconResId = Icons.AutoMirrored.Outlined.List,
-        onClick = {}
-    ),
-    SettingsOption(
-        title = "Privacy Policy",
-        iconResId = Icons.AutoMirrored.Outlined.List,
-        onClick = {}
-    ),
-    SettingsOption(
-        title = "API reference",
-        iconResId = Icons.Outlined.Build,
-        onClick = {}
-    ),
-    SettingsOption(
-        title = "View app code",
-        iconResId = Icons.Outlined.Info,
-        onClick = {}
-    )
+  SettingsOption(
+    title = "Rate App",
+    iconResId = Icons.Outlined.Star,
+    onClick = {}
+  ),
+  SettingsOption(
+    title = "Contact us",
+    iconResId = Icons.Outlined.Email,
+    onClick = {}
+  ),
+  SettingsOption(
+    title = "Terms of Service",
+    iconResId = Icons.AutoMirrored.Outlined.List,
+    onClick = {}
+  ),
+  SettingsOption(
+    title = "Privacy Policy",
+    iconResId = Icons.AutoMirrored.Outlined.List,
+    onClick = {}
+  ),
+  SettingsOption(
+    title = "API reference",
+    iconResId = Icons.Outlined.Build,
+    onClick = {}
+  ),
+  SettingsOption(
+    title = "View app code",
+    iconResId = Icons.Outlined.Info,
+    onClick = {}
+  )
 )
 
 @Composable
 internal fun SettingsScreen() {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        item {
-            Text(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 12.dp),
-                text = stringResource(id = R.string.bottom_settings),
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-        }
-        items(
-            items = settingsOption
-        ) { option ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { option.onClick() }
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = option.iconResId,
-                    contentDescription = option.title,
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(
-                    text = option.title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            }
-        }
-
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                        .height(30.dp),
-                    painter = painterResource(id = R.drawable.img_listen_notes),
-                    contentDescription = stringResource(R.string.powered_by),
-                    contentScale = ContentScale.Inside,
-                    alignment = Alignment.Center
-                )
-            }
-        }
+  LazyColumn(
+    modifier = Modifier.fillMaxSize()
+  ) {
+    item {
+      Text(
+        modifier = Modifier
+          .fillMaxSize()
+          .padding(horizontal = 12.dp),
+        text = stringResource(id = R.string.bottom_settings),
+        style = MaterialTheme.typography.headlineMedium
+      )
+      Spacer(modifier = Modifier.height(4.dp))
     }
+    items(
+      items = settingsOption
+    ) { option ->
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .clickable { option.onClick() }
+          .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Icon(
+          imageVector = option.iconResId,
+          contentDescription = option.title,
+          modifier = Modifier.size(24.dp)
+        )
+        Text(
+          text = option.title,
+          style = MaterialTheme.typography.bodyMedium,
+          modifier = Modifier.padding(start = 16.dp)
+        )
+      }
+    }
+
+    item {
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(MaterialTheme.colorScheme.surfaceVariant)
+      ) {
+        Image(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+            .height(30.dp),
+          painter = painterResource(id = R.drawable.img_listen_notes),
+          contentDescription = stringResource(R.string.powered_by),
+          contentScale = ContentScale.Inside,
+          alignment = Alignment.Center
+        )
+      }
+    }
+  }
 }

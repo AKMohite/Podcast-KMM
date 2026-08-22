@@ -20,7 +20,7 @@ class DiscoverScreenTest {
         bannerPodcastsSection = SectionState.Loading,
         trendingPodcastsSection = SectionState.Loading,
         curatedPodcastsSection = SectionState.Loading,
-        isPullToRefreshing = false,
+        isPullToRefreshing = false
       )
 
     discoverRobot(composeTestRule) {
@@ -37,7 +37,7 @@ class DiscoverScreenTest {
         bannerPodcastsSection = SectionState.Success(samplePodcasts),
         trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
         curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
-        isPullToRefreshing = false,
+        isPullToRefreshing = false
       )
 
     discoverRobot(composeTestRule) {
@@ -57,13 +57,13 @@ class DiscoverScreenTest {
         trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
         curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
         isPullToRefreshing = false,
-        errorType = ErrorType.SERVER_ERROR,
+        errorType = ErrorType.SERVER_ERROR
       )
 
     discoverRobot(composeTestRule) {
       setContent(
         state = state,
-        onErrorConsumed = { errorConsumedCalled = true },
+        onErrorConsumed = { errorConsumedCalled = true }
       )
       assertRetryVisible()
       assertTrue(errorConsumedCalled)
@@ -79,13 +79,13 @@ class DiscoverScreenTest {
         trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
         curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
         isPullToRefreshing = false,
-        errorType = ErrorType.SERVER_ERROR,
+        errorType = ErrorType.SERVER_ERROR
       )
 
     discoverRobot(composeTestRule) {
       setContent(
         state = state,
-        refreshPodcasts = { refreshPodcastsCalled = true },
+        refreshPodcasts = { refreshPodcastsCalled = true }
       )
       clickRetry()
       assertTrue(refreshPodcastsCalled)

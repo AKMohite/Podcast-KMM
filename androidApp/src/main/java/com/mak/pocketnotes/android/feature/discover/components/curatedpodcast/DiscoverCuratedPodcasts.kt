@@ -14,37 +14,37 @@ import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 
 @Composable
 internal fun DiscoverCuratedPodcasts(
-    modifier: Modifier = Modifier,
-    sizeClass: WindowSizeClass,
-    podcastSection: CuratedPodcast,
-    goToDetails: (String) -> Unit
+  modifier: Modifier = Modifier,
+  sizeClass: WindowSizeClass,
+  podcastSection: CuratedPodcast,
+  goToDetails: (String) -> Unit
 ) {
-    when{
-        sizeClass.isExpanded() -> DiscoverCuratedPodcastsExpanded(
-            modifier,
-            goToDetails,
-            podcastSection
-        )
-        else -> DiscoverCuratedPodcastsCompactAndMedium(
-            modifier,
-            goToDetails,
-            podcastSection,
-            sizeClass
-        )
-    }
+  when {
+    sizeClass.isExpanded() -> DiscoverCuratedPodcastsExpanded(
+      modifier,
+      goToDetails,
+      podcastSection
+    )
+    else -> DiscoverCuratedPodcastsCompactAndMedium(
+      modifier,
+      goToDetails,
+      podcastSection,
+      sizeClass
+    )
+  }
 }
 
 @Preview
 @PreviewScreenSizes
 @Composable
 private fun DiscoverCuratedPodcastsPreview() {
-    PocketNotesTheme {
-        Surface {
-            DiscoverCuratedPodcasts(
-                podcastSection = sampleCuratedPodcasts[0],
-                goToDetails = {},
-                sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
-            )
-        }
+  PocketNotesTheme {
+    Surface {
+      DiscoverCuratedPodcasts(
+        podcastSection = sampleCuratedPodcasts[0],
+        goToDetails = {},
+        sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+      )
     }
+  }
 }

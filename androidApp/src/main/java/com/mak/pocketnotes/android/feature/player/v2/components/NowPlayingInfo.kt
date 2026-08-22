@@ -19,27 +19,27 @@ import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 
 @Composable
 internal fun NowPlayingInfo(
-    episode: PodcastEpisode?,
-    modifier: Modifier = Modifier,
-    titleStyle: TextStyle = MaterialTheme.typography.titleLarge,
+  episode: PodcastEpisode?,
+  modifier: Modifier = Modifier,
+  titleStyle: TextStyle = MaterialTheme.typography.titleLarge
 ) {
-    Column(modifier = modifier) {
-        Text(
-            text = episode?.title ?: stringResource(R.string.nothing_playing),
-            style = titleStyle,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.testTag(PlayerTestTags.EPISODE_TITLE),
-        )
-        Spacer(Modifier.height(2.dp))
-        Text(
-            text = episode?.title.orEmpty(),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.testTag(PlayerTestTags.PODCAST_NAME),
-        )
-    }
+  Column(modifier = modifier) {
+    Text(
+      text = episode?.title ?: stringResource(R.string.nothing_playing),
+      style = titleStyle,
+      fontWeight = FontWeight.SemiBold,
+      maxLines = 2,
+      overflow = TextOverflow.Ellipsis,
+      modifier = Modifier.testTag(PlayerTestTags.EPISODE_TITLE)
+    )
+    Spacer(Modifier.height(2.dp))
+    Text(
+      text = episode?.title.orEmpty(),
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+      modifier = Modifier.testTag(PlayerTestTags.PODCAST_NAME)
+    )
+  }
 }

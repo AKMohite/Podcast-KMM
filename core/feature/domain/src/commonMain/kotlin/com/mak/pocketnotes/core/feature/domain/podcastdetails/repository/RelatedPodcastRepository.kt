@@ -11,5 +11,5 @@ interface RelatedPodcastRepository {
 
 data class RelatedPodcasts(
   val podcastId: String,
-  val related: List<Podcast>,
+  val related: List<Podcast>
 )

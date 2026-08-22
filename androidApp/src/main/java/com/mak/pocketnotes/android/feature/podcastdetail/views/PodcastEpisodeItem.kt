@@ -25,60 +25,58 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun PodcastEpisodeItem(
-    episode: PodcastEpisode,
-    modifier: Modifier = Modifier,
-    showImage: Boolean = false
+  episode: PodcastEpisode,
+  modifier: Modifier = Modifier,
+  showImage: Boolean = false
 ) {
-
-    Card(
-        modifier = modifier
+  Card(
+    modifier = modifier
+  ) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (showImage) {
-                AsyncImage(
-                    model = episode.thumbnail,
-                    contentDescription = episode.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(MaterialTheme.shapes.small),
-                    placeholder = debugPlaceholder()
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            ) {
-                Text(
-                    text = "episode.readableTime()",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Thin
-                )
-                Text(
-                    text = episode.title,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = episode.readableDuration(),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
+      if (showImage) {
+        AsyncImage(
+          model = episode.thumbnail,
+          contentDescription = episode.title,
+          contentScale = ContentScale.Crop,
+          modifier = Modifier
+            .size(80.dp)
+            .clip(MaterialTheme.shapes.small),
+          placeholder = debugPlaceholder()
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+      }
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(4.dp)
+      ) {
+        Text(
+          text = "episode.readableTime()",
+          style = MaterialTheme.typography.labelSmall,
+          fontWeight = FontWeight.Thin
+        )
+        Text(
+          text = episode.title,
+          maxLines = 2,
+          style = MaterialTheme.typography.titleSmall,
+          fontWeight = FontWeight.Bold
+        )
+        Text(
+          text = episode.readableDuration(),
+          style = MaterialTheme.typography.bodySmall
+        )
+      }
     }
-
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PodcastEpisodeItemPreview() {
-    PodcastEpisodeItem(
-        episode = sampleEpisodes[0],
-        showImage = true
-    )
+  PodcastEpisodeItem(
+    episode = sampleEpisodes[0],
+    showImage = true
+  )
 }

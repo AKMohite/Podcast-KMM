@@ -20,17 +20,17 @@ internal val appModule =
     viewModel {
       DiscoverViewmodel(
         bestPodcastsRepository = get(),
-        curatedPodcastsRepository = get(),
+        curatedPodcastsRepository = get()
       )
     }
     viewModel {
       QueueViewModel(
-        controller = get(),
+        controller = get()
       )
     }
     viewModel {
       PlayerViewModel(
-        controller = get(),
+        controller = get()
       )
     }
     viewModel { PlayerExpansionViewModel() }
@@ -39,14 +39,14 @@ internal val appModule =
         podcastRepository = get(),
         relatedPodcastRepository = get(),
         episodeRepository = get(),
-        podcastId = params.get(),
+        podcastId = params.get()
       )
     }
     viewModel {
       SearchViewModel(
         genreRepository = get(),
         searchPodcast = get(),
-        bestPodcastRepository = get(),
+        bestPodcastRepository = get()
       )
     }
     viewModel {

@@ -34,5 +34,5 @@ data class EpisodeDTO(
   @SerialName("title")
   val title: String? = null,
   @SerialName("title_original")
-  val titleOriginal: String? = null,
+  val titleOriginal: String? = null
 )

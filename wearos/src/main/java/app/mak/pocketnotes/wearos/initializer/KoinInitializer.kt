@@ -12,19 +12,18 @@ import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 
 class KoinInitializer : Initializer<KoinApplication> {
-  override fun create(context: Context): KoinApplication =
-    startKoin {
-      androidContext(context)
-      modules(
-        listOf(
-          viewmodelModule,
-          commonModule,
-          ktorModule(),
-          localModule,
-          coreDataModule,
-        ),
+  override fun create(context: Context): KoinApplication = startKoin {
+    androidContext(context)
+    modules(
+      listOf(
+        viewmodelModule,
+        commonModule,
+        ktorModule(),
+        localModule,
+        coreDataModule
       )
-    }
+    )
+  }
 
   override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 }

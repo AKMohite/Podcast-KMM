@@ -28,15 +28,15 @@ class AppMainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge(
       statusBarStyle =
-        SystemBarStyle.auto(
-          lightScrim = Color.Transparent.toArgb(), // Color for light theme
-          darkScrim = Color.Transparent.toArgb(), // Color for dark theme
-        ),
+      SystemBarStyle.auto(
+        lightScrim = Color.Transparent.toArgb(), // Color for light theme
+        darkScrim = Color.Transparent.toArgb() // Color for dark theme
+      ),
       navigationBarStyle =
-        SystemBarStyle.auto(
-          lightScrim = Color.Transparent.toArgb(), // Color for light theme
-          darkScrim = Color.Transparent.toArgb(), // Color for dark theme
-        ),
+      SystemBarStyle.auto(
+        lightScrim = Color.Transparent.toArgb(), // Color for light theme
+        darkScrim = Color.Transparent.toArgb() // Color for dark theme
+      )
     )
     super.onCreate(savedInstanceState)
     setContent {
@@ -44,12 +44,12 @@ class AppMainActivity : ComponentActivity() {
       val fontScale = settingsState.getFontScale()
       PocketNotesTheme(
         fontScale = fontScale,
-        appTheme = settingsState.settings.theme,
+        appTheme = settingsState.settings.theme
       ) {
         PodcastNavigationWrapper(
           modifier =
-            Modifier
-              .safeDrawingPadding(),
+          Modifier
+            .safeDrawingPadding()
         )
       }
     }

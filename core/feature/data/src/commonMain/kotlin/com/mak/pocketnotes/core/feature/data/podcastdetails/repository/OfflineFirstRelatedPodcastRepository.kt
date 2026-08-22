@@ -32,54 +32,52 @@ internal class OfflineFirstRelatedPodcastRepository(
   private val relatedPodcastDAO: RelatedPodcastDAO,
   private val lastSyncDAO: LastSyncDAO,
   private val dispatcher: DispatcherProvider,
-  private val mapper: PodcastMapper,
+  private val mapper: PodcastMapper
 ) : RelatedPodcastRepository {
   private val store by lazy {
     StoreBuilder
       .from<String, List<PodcastDTO>, RelatedPodcasts>(
         fetcher =
-          Fetcher.of { podcastId ->
-            fetch(podcastId)
-          },
+        Fetcher.of { podcastId ->
+          fetch(podcastId)
+        },
         sourceOfTruth =
-          SourceOfTruth.of(
-            reader = { podcastId ->
-              observe(podcastId)
-            },
-            writer = { podcastId, dto ->
-              update(podcastId, dto)
-            },
-            deleteAll = {
-              deleteAll()
-            },
-            delete = { podcastId ->
-              delete(podcastId)
-            },
-          ),
+        SourceOfTruth.of(
+          reader = { podcastId ->
+            observe(podcastId)
+          },
+          writer = { podcastId, dto ->
+            update(podcastId, dto)
+          },
+          deleteAll = {
+            deleteAll()
+          },
+          delete = { podcastId ->
+            delete(podcastId)
+          }
+        )
       ).validator(
         Validator.by { relatedPodcasts ->
           isDataFresh(relatedPodcasts)
-        },
+        }
       ).build()
   }
 
-  override fun refresh(podcastId: String): Flow<RelatedPodcasts> =
-    store
-      .stream(StoreReadRequest.cached(key = podcastId, refresh = false))
-      .filterIsInstance<StoreReadResponse.Data<RelatedPodcasts>>()
-      .map { storeResponse ->
-        storeResponse.requireData()
-      }.flowOn(dispatcher.io)
+  override fun refresh(podcastId: String): Flow<RelatedPodcasts> = store
+    .stream(StoreReadRequest.cached(key = podcastId, refresh = false))
+    .filterIsInstance<StoreReadResponse.Data<RelatedPodcasts>>()
+    .map { storeResponse ->
+      storeResponse.requireData()
+    }.flowOn(dispatcher.io)
 
-  override fun observe(podcastId: String): Flow<RelatedPodcasts> =
-    relatedPodcastDAO
-      .getPodcast(podcastId)
-      .map {
-        RelatedPodcasts(
-          podcastId,
-          mapper.entityToModels(it),
-        )
-      }.flowOn(dispatcher.computation)
+  override fun observe(podcastId: String): Flow<RelatedPodcasts> = relatedPodcastDAO
+    .getPodcast(podcastId)
+    .map {
+      RelatedPodcasts(
+        podcastId,
+        mapper.entityToModels(it)
+      )
+    }.flowOn(dispatcher.computation)
 
   private suspend fun isDataFresh(relatedPodcasts: RelatedPodcasts): Boolean =
     withContext(dispatcher.io) {
@@ -87,7 +85,7 @@ internal class OfflineFirstRelatedPodcastRepository(
       lastSyncDAO.isRequestValid(
         requestType = SyncRequest.PODCAST_RECOMMENDATIONS,
         threshold = if (relatedPodcasts.related.isNotEmpty()) 4.days else 1.hours,
-        entityId = relatedPodcasts.podcastId,
+        entityId = relatedPodcasts.podcastId
       )
     }
 
@@ -103,31 +101,27 @@ internal class OfflineFirstRelatedPodcastRepository(
     }
   }
 
-  private suspend fun update(
-    podcastId: String,
-    dto: List<PodcastDTO>,
-  ) {
+  private suspend fun update(podcastId: String, dto: List<PodcastDTO>) {
     withContext(dispatcher.io) {
       transactionRunner {
         lastSyncDAO.insertLastSync(
           SyncRequest.PODCAST_RECOMMENDATIONS,
-          podcastId,
+          podcastId
         )
         relatedPodcastDAO.insertPodcasts(
           mapper.jsonToRelatedEntities(
             podcastId,
-            dto,
-          ),
+            dto
+          )
         )
         podcastDAO.insertPodcasts(mapper.jsonToEntities(dto))
       }
     }
   }
 
-  private suspend fun fetch(podcastId: String): List<PodcastDTO> =
-    api
-      .getPodcastRecommendations(podcastId)
-      .getOrThrow()
-      .recommendations
-      .orEmpty()
+  private suspend fun fetch(podcastId: String): List<PodcastDTO> = api
+    .getPodcastRecommendations(podcastId)
+    .getOrThrow()
+    .recommendations
+    .orEmpty()
 }

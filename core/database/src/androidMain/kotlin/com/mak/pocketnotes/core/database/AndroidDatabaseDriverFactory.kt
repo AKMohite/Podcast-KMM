@@ -7,7 +7,7 @@ import com.mak.pocketnotes.core.database.DatabaseDriverFactory.Companion.LOCAL_D
 import com.mak.pocketnotes.core.database.queries.PocketDatabase
 
 internal class AndroidDatabaseDriverFactory(
-  private val context: Context,
+  private val context: Context
 ) : DatabaseDriverFactory {
   override fun createDriver(): SqlDriver =
     AndroidSqliteDriver(PocketDatabase.Schema, context, LOCAL_DB)

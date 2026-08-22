@@ -15,15 +15,11 @@ class MediaPlayerService : MediaSessionService() {
   private val notificationManager: INotificationManager by inject()
 
   @UnstableApi
-  override fun onStartCommand(
-    intent: Intent?,
-    flags: Int,
-    startId: Int,
-  ): Int {
+  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       notificationManager.startNotification(
         mediaSession = mediaSession,
-        mediaService = this,
+        mediaService = this
       )
     }
     return super.onStartCommand(intent, flags, startId)

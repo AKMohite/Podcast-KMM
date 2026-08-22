@@ -13,7 +13,7 @@ typealias GenreEntity = Genres
 
 internal class SQLDelightGenresDAO(
   database: PocketDatabase,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : GenresDAO {
   private val dbQuery = database.genre_entityQueries
 
@@ -23,13 +23,12 @@ internal class SQLDelightGenresDAO(
     }
   }
 
-  override fun getGenres(): Flow<List<GenreEntity>> =
-    dbQuery
-      .getGenres()
-      .asFlow()
-      .mapToList(dispatcher.io)
-      .distinctUntilChanged()
-      .flowOn(dispatcher.io)
+  override fun getGenres(): Flow<List<GenreEntity>> = dbQuery
+    .getGenres()
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .distinctUntilChanged()
+    .flowOn(dispatcher.io)
 
   override fun removeGenres() {
     dbQuery.deleteAll()

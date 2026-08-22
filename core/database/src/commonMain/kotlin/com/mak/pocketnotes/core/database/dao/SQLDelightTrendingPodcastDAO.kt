@@ -13,17 +13,16 @@ typealias TrendingPodcastEntity = Trending_podcasts
 
 internal class SQLDelightTrendingPodcastDAO(
   database: PocketDatabase,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : TrendingPodcastDAO {
   private val dbQuery = database.trending_podcastQueries
 
-  override fun getBestPodcasts(page: Int): Flow<List<PodcastEntity>> =
-    dbQuery
-      .getTrendingPodcasts(page)
-      .asFlow()
-      .mapToList(dispatcher.io)
-      .distinctUntilChanged()
-      .flowOn(dispatcher.io)
+  override fun getBestPodcasts(page: Int): Flow<List<PodcastEntity>> = dbQuery
+    .getTrendingPodcasts(page)
+    .asFlow()
+    .mapToList(dispatcher.io)
+    .distinctUntilChanged()
+    .flowOn(dispatcher.io)
 
   override fun upsertPage(entities: List<TrendingPodcastEntity>) {
     entities.forEach { entity ->

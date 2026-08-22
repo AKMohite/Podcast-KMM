@@ -24,48 +24,45 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun PodcastRow(
-    podcast: Podcast,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+internal fun PodcastRow(podcast: Podcast, modifier: Modifier = Modifier) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    AsyncImage(
+      model = podcast.thumbnail,
+      contentDescription = podcast.title,
+      contentScale = ContentScale.Crop,
+      modifier = Modifier
+        .size(70.dp)
+        .clip(MaterialTheme.shapes.small),
+      placeholder = debugPlaceholder()
+    )
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
     ) {
-        AsyncImage(
-            model = podcast.thumbnail,
-            contentDescription = podcast.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(70.dp)
-                .clip(MaterialTheme.shapes.small),
-            placeholder = debugPlaceholder()
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Text(
-                text = podcast.title,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = podcast.publisher,
-                style = MaterialTheme.typography.labelSmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+      Text(
+        text = podcast.title,
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.Bold,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+      )
+      Spacer(modifier = Modifier.height(4.dp))
+      Text(
+        text = podcast.publisher,
+        style = MaterialTheme.typography.labelSmall,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+      )
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PodcastRowPreview() {
-    PodcastRow(podcast = samplePodcasts[0])
+  PodcastRow(podcast = samplePodcasts[0])
 }

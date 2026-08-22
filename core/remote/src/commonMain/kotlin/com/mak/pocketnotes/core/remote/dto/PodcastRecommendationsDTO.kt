@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PodcastRecommendationsDTO(
-  val recommendations: List<PodcastDTO>? = emptyList(),
+  val recommendations: List<PodcastDTO>? = emptyList()
 )

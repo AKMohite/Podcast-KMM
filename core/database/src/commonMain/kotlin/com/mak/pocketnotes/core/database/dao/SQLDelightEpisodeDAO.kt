@@ -12,7 +12,7 @@ typealias EpisodeEntity = Episodes
 
 internal class SQLDelightEpisodeDAO(
   database: PocketDatabase,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : EpisodeDAO {
   private val dbQuery = database.podcast_episode_entityQueries
 
@@ -26,16 +26,12 @@ internal class SQLDelightEpisodeDAO(
     }
   }
 
-  override fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>> =
-    dbQuery
-      .getEpisodes(podcastId)
-      .asFlow()
-      .mapToList(dispatcher.io)
+  override fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>> = dbQuery
+    .getEpisodes(podcastId)
+    .asFlow()
+    .mapToList(dispatcher.io)
 
-  override fun getEpisodes(
-    podcastId: String,
-    nextEpisodeDate: Instant,
-  ): Flow<List<EpisodeEntity>> =
+  override fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>> =
     dbQuery
       .getPaginatedEpisodes(podcastId, nextEpisodeDate = nextEpisodeDate)
       .asFlow()
@@ -45,10 +41,7 @@ internal class SQLDelightEpisodeDAO(
     dbQuery.deleteWithId(podcastId)
   }
 
-  override fun removeEpisodes(
-    podcastId: String,
-    nextDate: Instant,
-  ) {
+  override fun removeEpisodes(podcastId: String, nextDate: Instant) {
     dbQuery.removeEpisode(podcastId, nextDate)
   }
 
@@ -64,17 +57,11 @@ interface EpisodeDAO {
 
   fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>>
 
-  fun getEpisodes(
-    podcastId: String,
-    nextEpisodeDate: Instant,
-  ): Flow<List<EpisodeEntity>>
+  fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
 
   fun removeEpisodes(podcastId: String)
 
   fun removeEpisodes()
 
-  fun removeEpisodes(
-    podcastId: String,
-    nextDate: Instant,
-  )
+  fun removeEpisodes(podcastId: String, nextDate: Instant)
 }

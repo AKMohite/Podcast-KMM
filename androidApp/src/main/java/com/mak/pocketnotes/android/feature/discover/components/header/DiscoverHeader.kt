@@ -16,44 +16,44 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun DiscoverHeader(
-    podcasts: List<Podcast>,
-    modifier: Modifier = Modifier,
-    onPodcastClick: (String) -> Unit,
-    sizeClass: WindowSizeClass
+  podcasts: List<Podcast>,
+  modifier: Modifier = Modifier,
+  onPodcastClick: (String) -> Unit,
+  sizeClass: WindowSizeClass
 ) {
-    if (podcasts.isNotEmpty()) {
-        when {
-            sizeClass.isExpanded() -> DiscoverLargeHeader(
-                podcasts = podcasts,
-                modifier = modifier,
-                onPodcastClick = onPodcastClick
-            )
+  if (podcasts.isNotEmpty()) {
+    when {
+      sizeClass.isExpanded() -> DiscoverLargeHeader(
+        podcasts = podcasts,
+        modifier = modifier,
+        onPodcastClick = onPodcastClick
+      )
 
-            sizeClass.isMedium() -> DiscoverMediumHeader(
-                podcasts = podcasts,
-                modifier = modifier,
-                onPodcastClick = onPodcastClick
-            )
-            else -> DiscoverCompactHeader(
-                podcasts = podcasts,
-                modifier = modifier,
-                onPodcastClick = onPodcastClick
-            )
-        }
+      sizeClass.isMedium() -> DiscoverMediumHeader(
+        podcasts = podcasts,
+        modifier = modifier,
+        onPodcastClick = onPodcastClick
+      )
+      else -> DiscoverCompactHeader(
+        podcasts = podcasts,
+        modifier = modifier,
+        onPodcastClick = onPodcastClick
+      )
     }
+  }
 }
 
 @Preview
 @PreviewScreenSizes
 @Composable
 private fun DiscoverHeaderPreview() {
-    PocketNotesTheme {
-        Surface {
-            DiscoverHeader(
-                podcasts = samplePodcasts,
-                onPodcastClick = {},
-                sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
-            )
-        }
+  PocketNotesTheme {
+    Surface {
+      DiscoverHeader(
+        podcasts = samplePodcasts,
+        onPodcastClick = {},
+        sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+      )
     }
+  }
 }

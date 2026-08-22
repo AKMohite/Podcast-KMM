@@ -31,60 +31,57 @@ internal class OfflineFirstPodcastRepository(
   private val episodeDAO: EpisodeDAO,
   private val lastSyncDAO: LastSyncDAO,
   private val dispatcher: DispatcherProvider,
-  private val mapper: PodcastMapper,
+  private val mapper: PodcastMapper
 ) : PodcastRepository {
   private val store by lazy {
     StoreBuilder
       .from<String, PodcastDTO, Podcast>(
         fetcher =
-          Fetcher.Companion.of { podcastId ->
-            fetchPodcast(podcastId)
-          },
+        Fetcher.Companion.of { podcastId ->
+          fetchPodcast(podcastId)
+        },
         sourceOfTruth =
-          SourceOfTruth.Companion.of(
-            reader = { podcastId ->
-              observePodcast(podcastId)
-            },
-            writer = { podcastId, dto ->
-              updatePodcast(dto, podcastId)
-            },
-            deleteAll = {},
-            delete = { podcastId ->
-              delete(podcastId)
-            },
-          ),
+        SourceOfTruth.Companion.of(
+          reader = { podcastId ->
+            observePodcast(podcastId)
+          },
+          writer = { podcastId, dto ->
+            updatePodcast(dto, podcastId)
+          },
+          deleteAll = {},
+          delete = { podcastId ->
+            delete(podcastId)
+          }
+        )
       ).validator(
         Validator.Companion.by { podcast ->
           return@by needsRefresh(podcast)
-        },
+        }
       ).build()
   }
 
-  override fun refresh(podcastId: String): Flow<Podcast> =
-    store
-      .stream(StoreReadRequest.cached(podcastId, false))
-      .filterIsInstance<StoreReadResponse.Data<Podcast>>()
-      .map { response ->
-        response.requireData()
-      }.flowOn(dispatcher.io)
+  override fun refresh(podcastId: String): Flow<Podcast> = store
+    .stream(StoreReadRequest.cached(podcastId, false))
+    .filterIsInstance<StoreReadResponse.Data<Podcast>>()
+    .map { response ->
+      response.requireData()
+    }.flowOn(dispatcher.io)
 
   // TODO podcast can be null
-  override fun observePodcast(podcastId: String): Flow<Podcast> =
-    podcastDAO
-      .getPodcast(podcastId)
-      .map { podcastEntity ->
-        mapper.entityToModel(podcastEntity)
-      }.flowOn(dispatcher.computation)
+  override fun observePodcast(podcastId: String): Flow<Podcast> = podcastDAO
+    .getPodcast(podcastId)
+    .map { podcastEntity ->
+      mapper.entityToModel(podcastEntity)
+    }.flowOn(dispatcher.computation)
 
-  private suspend fun needsRefresh(podcast: Podcast?): Boolean =
-    withContext(dispatcher.io) {
-      if (podcast == null) return@withContext true
-      lastSyncDAO.isRequestValid(
-        requestType = SyncRequest.PODCAST_DETAILS,
-        threshold = 1.days,
-        entityId = podcast.id,
-      )
-    }
+  private suspend fun needsRefresh(podcast: Podcast?): Boolean = withContext(dispatcher.io) {
+    if (podcast == null) return@withContext true
+    lastSyncDAO.isRequestValid(
+      requestType = SyncRequest.PODCAST_DETAILS,
+      threshold = 1.days,
+      entityId = podcast.id
+    )
+  }
 
   private suspend fun delete(podcastId: String) {
     withContext(dispatcher.io) {
@@ -92,10 +89,7 @@ internal class OfflineFirstPodcastRepository(
     }
   }
 
-  private suspend fun updatePodcast(
-    dto: PodcastDTO,
-    podcastId: String,
-  ) {
+  private suspend fun updatePodcast(dto: PodcastDTO, podcastId: String) {
     withContext(dispatcher.io) {
       transactionRunner {
         podcastDAO.insertPodcast(mapper.jsonToEntity(dto))
@@ -103,23 +97,22 @@ internal class OfflineFirstPodcastRepository(
           mapper.mapEpisodeEntities(
             dto.episodes,
             podcastId,
-            dto.nextEpisodeDate,
+            dto.nextEpisodeDate
           )
         episodeDAO.insertEpisodes(episodes)
         lastSyncDAO.insertLastSync(
           SyncRequest.PODCAST_DETAILS,
-          podcastId,
+          podcastId
         )
         lastSyncDAO.insertLastSync(
           SyncRequest.PODCAST_EPISODES,
-          podcastId,
+          podcastId
         )
       }
     }
   }
 
-  private suspend fun fetchPodcast(podcastId: String): PodcastDTO =
-    api
-      .getPodcastDetails(podcastId)
-      .getOrThrow()
+  private suspend fun fetchPodcast(podcastId: String): PodcastDTO = api
+    .getPodcastDetails(podcastId)
+    .getOrThrow()
 }

@@ -5,9 +5,8 @@ import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 
-fun ktorModule(enableNetworkingLogs: Boolean = false) =
-  module {
-    single<Json> { createJson() }
-    single { createHttpClient(get(), enableNetworkLogs = enableNetworkingLogs) }
-    single<PocketNotesAPI> { KtorPocketNotesAPI(get(), get()) }
-  }
+fun ktorModule(enableNetworkingLogs: Boolean = false) = module {
+  single<Json> { createJson() }
+  single { createHttpClient(get(), enableNetworkLogs = enableNetworkingLogs) }
+  single<PocketNotesAPI> { KtorPocketNotesAPI(get(), get()) }
+}

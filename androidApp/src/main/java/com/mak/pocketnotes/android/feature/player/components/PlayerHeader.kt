@@ -18,40 +18,39 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PlayerHeader(
-    modifier: Modifier = Modifier,
-    onCloseClick: () -> Unit,
-    onMoreClick: () -> Unit
+  modifier: Modifier = Modifier,
+  onCloseClick: () -> Unit,
+  onMoreClick: () -> Unit
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        IconButton(onClick = onCloseClick) {
-            Icon(
-                imageVector = Icons.Outlined.KeyboardArrowDown,
-                contentDescription = stringResource(R.string.close_full_player)
-            )
-        }
-        Text(
-            text = stringResource(R.string.now_playing),
-            style = MaterialTheme.typography.headlineSmall
-        )
-        IconButton(onClick = onMoreClick) {
-            Icon(
-                imageVector = Icons.Outlined.MoreVert,
-                contentDescription = stringResource(R.string.more_full_player)
-            )
-        }
-
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceBetween
+  ) {
+    IconButton(onClick = onCloseClick) {
+      Icon(
+        imageVector = Icons.Outlined.KeyboardArrowDown,
+        contentDescription = stringResource(R.string.close_full_player)
+      )
     }
+    Text(
+      text = stringResource(R.string.now_playing),
+      style = MaterialTheme.typography.headlineSmall
+    )
+    IconButton(onClick = onMoreClick) {
+      Icon(
+        imageVector = Icons.Outlined.MoreVert,
+        contentDescription = stringResource(R.string.more_full_player)
+      )
+    }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PlayerHeaderPreview() {
-    PlayerHeader(
-        onCloseClick = {},
-        onMoreClick = {}
-    )
+  PlayerHeader(
+    onCloseClick = {},
+    onMoreClick = {}
+  )
 }

@@ -51,257 +51,255 @@ import com.mak.pocketnotes.utils.sample.sampleCuratedPodcasts
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import org.koin.androidx.compose.koinViewModel
 
-
 data object DiscoverScreenTestTag {
-    const val SHIMMER = "discover:shimmer"
-    const val CONTENT = "discover:content"
+  const val SHIMMER = "discover:shimmer"
+  const val CONTENT = "discover:content"
 }
 
-fun EntryProviderScope<NavKey>.discoverEntry(
-    navigator: Navigator
-) {
-    entry<Discover> {
-        val discoverViewmodel: DiscoverViewmodel = koinViewModel()
-        val state by discoverViewmodel.uiState.collectAsStateWithLifecycle()
-        DiscoverScreen(
-            gotoDetails = { podcastId ->
-                // this function would be in podcast detail api module
-                navigator.navigate(PodcastDetail(podcastId))
-            },
-            state = state,
-            refreshPodcasts = discoverViewmodel::refreshPodcasts,
-            onErrorConsumed = discoverViewmodel::onErrorConsumed
-        )
-    }
+fun EntryProviderScope<NavKey>.discoverEntry(navigator: Navigator) {
+  entry<Discover> {
+    val discoverViewmodel: DiscoverViewmodel = koinViewModel()
+    val state by discoverViewmodel.uiState.collectAsStateWithLifecycle()
+    DiscoverScreen(
+      gotoDetails = { podcastId ->
+        // this function would be in podcast detail api module
+        navigator.navigate(PodcastDetail(podcastId))
+      },
+      state = state,
+      refreshPodcasts = discoverViewmodel::refreshPodcasts,
+      onErrorConsumed = discoverViewmodel::onErrorConsumed
+    )
+  }
 }
 
 @Composable
 internal fun DiscoverScreen(
-    state: DiscoverScreenState,
-    gotoDetails: (String) -> Unit,
-    refreshPodcasts: () -> Unit,
-    onErrorConsumed: () -> Unit,
+  state: DiscoverScreenState,
+  gotoDetails: (String) -> Unit,
+  refreshPodcasts: () -> Unit,
+  onErrorConsumed: () -> Unit
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val resources = LocalResources.current
-    val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+  val snackbarHostState = remember { SnackbarHostState() }
+  val resources = LocalResources.current
+  val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
 
-    LaunchedEffect(state.errorType) {
-        state.errorType?.let { type ->
-            val message = type.toUserMessage(resources)
-            onErrorConsumed()
-            val result = snackbarHostState.showSnackbar(
-                message = message,
-                actionLabel = resources.getString(R.string.action_retry),
-                duration = SnackbarDuration.Short
-            )
-            if (result == SnackbarResult.ActionPerformed) {
-                refreshPodcasts()
-            }
-        }
+  LaunchedEffect(state.errorType) {
+    state.errorType?.let { type ->
+      val message = type.toUserMessage(resources)
+      onErrorConsumed()
+      val result = snackbarHostState.showSnackbar(
+        message = message,
+        actionLabel = resources.getString(R.string.action_retry),
+        duration = SnackbarDuration.Short
+      )
+      if (result == SnackbarResult.ActionPerformed) {
+        refreshPodcasts()
+      }
     }
+  }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { padding ->
-        DiscoverContent(
-            modifier = Modifier.padding(padding),
-            uiState = state,
-            refreshPodcasts = refreshPodcasts,
-            gotoDetails = gotoDetails,
-            sizeClass = sizeClass
-        )
-    }
+  Scaffold(
+    snackbarHost = { SnackbarHost(snackbarHostState) }
+  ) { padding ->
+    DiscoverContent(
+      modifier = Modifier.padding(padding),
+      uiState = state,
+      refreshPodcasts = refreshPodcasts,
+      gotoDetails = gotoDetails,
+      sizeClass = sizeClass
+    )
+  }
 }
 
 internal fun ErrorType.toUserMessage(resources: Resources): String {
-    return when (this) {
-        ErrorType.NOT_FOUND -> resources.getString(R.string.error_not_found)
-        ErrorType.SERVER_ERROR -> resources.getString(R.string.error_server)
-        ErrorType.UNAUTHORIZED -> resources.getString(R.string.error_unauthorized)
-        ErrorType.NO_CONNECTIVITY -> resources.getString(R.string.error_no_internet)
-        ErrorType.PARSE -> resources.getString(R.string.error_serialization)
-        ErrorType.UNKNOWN -> resources.getString(R.string.error_unknown)
-    }
+  return when (this) {
+    ErrorType.NOT_FOUND -> resources.getString(R.string.error_not_found)
+    ErrorType.SERVER_ERROR -> resources.getString(R.string.error_server)
+    ErrorType.UNAUTHORIZED -> resources.getString(R.string.error_unauthorized)
+    ErrorType.NO_CONNECTIVITY -> resources.getString(R.string.error_no_internet)
+    ErrorType.PARSE -> resources.getString(R.string.error_serialization)
+    ErrorType.UNKNOWN -> resources.getString(R.string.error_unknown)
+  }
 }
 
 @Composable
 private fun DiscoverContent(
-    modifier: Modifier = Modifier,
-    uiState: DiscoverScreenState,
-    refreshPodcasts: () -> Unit,
-    gotoDetails: (String) -> Unit,
-    sizeClass: WindowSizeClass
+  modifier: Modifier = Modifier,
+  uiState: DiscoverScreenState,
+  refreshPodcasts: () -> Unit,
+  gotoDetails: (String) -> Unit,
+  sizeClass: WindowSizeClass
 ) {
-    PullToRefreshBox(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        onRefresh = { refreshPodcasts() },
-        isRefreshing = uiState.isPullToRefreshing,
-    ) {
-        if (uiState.initialLoading()) {
-            DiscoverShimmer(
-                modifier = Modifier.testTag(DiscoverScreenTestTag.SHIMMER),
-                sizeClass = sizeClass
+  PullToRefreshBox(
+    modifier = modifier
+      .fillMaxSize()
+      .background(MaterialTheme.colorScheme.background),
+    onRefresh = { refreshPodcasts() },
+    isRefreshing = uiState.isPullToRefreshing
+  ) {
+    if (uiState.initialLoading()) {
+      DiscoverShimmer(
+        modifier = Modifier.testTag(DiscoverScreenTestTag.SHIMMER),
+        sizeClass = sizeClass
+      )
+    } else {
+      LazyColumn(
+        modifier = Modifier
+          .fillMaxSize()
+          .testTag(DiscoverScreenTestTag.CONTENT)
+      ) {
+        // Banner Section
+        renderSection(
+          state = uiState.bannerPodcastsSection,
+          onSuccess = { podcasts ->
+            DiscoverHeader(
+              modifier = Modifier.fillMaxWidth(),
+              podcasts = podcasts,
+              onPodcastClick = gotoDetails,
+              sizeClass = sizeClass
             )
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .testTag(DiscoverScreenTestTag.CONTENT)
-            ) {
-                // Banner Section
-                renderSection(
-                    state = uiState.bannerPodcastsSection,
-                    onSuccess = { podcasts ->
-                        DiscoverHeader(
-                            modifier = Modifier.fillMaxWidth(),
-                            podcasts = podcasts,
-                            onPodcastClick = gotoDetails,
-                            sizeClass = sizeClass
-                        )
-                    }
-                )
+          }
+        )
 
-                // Trending Section
-                renderSection(
-                    state = uiState.trendingPodcastsSection,
-                    onSuccess = { podcasts ->
-                        DiscoverBestPodcasts(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            gotoDetails = gotoDetails,
-                            podcasts = podcasts,
-                            sizeClass = sizeClass
-                        )
-                    }
-                )
+        // Trending Section
+        renderSection(
+          state = uiState.trendingPodcastsSection,
+          onSuccess = { podcasts ->
+            DiscoverBestPodcasts(
+              modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+              gotoDetails = gotoDetails,
+              podcasts = podcasts,
+              sizeClass = sizeClass
+            )
+          }
+        )
 
-                // Curated Sections
-                val curatedState = uiState.curatedPodcastsSection
-                val curatedData = when (curatedState) {
-                    is SectionState.Success -> curatedState.data
-                    is SectionState.Error -> curatedState.cachedData ?: emptyList()
-                    else -> emptyList()
-                }
-
-                if (curatedData.isNotEmpty()) {
-                    items(
-                        items = curatedData,
-                        key = { category -> category.id },
-                        contentType = { "curated_podcast" }
-                    ) { podcast ->
-                        DiscoverCuratedPodcasts(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            podcastSection = podcast,
-                            goToDetails = gotoDetails,
-                            sizeClass = sizeClass
-                        )
-                    }
-                } else if (curatedState is SectionState.Empty) {
-                    item {
-                        EmptyStateMessage("No curated podcasts found.")
-                    }
-                }
-            }
+        // Curated Sections
+        val curatedState = uiState.curatedPodcastsSection
+        val curatedData = when (curatedState) {
+          is SectionState.Success -> curatedState.data
+          is SectionState.Error -> curatedState.cachedData ?: emptyList()
+          else -> emptyList()
         }
+
+        if (curatedData.isNotEmpty()) {
+          items(
+            items = curatedData,
+            key = { category -> category.id },
+            contentType = { "curated_podcast" }
+          ) { podcast ->
+            DiscoverCuratedPodcasts(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+              podcastSection = podcast,
+              goToDetails = gotoDetails,
+              sizeClass = sizeClass
+            )
+          }
+        } else if (curatedState is SectionState.Empty) {
+          item {
+            EmptyStateMessage("No curated podcasts found.")
+          }
+        }
+      }
     }
+  }
 }
 
 private fun <T> LazyListScope.renderSection(
-    state: SectionState<T>,
-    onSuccess: @Composable (T) -> Unit
+  state: SectionState<T>,
+  onSuccess: @Composable (T) -> Unit
 ) {
-    when (state) {
-        is SectionState.Success -> item { onSuccess(state.data) }
-        is SectionState.Error -> {
-            state.cachedData?.let { item { onSuccess(it) } }
-        }
-
-        else -> {}
-        /*is SectionState.Empty -> item { EmptyStateMessage("No podcasts to listen") }
-        is SectionState.Loading -> { *//* Handled by initialLoading at screen level *//* }*/
+  when (state) {
+    is SectionState.Success -> item { onSuccess(state.data) }
+    is SectionState.Error -> {
+      state.cachedData?.let { item { onSuccess(it) } }
     }
+
+    else -> {}
+        /*is SectionState.Empty -> item { EmptyStateMessage("No podcasts to listen") }
+        is SectionState.Loading -> { */
+    /* Handled by initialLoading at screen level */
+    /* }*/
+  }
 }
 
 @Composable
 private fun EmptyStateMessage(message: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = message, style = MaterialTheme.typography.bodyLarge)
-    }
+  Box(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(32.dp),
+    contentAlignment = Alignment.Center
+  ) {
+    Text(text = message, style = MaterialTheme.typography.bodyLarge)
+  }
 }
-
 
 private class DiscoverScreenStateProvider : PreviewParameterProvider<DiscoverScreenState> {
 
-    val data = listOf(
-        Pair(
-            "Loading",
-            DiscoverScreenState(
-                bannerPodcastsSection = SectionState.Loading,
-                trendingPodcastsSection = SectionState.Loading,
-                curatedPodcastsSection = SectionState.Loading,
-                isPullToRefreshing = false
-            )
-        ),
-        Pair(
-            "Refreshing",
-            DiscoverScreenState(
-                bannerPodcastsSection = SectionState.Success(samplePodcasts),
-                trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
-                curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
-                isPullToRefreshing = true
-            )
-        ),
-        Pair(
-            "Empty",
-            DiscoverScreenState(
-                bannerPodcastsSection = SectionState.Empty,
-                trendingPodcastsSection = SectionState.Empty,
-                curatedPodcastsSection = SectionState.Empty,
-                isPullToRefreshing = false
-            )
-        ),
-        Pair(
-            "Success",
-            DiscoverScreenState(
-                bannerPodcastsSection = SectionState.Success(samplePodcasts),
-                trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
-                curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
-                isPullToRefreshing = false
-            )
-        )
+  val data = listOf(
+    Pair(
+      "Loading",
+      DiscoverScreenState(
+        bannerPodcastsSection = SectionState.Loading,
+        trendingPodcastsSection = SectionState.Loading,
+        curatedPodcastsSection = SectionState.Loading,
+        isPullToRefreshing = false
+      )
+    ),
+    Pair(
+      "Refreshing",
+      DiscoverScreenState(
+        bannerPodcastsSection = SectionState.Success(samplePodcasts),
+        trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
+        curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
+        isPullToRefreshing = true
+      )
+    ),
+    Pair(
+      "Empty",
+      DiscoverScreenState(
+        bannerPodcastsSection = SectionState.Empty,
+        trendingPodcastsSection = SectionState.Empty,
+        curatedPodcastsSection = SectionState.Empty,
+        isPullToRefreshing = false
+      )
+    ),
+    Pair(
+      "Success",
+      DiscoverScreenState(
+        bannerPodcastsSection = SectionState.Success(samplePodcasts),
+        trendingPodcastsSection = SectionState.Success(samplePodcasts.take(3)),
+        curatedPodcastsSection = SectionState.Success(sampleCuratedPodcasts),
+        isPullToRefreshing = false
+      )
     )
+  )
 
-    override val values: Sequence<DiscoverScreenState>
-        get() = data.map { it.second }.asSequence()
+  override val values: Sequence<DiscoverScreenState>
+    get() = data.map { it.second }.asSequence()
 
-    override fun getDisplayName(index: Int): String {
-        return data[index].first
-    }
+  override fun getDisplayName(index: Int): String {
+    return data[index].first
+  }
 }
 
 @Preview
 @PreviewScreenSizes
 @Composable
 private fun DiscoverContentPreview(
-    @PreviewParameter(DiscoverScreenStateProvider::class) previewData: DiscoverScreenState
+  @PreviewParameter(DiscoverScreenStateProvider::class) previewData: DiscoverScreenState
 ) {
-    PocketNotesTheme {
-        DiscoverContent(
-            uiState = previewData,
-            refreshPodcasts = {},
-            gotoDetails = {},
-            sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
-        )
-    }
+  PocketNotesTheme {
+    DiscoverContent(
+      uiState = previewData,
+      refreshPodcasts = {},
+      gotoDetails = {},
+      sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+    )
+  }
 }

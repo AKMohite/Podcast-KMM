@@ -52,5 +52,5 @@ internal val wearColorScheme =
     surfaceContainerLow = surfaceContainerLowDarkMediumContrast,
     surfaceContainerHigh = surfaceContainerHighDarkMediumContrast,
     outline = outlineDark,
-    outlineVariant = outlineVariantDark,
+    outlineVariant = outlineVariantDark
   )

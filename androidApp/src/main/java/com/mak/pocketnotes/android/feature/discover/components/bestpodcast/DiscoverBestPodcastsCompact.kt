@@ -30,66 +30,66 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun DiscoverBestPodcastsCompact(
-    modifier: Modifier = Modifier,
-    gotoDetails: (String) -> Unit,
-    podcasts: List<Podcast>,
-    sizeClass: WindowSizeClass
+  modifier: Modifier = Modifier,
+  gotoDetails: (String) -> Unit,
+  podcasts: List<Podcast>,
+  sizeClass: WindowSizeClass
 ) {
-    val columnFraction = when {
-        sizeClass.isExpanded() -> 0.3f
-        sizeClass.isMedium() -> 0.5f
-        else -> 0.8f
-    }
-    val rowCount = when {
-        sizeClass.isExpanded() || sizeClass.isMedium() -> 4
-        else -> 2
-    }
+  val columnFraction = when {
+    sizeClass.isExpanded() -> 0.3f
+    sizeClass.isMedium() -> 0.5f
+    else -> 0.8f
+  }
+  val rowCount = when {
+    sizeClass.isExpanded() || sizeClass.isMedium() -> 4
+    else -> 2
+  }
 
-    // Calculate maxHeight based on rowCount (approx 80dp per row)
-    val maxHeight = when {
-        sizeClass.isExpanded() || sizeClass.isMedium() -> 320.dp
-        else -> 160.dp
-    }
+  // Calculate maxHeight based on rowCount (approx 80dp per row)
+  val maxHeight = when {
+    sizeClass.isExpanded() || sizeClass.isMedium() -> 320.dp
+    else -> 160.dp
+  }
 
-    BoxWithConstraints(
-        modifier = modifier
-    ) {
-        val itemWidth = maxWidth * columnFraction
+  BoxWithConstraints(
+    modifier = modifier
+  ) {
+    val itemWidth = maxWidth * columnFraction
 
-        Column {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = stringResource(R.string.trending),
-                style = MaterialTheme.typography.titleLarge
-            )
-            LazyHorizontalGrid(
-                rows = GridCells.Fixed(rowCount),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = maxHeight),
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(items = podcasts, key = Podcast::id) { podcast ->
-                    PodcastRow(
-                        modifier = Modifier
-                            .width(itemWidth)
-                            .clickable { gotoDetails(podcast.id) },
-                        podcast = podcast
-                    )
-                }
-            }
+    Column {
+      Text(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        text = stringResource(R.string.trending),
+        style = MaterialTheme.typography.titleLarge
+      )
+      LazyHorizontalGrid(
+        rows = GridCells.Fixed(rowCount),
+        modifier = Modifier
+          .fillMaxWidth()
+          .heightIn(max = maxHeight),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        items(items = podcasts, key = Podcast::id) { podcast ->
+          PodcastRow(
+            modifier = Modifier
+              .width(itemWidth)
+              .clickable { gotoDetails(podcast.id) },
+            podcast = podcast
+          )
         }
+      }
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun DiscoverBestPodcastsCompactPreview() {
-    DiscoverBestPodcastsCompact(
-        podcasts = samplePodcasts.take(8),
-        gotoDetails = {},
-        sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
-    )
+  DiscoverBestPodcastsCompact(
+    podcasts = samplePodcasts.take(8),
+    gotoDetails = {},
+    sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+  )
 }

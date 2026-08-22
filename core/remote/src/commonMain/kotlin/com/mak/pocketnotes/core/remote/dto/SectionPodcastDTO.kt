@@ -22,5 +22,5 @@ data class SectionPodcastDTO(
   @SerialName("title")
   val title: String? = null,
   @SerialName("total")
-  val total: Int? = null,
+  val total: Int? = null
 )

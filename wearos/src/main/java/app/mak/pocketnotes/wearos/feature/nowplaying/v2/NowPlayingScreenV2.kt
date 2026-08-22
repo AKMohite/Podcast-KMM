@@ -9,40 +9,40 @@ import com.google.android.horologist.media.ui.material3.screens.player.PlayerScr
 
 @Composable
 internal fun NowPlayingScreen() {
-    NowPlayingContentV2()
+  NowPlayingContentV2()
 }
 
 @Composable
 fun NowPlayingContentV2() {
-    PlayerScreen(
-        modifier = Modifier.fillMaxSize(),
-        mediaDisplay = {},
-        controlButtons = {},
-        buttons = {
-            PodcastControlButtons(
-                seekBackButtonEnabled = true,
-                seekForwardButtonEnabled = true,
-                playPauseButtonEnabled = true,
-                playing = true,
+  PlayerScreen(
+    modifier = Modifier.fillMaxSize(),
+    mediaDisplay = {},
+    controlButtons = {},
+    buttons = {
+      PodcastControlButtons(
+        seekBackButtonEnabled = true,
+        seekForwardButtonEnabled = true,
+        playPauseButtonEnabled = true,
+        playing = true,
 //                trackPositionUiModel = ,
-                onPlayButtonClick = {},
-                onPauseButtonClick = {},
-                onSeekBackButtonClick = {},
-                onSeekForwardButtonClick = {},
-            )
-        },
-        background = {}
-    )
+        onPlayButtonClick = {},
+        onPauseButtonClick = {},
+        onSeekBackButtonClick = {},
+        onSeekForwardButtonClick = {}
+      )
+    },
+    background = {}
+  )
 }
 
 @Preview(
-    name = "Round Watch",
-    device = "id:wearos_small_round",
-    showSystemUi = true,
-    backgroundColor = 0xFF000000,
-    showBackground = true
+  name = "Round Watch",
+  device = "id:wearos_small_round",
+  showSystemUi = true,
+  backgroundColor = 0xFF000000,
+  showBackground = true
 )
 @Composable
 private fun NowPlayingContentV2Preview() {
-    NowPlayingContentV2()
+  NowPlayingContentV2()
 }

@@ -4,7 +4,7 @@ data class CuratedPodcast(
   val id: String,
   val title: String,
   val description: String,
-  val podcasts: List<SectionPodcast>,
+  val podcasts: List<SectionPodcast>
 ) {
   fun getCuratedPodcasts(noOfRows: Int = 2): List<List<SectionPodcast>> = podcasts.chunked(noOfRows)
 
@@ -25,5 +25,5 @@ data class SectionPodcast(
 //    val description: String,
   val image: String,
   val thumbnail: String,
-  val publisher: String,
+  val publisher: String
 )

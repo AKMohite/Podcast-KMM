@@ -16,14 +16,14 @@ typealias CuratedPodcastEntity = Curated_podcasts
 
 internal class SQLDelightCuratedPodcastDAO(
   database: PocketDatabase,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : CuratedPodcastDAO {
   private val sectionQuery = database.curated_section_entityQueries
   private val podcastQuery = database.curated_podcast_entityQueries
 
   override fun insertCuratedPodcasts(
     sections: List<CuratedSectionEntity>,
-    podcasts: List<CuratedPodcastEntity>,
+    podcasts: List<CuratedPodcastEntity>
   ) {
     sections.forEach { section ->
       sectionQuery.insertCuratedSection(section)
@@ -33,13 +33,12 @@ internal class SQLDelightCuratedPodcastDAO(
     }
   }
 
-  override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> =
-    sectionQuery
-      .curatedSectionWithPodcast()
-      .asFlow()
-      .distinctUntilChanged()
-      .mapToList(dispatcher.io)
-      .flowOn(dispatcher.io)
+  override fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>> = sectionQuery
+    .curatedSectionWithPodcast()
+    .asFlow()
+    .distinctUntilChanged()
+    .mapToList(dispatcher.io)
+    .flowOn(dispatcher.io)
 
   override fun deletePage(page: Int) {
     sectionQuery.deletePage(page)
@@ -49,7 +48,7 @@ internal class SQLDelightCuratedPodcastDAO(
 interface CuratedPodcastDAO {
   fun insertCuratedPodcasts(
     sections: List<CuratedSectionEntity>,
-    podcasts: List<CuratedPodcastEntity>,
+    podcasts: List<CuratedPodcastEntity>
   )
 
   fun getCuratedPodcasts(): Flow<List<CuratedSectionWithPodcast>>

@@ -16,47 +16,44 @@ import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
-internal fun PlayerFooter(
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-
-        IconButton(onClick = {}) {
-            Icon(
-                painter = painterResource(R.drawable.icon_speed),
-                contentDescription = stringResource(R.string.player_speed)
-            )
-        }
-
-        IconButton(onClick = {}) {
-            Icon(
-                painter = painterResource(R.drawable.icon_playlist_queue),
-                contentDescription = stringResource(R.string.player_queue)
-            )
-        }
-
-        IconButton(onClick = { }) {
-//            TODO change drawable
-            Icon(
-                imageVector = Icons.Filled.Info,
-                contentDescription = stringResource(R.string.player_available_device)
-            )
-        }
-        IconButton(onClick = { }) {
-            Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = stringResource(R.string.player_share)
-            )
-        }
+internal fun PlayerFooter(modifier: Modifier = Modifier) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.SpaceBetween
+  ) {
+    IconButton(onClick = {}) {
+      Icon(
+        painter = painterResource(R.drawable.icon_speed),
+        contentDescription = stringResource(R.string.player_speed)
+      )
     }
+
+    IconButton(onClick = {}) {
+      Icon(
+        painter = painterResource(R.drawable.icon_playlist_queue),
+        contentDescription = stringResource(R.string.player_queue)
+      )
+    }
+
+    IconButton(onClick = { }) {
+//            TODO change drawable
+      Icon(
+        imageVector = Icons.Filled.Info,
+        contentDescription = stringResource(R.string.player_available_device)
+      )
+    }
+    IconButton(onClick = { }) {
+      Icon(
+        imageVector = Icons.Filled.Share,
+        contentDescription = stringResource(R.string.player_share)
+      )
+    }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PlayerFooterPreview() {
-    PlayerFooter()
+  PlayerFooter()
 }

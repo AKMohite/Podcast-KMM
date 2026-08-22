@@ -17,38 +17,43 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PodBottomNavigation(
-    bottomBarItems: List<BottomDestination>,
-    onBottomNavigate: (BottomDestination) -> Unit,
-    currentKey: NavKey?,
-    modifier: Modifier = Modifier
+  bottomBarItems: List<BottomDestination>,
+  onBottomNavigate: (BottomDestination) -> Unit,
+  currentKey: NavKey?,
+  modifier: Modifier = Modifier
 ) {
-    NavigationBar(
-        modifier = modifier
-    ) {
-        bottomBarItems.forEach { item ->
-            NavigationBarItem(
-                selected = currentKey == item,
-                onClick = {
-                    onBottomNavigate(item)
-                },
-                icon = { Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title)) },
-                label = { Text(text = stringResource(id = item.title)) }
-            )
-        }
+  NavigationBar(
+    modifier = modifier
+  ) {
+    bottomBarItems.forEach { item ->
+      NavigationBarItem(
+        selected = currentKey == item,
+        onClick = {
+          onBottomNavigate(item)
+        },
+        icon = {
+          Icon(
+            imageVector = item.icon,
+            contentDescription = stringResource(id = item.title)
+          )
+        },
+        label = { Text(text = stringResource(id = item.title)) }
+      )
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PodBottomNavigationPreview() {
-    PodBottomNavigation(
-        bottomBarItems = listOf(
-            Discover,
-            Search,
-            Subscribed,
-            Settings
-        ),
-        onBottomNavigate = {},
-        currentKey = Discover,
-    )
+  PodBottomNavigation(
+    bottomBarItems = listOf(
+      Discover,
+      Search,
+      Subscribed,
+      Settings
+    ),
+    onBottomNavigate = {},
+    currentKey = Discover
+  )
 }

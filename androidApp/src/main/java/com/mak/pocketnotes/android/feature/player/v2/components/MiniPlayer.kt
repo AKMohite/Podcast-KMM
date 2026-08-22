@@ -36,92 +36,96 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun MiniPlayer(
-    state: PlayerState,
-    onExpand: () -> Unit,
-    onTogglePlayPause: () -> Unit,
-    modifier: Modifier = Modifier,
+  state: PlayerState,
+  onExpand: () -> Unit,
+  onTogglePlayPause: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    if (state.currentEpisode == null) return
+  if (state.currentEpisode == null) return
 
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(64.dp)
-            .testTag(PlayerTestTags.MINI_PLAYER),
-        shadowElevation = 8.dp,
-        tonalElevation = 4.dp,
-        onClick = onExpand,
+  Surface(
+    modifier = modifier
+      .fillMaxWidth()
+      .height(64.dp)
+      .testTag(PlayerTestTags.MINI_PLAYER),
+    shadowElevation = 8.dp,
+    tonalElevation = 4.dp,
+    onClick = onExpand
+  ) {
+    Column(
+      modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // Thumbnail
-                AsyncImage(
-                    model = state.currentEpisode?.thumbnail,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(6.dp)),
-                )
+      Row(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        // Thumbnail
+        AsyncImage(
+          model = state.currentEpisode?.thumbnail,
+          contentDescription = null,
+          modifier = Modifier
+            .size(40.dp)
+            .clip(RoundedCornerShape(6.dp))
+        )
 
-                Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(12.dp))
 
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = state.currentEpisode?.title.orEmpty(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Text(
-                        text = state.currentEpisode?.title.orEmpty(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                // Mini play/pause
-                IconButton(onClick = onTogglePlayPause) {
-                    Icon(
-                        imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                        contentDescription = if (state.isPlaying) stringResource(R.string.action_pause) else stringResource(
-                            R.string.action_play
-                        ),
-                    )
-                }
-            }
-
-            // Progress indicator
-            LinearProgressIndicator(
-                progress = { state.progress },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 60.dp, end = 20.dp)
-                    .height(2.dp),
-            )
+        Column(modifier = Modifier.weight(1f)) {
+          Text(
+            text = state.currentEpisode?.title.orEmpty(),
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+          )
+          Text(
+            text = state.currentEpisode?.title.orEmpty(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+          )
         }
+
+        // Mini play/pause
+        IconButton(onClick = onTogglePlayPause) {
+          Icon(
+            imageVector = if (state.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+            contentDescription = if (state.isPlaying) {
+              stringResource(R.string.action_pause)
+            } else {
+              stringResource(
+                R.string.action_play
+              )
+            }
+          )
+        }
+      }
+
+      // Progress indicator
+      LinearProgressIndicator(
+        progress = { state.progress },
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(start = 60.dp, end = 20.dp)
+          .height(2.dp)
+      )
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun MiniPlayerPreview() {
-    MiniPlayer(
-        state = PlayerState(
-            currentEpisode = sampleEpisodes[0],
-            durationMs = 100000,
-            positionMs = 5000
-        ),
-        onExpand = {},
-        onTogglePlayPause = {},
-        modifier = Modifier.fillMaxWidth()
-    )
+  MiniPlayer(
+    state = PlayerState(
+      currentEpisode = sampleEpisodes[0],
+      durationMs = 100000,
+      positionMs = 5000
+    ),
+    onExpand = {},
+    onTogglePlayPause = {},
+    modifier = Modifier.fillMaxWidth()
+  )
 }

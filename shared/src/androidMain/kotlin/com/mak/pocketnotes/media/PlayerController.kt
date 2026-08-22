@@ -15,10 +15,7 @@ interface PlayerController {
 
   fun playEpisode(episode: PodcastEpisode)
 
-  fun playQueue(
-    episodes: List<PodcastEpisode>,
-    startIndex: Int = 0,
-  )
+  fun playQueue(episodes: List<PodcastEpisode>, startIndex: Int = 0)
 
   fun pause()
 
@@ -56,10 +53,7 @@ interface PlayerController {
 
   fun removeFromQueue(index: Int)
 
-  fun moveQueueItem(
-    from: Int,
-    to: Int,
-  )
+  fun moveQueueItem(from: Int, to: Int)
 
   fun clearQueue()
 

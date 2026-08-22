@@ -8,12 +8,11 @@ import com.mak.pocketnotes.core.database.queries.PocketDatabase
  * SQL transaction runner to have block with queries and that can be roll-backed
  */
 internal class SQLDatabaseTransactionRunner(
-  private val db: PocketDatabase,
+  private val db: PocketDatabase
 ) : DatabaseTransactionRunner {
-  override fun <T> invoke(block: () -> T): T =
-    db.transactionWithResult {
-      block()
-    }
+  override fun <T> invoke(block: () -> T): T = db.transactionWithResult {
+    block()
+  }
 }
 
 interface DatabaseTransactionRunner {

@@ -18,74 +18,74 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PlaybackController(
-    isMediaPlaying: Boolean,
-    modifier: Modifier = Modifier,
-    onShuffleClick: () -> Unit,
-    playPause: () -> Unit,
-    previousClick: () -> Unit,
-    nextClick: () -> Unit,
-    backwardClick: () -> Unit = {},
-    forwardClick: () -> Unit = {}
+  isMediaPlaying: Boolean,
+  modifier: Modifier = Modifier,
+  onShuffleClick: () -> Unit,
+  playPause: () -> Unit,
+  previousClick: () -> Unit,
+  nextClick: () -> Unit,
+  backwardClick: () -> Unit = {},
+  forwardClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.Center
+  ) {
 //        IconButton(onClick = onShuffleClick) {
-////            TODO change drawable
+// //            TODO change drawable
 //            Icon(
 //                imageVector = Icons.Rounded.Refresh,
 //                contentDescription = stringResource(R.string.player_shuffle)
 //            )
 //        }
-        IconButton(onClick = backwardClick) {
-            Icon(
-                painter = painterResource(R.drawable.icon_previous_ten),
-                contentDescription = stringResource(R.string.player_backward)
-            )
-        }
-        IconButton(onClick = previousClick) {
-            Icon(
-                painter = painterResource(R.drawable.icon_previous),
-                contentDescription = stringResource(R.string.player_previous)
-            )
-        }
-        FilledIconButton(onClick = playPause) {
-            Icon(
-                imageVector = if (isMediaPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
-                contentDescription = stringResource(R.string.player_play_pause)
-            )
-        }
-        IconButton(onClick = nextClick) {
-            Icon(
-                painter = painterResource(R.drawable.icon_next),
-                contentDescription = stringResource(R.string.player_next)
-            )
-        }
-        IconButton(onClick = forwardClick) {
-            Icon(
-                painter = painterResource(R.drawable.icon_forward_ten),
-                contentDescription = stringResource(R.string.player_forward)
-            )
-        }
+    IconButton(onClick = backwardClick) {
+      Icon(
+        painter = painterResource(R.drawable.icon_previous_ten),
+        contentDescription = stringResource(R.string.player_backward)
+      )
+    }
+    IconButton(onClick = previousClick) {
+      Icon(
+        painter = painterResource(R.drawable.icon_previous),
+        contentDescription = stringResource(R.string.player_previous)
+      )
+    }
+    FilledIconButton(onClick = playPause) {
+      Icon(
+        imageVector = if (isMediaPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+        contentDescription = stringResource(R.string.player_play_pause)
+      )
+    }
+    IconButton(onClick = nextClick) {
+      Icon(
+        painter = painterResource(R.drawable.icon_next),
+        contentDescription = stringResource(R.string.player_next)
+      )
+    }
+    IconButton(onClick = forwardClick) {
+      Icon(
+        painter = painterResource(R.drawable.icon_forward_ten),
+        contentDescription = stringResource(R.string.player_forward)
+      )
+    }
 //        IconButton(onClick = {}) {
 //            Icon(
 //                imageVector = Icons.Rounded.FavoriteBorder,
 //                contentDescription = stringResource(R.string.player_favorite)
 //            )
 //        }
-    }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PlaybackControllerPreview() {
-    PlaybackController(
-        isMediaPlaying = false,
-        onShuffleClick = {},
-        playPause = {},
-        previousClick = {},
-        nextClick = {}
-    )
+  PlaybackController(
+    isMediaPlaying = false,
+    onShuffleClick = {},
+    playPause = {},
+    previousClick = {},
+    nextClick = {}
+  )
 }

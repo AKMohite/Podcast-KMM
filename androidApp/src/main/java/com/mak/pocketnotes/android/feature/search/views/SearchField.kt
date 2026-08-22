@@ -17,57 +17,57 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun SearchField(
-    onKeyboardDoneClick: (String) -> Unit,
-    searchText: String,
-    modifier: Modifier = Modifier,
-    onClearSearchText: () -> Unit,
-    onSearchTextChanged: (String) -> Unit
+  onKeyboardDoneClick: (String) -> Unit,
+  searchText: String,
+  modifier: Modifier = Modifier,
+  onClearSearchText: () -> Unit,
+  onSearchTextChanged: (String) -> Unit
 ) {
-    OutlinedTextField(
-        modifier = modifier,
-        value = searchText,
-        onValueChange = onSearchTextChanged,
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Outlined.Search,
-                contentDescription = stringResource(id = R.string.search)
-            )
-        },
-        trailingIcon = {
-            AnimatedVisibility(visible = searchText.isNotBlank()) {
-                IconButton(
-                    onClick = {
-                        onSearchTextChanged("")
-                        onClearSearchText()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = stringResource(R.string.clear_search)
-                    )
-                }
-            }
-        },
-        placeholder = {
-            Text(
-                text = stringResource(R.string.search_placeholder)
-            )
-        },
-        singleLine = true,
-        keyboardActions = KeyboardActions(onDone = {
-            onKeyboardDoneClick(searchText)
-        })
-    )
+  OutlinedTextField(
+    modifier = modifier,
+    value = searchText,
+    onValueChange = onSearchTextChanged,
+    leadingIcon = {
+      Icon(
+        imageVector = Icons.Outlined.Search,
+        contentDescription = stringResource(id = R.string.search)
+      )
+    },
+    trailingIcon = {
+      AnimatedVisibility(visible = searchText.isNotBlank()) {
+        IconButton(
+          onClick = {
+            onSearchTextChanged("")
+            onClearSearchText()
+          }
+        ) {
+          Icon(
+            imageVector = Icons.Outlined.Close,
+            contentDescription = stringResource(R.string.clear_search)
+          )
+        }
+      }
+    },
+    placeholder = {
+      Text(
+        text = stringResource(R.string.search_placeholder)
+      )
+    },
+    singleLine = true,
+    keyboardActions = KeyboardActions(onDone = {
+      onKeyboardDoneClick(searchText)
+    })
+  )
 }
 
 @ThemePreviews
 @Composable
 private fun SearchFieldPreview() {
-    SearchField(
-        onKeyboardDoneClick = {},
-        modifier = Modifier,
-        searchText = "asdasd",
-        onSearchTextChanged = {},
-        onClearSearchText = {}
-    )
+  SearchField(
+    onKeyboardDoneClick = {},
+    modifier = Modifier,
+    searchText = "asdasd",
+    onSearchTextChanged = {},
+    onClearSearchText = {}
+  )
 }

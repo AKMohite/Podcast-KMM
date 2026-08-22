@@ -10,5 +10,5 @@ data class GenreDTO(
   @SerialName("name")
   val name: String?,
   @SerialName("parent_id")
-  val parentId: Int?,
+  val parentId: Int?
 )

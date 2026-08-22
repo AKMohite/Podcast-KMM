@@ -22,70 +22,66 @@ import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 
 @Composable
 internal fun GenreCells(
-    genres: List<Genre>,
-    onGenreClick: (Genre) -> Unit,
-    modifier: Modifier = Modifier
+  genres: List<Genre>,
+  onGenreClick: (Genre) -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+  LazyVerticalGrid(
+    modifier = modifier,
+    columns = GridCells.Fixed(2),
+    contentPadding = PaddingValues(8.dp),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp)
+  ) {
 //                items(
 //                    items = state.genres,
 //                    key = { _, genre -> genre.id }
 //                ) {}
-        items(
-            items = genres,
-            key = { genre -> genre.id }
-        ) { genre ->
-            GenreCell(
-                modifier = Modifier.fillMaxWidth(),
-                genre = genre,
-                onGenreClick = onGenreClick
-            )
-        }
+    items(
+      items = genres,
+      key = { genre -> genre.id }
+    ) { genre ->
+      GenreCell(
+        modifier = Modifier.fillMaxWidth(),
+        genre = genre,
+        onGenreClick = onGenreClick
+      )
     }
+  }
 }
 
 @Composable
-private fun GenreCell(
-    genre: Genre,
-    modifier: Modifier = Modifier,
-    onGenreClick: (Genre) -> Unit
-) {
-    Box(
-        modifier = modifier
-            .clip(MaterialTheme.shapes.medium)
+private fun GenreCell(genre: Genre, modifier: Modifier = Modifier, onGenreClick: (Genre) -> Unit) {
+  Box(
+    modifier = modifier
+      .clip(MaterialTheme.shapes.medium)
 //            .border(width = 2.dp, color = MaterialTheme.colorScheme.primaryContainer)
-            .background(MaterialTheme.colorScheme.tertiary)
-            .clickable { onGenreClick(genre) }
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = genre.name,
-            maxLines = 1,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onTertiary
-        )
-    }
+      .background(MaterialTheme.colorScheme.tertiary)
+      .clickable { onGenreClick(genre) }
+      .padding(8.dp),
+    contentAlignment = Alignment.Center
+  ) {
+    Text(
+      text = genre.name,
+      maxLines = 1,
+      style = MaterialTheme.typography.labelLarge,
+      color = MaterialTheme.colorScheme.onTertiary
+    )
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun GenreCellsPreview() {
-    GenreCells(
-        genres = listOf(
-            Genre(1, "genre 1", 3),
-            Genre(2, "genre 2", 2),
-            Genre(3, "genre 3", 2),
-            Genre(4, "genre 4", 3),
-            Genre(5, "genre 5", 4),
-            Genre(6, "genre 6", 1),
-        ),
-        onGenreClick = {},
-    )
+  GenreCells(
+    genres = listOf(
+      Genre(1, "genre 1", 3),
+      Genre(2, "genre 2", 2),
+      Genre(3, "genre 3", 2),
+      Genre(4, "genre 4", 3),
+      Genre(5, "genre 5", 4),
+      Genre(6, "genre 6", 1)
+    ),
+    onGenreClick = {}
+  )
 }

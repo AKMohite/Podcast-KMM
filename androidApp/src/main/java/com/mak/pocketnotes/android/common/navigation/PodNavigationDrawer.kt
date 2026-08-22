@@ -26,56 +26,61 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun PodNavigationDrawer(
-    bottomBarItems: List<BottomDestination>,
-    onBottomNavigate: (BottomDestination) -> Unit,
-    currentKey: NavKey?,
-    modifier: Modifier = Modifier,
-    bottomContent: @Composable ColumnScope.() -> Unit
+  bottomBarItems: List<BottomDestination>,
+  onBottomNavigate: (BottomDestination) -> Unit,
+  currentKey: NavKey?,
+  modifier: Modifier = Modifier,
+  bottomContent: @Composable ColumnScope.() -> Unit
 ) {
-    PermanentDrawerSheet(
-        modifier = modifier
-            .sizeIn(minWidth = 200.dp, maxWidth = 250.dp)
-    ) {
-        Spacer(Modifier.height(24.dp))
-        bottomBarItems.forEach { item ->
-            NavigationDrawerItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                selected = currentKey == item,
-                onClick = {
-                    onBottomNavigate(item)
-                },
-                icon = { Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title)) },
-                label = { Text(text = stringResource(id = item.title)) }
-            )
-        }
-        Spacer(Modifier.weight(1f))
-        bottomContent()
-        Spacer(Modifier.height(48.dp))
+  PermanentDrawerSheet(
+    modifier = modifier
+      .sizeIn(minWidth = 200.dp, maxWidth = 250.dp)
+  ) {
+    Spacer(Modifier.height(24.dp))
+    bottomBarItems.forEach { item ->
+      NavigationDrawerItem(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp),
+        selected = currentKey == item,
+        onClick = {
+          onBottomNavigate(item)
+        },
+        icon = {
+          Icon(
+            imageVector = item.icon,
+            contentDescription = stringResource(id = item.title)
+          )
+        },
+        label = { Text(text = stringResource(id = item.title)) }
+      )
     }
+    Spacer(Modifier.weight(1f))
+    bottomContent()
+    Spacer(Modifier.height(48.dp))
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PodNavigationDrawerPreview() {
-    PodNavigationDrawer(
-        bottomBarItems = listOf(
-            Discover,
-            Search,
-            Subscribed,
-            Settings
-        ),
-        onBottomNavigate = {},
-        currentKey = Discover,
-        bottomContent = {
-            PermanentMinPlayer(
-                episode = sampleEpisodes[0],
-                playPause = {},
-                isMediaPlaying = false,
-                previousClick = {},
-                nextClick = {}
-            )
-        }
-    )
+  PodNavigationDrawer(
+    bottomBarItems = listOf(
+      Discover,
+      Search,
+      Subscribed,
+      Settings
+    ),
+    onBottomNavigate = {},
+    currentKey = Discover,
+    bottomContent = {
+      PermanentMinPlayer(
+        episode = sampleEpisodes[0],
+        playPause = {},
+        isMediaPlaying = false,
+        previousClick = {},
+        nextClick = {}
+      )
+    }
+  )
 }

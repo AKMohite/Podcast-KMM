@@ -37,133 +37,133 @@ import app.mak.pocketnotes.wearos.R
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 
 sealed interface HomeNavigation {
-    data object Podcasts : HomeNavigation
-    data object Downloads : HomeNavigation
-    data object Subscribed : HomeNavigation
-    data object Settings : HomeNavigation
+  data object Podcasts : HomeNavigation
+  data object Downloads : HomeNavigation
+  data object Subscribed : HomeNavigation
+  data object Settings : HomeNavigation
 }
 
 @Composable
 internal fun WearHomeScreen(
-    modifier: Modifier = Modifier,
-    columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
-    navigateTo: (HomeNavigation) -> Unit
+  modifier: Modifier = Modifier,
+  columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+  navigateTo: (HomeNavigation) -> Unit
 ) {
-    val transformationSpec = rememberTransformationSpec()
-    ScreenScaffold(
-        scrollState = columnState,
+  val transformationSpec = rememberTransformationSpec()
+  ScreenScaffold(
+    scrollState = columnState
+  ) {
+    TransformingLazyColumn(
+      state = columnState,
+      contentPadding = PaddingValues(
+        top = ListHeaderDefaults.minimumTopListContentPadding,
+        bottom = ListHeaderDefaults.minimumBottomListContentPadding,
+        start = 8.dp,
+        end = 8.dp
+      ),
+      modifier = modifier.fillMaxWidth()
     ) {
-        TransformingLazyColumn(
-            state = columnState,
-            contentPadding = PaddingValues(
-                top = ListHeaderDefaults.minimumTopListContentPadding,
-                bottom = ListHeaderDefaults.minimumBottomListContentPadding,
-                start = 8.dp,
-                end = 8.dp
-            ),
-            modifier = modifier.fillMaxWidth()
+      item {
+        ListHeader(
+          modifier = Modifier
+            .fillMaxWidth()
+            .transformedHeight(this, transformationSpec),
+          transformation = SurfaceTransformation(transformationSpec)
         ) {
-            item {
-                ListHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .transformedHeight(this, transformationSpec),
-                    transformation = SurfaceTransformation(transformationSpec)
-                ) {
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-            item {
-                HomeChip(
-                    title = stringResource(R.string.home_podcasts),
-                    icon = Icons.Default.Podcasts,
-                    onClick = { navigateTo(HomeNavigation.Podcasts) },
-                    transformationSpec = transformationSpec
-                )
-            }
-
-            item {
-                HomeChip(
-                    title = stringResource(R.string.home_downloads),
-                    icon = Icons.Default.Download,
-                    onClick = { navigateTo(HomeNavigation.Downloads) },
-                    transformationSpec = transformationSpec
-                )
-            }
-
-            item {
-                HomeChip(
-                    title = stringResource(R.string.home_subscribed),
-                    icon = Icons.Default.Subscriptions,
-                    onClick = { navigateTo(HomeNavigation.Subscribed) },
-                    transformationSpec = transformationSpec
-                )
-            }
-
-            item {
-                HomeChip(
-                    title = stringResource(R.string.home_settings),
-                    icon = Icons.Default.Settings,
-                    onClick = { navigateTo(HomeNavigation.Settings) },
-                    transformationSpec = transformationSpec
-                )
-            }
+          Text(
+            text = stringResource(R.string.app_name),
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.fillMaxWidth()
+          )
         }
+      }
+      item {
+        HomeChip(
+          title = stringResource(R.string.home_podcasts),
+          icon = Icons.Default.Podcasts,
+          onClick = { navigateTo(HomeNavigation.Podcasts) },
+          transformationSpec = transformationSpec
+        )
+      }
+
+      item {
+        HomeChip(
+          title = stringResource(R.string.home_downloads),
+          icon = Icons.Default.Download,
+          onClick = { navigateTo(HomeNavigation.Downloads) },
+          transformationSpec = transformationSpec
+        )
+      }
+
+      item {
+        HomeChip(
+          title = stringResource(R.string.home_subscribed),
+          icon = Icons.Default.Subscriptions,
+          onClick = { navigateTo(HomeNavigation.Subscribed) },
+          transformationSpec = transformationSpec
+        )
+      }
+
+      item {
+        HomeChip(
+          title = stringResource(R.string.home_settings),
+          icon = Icons.Default.Settings,
+          onClick = { navigateTo(HomeNavigation.Settings) },
+          transformationSpec = transformationSpec
+        )
+      }
     }
+  }
 }
 
 @Composable
 fun TransformingLazyColumnItemScope.HomeChip(
-    title: String,
-    icon: ImageVector,
-    transformationSpec: TransformationSpec,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+  title: String,
+  icon: ImageVector,
+  transformationSpec: TransformationSpec,
+  modifier: Modifier = Modifier,
+  onClick: () -> Unit
 ) {
-    Button(
-        onClick = onClick,
-        label = {
-            Text(
-                text = title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleSmall,
-            )
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .transformedHeight(this, transformationSpec),
-        transformation = SurfaceTransformation(transformationSpec),
-        icon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                modifier = Modifier.size(ButtonDefaults.IconSize),
-            )
-        }
-    )
+  Button(
+    onClick = onClick,
+    label = {
+      Text(
+        text = title,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        style = MaterialTheme.typography.titleSmall
+      )
+    },
+    modifier = modifier
+      .fillMaxWidth()
+      .transformedHeight(this, transformationSpec),
+    transformation = SurfaceTransformation(transformationSpec),
+    icon = {
+      Icon(
+        imageVector = icon,
+        contentDescription = title,
+        modifier = Modifier.size(ButtonDefaults.IconSize)
+      )
+    }
+  )
 }
 
 @WearPreviewDevices
 @Composable
 private fun WatchListPreview() {
-    WearPocketNotesTheme {
-        AppScaffold {
-            val listState = rememberTransformingLazyColumnState()
-            ScreenScaffold(
-                scrollState = listState,
-            ) {
-                WearHomeScreen(
-                    columnState = listState,
-                    navigateTo = {}
-                )
-            }
-        }
+  WearPocketNotesTheme {
+    AppScaffold {
+      val listState = rememberTransformingLazyColumnState()
+      ScreenScaffold(
+        scrollState = listState
+      ) {
+        WearHomeScreen(
+          columnState = listState,
+          navigateTo = {}
+        )
+      }
     }
+  }
 }

@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
 internal class QueueViewModel(
-  private val controller: PlayerController,
+  private val controller: PlayerController
 ) : ViewModel() {
   val playerState: StateFlow<PlayerState> =
     controller.playerState
       .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000L),
-        initialValue = PlayerState(),
+        initialValue = PlayerState()
       )
 
   fun onEvent(event: QueueEvent) {
@@ -35,19 +35,19 @@ internal sealed interface QueueEvent {
   object ClearQueue : QueueEvent
 
   data class RemoveItem(
-    val index: Int,
+    val index: Int
   ) : QueueEvent
 
   data class AddNext(
-    val episodes: PodcastEpisode,
+    val episodes: PodcastEpisode
   ) : QueueEvent
 
   data class MoveItem(
     val from: Int,
-    val to: Int,
+    val to: Int
   ) : QueueEvent
 
   data class PlayItem(
-    val index: Int,
+    val index: Int
   ) : QueueEvent
 }

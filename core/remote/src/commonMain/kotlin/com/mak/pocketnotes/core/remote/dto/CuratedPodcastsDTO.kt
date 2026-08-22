@@ -18,5 +18,5 @@ data class CuratedPodcastsDTO(
   @SerialName("previous_page_number")
   val previousPageNumber: Int? = 0,
   @SerialName("total")
-  val total: Int? = null,
+  val total: Int? = null
 )

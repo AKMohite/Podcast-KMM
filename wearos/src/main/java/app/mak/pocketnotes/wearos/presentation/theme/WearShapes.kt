@@ -6,5 +6,5 @@ import androidx.wear.compose.material3.Shapes
 
 val wearShapes =
   Shapes(
-    medium = RoundedCornerShape(16.dp),
+    medium = RoundedCornerShape(16.dp)
   )

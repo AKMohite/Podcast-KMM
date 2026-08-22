@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GenresDTO(
   @SerialName("genres")
-  val genres: List<GenreDTO>? = emptyList(),
+  val genres: List<GenreDTO>? = emptyList()
 )

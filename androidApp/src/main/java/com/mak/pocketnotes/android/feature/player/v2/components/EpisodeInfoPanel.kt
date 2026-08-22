@@ -17,31 +17,28 @@ import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 
 @Composable
-internal fun EpisodeInfoPanel(
-    episode: PodcastEpisode?,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .background(
-                MaterialTheme.colorScheme.surface,
-                RoundedCornerShape(16.dp),
-            )
-            .padding(16.dp),
-    ) {
-        Text(
-            text = stringResource(R.string.about_episode),
-            style = MaterialTheme.typography.titleMedium,
-        )
-        Spacer(Modifier.height(12.dp))
-        Text(
-            text = episode?.description.orEmpty(),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            overflow = TextOverflow.Ellipsis,
-        )
+internal fun EpisodeInfoPanel(episode: PodcastEpisode?, modifier: Modifier = Modifier) {
+  Column(
+    modifier = modifier
+      .background(
+        MaterialTheme.colorScheme.surface,
+        RoundedCornerShape(16.dp)
+      )
+      .padding(16.dp)
+  ) {
+    Text(
+      text = stringResource(R.string.about_episode),
+      style = MaterialTheme.typography.titleMedium
+    )
+    Spacer(Modifier.height(12.dp))
+    Text(
+      text = episode?.description.orEmpty(),
+      style = MaterialTheme.typography.bodySmall,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      overflow = TextOverflow.Ellipsis
+    )
 
-        // Chapters list (if available)
+    // Chapters list (if available)
         /*if ((episode?.chapters?.size ?: 0) > 0) {
             Spacer(Modifier.height(16.dp))
             Text(text = "Chapters", style = MaterialTheme.typography.labelLarge)
@@ -70,5 +67,5 @@ internal fun EpisodeInfoPanel(
                 }
             }
         }*/
-    }
+  }
 }

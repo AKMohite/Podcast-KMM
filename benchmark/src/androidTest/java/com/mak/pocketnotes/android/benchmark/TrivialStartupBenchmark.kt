@@ -45,10 +45,10 @@ class TrivialStartupBenchmark {
             // pkg =
             APP_TO_BENCHMARK,
             // cls =
-            "com.mak.pocketnotes.android.MainActivity",
+            "com.mak.pocketnotes.android.MainActivity"
           )
         startActivityAndWait(intent)
-      },
+      }
     )
   }
 

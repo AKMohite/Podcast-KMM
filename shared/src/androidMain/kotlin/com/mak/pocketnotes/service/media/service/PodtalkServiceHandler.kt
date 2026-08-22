@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class PodtalkServiceHandler(
-  private val exoPlayer: Player,
+  private val exoPlayer: Player
 ) : Player.Listener,
   IServiceHandler {
   private val _audioState: MutableStateFlow<MediaState> = MutableStateFlow(MediaState.Initial)
@@ -58,7 +58,7 @@ internal class PodtalkServiceHandler(
   override suspend fun onPlayerEvents(
     playerEvent: MediaEvent,
     selectedAudioIndex: Int,
-    seekPosition: Long,
+    seekPosition: Long
   ) {
     when (playerEvent) {
       MediaEvent.Backward -> {
@@ -110,8 +110,9 @@ internal class PodtalkServiceHandler(
   override fun onPlaybackStateChanged(playbackState: Int) {
 //        super.onPlaybackStateChanged(playbackState)
     when (playbackState) {
-      ExoPlayer.STATE_BUFFERING -> _audioState.value =
-        MediaState.Buffering(exoPlayer.currentPosition)
+      ExoPlayer.STATE_BUFFERING ->
+        _audioState.value =
+          MediaState.Buffering(exoPlayer.currentPosition)
 
       ExoPlayer.STATE_READY -> _audioState.value = MediaState.Ready(exoPlayer.duration)
       else -> Unit
@@ -157,20 +158,19 @@ internal class PodtalkServiceHandler(
   }
 }
 
-private fun PlayableEpisode.asMediaItem(): MediaItem =
-  MediaItem
-    .Builder()
-    .setMediaId(id)
-    .setUri(track)
-    .setMediaMetadata(
-      MediaMetadata
-        .Builder()
-        .setArtworkUri(image.toUri())
-        .setAlbumArtist(speaker)
-        .setDisplayTitle(title)
-        .setSubtitle(title)
-        .build(),
-    ).build()
+private fun PlayableEpisode.asMediaItem(): MediaItem = MediaItem
+  .Builder()
+  .setMediaId(id)
+  .setUri(track)
+  .setMediaMetadata(
+    MediaMetadata
+      .Builder()
+      .setArtworkUri(image.toUri())
+      .setAlbumArtist(speaker)
+      .setDisplayTitle(title)
+      .setSubtitle(title)
+      .build()
+  ).build()
 
 interface IServiceHandler {
   val audioState: StateFlow<MediaState>
@@ -182,7 +182,7 @@ interface IServiceHandler {
   suspend fun onPlayerEvents(
     playerEvent: MediaEvent,
     selectedAudioIndex: Int = -1,
-    seekPosition: Long = 0,
+    seekPosition: Long = 0
   )
 }
 
@@ -202,7 +202,7 @@ sealed interface MediaEvent {
   data object SeekTo : MediaEvent
 
   data class UpdateProgress(
-    val newProgress: Float,
+    val newProgress: Float
   ) : MediaEvent
 }
 
@@ -210,22 +210,22 @@ sealed interface MediaState {
   data object Initial : MediaState
 
   data class Ready(
-    val duration: Long,
+    val duration: Long
   ) : MediaState
 
   data class Progress(
-    val progress: Long,
+    val progress: Long
   ) : MediaState
 
   data class Buffering(
-    val progress: Long,
+    val progress: Long
   ) : MediaState
 
   data class PLaying(
-    val isPLaying: Boolean,
+    val isPLaying: Boolean
   ) : MediaState
 
   data class CurrentPlaying(
-    val mediaIndex: Int,
+    val mediaIndex: Int
   ) : MediaState
 }

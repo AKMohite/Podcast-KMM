@@ -30,63 +30,63 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun LegacyMiniPlayer(
-    isMediaPlaying: Boolean,
-    modifier: Modifier = Modifier,
-    episode: PlayableEpisode,
-    play: () -> Unit,
-    next: () -> Unit
+  isMediaPlaying: Boolean,
+  modifier: Modifier = Modifier,
+  episode: PlayableEpisode,
+  play: () -> Unit,
+  next: () -> Unit
 ) {
-    Row(
-        //        TODO add image palette colors
-        modifier = modifier
-            .clip(MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colorScheme.tertiary)
-            .padding(4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(30.dp)
-                .clip(MaterialTheme.shapes.small),
-            model = episode.image,
-            contentDescription = episode.title,
-            contentScale = ContentScale.Crop,
-            placeholder = debugPlaceholder()
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            modifier = Modifier.weight(1f),
-            text = episode.title,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onTertiary
-        )
-        IconButton(onClick = play) {
+  Row(
+    //        TODO add image palette colors
+    modifier = modifier
+      .clip(MaterialTheme.shapes.medium)
+      .background(MaterialTheme.colorScheme.tertiary)
+      .padding(4.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    AsyncImage(
+      modifier = Modifier
+        .size(30.dp)
+        .clip(MaterialTheme.shapes.small),
+      model = episode.image,
+      contentDescription = episode.title,
+      contentScale = ContentScale.Crop,
+      placeholder = debugPlaceholder()
+    )
+    Spacer(modifier = Modifier.width(4.dp))
+    Text(
+      modifier = Modifier.weight(1f),
+      text = episode.title,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+      style = MaterialTheme.typography.labelMedium,
+      color = MaterialTheme.colorScheme.onTertiary
+    )
+    IconButton(onClick = play) {
 //            TODO playpause icon
-            Icon(
-                imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
-                contentDescription = stringResource(R.string.player_play_pause),
-                tint = MaterialTheme.colorScheme.onTertiary
-            )
-        }
-        IconButton(onClick = next) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                contentDescription = stringResource(R.string.next),
-                tint = MaterialTheme.colorScheme.onTertiary
-            )
-        }
+      Icon(
+        imageVector = if (isMediaPlaying) Icons.Default.Close else Icons.Outlined.PlayArrow,
+        contentDescription = stringResource(R.string.player_play_pause),
+        tint = MaterialTheme.colorScheme.onTertiary
+      )
     }
+    IconButton(onClick = next) {
+      Icon(
+        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+        contentDescription = stringResource(R.string.next),
+        tint = MaterialTheme.colorScheme.onTertiary
+      )
+    }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun MiniPlayerPreview() {
-    LegacyMiniPlayer(
-        episode = sampleEpisodes[0].asPlayableEpisode(),
-        play = {},
-        next = {},
-        isMediaPlaying = false
-    )
+  LegacyMiniPlayer(
+    episode = sampleEpisodes[0].asPlayableEpisode(),
+    play = {},
+    next = {},
+    isMediaPlaying = false
+  )
 }

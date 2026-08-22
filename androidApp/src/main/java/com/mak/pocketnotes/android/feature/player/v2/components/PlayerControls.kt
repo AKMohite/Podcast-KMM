@@ -36,114 +36,120 @@ import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
 
 @Composable
 internal fun PlayerControls(
-    isPlaying: Boolean,
-    isLoading: Boolean,
-    hasNext: Boolean,
-    hasPrevious: Boolean,
-    onEvent: (PlayerEvent) -> Unit,
-    modifier: Modifier = Modifier,
-    isCompact: Boolean = false,
+  isPlaying: Boolean,
+  isLoading: Boolean,
+  hasNext: Boolean,
+  hasPrevious: Boolean,
+  onEvent: (PlayerEvent) -> Unit,
+  modifier: Modifier = Modifier,
+  isCompact: Boolean = false
 ) {
-    val iconSize = if (isCompact) 20.dp else 24.dp
-    val playSize = if (isCompact) 48.dp else 64.dp
+  val iconSize = if (isCompact) 20.dp else 24.dp
+  val playSize = if (isCompact) 48.dp else 64.dp
 
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
+  Row(
+    modifier = modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceEvenly,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    // Rewind 10 s
+    IconButton(
+      onClick = {
+        onEvent(PlayerEvent.OnSkipBackward)
+      },
+      modifier = Modifier.testTag(PlayerTestTags.REWIND_BUTTON)
     ) {
-        // Rewind 10 s
-        IconButton(
-            onClick = {
-                onEvent(PlayerEvent.OnSkipBackward)
-            },
-            modifier = Modifier.testTag(PlayerTestTags.REWIND_BUTTON),
-        ) {
-            Icon(
-                Icons.Default.Replay10,
-                contentDescription = stringResource(R.string.skip_back_10_seconds),
-                modifier = Modifier.size(iconSize + 4.dp),
-            )
-        }
-
-        // Skip previous
-        IconButton(
-            onClick = {
-                onEvent(PlayerEvent.OnSkipToPrevious)
-            },
-            enabled = hasPrevious,
-            modifier = Modifier.testTag(PlayerTestTags.SKIP_PREV_BUTTON),
-        ) {
-            Icon(
-                Icons.Default.SkipPrevious,
-                contentDescription = stringResource(R.string.previous_episode),
-                modifier = Modifier.size(iconSize + 4.dp),
-            )
-        }
-
-        val playerDescription = if (isPlaying) stringResource(R.string.action_pause) else stringResource(R.string.action_play)
-        // Play / Pause (large)
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(playSize)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        onEvent(PlayerEvent.OnTogglePlayPause)
-                    },
-                )
-                .testTag(PlayerTestTags.PLAY_PAUSE_BUTTON)
-                .semantics {
-                    contentDescription = playerDescription
-                },
-        ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(iconSize + 4.dp),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    strokeWidth = 2.dp,
-                )
-            } else {
-                Icon(
-                    imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(iconSize + 8.dp),
-                )
-            }
-        }
-
-        // Skip next
-        IconButton(
-            onClick = {
-                onEvent(PlayerEvent.OnSkipToNext)
-            },
-            enabled = hasNext,
-            modifier = Modifier.testTag(PlayerTestTags.SKIP_NEXT_BUTTON),
-        ) {
-            Icon(
-                Icons.Default.SkipNext,
-                contentDescription = stringResource(R.string.next_episode),
-                modifier = Modifier.size(iconSize + 4.dp),
-            )
-        }
-
-        // Forward 30 s
-        IconButton(
-            onClick = {
-                onEvent(PlayerEvent.OnSkipForward)
-            },
-            modifier = Modifier.testTag(PlayerTestTags.FORWARD_BUTTON),
-        ) {
-            Icon(
-                Icons.Default.Forward30,
-                contentDescription = stringResource(R.string.skip_forward_30_seconds),
-                modifier = Modifier.size(iconSize + 4.dp),
-            )
-        }
+      Icon(
+        Icons.Default.Replay10,
+        contentDescription = stringResource(R.string.skip_back_10_seconds),
+        modifier = Modifier.size(iconSize + 4.dp)
+      )
     }
+
+    // Skip previous
+    IconButton(
+      onClick = {
+        onEvent(PlayerEvent.OnSkipToPrevious)
+      },
+      enabled = hasPrevious,
+      modifier = Modifier.testTag(PlayerTestTags.SKIP_PREV_BUTTON)
+    ) {
+      Icon(
+        Icons.Default.SkipPrevious,
+        contentDescription = stringResource(R.string.previous_episode),
+        modifier = Modifier.size(iconSize + 4.dp)
+      )
+    }
+
+    val playerDescription = if (isPlaying) {
+      stringResource(
+        R.string.action_pause
+      )
+    } else {
+      stringResource(R.string.action_play)
+    }
+    // Play / Pause (large)
+    Box(
+      contentAlignment = Alignment.Center,
+      modifier = Modifier
+        .size(playSize)
+        .clip(CircleShape)
+        .background(MaterialTheme.colorScheme.primary)
+        .clickable(
+          interactionSource = remember { MutableInteractionSource() },
+          indication = null,
+          onClick = {
+            onEvent(PlayerEvent.OnTogglePlayPause)
+          }
+        )
+        .testTag(PlayerTestTags.PLAY_PAUSE_BUTTON)
+        .semantics {
+          contentDescription = playerDescription
+        }
+    ) {
+      if (isLoading) {
+        CircularProgressIndicator(
+          modifier = Modifier.size(iconSize + 4.dp),
+          color = MaterialTheme.colorScheme.onPrimary,
+          strokeWidth = 2.dp
+        )
+      } else {
+        Icon(
+          imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+          contentDescription = null,
+          tint = MaterialTheme.colorScheme.onPrimary,
+          modifier = Modifier.size(iconSize + 8.dp)
+        )
+      }
+    }
+
+    // Skip next
+    IconButton(
+      onClick = {
+        onEvent(PlayerEvent.OnSkipToNext)
+      },
+      enabled = hasNext,
+      modifier = Modifier.testTag(PlayerTestTags.SKIP_NEXT_BUTTON)
+    ) {
+      Icon(
+        Icons.Default.SkipNext,
+        contentDescription = stringResource(R.string.next_episode),
+        modifier = Modifier.size(iconSize + 4.dp)
+      )
+    }
+
+    // Forward 30 s
+    IconButton(
+      onClick = {
+        onEvent(PlayerEvent.OnSkipForward)
+      },
+      modifier = Modifier.testTag(PlayerTestTags.FORWARD_BUTTON)
+    ) {
+      Icon(
+        Icons.Default.Forward30,
+        contentDescription = stringResource(R.string.skip_forward_30_seconds),
+        modifier = Modifier.size(iconSize + 4.dp)
+      )
+    }
+  }
 }

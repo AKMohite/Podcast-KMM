@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 internal class DataStoreSettingsRepository(
   private val dataStore: DataStore<AppSettings>,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : SettingsRepository {
   //    private companion object Keys {
 //        val THEME           = stringPreferencesKey("theme")
@@ -39,8 +39,7 @@ internal class DataStoreSettingsRepository(
 //            }
   }
 
-  override suspend fun updateSettings(settings: AppSettings): Unit =
-    withContext(dispatcher.io) {
+  override suspend fun updateSettings(settings: AppSettings): Unit = withContext(dispatcher.io) {
 //        dataStore.edit { prefs ->
 //            prefs[THEME]          = settings.theme.name
 //            prefs[LANGUAGE]       = settings.language
@@ -50,8 +49,8 @@ internal class DataStoreSettingsRepository(
 //            prefs[DELETE_PLAYED]  = settings.episodeDeleteAfterPlayed
 //            prefs[STREAM_QUALITY] = settings.streamingQuality.name
 //        }
-      dataStore.updateData { _ ->
-        settings
-      }
+    dataStore.updateData { _ ->
+      settings
     }
+  }
 }

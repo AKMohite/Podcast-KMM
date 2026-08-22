@@ -12,7 +12,7 @@ typealias PodcastEntity = Podcasts
 
 internal class SQLDelightPodcastDAO(
   database: PocketDatabase,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : PodcastDAO {
   private val dbQuery = database.podcast_entityQueries
 
@@ -26,16 +26,14 @@ internal class SQLDelightPodcastDAO(
     }
   }
 
-  override suspend fun removePodcasts() =
-    withContext(dispatcher.io) {
-      dbQuery.removeAllPodcasts().await()
-    }
+  override suspend fun removePodcasts() = withContext(dispatcher.io) {
+    dbQuery.removeAllPodcasts().await()
+  }
 
-  override fun getPodcast(id: String): Flow<PodcastEntity> =
-    dbQuery
-      .getPodcastById(id)
-      .asFlow()
-      .mapToOne(dispatcher.io)
+  override fun getPodcast(id: String): Flow<PodcastEntity> = dbQuery
+    .getPodcastById(id)
+    .asFlow()
+    .mapToOne(dispatcher.io)
 
   override suspend fun removePodcast(podcastId: String): Long = dbQuery.delete(podcastId).await()
 }

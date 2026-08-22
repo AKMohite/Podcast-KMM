@@ -5,5 +5,5 @@ import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 
 data class SearchResults(
   val episodes: List<PodcastEpisode>,
-  val podcasts: List<Podcast> = emptyList(),
+  val podcasts: List<Podcast> = emptyList()
 )

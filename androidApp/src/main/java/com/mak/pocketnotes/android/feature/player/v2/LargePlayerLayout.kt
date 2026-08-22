@@ -39,88 +39,88 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 // ─────────────────────────────────────────────────────────────────────────────
 @Composable
 internal fun LargePlayerLayout(
-    state: PlayerState,
-    onEvent: (PlayerEvent) -> Unit,
-    modifier: Modifier = Modifier,
+  state: PlayerState,
+  onEvent: (PlayerEvent) -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalArrangement = Arrangement.spacedBy(32.dp),
+  Row(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(32.dp),
+    horizontalArrangement = Arrangement.spacedBy(32.dp)
+  ) {
+    // Player pane
+    Column(
+      modifier = Modifier
+        .weight(0.5f)
+        .fillMaxHeight(),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center
     ) {
-        // Player pane
-        Column(
-            modifier = Modifier
-                .weight(0.5f)
-                .fillMaxHeight(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            NowPlayingArtwork(
-                artworkUrl = state.currentEpisode?.thumbnail,
-                isPlaying = state.isPlaying,
-                size = 280.dp,
-            )
-            Spacer(Modifier.height(24.dp))
-            NowPlayingInfo(episode = state.currentEpisode, modifier = Modifier.fillMaxWidth())
-            Spacer(Modifier.height(16.dp))
-            PlayerScrubber(
-                positionMs = state.positionMs,
-                durationMs = state.durationMs,
-                onSeekTo = { onEvent(PlayerEvent.OnSeekTo(it)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Spacer(Modifier.height(8.dp))
-            PlayerControls(
-                isPlaying = state.isPlaying,
-                isLoading = state.isLoading,
-                hasNext = state.hasNext,
-                hasPrevious = state.hasPrevious,
-                onEvent = onEvent
-            )
-            Spacer(Modifier.height(8.dp))
-            SecondaryControls(
-                playbackSpeed = state.playbackSpeed,
-                isShuffleEnabled = state.isShuffleEnabled,
-                repeatMode = state.repeatMode,
-                onSetSpeed = { onEvent(PlayerEvent.OnSetSpeed(it)) },
-                onToggleShuffle = { onEvent(PlayerEvent.OnToggleShuffle) },
-                onCycleRepeatMode = { onEvent(PlayerEvent.OnCycleRepeatMode) },
-            )
-        }
-
-        // Queue pane
-        QueuePanel(
-            state = state,
-            onEvent = onEvent,
-            modifier = Modifier
-                .weight(0.5f)
-                .fillMaxHeight(),
-        )
+      NowPlayingArtwork(
+        artworkUrl = state.currentEpisode?.thumbnail,
+        isPlaying = state.isPlaying,
+        size = 280.dp
+      )
+      Spacer(Modifier.height(24.dp))
+      NowPlayingInfo(episode = state.currentEpisode, modifier = Modifier.fillMaxWidth())
+      Spacer(Modifier.height(16.dp))
+      PlayerScrubber(
+        positionMs = state.positionMs,
+        durationMs = state.durationMs,
+        onSeekTo = { onEvent(PlayerEvent.OnSeekTo(it)) },
+        modifier = Modifier.fillMaxWidth()
+      )
+      Spacer(Modifier.height(8.dp))
+      PlayerControls(
+        isPlaying = state.isPlaying,
+        isLoading = state.isLoading,
+        hasNext = state.hasNext,
+        hasPrevious = state.hasPrevious,
+        onEvent = onEvent
+      )
+      Spacer(Modifier.height(8.dp))
+      SecondaryControls(
+        playbackSpeed = state.playbackSpeed,
+        isShuffleEnabled = state.isShuffleEnabled,
+        repeatMode = state.repeatMode,
+        onSetSpeed = { onEvent(PlayerEvent.OnSetSpeed(it)) },
+        onToggleShuffle = { onEvent(PlayerEvent.OnToggleShuffle) },
+        onCycleRepeatMode = { onEvent(PlayerEvent.OnCycleRepeatMode) }
+      )
     }
+
+    // Queue pane
+    QueuePanel(
+      state = state,
+      onEvent = onEvent,
+      modifier = Modifier
+        .weight(0.5f)
+        .fillMaxHeight()
+    )
+  }
 }
 
 @Preview(widthDp = 1300)
 @Composable
 private fun LargePlayerLayoutPreview() {
-    PocketNotesTheme {
-        Surface {
-            LargePlayerLayout(
-                state = PlayerState(
-                    currentEpisode = sampleEpisodes[0],
-                    queue = sampleEpisodes,
-                    currentQueueIndex = 0,
-                    isPlaying = true,
-                    isLoading = false,
-                    positionMs = 50_000L,
-                    durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
-                    playbackSpeed = 1.0f,
-                    isShuffleEnabled = false,
-                    repeatMode = RepeatMode.NONE
-                ),
-                onEvent = {}
-            )
-        }
+  PocketNotesTheme {
+    Surface {
+      LargePlayerLayout(
+        state = PlayerState(
+          currentEpisode = sampleEpisodes[0],
+          queue = sampleEpisodes,
+          currentQueueIndex = 0,
+          isPlaying = true,
+          isLoading = false,
+          positionMs = 50_000L,
+          durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+          playbackSpeed = 1.0f,
+          isShuffleEnabled = false,
+          repeatMode = RepeatMode.NONE
+        ),
+        onEvent = {}
+      )
     }
+  }
 }

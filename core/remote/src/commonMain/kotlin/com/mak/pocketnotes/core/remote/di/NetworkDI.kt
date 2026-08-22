@@ -16,23 +16,19 @@ import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-internal fun createJson() =
-  Json {
-    isLenient = true
-    ignoreUnknownKeys = true
-  }
+internal fun createJson() = Json {
+  isLenient = true
+  ignoreUnknownKeys = true
+}
 
-internal fun createHttpClient(
-  json: Json,
-  enableNetworkLogs: Boolean = false,
-): HttpClient =
+internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): HttpClient =
   HttpClient {
     install(ContentNegotiation) {
       json(
         Json {
           ignoreUnknownKeys = true
           useAlternativeNames = false
-        },
+        }
       )
     }
     defaultRequest {
@@ -79,7 +75,7 @@ private suspend fun handleAPIExceptions(exception: ClientRequestException): Thro
   return PocketAPIException(
     code = exceptionResponse.status.value,
     errorMsg = error?.message ?: ExceptionType.UNKNOWN.message,
-    throwable = exception,
+    throwable = exception
   )
 }
 
@@ -91,13 +87,12 @@ private suspend fun handleAPIExceptions(exception: ClientRequestException): Thro
     }
 }*/
 
-private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? =
-  try {
-    exceptionResponse.body<ErrorDTO>()
-  } catch (e: Throwable) {
+private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? = try {
+  exceptionResponse.body<ErrorDTO>()
+} catch (e: Throwable) {
 //        might throw json parse exception
-    null
-  }
+  null
+}
 
 // const val a = BuildCo
 private const val API_HOST = "listen-api-test.listennotes.com"

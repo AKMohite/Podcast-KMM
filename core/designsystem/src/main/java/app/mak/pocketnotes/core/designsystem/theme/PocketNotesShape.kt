@@ -11,7 +11,7 @@ val roundShapes =
     small = RoundedCornerShape(4.dp),
     medium = RoundedCornerShape(8.dp),
     large = RoundedCornerShape(16.dp),
-    extraLarge = RoundedCornerShape(24.dp),
+    extraLarge = RoundedCornerShape(24.dp)
   )
 
 val cutShapes =
@@ -20,7 +20,7 @@ val cutShapes =
     small = CutCornerShape(4.dp),
     medium = CutCornerShape(8.dp),
     large = CutCornerShape(16.dp),
-    extraLarge = CutCornerShape(24.dp),
+    extraLarge = CutCornerShape(24.dp)
   )
 
 val LeafyCardShape =
@@ -28,5 +28,5 @@ val LeafyCardShape =
     topStart = 28.dp,
     topEnd = 12.dp,
     bottomStart = 12.dp,
-    bottomEnd = 28.dp,
+    bottomEnd = 28.dp
   )

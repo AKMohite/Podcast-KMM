@@ -40,161 +40,166 @@ import app.mak.pocketnotes.wearos.feature.trendingpodcasts.WearTrendingPodcastsS
 import app.mak.pocketnotes.wearos.presentation.theme.WearPocketNotesTheme
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 sealed interface WearRoute : NavKey {
-    @Serializable
-    data object HomeRoute : WearRoute
+  @Serializable
+  data object HomeRoute : WearRoute
 
-    @Serializable
-    data object TrendingPodcastsRoute : WearRoute
+  @Serializable
+  data object TrendingPodcastsRoute : WearRoute
 
-    @Serializable
-    data class PodcastDetailsRoute(val id: String) : WearRoute
+  @Serializable
+  data class PodcastDetailsRoute(val id: String) : WearRoute
 
-    @Serializable
-    data object DownloadsRoute : WearRoute
+  @Serializable
+  data object DownloadsRoute : WearRoute
 
-    @Serializable
-    data object SubscribedRoute : WearRoute
+  @Serializable
+  data object SubscribedRoute : WearRoute
 
-    @Serializable
-    data object SettingsRoute : WearRoute
+  @Serializable
+  data object SettingsRoute : WearRoute
 }
 
 class WearMainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            WearPocketNotesTheme {
-                AppScaffold {
-                    val listState = rememberTransformingLazyColumnState()
-                    val backStack = rememberNavBackStack(WearRoute.HomeRoute)
-                    val strategy = rememberSwipeDismissableSceneStrategy<NavKey>()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContent {
+      WearPocketNotesTheme {
+        AppScaffold {
+          val listState = rememberTransformingLazyColumnState()
+          val backStack = rememberNavBackStack(WearRoute.HomeRoute)
+          val strategy = rememberSwipeDismissableSceneStrategy<NavKey>()
 
-                    NavDisplay(
-                        backStack = backStack,
-                        sceneStrategies = listOf(strategy),
-                        entryProvider = entryProvider {
-                            entry<WearRoute.HomeRoute> {
-                                WearHomeScreen(
-                                    columnState = listState,
-                                    navigateTo = { navigation ->
-                                        when (navigation) {
-                                            HomeNavigation.Podcasts -> backStack.add(WearRoute.TrendingPodcastsRoute)
-                                            HomeNavigation.Downloads -> backStack.add(WearRoute.DownloadsRoute)
-                                            HomeNavigation.Subscribed -> backStack.add(WearRoute.SubscribedRoute)
-                                            HomeNavigation.Settings -> backStack.add(WearRoute.SettingsRoute)
-                                        }
-                                    }
-                                )
-                            }
-                            entry<WearRoute.TrendingPodcastsRoute> {
-                                WearTrendingPodcastsScreen(
-                                    state = listState,
-                                    onClick = { id ->
-                                        backStack.add(WearRoute.PodcastDetailsRoute(id))
-                                    }
-                                )
-                            }
-                            entry<WearRoute.PodcastDetailsRoute> { route ->
-                                WearPodcastDetailsScreen(
-                                    id = route.id,
-                                    columnState = listState
-                                )
-                            }
-                            entry<WearRoute.DownloadsRoute> {
-                                Text("Downloads")
-                            }
-                            entry<WearRoute.SubscribedRoute> {
-                                Text("Subscribed")
-                            }
-                            entry<WearRoute.SettingsRoute> {
-                                Text("Settings")
-                            }
-                        }
-                    )
-                }
+          NavDisplay(
+            backStack = backStack,
+            sceneStrategies = listOf(strategy),
+            entryProvider = entryProvider {
+              entry<WearRoute.HomeRoute> {
+                WearHomeScreen(
+                  columnState = listState,
+                  navigateTo = { navigation ->
+                    when (navigation) {
+                      HomeNavigation.Podcasts -> backStack.add(
+                        WearRoute.TrendingPodcastsRoute
+                      )
+                      HomeNavigation.Downloads -> backStack.add(
+                        WearRoute.DownloadsRoute
+                      )
+                      HomeNavigation.Subscribed -> backStack.add(
+                        WearRoute.SubscribedRoute
+                      )
+                      HomeNavigation.Settings -> backStack.add(
+                        WearRoute.SettingsRoute
+                      )
+                    }
+                  }
+                )
+              }
+              entry<WearRoute.TrendingPodcastsRoute> {
+                WearTrendingPodcastsScreen(
+                  state = listState,
+                  onClick = { id ->
+                    backStack.add(WearRoute.PodcastDetailsRoute(id))
+                  }
+                )
+              }
+              entry<WearRoute.PodcastDetailsRoute> { route ->
+                WearPodcastDetailsScreen(
+                  id = route.id,
+                  columnState = listState
+                )
+              }
+              entry<WearRoute.DownloadsRoute> {
+                Text("Downloads")
+              }
+              entry<WearRoute.SubscribedRoute> {
+                Text("Subscribed")
+              }
+              entry<WearRoute.SettingsRoute> {
+                Text("Settings")
+              }
             }
+          )
         }
+      }
     }
+  }
 }
 
 @Composable
 fun WearApp(greetingName: String) {
-
-    AppScaffold {
-        val listState = rememberTransformingLazyColumnState()
-        val transformationSpec = rememberTransformationSpec()
-        ScreenScaffold(
-            scrollState = listState,
-            edgeButton = {
-                EdgeButton(
-                    onClick = { /*TODO*/ },
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        ),
-                ) {
-                    Text("More")
-                }
-            },
-        ) { contentPadding -> // ScreenScaffold provides default padding; adjust as needed
-            TransformingLazyColumn(contentPadding = contentPadding, state = listState) {
-                item {
-                    ListHeader(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .transformedHeight(this, transformationSpec),
-                        transformation = SurfaceTransformation(transformationSpec),
-                    ) {
-                        Text(text = stringResource(R.string.hello_world, greetingName))
-                    }
-                }
-                item {
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .transformedHeight(this, transformationSpec),
-                        transformation = SurfaceTransformation(transformationSpec),
-                    ) {
-                        Text("Button A")
-                    }
-                }
-                item {
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .transformedHeight(this, transformationSpec),
-                        transformation = SurfaceTransformation(transformationSpec),
-                    ) {
-                        Text("Button B")
-                    }
-                }
-                item {
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .transformedHeight(this, transformationSpec),
-                        transformation = SurfaceTransformation(transformationSpec),
-                    ) {
-                        Text("Button C")
-                    }
-                }
-
-            }
+  AppScaffold {
+    val listState = rememberTransformingLazyColumnState()
+    val transformationSpec = rememberTransformationSpec()
+    ScreenScaffold(
+      scrollState = listState,
+      edgeButton = {
+        EdgeButton(
+          onClick = { /*TODO*/ },
+          colors =
+          ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+          )
+        ) {
+          Text("More")
         }
+      }
+    ) { contentPadding -> // ScreenScaffold provides default padding; adjust as needed
+      TransformingLazyColumn(contentPadding = contentPadding, state = listState) {
+        item {
+          ListHeader(
+            modifier =
+            Modifier
+              .fillMaxWidth()
+              .transformedHeight(this, transformationSpec),
+            transformation = SurfaceTransformation(transformationSpec)
+          ) {
+            Text(text = stringResource(R.string.hello_world, greetingName))
+          }
+        }
+        item {
+          Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+              .fillMaxWidth()
+              .transformedHeight(this, transformationSpec),
+            transformation = SurfaceTransformation(transformationSpec)
+          ) {
+            Text("Button A")
+          }
+        }
+        item {
+          Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+              .fillMaxWidth()
+              .transformedHeight(this, transformationSpec),
+            transformation = SurfaceTransformation(transformationSpec)
+          ) {
+            Text("Button B")
+          }
+        }
+        item {
+          Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+              .fillMaxWidth()
+              .transformedHeight(this, transformationSpec),
+            transformation = SurfaceTransformation(transformationSpec)
+          ) {
+            Text("Button C")
+          }
+        }
+      }
     }
+  }
 }
 
 @WearPreviewDevices
 @WearPreviewFontScales
 @Composable
 fun DefaultPreview() {
-    WearApp("Preview Android")
+  WearApp("Preview Android")
 }

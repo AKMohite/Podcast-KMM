@@ -37,117 +37,123 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun PodNavigationRail(
-    bottomBarItems: List<BottomDestination>,
-    onBottomNavigate: (BottomDestination) -> Unit,
-    currentKey: NavKey?,
-    modifier: Modifier = Modifier
+  bottomBarItems: List<BottomDestination>,
+  onBottomNavigate: (BottomDestination) -> Unit,
+  currentKey: NavKey?,
+  modifier: Modifier = Modifier
 ) {
-    NavigationRail(
-        modifier = modifier
-            .fillMaxHeight(),
-    ) {
-        bottomBarItems.forEach { item ->
-            NavigationRailItem(
-                selected = currentKey == item,
-                onClick = {
-                    onBottomNavigate(item)
-                },
-                icon = { Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title)) },
-                label = { Text(text = stringResource(id = item.title)) }
-            )
-        }
+  NavigationRail(
+    modifier = modifier
+      .fillMaxHeight()
+  ) {
+    bottomBarItems.forEach { item ->
+      NavigationRailItem(
+        selected = currentKey == item,
+        onClick = {
+          onBottomNavigate(item)
+        },
+        icon = {
+          Icon(
+            imageVector = item.icon,
+            contentDescription = stringResource(id = item.title)
+          )
+        },
+        label = { Text(text = stringResource(id = item.title)) }
+      )
     }
+  }
 }
-
 
 @Composable
 internal fun PodModalWideNavigationRail(
-    bottomBarItems: List<BottomDestination>,
-    modifier: Modifier = Modifier,
-    currentKey: NavKey? = null,
-    onBottomNavigate: (BottomDestination) -> Unit,
+  bottomBarItems: List<BottomDestination>,
+  modifier: Modifier = Modifier,
+  currentKey: NavKey? = null,
+  onBottomNavigate: (BottomDestination) -> Unit
 ) {
-    val state = rememberWideNavigationRailState()
-    val scope = rememberCoroutineScope()
-    val headerDescription =
-        if (state.targetValue == WideNavigationRailValue.Expanded) {
-            "Collapse rail"
-        } else {
-            "Expand rail"
-        }
-
-    ModalWideNavigationRail(
-        modifier = modifier,
-        state = state,
-        expandedHeaderTopPadding = 64.dp,
-        header = {
-            TooltipBox(
-                positionProvider =
-                    TooltipDefaults.rememberTooltipPositionProvider(
-                        TooltipAnchorPosition.Above
-                    ),
-                tooltip = { PlainTooltip { Text(headerDescription) } },
-                state = rememberTooltipState(),
-            ) {
-                IconButton(
-                    modifier =
-                        Modifier
-                            .padding(start = 24.dp)
-                            .semantics {
-                                stateDescription =
-                                    if (state.currentValue == WideNavigationRailValue.Expanded) {
-                                        "Expanded"
-                                    } else {
-                                        "Collapsed"
-                                    }
-                            },
-                    onClick = {
-                        scope.launch {
-                            if (state.targetValue == WideNavigationRailValue.Expanded)
-                                state.collapse()
-                            else state.expand()
-                        }
-                    },
-                ) {
-                    if (state.targetValue == WideNavigationRailValue.Expanded) {
-                        Icon(Icons.AutoMirrored.Filled.MenuOpen, headerDescription)
-                    } else {
-                        Icon(Icons.Filled.Menu, headerDescription)
-                    }
-                }
-            }
-        },
-    ) {
-        bottomBarItems.forEach { item ->
-            WideNavigationRailItem(
-                railExpanded = state.targetValue == WideNavigationRailValue.Expanded,
-                icon = {
-                    Icon(
-                        item.icon,
-                        contentDescription = stringResource(item.title),
-                    )
-                },
-                label = { Text(stringResource(item.title)) },
-                selected = currentKey == item,
-                onClick = {
-                    onBottomNavigate(item)
-                },
-            )
-        }
+  val state = rememberWideNavigationRailState()
+  val scope = rememberCoroutineScope()
+  val headerDescription =
+    if (state.targetValue == WideNavigationRailValue.Expanded) {
+      "Collapse rail"
+    } else {
+      "Expand rail"
     }
+
+  ModalWideNavigationRail(
+    modifier = modifier,
+    state = state,
+    expandedHeaderTopPadding = 64.dp,
+    header = {
+      TooltipBox(
+        positionProvider =
+        TooltipDefaults.rememberTooltipPositionProvider(
+          TooltipAnchorPosition.Above
+        ),
+        tooltip = { PlainTooltip { Text(headerDescription) } },
+        state = rememberTooltipState()
+      ) {
+        IconButton(
+          modifier =
+          Modifier
+            .padding(start = 24.dp)
+            .semantics {
+              stateDescription =
+                if (state.currentValue == WideNavigationRailValue.Expanded) {
+                  "Expanded"
+                } else {
+                  "Collapsed"
+                }
+            },
+          onClick = {
+            scope.launch {
+              if (state.targetValue == WideNavigationRailValue.Expanded) {
+                state.collapse()
+              } else {
+                state.expand()
+              }
+            }
+          }
+        ) {
+          if (state.targetValue == WideNavigationRailValue.Expanded) {
+            Icon(Icons.AutoMirrored.Filled.MenuOpen, headerDescription)
+          } else {
+            Icon(Icons.Filled.Menu, headerDescription)
+          }
+        }
+      }
+    }
+  ) {
+    bottomBarItems.forEach { item ->
+      WideNavigationRailItem(
+        railExpanded = state.targetValue == WideNavigationRailValue.Expanded,
+        icon = {
+          Icon(
+            item.icon,
+            contentDescription = stringResource(item.title)
+          )
+        },
+        label = { Text(stringResource(item.title)) },
+        selected = currentKey == item,
+        onClick = {
+          onBottomNavigate(item)
+        }
+      )
+    }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PodNavigationRailPreview() {
-    PodNavigationRail(
-        bottomBarItems = listOf(
-            Discover,
-            Search,
-            Subscribed,
-            Settings
-        ),
-        onBottomNavigate = {},
-        currentKey = Discover
-    )
+  PodNavigationRail(
+    bottomBarItems = listOf(
+      Discover,
+      Search,
+      Subscribed,
+      Settings
+    ),
+    onBottomNavigate = {},
+    currentKey = Discover
+  )
 }

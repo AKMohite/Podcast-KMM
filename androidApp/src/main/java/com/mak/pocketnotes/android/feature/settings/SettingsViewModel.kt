@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class SettingsViewModel(
-  private val repository: SettingsRepository,
+  private val repository: SettingsRepository
 ) : ViewModel() {
   private val _state = MutableStateFlow(SettingsState())
   val state = _state.asStateFlow()
@@ -67,7 +67,7 @@ internal class SettingsViewModel(
       SettingsAction.OnOpenPrivacyPolicy -> {
         viewModelScope.launch {
           _events.send(
-            SettingsEvent.OpenUrl("https://www.google.com/privacy"),
+            SettingsEvent.OpenUrl("https://www.google.com/privacy")
           )
         }
       }
@@ -94,44 +94,43 @@ internal class SettingsViewModel(
 data class SettingsState(
   val settings: AppSettings = AppSettings(),
   val isLoading: Boolean = true,
-  val appVersion: String = "",
+  val appVersion: String = ""
 ) {
-  fun getFontScale(): Float =
-    when (settings.textSize) {
-      TextSize.SMALL -> 0.85f
-      TextSize.MEDIUM -> 1.00f
-      TextSize.LARGE -> 1.15f
-      TextSize.EXTRA_LARGE -> 1.30f
-    }
+  fun getFontScale(): Float = when (settings.textSize) {
+    TextSize.SMALL -> 0.85f
+    TextSize.MEDIUM -> 1.00f
+    TextSize.LARGE -> 1.15f
+    TextSize.EXTRA_LARGE -> 1.30f
+  }
 }
 
 sealed interface SettingsAction {
   data class OnThemeChange(
-    val theme: AppTheme,
+    val theme: AppTheme
   ) : SettingsAction
 
   data class OnLanguageChange(
-    val lang: String,
+    val lang: String
   ) : SettingsAction
 
   data class OnTextSizeChange(
-    val size: TextSize,
+    val size: TextSize
   ) : SettingsAction
 
   data class OnAutoPlayNextChange(
-    val enabled: Boolean,
+    val enabled: Boolean
   ) : SettingsAction
 
   data class OnDownloadWifiOnlyChange(
-    val enabled: Boolean,
+    val enabled: Boolean
   ) : SettingsAction
 
   data class OnDeleteAfterPlayedChange(
-    val enabled: Boolean,
+    val enabled: Boolean
   ) : SettingsAction
 
   data class OnStreamQualityChange(
-    val quality: StreamQuality,
+    val quality: StreamQuality
   ) : SettingsAction
 
   data object OnOpenPrivacyPolicy : SettingsAction
@@ -143,7 +142,7 @@ sealed interface SettingsAction {
 
 sealed interface SettingsEvent {
   data class OpenUrl(
-    val url: String,
+    val url: String
   ) : SettingsEvent
 
   data object NavigateToLicenses : SettingsEvent

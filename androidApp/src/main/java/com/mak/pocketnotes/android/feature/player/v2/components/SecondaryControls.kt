@@ -32,74 +32,86 @@ import com.mak.pocketnotes.domain.models.RepeatMode
 
 @Composable
 internal fun SecondaryControls(
-    playbackSpeed: Float,
-    isShuffleEnabled: Boolean,
-    repeatMode: RepeatMode,
-    onSetSpeed: (Float) -> Unit,
-    onToggleShuffle: () -> Unit,
-    onCycleRepeatMode: () -> Unit,
-    modifier: Modifier = Modifier,
+  playbackSpeed: Float,
+  isShuffleEnabled: Boolean,
+  repeatMode: RepeatMode,
+  onSetSpeed: (Float) -> Unit,
+  onToggleShuffle: () -> Unit,
+  onCycleRepeatMode: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
+  Row(
+    modifier = modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceEvenly,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    // Speed button cycles through PLAYBACK_SPEEDS
+    SpeedChip(speed = playbackSpeed, onSetSpeed = onSetSpeed)
+
+    // Shuffle
+    IconButton(
+      onClick = onToggleShuffle,
+      modifier = Modifier.testTag(PlayerTestTags.SHUFFLE_BUTTON)
     ) {
-        // Speed button cycles through PLAYBACK_SPEEDS
-        SpeedChip(speed = playbackSpeed, onSetSpeed = onSetSpeed)
-
-        // Shuffle
-        IconButton(
-            onClick = onToggleShuffle,
-            modifier = Modifier.testTag(PlayerTestTags.SHUFFLE_BUTTON),
-        ) {
-            val contentDescription =
-                if (isShuffleEnabled) stringResource(R.string.shuffle_on) else stringResource(R.string.shuffle_off)
-            Icon(
-                Icons.Default.Shuffle,
-                contentDescription = contentDescription,
-                tint = if (isShuffleEnabled) MaterialTheme.colorScheme.primary
-                else LocalContentColor.current.copy(alpha = 0.5f),
-            )
+      val contentDescription =
+        if (isShuffleEnabled) {
+          stringResource(
+            R.string.shuffle_on
+          )
+        } else {
+          stringResource(R.string.shuffle_off)
         }
-
-        // Repeat
-        IconButton(
-            onClick = onCycleRepeatMode,
-            modifier = Modifier.testTag(PlayerTestTags.REPEAT_BUTTON),
-        ) {
-            Icon(
-                imageVector = when (repeatMode) {
-                    RepeatMode.ONE -> Icons.Default.RepeatOne
-                    else -> Icons.Default.Repeat
-                },
-                contentDescription = stringResource(R.string.repeat_mode_type, repeatMode),
-                tint = if (repeatMode != RepeatMode.NONE) MaterialTheme.colorScheme.primary
-                else LocalContentColor.current.copy(alpha = 0.5f),
-            )
+      Icon(
+        Icons.Default.Shuffle,
+        contentDescription = contentDescription,
+        tint = if (isShuffleEnabled) {
+          MaterialTheme.colorScheme.primary
+        } else {
+          LocalContentColor.current.copy(alpha = 0.5f)
         }
+      )
     }
+
+    // Repeat
+    IconButton(
+      onClick = onCycleRepeatMode,
+      modifier = Modifier.testTag(PlayerTestTags.REPEAT_BUTTON)
+    ) {
+      Icon(
+        imageVector = when (repeatMode) {
+          RepeatMode.ONE -> Icons.Default.RepeatOne
+          else -> Icons.Default.Repeat
+        },
+        contentDescription = stringResource(R.string.repeat_mode_type, repeatMode),
+        tint = if (repeatMode != RepeatMode.NONE) {
+          MaterialTheme.colorScheme.primary
+        } else {
+          LocalContentColor.current.copy(alpha = 0.5f)
+        }
+      )
+    }
+  }
 }
 
 @Composable
 private fun SpeedChip(speed: Float, onSetSpeed: (Float) -> Unit) {
-    val currentIndex = PLAYBACK_SPEEDS.indexOf(speed).takeIf { it >= 0 } ?: 2
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable {
-                val nextIndex = (currentIndex + 1) % PLAYBACK_SPEEDS.size
-                onSetSpeed(PLAYBACK_SPEEDS[nextIndex])
-            }
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-            .testTag(PlayerTestTags.SPEED_BUTTON),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = stringResource(R.string.playback_speed, speed),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Medium,
-        )
-    }
+  val currentIndex = PLAYBACK_SPEEDS.indexOf(speed).takeIf { it >= 0 } ?: 2
+  Box(
+    modifier = Modifier
+      .clip(RoundedCornerShape(20.dp))
+      .background(MaterialTheme.colorScheme.surfaceVariant)
+      .clickable {
+        val nextIndex = (currentIndex + 1) % PLAYBACK_SPEEDS.size
+        onSetSpeed(PLAYBACK_SPEEDS[nextIndex])
+      }
+      .padding(horizontal = 12.dp, vertical = 6.dp)
+      .testTag(PlayerTestTags.SPEED_BUTTON),
+    contentAlignment = Alignment.Center
+  ) {
+    Text(
+      text = stringResource(R.string.playback_speed, speed),
+      style = MaterialTheme.typography.labelLarge,
+      fontWeight = FontWeight.Medium
+    )
+  }
 }

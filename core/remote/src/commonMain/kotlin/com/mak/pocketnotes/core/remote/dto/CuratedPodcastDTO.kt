@@ -20,5 +20,5 @@ data class CuratedPodcastDTO(
   @SerialName("thumbnail")
   val thumbnail: String? = null,
   @SerialName("title")
-  val title: String? = null,
+  val title: String? = null
 )

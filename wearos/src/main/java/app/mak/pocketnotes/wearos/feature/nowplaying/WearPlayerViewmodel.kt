@@ -14,7 +14,7 @@ class WearPlayerViewmodel : ViewModel() {
 data class WearUiState(
   val player: WearPlayerState = WearPlayerState.IDLE,
   val queue: WearQueueData = WearQueueData(),
-  val isConnected: Boolean = false,
+  val isConnected: Boolean = false
 )
 
 sealed interface WearPlayEvent {
@@ -51,7 +51,7 @@ data class WearPlayerState(
   val queueSize: Int = 0,
   val currentQueueIndex: Int = -1,
   val isShuffleEnabled: Boolean = false,
-  val repeatMode: WearRepeatMode = WearRepeatMode.NONE,
+  val repeatMode: WearRepeatMode = WearRepeatMode.NONE
 ) {
   val progress: Float
     get() = if (durationMs > 0L) positionMs.toFloat() / durationMs else 0f
@@ -85,17 +85,17 @@ data class WearQueueItem(
   val title: String,
   val podcastTitle: String,
   val durationMs: Long,
-  val artworkUrl: String,
+  val artworkUrl: String
 )
 
 @Serializable
 data class WearQueueData(
-  val items: List<WearQueueItem> = emptyList(),
+  val items: List<WearQueueItem> = emptyList()
 ) {
 //    fun toJson(): String = json.encodeToString(serializer(), this)
-companion object {
+  companion object {
 //        fun fromJson(raw: String): WearQueueData = runCatching {
 //            json.decodeFromString(serializer(), raw)
 //        }.getOrDefault(WearQueueData())
-}
+  }
 }

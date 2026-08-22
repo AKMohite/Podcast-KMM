@@ -23,10 +23,7 @@ class AudioRepository : IAudioRepository {
     _tracks.clear()
   }
 
-  fun moveSong(
-    from: Int,
-    to: Int,
-  ) {
+  fun moveSong(from: Int, to: Int) {
     if (from == to) return // moved to same position
     val episode = _tracks.removeAt(from)
     if (from < to) {

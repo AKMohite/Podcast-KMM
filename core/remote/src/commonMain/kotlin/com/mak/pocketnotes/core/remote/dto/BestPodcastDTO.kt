@@ -26,7 +26,7 @@ data class BestPodcastDTO(
   @SerialName("previous_page_number")
   val previousPageNumber: Int? = null,
   @SerialName("total")
-  val total: Int? = null,
+  val total: Int? = null
 )
 
 @Serializable
@@ -88,7 +88,7 @@ data class PodcastDTO(
   @SerialName("website")
   val website: String? = null,
   @SerialName("episodes")
-  val episodes: List<EpisodeDTO>? = null,
+  val episodes: List<EpisodeDTO>? = null
 )
 
 @Serializable
@@ -118,7 +118,7 @@ data class ExtraDTO(
   @SerialName("wechat_handle")
   val wechatHandle: String? = null,
   @SerialName("youtube_url")
-  val youtubeUrl: String? = null,
+  val youtubeUrl: String? = null
 )
 
 @Serializable
@@ -130,5 +130,5 @@ data class LookingForDTO(
   @SerialName("guests")
   val guests: Boolean? = null,
   @SerialName("sponsors")
-  val sponsors: Boolean? = null,
+  val sponsors: Boolean? = null
 )

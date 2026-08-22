@@ -249,7 +249,7 @@ internal val lightScheme =
     surfaceContainerLow = surfaceContainerLowLight,
     surfaceContainer = surfaceContainerLight,
     surfaceContainerHigh = surfaceContainerHighLight,
-    surfaceContainerHighest = surfaceContainerHighestLight,
+    surfaceContainerHighest = surfaceContainerHighestLight
   )
 
 internal val darkScheme =
@@ -288,7 +288,7 @@ internal val darkScheme =
     surfaceContainerLow = surfaceContainerLowDark,
     surfaceContainer = surfaceContainerDark,
     surfaceContainerHigh = surfaceContainerHighDark,
-    surfaceContainerHighest = surfaceContainerHighestDark,
+    surfaceContainerHighest = surfaceContainerHighestDark
   )
 
 internal val mediumContrastLightColorScheme =
@@ -327,7 +327,7 @@ internal val mediumContrastLightColorScheme =
     surfaceContainerLow = surfaceContainerLowLightMediumContrast,
     surfaceContainer = surfaceContainerLightMediumContrast,
     surfaceContainerHigh = surfaceContainerHighLightMediumContrast,
-    surfaceContainerHighest = surfaceContainerHighestLightMediumContrast,
+    surfaceContainerHighest = surfaceContainerHighestLightMediumContrast
   )
 
 internal val highContrastLightColorScheme =
@@ -366,7 +366,7 @@ internal val highContrastLightColorScheme =
     surfaceContainerLow = surfaceContainerLowLightHighContrast,
     surfaceContainer = surfaceContainerLightHighContrast,
     surfaceContainerHigh = surfaceContainerHighLightHighContrast,
-    surfaceContainerHighest = surfaceContainerHighestLightHighContrast,
+    surfaceContainerHighest = surfaceContainerHighestLightHighContrast
   )
 
 internal val mediumContrastDarkColorScheme =
@@ -405,7 +405,7 @@ internal val mediumContrastDarkColorScheme =
     surfaceContainerLow = surfaceContainerLowDarkMediumContrast,
     surfaceContainer = surfaceContainerDarkMediumContrast,
     surfaceContainerHigh = surfaceContainerHighDarkMediumContrast,
-    surfaceContainerHighest = surfaceContainerHighestDarkMediumContrast,
+    surfaceContainerHighest = surfaceContainerHighestDarkMediumContrast
   )
 
 internal val highContrastDarkColorScheme =
@@ -444,5 +444,5 @@ internal val highContrastDarkColorScheme =
     surfaceContainerLow = surfaceContainerLowDarkHighContrast,
     surfaceContainer = surfaceContainerDarkHighContrast,
     surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
-    surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
+    surfaceContainerHighest = surfaceContainerHighestDarkHighContrast
   )

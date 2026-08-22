@@ -14,5 +14,5 @@ data class SearchEpisodesDTO(
   @SerialName("took")
   val took: Double?,
   @SerialName("total")
-  val total: Int?,
+  val total: Int?
 )

@@ -14,47 +14,47 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PlayerSlider(
-    modifier: Modifier = Modifier,
-    currentProgress: Float = 0f,
-    timeElapsed: String = "00:00",
-    totalDuration: String = "",
-    durationRange: ClosedFloatingPointRange<Float>,
-    onSliderChange: (Float) -> Unit
+  modifier: Modifier = Modifier,
+  currentProgress: Float = 0f,
+  timeElapsed: String = "00:00",
+  totalDuration: String = "",
+  durationRange: ClosedFloatingPointRange<Float>,
+  onSliderChange: (Float) -> Unit
 ) {
-    Column(
-        modifier = modifier
+  Column(
+    modifier = modifier
+  ) {
+    Slider(
+      modifier = Modifier
+        .fillMaxWidth(),
+      value = currentProgress,
+      valueRange = durationRange,
+      onValueChange = onSliderChange
+    )
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Slider(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = currentProgress,
-            valueRange = durationRange,
-            onValueChange = onSliderChange
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = timeElapsed,
-                style = MaterialTheme.typography.bodySmall
-            )
-            Text(
-                text = totalDuration,
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
+      Text(
+        text = timeElapsed,
+        style = MaterialTheme.typography.bodySmall
+      )
+      Text(
+        text = totalDuration,
+        style = MaterialTheme.typography.bodySmall
+      )
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PlayerSliderPreview() {
-    PlayerSlider(
-        currentProgress = 30f,
-        durationRange = 0f..100f,
-        onSliderChange = {},
-        totalDuration = "04:57"
-    )
+  PlayerSlider(
+    currentProgress = 30f,
+    durationRange = 0f..100f,
+    onSliderChange = {},
+    totalDuration = "04:57"
+  )
 }

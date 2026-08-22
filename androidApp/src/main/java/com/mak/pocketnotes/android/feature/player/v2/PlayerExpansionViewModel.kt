@@ -63,11 +63,11 @@ enum class PlayerExpansion {
   MINI,
 
   /** Compact/Medium: slides up to fill the screen. Expanded+: pane is shown. */
-  FULL,
+  FULL
 }
 
 data class PlayerExpansionState(
-  val expansion: PlayerExpansion = PlayerExpansion.HIDDEN,
+  val expansion: PlayerExpansion = PlayerExpansion.HIDDEN
 ) {
   val isVisible: Boolean get() = expansion != PlayerExpansion.HIDDEN
   val isFullyExpanded: Boolean get() = expansion == PlayerExpansion.FULL
@@ -80,7 +80,7 @@ sealed interface NavEvent {
 
   /** Navigate to a specific episode detail AND start playback. */
   data class ShowEpisode(
-    val episodeId: String,
+    val episodeId: String
   ) : NavEvent
 
   /** Navigate to the queue screen (Compact) or reveal queue pane (Expanded+). */

@@ -26,7 +26,7 @@ val coreDataModule =
         trendingPodcastDAO = get(),
         lastSyncDAO = get(),
         mapper = get(),
-        dispatcher = get(),
+        dispatcher = get()
       )
     }
 
@@ -37,7 +37,7 @@ val coreDataModule =
         podcastDAO = get(),
         curatedPodcastDAO = get(),
         lastSyncDAO = get(),
-        dispatcher = get(),
+        dispatcher = get()
       )
     }
 
@@ -49,7 +49,7 @@ val coreDataModule =
         episodeDAO = get(),
         lastSyncDAO = get(),
         dispatcher = get(),
-        mapper = get(),
+        mapper = get()
       )
     }
 
@@ -60,7 +60,7 @@ val coreDataModule =
         episodeDAO = get(),
         lastSyncDAO = get(),
         dispatcher = get(),
-        mapper = get(),
+        mapper = get()
       )
     }
 
@@ -72,7 +72,7 @@ val coreDataModule =
         relatedPodcastDAO = get(),
         lastSyncDAO = get(),
         dispatcher = get(),
-        mapper = get(),
+        mapper = get()
       )
     }
 
@@ -82,7 +82,7 @@ val coreDataModule =
         transactionRunner = get(),
         genresDAO = get(),
         lastSyncDAO = get(),
-        dispatcher = get(),
+        dispatcher = get()
       )
     }
   }

@@ -20,7 +20,7 @@ import com.mak.pocketnotes.service.media.Constants.PLAYBACK_NOTIFICATION_ID
 @UnstableApi
 internal class PodtalkNotificationManager(
   private val context: Context,
-  private val exoPlayer: Player,
+  private val exoPlayer: Player
 ) : INotificationManager {
   private val notificationManager = NotificationManagerCompat.from(context)
   private var mediaNotificationAdapter: PodtalkNotificationAdapter? = null
@@ -31,10 +31,7 @@ internal class PodtalkNotificationManager(
     }
   }
 
-  override fun startNotification(
-    mediaService: MediaSessionService,
-    mediaSession: MediaSession,
-  ) {
+  override fun startNotification(mediaService: MediaSessionService, mediaSession: MediaSession) {
     buildNotification(mediaSession)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       startForegroundNotificationService(mediaService)
@@ -61,16 +58,18 @@ internal class PodtalkNotificationManager(
     val adapter =
       PodtalkNotificationAdapter(
         context = context,
-        pendingIntent = mediaSession.sessionActivity,
+        pendingIntent = mediaSession.sessionActivity
       )
     mediaNotificationAdapter = adapter
     PlayerNotificationManager
       .Builder(
         context,
         PLAYBACK_NOTIFICATION_ID,
-        PLAYBACK_NOTIFICATION_CHANNEL_ID,
+        PLAYBACK_NOTIFICATION_CHANNEL_ID
       ).setMediaDescriptionAdapter(adapter)
-      .setSmallIconResourceId(androidx.media3.session.R.drawable.media_session_service_notification_ic_music_note)
+      .setSmallIconResourceId(
+        androidx.media3.session.R.drawable.media_session_service_notification_ic_music_note
+      )
       .build()
       .also {
         it.setMediaSessionToken(mediaSession.platformToken)
@@ -93,7 +92,7 @@ internal class PodtalkNotificationManager(
       NotificationChannel(
         PLAYBACK_NOTIFICATION_CHANNEL_ID,
         PLAYBACK_NOTIFICATION_CHANNEL_NAME,
-        NotificationManager.IMPORTANCE_LOW,
+        NotificationManager.IMPORTANCE_LOW
       ).apply {
         description = "This notification is for media playback"
       }
@@ -102,10 +101,7 @@ internal class PodtalkNotificationManager(
 }
 
 interface INotificationManager {
-  fun startNotification(
-    mediaService: MediaSessionService,
-    mediaSession: MediaSession,
-  )
+  fun startNotification(mediaService: MediaSessionService, mediaSession: MediaSession)
 
   fun stopNotification()
 }

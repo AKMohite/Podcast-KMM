@@ -23,15 +23,14 @@ import androidx.compose.ui.unit.Velocity
  * @param enabled If not enabled, all scroll delta and fling velocity will be ignored.
  */
 // TODO(b/244423199): Move pullRefresh into its own material library similar to material-ripple.
-fun Modifier.pullRefresh(
-    state: PullRefreshState,
-    enabled: Boolean = true
-) = inspectable(inspectorInfo = debugInspectorInfo {
+fun Modifier.pullRefresh(state: PullRefreshState, enabled: Boolean = true) = inspectable(
+  inspectorInfo = debugInspectorInfo {
     name = "pullRefresh"
     properties["state"] = state
     properties["enabled"] = enabled
-}) {
-    Modifier.pullRefresh(state::onPull, state::onRelease, enabled)
+  }
+) {
+  Modifier.pullRefresh(state::onPull, state::onRelease, enabled)
 }
 
 /**
@@ -57,48 +56,47 @@ fun Modifier.pullRefresh(
  * [onPull] nor [onRelease] will be invoked.
  */
 fun Modifier.pullRefresh(
-    @Suppress("PrimitiveInLambda")
-    onPull: (pullDelta: Float) -> Float,
-    @Suppress("PrimitiveInLambda")
-    onRelease: suspend (flingVelocity: Float) -> Float,
-    enabled: Boolean = true
-) = inspectable(inspectorInfo = debugInspectorInfo {
+  @Suppress("PrimitiveInLambda")
+  onPull: (pullDelta: Float) -> Float,
+  @Suppress("PrimitiveInLambda")
+  onRelease: suspend (flingVelocity: Float) -> Float,
+  enabled: Boolean = true
+) = inspectable(
+  inspectorInfo = debugInspectorInfo {
     name = "pullRefresh"
     properties["onPull"] = onPull
     properties["onRelease"] = onRelease
     properties["enabled"] = enabled
-}) {
-    Modifier.nestedScroll(PullRefreshNestedScrollConnection(onPull, onRelease, enabled))
+  }
+) {
+  Modifier.nestedScroll(PullRefreshNestedScrollConnection(onPull, onRelease, enabled))
 }
 
 private class PullRefreshNestedScrollConnection(
-    @Suppress("PrimitiveInLambda")
-    private val onPull: (pullDelta: Float) -> Float,
-    @Suppress("PrimitiveInLambda")
-    private val onRelease: suspend (flingVelocity: Float) -> Float,
-    private val enabled: Boolean
+  @Suppress("PrimitiveInLambda")
+  private val onPull: (pullDelta: Float) -> Float,
+  @Suppress("PrimitiveInLambda")
+  private val onRelease: suspend (flingVelocity: Float) -> Float,
+  private val enabled: Boolean
 ) : NestedScrollConnection {
 
-    override fun onPreScroll(
-        available: Offset,
-        source: NestedScrollSource
-    ): Offset = when {
-        !enabled -> Offset.Zero
-        source == Drag && available.y < 0 -> Offset(0f, onPull(available.y)) // Swiping up
-        else -> Offset.Zero
-    }
+  override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset = when {
+    !enabled -> Offset.Zero
+    source == Drag && available.y < 0 -> Offset(0f, onPull(available.y)) // Swiping up
+    else -> Offset.Zero
+  }
 
-    override fun onPostScroll(
-        consumed: Offset,
-        available: Offset,
-        source: NestedScrollSource
-    ): Offset = when {
-        !enabled -> Offset.Zero
-        source == Drag && available.y > 0 -> Offset(0f, onPull(available.y)) // Pulling down
-        else -> Offset.Zero
-    }
+  override fun onPostScroll(
+    consumed: Offset,
+    available: Offset,
+    source: NestedScrollSource
+  ): Offset = when {
+    !enabled -> Offset.Zero
+    source == Drag && available.y > 0 -> Offset(0f, onPull(available.y)) // Pulling down
+    else -> Offset.Zero
+  }
 
-    override suspend fun onPreFling(available: Velocity): Velocity {
-        return Velocity(0f, onRelease(available.y))
-    }
+  override suspend fun onPreFling(available: Velocity): Velocity {
+    return Velocity(0f, onRelease(available.y))
+  }
 }

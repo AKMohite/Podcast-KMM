@@ -33,123 +33,123 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun WearPodcastDetailsScreen(
-    id: String,
-    modifier: Modifier = Modifier,
-    columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+  id: String,
+  modifier: Modifier = Modifier,
+  columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState()
 ) {
-    val detailViewModel: PodcastDetailViewModel = koinViewModel(
-        parameters = { parametersOf(id) }
-    )
-    val state by detailViewModel.uiState.collectAsStateWithLifecycle()
-    PodcastDetailsContent(
-        uiState = state,
-        columnState = columnState,
-        modifier = modifier
-    )
+  val detailViewModel: PodcastDetailViewModel = koinViewModel(
+    parameters = { parametersOf(id) }
+  )
+  val state by detailViewModel.uiState.collectAsStateWithLifecycle()
+  PodcastDetailsContent(
+    uiState = state,
+    columnState = columnState,
+    modifier = modifier
+  )
 }
 
 @Composable
 private fun PodcastDetailsContent(
-    uiState: PodcastDetailState,
-    modifier: Modifier = Modifier,
-    columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState(),
+  uiState: PodcastDetailState,
+  modifier: Modifier = Modifier,
+  columnState: TransformingLazyColumnState = rememberTransformingLazyColumnState()
 ) {
-    val transformationSpec = rememberTransformationSpec()
-    ScreenScaffold(
-        scrollState = columnState,
+  val transformationSpec = rememberTransformationSpec()
+  ScreenScaffold(
+    scrollState = columnState
+  ) {
+    TransformingLazyColumn(
+      state = columnState,
+      contentPadding = PaddingValues(
+        top = ListHeaderDefaults.minimumTopListContentPadding,
+        bottom = ListHeaderDefaults.minimumBottomListContentPadding,
+        start = 8.dp,
+        end = 8.dp
+      ),
+      modifier = modifier.fillMaxWidth()
     ) {
-        TransformingLazyColumn(
-            state = columnState,
-            contentPadding = PaddingValues(
-                top = ListHeaderDefaults.minimumTopListContentPadding,
-                bottom = ListHeaderDefaults.minimumBottomListContentPadding,
-                start = 8.dp,
-                end = 8.dp
-            ),
-            modifier = modifier.fillMaxWidth()
+      item {
+        ListHeader(
+          modifier = Modifier
+            .fillMaxWidth()
+            .transformedHeight(this, transformationSpec),
+          transformation = SurfaceTransformation(transformationSpec)
         ) {
-            item {
-                ListHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .transformedHeight(this, transformationSpec),
-                    transformation = SurfaceTransformation(transformationSpec)
-                ) {
-                    AsyncImage(
-                        model = uiState.podcast?.thumbnail,
-                        contentDescription = uiState.podcast?.title,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(MaterialTheme.shapes.medium)
-                    )
-                }
-            }
-            item {
-                ListHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .transformedHeight(this, transformationSpec),
-                    transformation = SurfaceTransformation(transformationSpec)
-                ) {
-                    Text(
-                        text = uiState.podcast?.title.orEmpty(),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-            item {
-                ListHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .transformedHeight(this, transformationSpec),
-                    transformation = SurfaceTransformation(transformationSpec)
-                ) {
-                    Text(
-                        text = uiState.podcast?.publisher.orEmpty(),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
-
-            items(items = uiState.episodes, key = { episode -> episode.id }) { episode ->
-                EpisodeChip(
-                    episode = episode,
-                    transformationSpec = transformationSpec
-                )
-            }
+          AsyncImage(
+            model = uiState.podcast?.thumbnail,
+            contentDescription = uiState.podcast?.title,
+            modifier = Modifier
+              .size(80.dp)
+              .clip(MaterialTheme.shapes.medium)
+          )
         }
+      }
+      item {
+        ListHeader(
+          modifier = Modifier
+            .fillMaxWidth()
+            .transformedHeight(this, transformationSpec),
+          transformation = SurfaceTransformation(transformationSpec)
+        ) {
+          Text(
+            text = uiState.podcast?.title.orEmpty(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
+      }
+      item {
+        ListHeader(
+          modifier = Modifier
+            .fillMaxWidth()
+            .transformedHeight(this, transformationSpec),
+          transformation = SurfaceTransformation(transformationSpec)
+        ) {
+          Text(
+            text = uiState.podcast?.publisher.orEmpty(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
+      }
+
+      items(items = uiState.episodes, key = { episode -> episode.id }) { episode ->
+        EpisodeChip(
+          episode = episode,
+          transformationSpec = transformationSpec
+        )
+      }
     }
+  }
 }
 
 @Composable
 private fun TransformingLazyColumnItemScope.EpisodeChip(
-    episode: PodcastEpisode,
-    transformationSpec: TransformationSpec,
-    modifier: Modifier = Modifier
+  episode: PodcastEpisode,
+  transformationSpec: TransformationSpec,
+  modifier: Modifier = Modifier
 ) {
-    TitleCard(
-        onClick = { /* TODO */ },
-        title = {
-            Text(
-                text = episode.title,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 2,
-            )
-        },
-        subtitle = {
-            Text(
-                text = episode.readableDuration(),
-                style = MaterialTheme.typography.labelMedium
-            )
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .transformedHeight(this, transformationSpec),
-        transformation = SurfaceTransformation(transformationSpec),
-    )
+  TitleCard(
+    onClick = { /* TODO */ },
+    title = {
+      Text(
+        text = episode.title,
+        overflow = TextOverflow.Ellipsis,
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 2
+      )
+    },
+    subtitle = {
+      Text(
+        text = episode.readableDuration(),
+        style = MaterialTheme.typography.labelMedium
+      )
+    },
+    modifier = modifier
+      .fillMaxWidth()
+      .transformedHeight(this, transformationSpec),
+    transformation = SurfaceTransformation(transformationSpec)
+  )
 }

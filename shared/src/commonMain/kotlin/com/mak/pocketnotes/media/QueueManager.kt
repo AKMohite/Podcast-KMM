@@ -25,10 +25,7 @@ class QueueManager {
   /**
    * Replace the entire queue and set [startIndex] as current.
    */
-  fun setQueue(
-    episodes: List<PodcastEpisode>,
-    startIndex: Int = 0,
-  ): QueueOperation.SetQueue {
+  fun setQueue(episodes: List<PodcastEpisode>, startIndex: Int = 0): QueueOperation.SetQueue {
     require(episodes.isNotEmpty()) { "Queue must not be empty" }
     require(startIndex in episodes.indices) { "startIndex $startIndex out of bounds" }
     _episodes.clear()
@@ -87,10 +84,7 @@ class QueueManager {
   /**
    * Move item from [from] to [to]. No-op if either index is out of range.
    */
-  fun move(
-    from: Int,
-    to: Int,
-  ): QueueOperation.Move? {
+  fun move(from: Int, to: Int): QueueOperation.Move? {
     if (from == to) return QueueOperation.Move(from, to)
     if ((from !in _episodes.indices) || (to !in _episodes.indices)) return null
 
@@ -115,22 +109,20 @@ class QueueManager {
   }
 
   /** Advance to next; returns new index or -1 if already at end. */
-  fun advanceToNext(): Int =
-    if (_currentIndex < _episodes.lastIndex) {
-      _currentIndex += 1
-      _currentIndex
-    } else {
-      -1
-    }
+  fun advanceToNext(): Int = if (_currentIndex < _episodes.lastIndex) {
+    _currentIndex += 1
+    _currentIndex
+  } else {
+    -1
+  }
 
   /** Go back to previous; returns new index or -1 if already at start. */
-  fun goToPrevious(): Int =
-    if (_currentIndex > 0) {
-      _currentIndex -= 1
-      _currentIndex
-    } else {
-      -1
-    }
+  fun goToPrevious(): Int = if (_currentIndex > 0) {
+    _currentIndex -= 1
+    _currentIndex
+  } else {
+    -1
+  }
 
   fun skipToIndex(index: Int): Boolean {
     if (index !in _episodes.indices) return false
@@ -142,21 +134,21 @@ class QueueManager {
 sealed class QueueOperation {
   data class SetQueue(
     val episodes: List<PodcastEpisode>,
-    val startIndex: Int,
+    val startIndex: Int
   ) : QueueOperation()
 
   data class AddAt(
     val episode: PodcastEpisode,
-    val index: Int,
+    val index: Int
   ) : QueueOperation()
 
   data class RemoveAt(
-    val index: Int,
+    val index: Int
   ) : QueueOperation()
 
   data class Move(
     val from: Int,
-    val to: Int,
+    val to: Int
   ) : QueueOperation()
 
   data object Clear : QueueOperation()

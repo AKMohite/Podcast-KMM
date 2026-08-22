@@ -2,13 +2,13 @@ package com.mak.pocketnotes.core.common.exception
 
 abstract class PocketException(
   errorMsg: String,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : Throwable(errorMsg, throwable)
 
 open class APIException(
   val code: Int = 0,
   val errorMsg: String,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : PocketException(errorMsg, throwable)
 
 /**
@@ -20,14 +20,14 @@ class AutoAuthenticateException(
   private val firstLaunch: Boolean,
   exceptionType: ExceptionType = ExceptionType.AUTO_AUTHENTICATE,
   errorMsg: String = exceptionType.message,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : PocketException(errorMsg, throwable)
 
 class PocketAPIException(
   code: Int,
   exceptionType: ExceptionType = ExceptionType.API_EXCEPTION,
   errorMsg: String = exceptionType.message,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : APIException(code, errorMsg, throwable)
 
 /**
@@ -36,7 +36,7 @@ class PocketAPIException(
 class UnknownAPIException(
   exceptionType: ExceptionType = ExceptionType.UNKNOWN,
   errorMsg: String = exceptionType.message,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : APIException(errorMsg = errorMsg, throwable = throwable)
 
 /**
@@ -45,7 +45,7 @@ class UnknownAPIException(
 class RequestTimeoutException(
   exceptionType: ExceptionType = ExceptionType.SOCKET_TIMEOUT,
   errorMsg: String = exceptionType.message,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : APIException(errorMsg = errorMsg, throwable = throwable)
 
 /**
@@ -54,5 +54,5 @@ class RequestTimeoutException(
 class NoNetworkException(
   exceptionType: ExceptionType = ExceptionType.NO_NETWORK,
   errorMsg: String = exceptionType.message,
-  throwable: Throwable? = null,
+  throwable: Throwable? = null
 ) : APIException(errorMsg = errorMsg, throwable = throwable)

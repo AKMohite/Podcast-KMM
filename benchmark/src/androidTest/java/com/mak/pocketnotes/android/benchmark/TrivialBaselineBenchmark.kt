@@ -20,7 +20,7 @@ class TrivialBaselineBenchmark {
 
   private fun trackStartup() {
     rule.collect(
-      packageName = APP_TO_BENCHMARK,
+      packageName = APP_TO_BENCHMARK
     ) {
       val intent = Intent()
       intent.component =
@@ -28,7 +28,7 @@ class TrivialBaselineBenchmark {
           // pkg =
           APP_TO_BENCHMARK,
           // cls =
-          "com.mak.pocketnotes.android.MainActivity",
+          "com.mak.pocketnotes.android.MainActivity"
         )
       startActivityAndWait(intent)
     }

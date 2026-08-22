@@ -6,7 +6,7 @@ data class PlayableEpisode(
   val speaker: String,
   val image: String,
   val track: String, // audio url
-  val duration: Int,
+  val duration: Int
 ) {
   companion object {
     val EMPTY =
@@ -16,7 +16,7 @@ data class PlayableEpisode(
         "",
         "",
         "",
-        0,
+        0
       )
   }
 }

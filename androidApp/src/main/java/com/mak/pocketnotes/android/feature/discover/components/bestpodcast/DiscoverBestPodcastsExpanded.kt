@@ -23,54 +23,54 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun DiscoverBestPodcastsExpanded(
-    modifier: Modifier = Modifier,
-    gotoDetails: (String) -> Unit,
-    podcasts: List<Podcast>,
+  modifier: Modifier = Modifier,
+  gotoDetails: (String) -> Unit,
+  podcasts: List<Podcast>
 ) {
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = stringResource(R.string.trending),
-            style = MaterialTheme.typography.titleLarge
-        )
+  Column(modifier = modifier) {
+    Text(
+      modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+      text = stringResource(R.string.trending),
+      style = MaterialTheme.typography.titleLarge
+    )
 
-        BoxWithConstraints(
+    BoxWithConstraints(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+      val spacing = 12.dp
+      val itemWidth = (maxWidth - (spacing * 4)) / 5
+
+      FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(spacing),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        maxItemsInEachRow = 5
+      ) {
+        podcasts.forEach { podcast ->
+          PodcastColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            val spacing = 12.dp
-            val itemWidth = (maxWidth - (spacing * 4)) / 5
-
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(spacing),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                maxItemsInEachRow = 5
-            ) {
-                podcasts.forEach { podcast ->
-                    PodcastColumn(
-                        modifier = Modifier
-                            .width(itemWidth)
-                            .clickable { gotoDetails(podcast.id) },
-                        title = podcast.title,
-                        publisher = podcast.publisher,
-                        image = podcast.thumbnail
-                    )
-                }
-            }
+              .width(itemWidth)
+              .clickable { gotoDetails(podcast.id) },
+            title = podcast.title,
+            publisher = podcast.publisher,
+            image = podcast.thumbnail
+          )
         }
+      }
     }
+  }
 }
 
 @Preview(widthDp = 900)
 @Composable
 private fun DiscoverBestPodcastsExpandedPreview() {
-    PocketNotesTheme {
-        Surface {
-            DiscoverBestPodcastsExpanded(
-                podcasts = samplePodcasts.take(8),
-                gotoDetails = {}
-            )
-        }
+  PocketNotesTheme {
+    Surface {
+      DiscoverBestPodcastsExpanded(
+        podcasts = samplePodcasts.take(8),
+        gotoDetails = {}
+      )
     }
+  }
 }

@@ -6,5 +6,5 @@ enum class ErrorType {
   NOT_FOUND,
   UNAUTHORIZED,
   SERVER_ERROR,
-  UNKNOWN,
+  UNKNOWN
 }

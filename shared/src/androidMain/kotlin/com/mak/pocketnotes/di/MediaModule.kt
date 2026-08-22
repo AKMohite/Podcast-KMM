@@ -35,7 +35,7 @@ val mediaModuleV2 =
             .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
             .setUsage(C.USAGE_MEDIA)
             .build(),
-          true,
+          true
         ).setHandleAudioBecomingNoisy(true)
         .setSeekBackIncrementMs(10_000L)
         .setSeekForwardIncrementMs(30_000L)

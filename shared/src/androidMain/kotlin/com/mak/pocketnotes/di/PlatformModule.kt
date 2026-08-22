@@ -22,34 +22,33 @@ import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-actual fun platformModule() =
-  module {
-    single<DataStore<AppSettings>> {
-      AeadConfig.register()
-      val keysetHandle =
-        AndroidKeysetManager
-          .Builder()
-          .withSharedPref(androidContext(), "keyset", "keyset_prefs")
-          .withKeyTemplate(KeyTemplate.createFrom(PredefinedAeadParameters.AES256_GCM))
-          .withMasterKeyUri("android-keystore://master_key")
-          .build()
-          .keysetHandle
+actual fun platformModule() = module {
+  single<DataStore<AppSettings>> {
+    AeadConfig.register()
+    val keysetHandle =
+      AndroidKeysetManager
+        .Builder()
+        .withSharedPref(androidContext(), "keyset", "keyset_prefs")
+        .withKeyTemplate(KeyTemplate.createFrom(PredefinedAeadParameters.AES256_GCM))
+        .withMasterKeyUri("android-keystore://master_key")
+        .build()
+        .keysetHandle
 
-      val aeadSerializer =
-        AeadSerializer(
-          aead =
-            keysetHandle.getPrimitive(
-              RegistryConfiguration.get(),
-              Aead::class.java,
-            ),
-          wrappedSerializer = AppSettingsSerializer(get<DispatcherProvider>()),
-          associatedData = "pod_settings_data".encodeToByteArray(),
-        )
+    val aeadSerializer =
+      AeadSerializer(
+        aead =
+        keysetHandle.getPrimitive(
+          RegistryConfiguration.get(),
+          Aead::class.java
+        ),
+        wrappedSerializer = AppSettingsSerializer(get<DispatcherProvider>()),
+        associatedData = "pod_settings_data".encodeToByteArray()
+      )
 
-      val dataStore =
-        DataStoreFactory.create(serializer = aeadSerializer) {
-          File(androidContext().filesDir, "pod_settings.json")
-        }
+    val dataStore =
+      DataStoreFactory.create(serializer = aeadSerializer) {
+        File(androidContext().filesDir, "pod_settings.json")
+      }
 
 //        val scope = CoroutineScope(get<Dispatcher>().io + Job())
 //
@@ -62,13 +61,18 @@ actual fun platformModule() =
 //            serializer = aeadSerializer,
 //            scope = scope,
 //        )
-      dataStore
-    }
-    single<SettingsRepository> { DataStoreSettingsRepository(dataStore = get(), dispatcher = get()) }
+    dataStore
   }
+  single<SettingsRepository> {
+    DataStoreSettingsRepository(
+      dataStore = get(),
+      dispatcher = get()
+    )
+  }
+}
 
 class AppSettingsSerializer(
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : Serializer<AppSettings> {
   override val defaultValue: AppSettings
     get() = AppSettings()
@@ -84,10 +88,7 @@ class AppSettingsSerializer(
     return Json.decodeFromString(json)
   }
 
-  override suspend fun writeTo(
-    t: AppSettings,
-    output: OutputStream,
-  ) {
+  override suspend fun writeTo(t: AppSettings, output: OutputStream) {
     val json = Json.encodeToString(t)
     val bytes = json.toByteArray()
     withContext(dispatcher.io) {

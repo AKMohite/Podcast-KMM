@@ -16,13 +16,13 @@ class SearchPodcast : KoinComponent {
     val episodeQuery =
       mapOf(
         "q" to query,
-        "type" to "episode",
+        "type" to "episode"
       )
 //        TODO add podcast results too
     val podcastQuery =
       mapOf(
         "q" to query,
-        "type" to "podcast",
+        "type" to "podcast"
       )
     val episodeDTOs =
       api
@@ -33,7 +33,7 @@ class SearchPodcast : KoinComponent {
     val episodes =
       mapper.getPodcastEpisodes(
         episodeDTOs,
-        throw IllegalArgumentException("Where can I get podcast ids for episodes?"),
+        throw IllegalArgumentException("Where can I get podcast ids for episodes?")
       )
 //        val podcasts = api.search(podcastQuery)
     val podcasts = samplePodcasts

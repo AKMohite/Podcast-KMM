@@ -17,38 +17,38 @@ allprojects {
   pluginManager.apply(
     rootProject.libs.plugins.spotless
       .get()
-      .pluginId,
+      .pluginId
   )
 
   extensions.configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
       target("**/*.kt")
-      targetExclude("**/build/**/*.kt")
+      targetExclude("**/build/**/*.kt", "**/devastation/**/*.kt")
       ktlint(libs.versions.ktlint.get()).editorConfigOverride(
         mapOf(
           "ktlint_code_style" to "android_studio",
-          "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
-        ),
+          "ktlint_function_naming_ignore_when_annotated_with" to "Composable"
+        )
       )
     }
     kotlinGradle {
       target("*.gradle.kts")
       ktlint(libs.versions.ktlint.get()).editorConfigOverride(
         mapOf(
-          "ktlint_code_style" to "android_studio",
-        ),
+          "ktlint_code_style" to "android_studio"
+        )
       )
     }
     format("xml") {
       target("**/*.xml")
-      targetExclude("**/build/**/*.xml")
+      targetExclude("**/build/**/*.xml", "**/devastation/**/*.xml")
       leadingTabsToSpaces()
       trimTrailingWhitespace()
       endWithNewline()
     }
     format("misc") {
       target("**/*.md", "**/*.yaml", "**/*.yml", "**/*.properties", "**/*.json", "**/.gitignore")
-      targetExclude("**/build/**")
+      targetExclude("**/build/**", "**/devastation/**")
       leadingTabsToSpaces()
       trimTrailingWhitespace()
       endWithNewline()
@@ -67,10 +67,11 @@ subprojects {
   pluginManager.apply(
     rootProject.libs.plugins.detekt
       .get()
-      .pluginId,
+      .pluginId
   )
 
   tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
+    exclude("**/devastation/**")
     config.setFrom(files("${rootProject.projectDir}/config/detekt/detekt.yml"))
     reports {
       html.required.set(true)

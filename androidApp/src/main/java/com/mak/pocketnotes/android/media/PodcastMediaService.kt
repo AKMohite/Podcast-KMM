@@ -32,7 +32,7 @@ class PodcastMediaService : MediaLibraryService() {
         .setNotificationId(NOTIFICATION_ID)
         .setChannelId(PLAYBACK_NOTIFICATION_CHANNEL_ID)
         .setChannelName(R.string.notification_channel_name)
-        .build(),
+        .build()
     )
     session =
       MediaLibrarySession
@@ -51,7 +51,7 @@ class PodcastMediaService : MediaLibraryService() {
       context,
       1001,
       intent,
-      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
   }
 
@@ -75,7 +75,7 @@ class PodcastMediaService : MediaLibraryService() {
     override fun onAddMediaItems(
       mediaSession: MediaSession,
       controller: MediaSession.ControllerInfo,
-      mediaItems: MutableList<MediaItem>,
+      mediaItems: MutableList<MediaItem>
     ): ListenableFuture<List<MediaItem>> = Futures.immediateFuture(mediaItems)
   }
 

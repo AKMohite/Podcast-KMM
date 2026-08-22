@@ -33,82 +33,82 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 
 @Composable
 internal fun PermanentMinPlayer(
-    episode: PodcastEpisode?,
-    playPause: () -> Unit,
-    isMediaPlaying: Boolean,
-    previousClick: () -> Unit,
-    nextClick: () -> Unit,
-    modifier: Modifier = Modifier,
+  episode: PodcastEpisode?,
+  playPause: () -> Unit,
+  isMediaPlaying: Boolean,
+  previousClick: () -> Unit,
+  nextClick: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    if (episode == null) return
-    Column(
-        modifier = modifier
-            .padding(horizontal = 12.dp)
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(250.dp)
-                .clip(MaterialTheme.shapes.extraSmall)
-                .align(Alignment.CenterHorizontally),
-            model = episode.image,
-            contentDescription = episode.title,
-            contentScale = ContentScale.Crop,
-            placeholder = debugPlaceholder()
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            modifier = Modifier
-                .padding(4.dp),
-            text = episode.title,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            modifier = Modifier
-                .padding(4.dp),
-            text = "Podcast title", // TODO map title
-            style = MaterialTheme.typography.labelMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+  if (episode == null) return
+  Column(
+    modifier = modifier
+      .padding(horizontal = 12.dp)
+  ) {
+    AsyncImage(
+      modifier = Modifier
+        .size(250.dp)
+        .clip(MaterialTheme.shapes.extraSmall)
+        .align(Alignment.CenterHorizontally),
+      model = episode.image,
+      contentDescription = episode.title,
+      contentScale = ContentScale.Crop,
+      placeholder = debugPlaceholder()
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+    Text(
+      modifier = Modifier
+        .padding(4.dp),
+      text = episode.title,
+      style = MaterialTheme.typography.bodyMedium,
+      maxLines = 2,
+      overflow = TextOverflow.Ellipsis
+    )
+    Text(
+      modifier = Modifier
+        .padding(4.dp),
+      text = "Podcast title", // TODO map title
+      style = MaterialTheme.typography.labelMedium,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis
+    )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-        ) {
-            IconButton(onClick = previousClick) {
-                Icon(
-                    painter = painterResource(R.drawable.icon_previous),
-                    contentDescription = stringResource(R.string.player_previous)
-                )
-            }
-            FilledIconButton(onClick = playPause) {
-                Icon(
-                    imageVector = if (isMediaPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = stringResource(R.string.player_play_pause)
-                )
-            }
-            IconButton(onClick = nextClick) {
-                Icon(
-                    painter = painterResource(R.drawable.icon_next),
-                    contentDescription = stringResource(R.string.player_next)
-                )
-            }
-        }
+    Row(
+      modifier = Modifier
+        .fillMaxWidth(),
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+      IconButton(onClick = previousClick) {
+        Icon(
+          painter = painterResource(R.drawable.icon_previous),
+          contentDescription = stringResource(R.string.player_previous)
+        )
+      }
+      FilledIconButton(onClick = playPause) {
+        Icon(
+          imageVector = if (isMediaPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+          contentDescription = stringResource(R.string.player_play_pause)
+        )
+      }
+      IconButton(onClick = nextClick) {
+        Icon(
+          painter = painterResource(R.drawable.icon_next),
+          contentDescription = stringResource(R.string.player_next)
+        )
+      }
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PermanentMinPlayerPreview() {
-    PermanentMinPlayer(
-        episode = sampleEpisodes[0],
-        playPause = {},
-        isMediaPlaying = false,
-        previousClick = {},
-        nextClick = {}
-    )
+  PermanentMinPlayer(
+    episode = sampleEpisodes[0],
+    playPause = {},
+    isMediaPlaying = false,
+    previousClick = {},
+    nextClick = {}
+  )
 }

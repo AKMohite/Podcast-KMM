@@ -22,7 +22,7 @@ private val sharedModules =
     localModule,
     coreDataModule,
     domainModule,
-    platformModule(),
+    platformModule()
   )
 
 fun getSharedModules() = sharedModules

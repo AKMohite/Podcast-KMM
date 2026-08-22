@@ -37,185 +37,184 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun DiscoverBestPodcastsMedium(
-    modifier: Modifier = Modifier,
-    gotoDetails: (String) -> Unit,
-    podcasts: List<Podcast>,
+  modifier: Modifier = Modifier,
+  gotoDetails: (String) -> Unit,
+  podcasts: List<Podcast>
 ) {
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = stringResource(R.string.trending),
-            style = MaterialTheme.typography.titleLarge
-        )
+  Column(modifier = modifier) {
+    Text(
+      modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+      text = stringResource(R.string.trending),
+      style = MaterialTheme.typography.titleLarge
+    )
 
-        LazyHorizontalGrid(
-            rows = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                .padding(bottom = 16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(
-                count = podcasts.size,
-                span = { index ->
-                    if (index % 3 == 0) GridItemSpan(2) else GridItemSpan(1)
-                }
-            ) { index ->
-                val podcast = podcasts[index]
-                if (index % 3 == 0) {
-                    FeaturedPodcastCard(
-                        modifier = Modifier.width(440.dp),
-                        podcast = podcast,
-                        gotoDetails = gotoDetails,
-                        isPopular = index == 0
-                    )
-                } else {
-                    SmallPodcastCard(
-                        modifier = Modifier.width(260.dp),
-                        podcast = podcast,
-                        gotoDetails = gotoDetails
-                    )
-                }
-            }
+    LazyHorizontalGrid(
+      rows = GridCells.Fixed(2),
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(220.dp)
+        .padding(bottom = 16.dp),
+      contentPadding = PaddingValues(horizontal = 16.dp),
+      horizontalArrangement = Arrangement.spacedBy(16.dp),
+      verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+      items(
+        count = podcasts.size,
+        span = { index ->
+          if (index % 3 == 0) GridItemSpan(2) else GridItemSpan(1)
         }
+      ) { index ->
+        val podcast = podcasts[index]
+        if (index % 3 == 0) {
+          FeaturedPodcastCard(
+            modifier = Modifier.width(440.dp),
+            podcast = podcast,
+            gotoDetails = gotoDetails,
+            isPopular = index == 0
+          )
+        } else {
+          SmallPodcastCard(
+            modifier = Modifier.width(260.dp),
+            podcast = podcast,
+            gotoDetails = gotoDetails
+          )
+        }
+      }
     }
+  }
 }
 
 @Composable
 private fun FeaturedPodcastCard(
-    podcast: Podcast,
-    gotoDetails: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    isPopular: Boolean = false
+  podcast: Podcast,
+  gotoDetails: (String) -> Unit,
+  modifier: Modifier = Modifier,
+  isPopular: Boolean = false
 ) {
-    Surface(
-        modifier = modifier.clickable { gotoDetails(podcast.id) },
-        shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surfaceVariant
+  Surface(
+    modifier = modifier.clickable { gotoDetails(podcast.id) },
+    shape = MaterialTheme.shapes.large,
+    color = MaterialTheme.colorScheme.surfaceVariant
+  ) {
+    Row(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(20.dp),
+      horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                if (isPopular) {
-                    Surface(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        shape = CircleShape
-                    ) {
-                        Text(
-                            text = stringResource(R.string.most_popular),
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                        )
-                    }
-                }
-
-                Text(
-                    text = podcast.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Text(
-                    text = podcast.publisher,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Text(
-                    text = podcast.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-            AsyncImage(
-                model = podcast.thumbnail,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(vertical = 8.dp)
-                    .aspectRatio(1f)
-                    .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop,
-                placeholder = debugPlaceholder()
+      Column(
+        modifier = Modifier.weight(1f),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        if (isPopular) {
+          Surface(
+            color = MaterialTheme.colorScheme.tertiary,
+            shape = CircleShape
+          ) {
+            Text(
+              text = stringResource(R.string.most_popular),
+              modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+              style = MaterialTheme.typography.labelSmall
             )
+          }
         }
+
+        Text(
+          text = podcast.title,
+          style = MaterialTheme.typography.headlineSmall,
+          fontWeight = FontWeight.Bold,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis
+        )
+
+        Text(
+          text = podcast.publisher,
+          style = MaterialTheme.typography.bodyMedium,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis
+        )
+
+        Text(
+          text = podcast.description,
+          style = MaterialTheme.typography.bodySmall,
+          maxLines = 3,
+          overflow = TextOverflow.Ellipsis
+        )
+      }
+
+      AsyncImage(
+        model = podcast.thumbnail,
+        contentDescription = null,
+        modifier = Modifier
+          .fillMaxHeight()
+          .padding(vertical = 8.dp)
+          .aspectRatio(1f)
+          .clip(MaterialTheme.shapes.medium),
+        contentScale = ContentScale.Crop,
+        placeholder = debugPlaceholder()
+      )
     }
+  }
 }
 
 @Composable
 private fun SmallPodcastCard(
-    podcast: Podcast,
-    gotoDetails: (String) -> Unit,
-    modifier: Modifier = Modifier
+  podcast: Podcast,
+  gotoDetails: (String) -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = modifier.clickable { gotoDetails(podcast.id) },
-        shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surfaceVariant
+  Surface(
+    modifier = modifier.clickable { gotoDetails(podcast.id) },
+    shape = MaterialTheme.shapes.large,
+    color = MaterialTheme.colorScheme.surfaceVariant
+  ) {
+    Row(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(12.dp),
+      horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Text(
-                    text = podcast.title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = podcast.publisher,
-                    style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            AsyncImage(
-                model = podcast.thumbnail,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(1f)
-                    .clip(MaterialTheme.shapes.small),
-                contentScale = ContentScale.Crop,
-                placeholder = debugPlaceholder()
-            )
-        }
+      Column(
+        modifier = Modifier.weight(1f),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+      ) {
+        Text(
+          text = podcast.title,
+          style = MaterialTheme.typography.titleSmall,
+          fontWeight = FontWeight.Bold,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis
+        )
+        Text(
+          text = podcast.publisher,
+          style = MaterialTheme.typography.labelMedium,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis
+        )
+      }
+      AsyncImage(
+        model = podcast.thumbnail,
+        contentDescription = null,
+        modifier = Modifier
+          .fillMaxHeight()
+          .aspectRatio(1f)
+          .clip(MaterialTheme.shapes.small),
+        contentScale = ContentScale.Crop,
+        placeholder = debugPlaceholder()
+      )
     }
+  }
 }
 
 @Preview(widthDp = 500)
 @Composable
 private fun DiscoverBestPodcastsMediumPreview() {
-    PocketNotesTheme {
-        Surface {
-            DiscoverBestPodcastsMedium(
-                podcasts = samplePodcasts.take(8),
-                gotoDetails = {}
-            )
-        }
+  PocketNotesTheme {
+    Surface {
+      DiscoverBestPodcastsMedium(
+        podcasts = samplePodcasts.take(8),
+        gotoDetails = {}
+      )
     }
+  }
 }
-

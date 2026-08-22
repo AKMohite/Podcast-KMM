@@ -35,54 +35,53 @@ internal class OfflineFirstBestPodcastRepository(
   private val trendingPodcastDAO: TrendingPodcastDAO,
   private val lastSyncDAO: LastSyncDAO,
   private val mapper: PodcastMapper,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : BestPodcastRepository {
   private val store by lazy {
     StoreBuilder
       .from<BestQueryParam, BestPodcastDTO, List<Podcast>>(
         fetcher =
-          Fetcher.of { param ->
-            fetchPodcastsFromRemote(param)
-          },
+        Fetcher.of { param ->
+          fetchPodcastsFromRemote(param)
+        },
         sourceOfTruth =
-          SourceOfTruth.of(
-            reader = { param ->
-              observePodcasts(param)
-            },
-            writer = { param, dto ->
-              updatePodcasts(dto, param)
-            },
-            deleteAll = {
-              deleteAll()
-            },
-            delete = { param ->
-              delete(param)
-            },
-          ),
+        SourceOfTruth.of(
+          reader = { param ->
+            observePodcasts(param)
+          },
+          writer = { param, dto ->
+            updatePodcasts(dto, param)
+          },
+          deleteAll = {
+            deleteAll()
+          },
+          delete = { param ->
+            delete(param)
+          }
+        )
       ).validator(
         Validator.by { podcasts ->
           return@by needsRefresh(podcasts)
-        },
+        }
       ).build()
   }
 
-  override fun refresh(param: BestQueryParam): Flow<List<Podcast>> =
-    getStoreStream(param)
-      .map { response ->
-        when (response) {
-          is StoreReadResponse.Data -> {
-            response.value
-          }
+  override fun refresh(param: BestQueryParam): Flow<List<Podcast>> = getStoreStream(param)
+    .map { response ->
+      when (response) {
+        is StoreReadResponse.Data -> {
+          response.value
+        }
 
-          is StoreReadResponse.Error -> {
-            throw response.exception()
-          }
+        is StoreReadResponse.Error -> {
+          throw response.exception()
+        }
 
-          else -> {
-            emptyList()
-          }
+        else -> {
+          emptyList()
         }
       }
+    }
 
   override fun refreshSection(param: BestQueryParam): Flow<SectionState<List<Podcast>>> {
     var lastKnownGoodPage: List<Podcast>? = null
@@ -107,7 +106,7 @@ internal class OfflineFirstBestPodcastRepository(
           is StoreReadResponse.Error -> {
             SectionState.Error(
               response.exception().type,
-              cachedData = lastKnownGoodPage,
+              cachedData = lastKnownGoodPage
             )
           }
 
@@ -141,7 +140,7 @@ internal class OfflineFirstBestPodcastRepository(
           is StoreReadResponse.Error -> {
             SectionState.Error(
               response.exception().type,
-              cachedData = lastKnownGoodPage,
+              cachedData = lastKnownGoodPage
             )
           }
 
@@ -162,37 +161,33 @@ internal class OfflineFirstBestPodcastRepository(
     return withContext(dispatcher.io) {
       lastSyncDAO.isRequestValid(
         requestType = SyncRequest.BEST_PODCASTS,
-        threshold = 90.minutes,
+        threshold = 90.minutes
       )
     }
   }
 
-  private suspend fun updatePodcasts(
-    dto: BestPodcastDTO,
-    param: BestQueryParam,
-  ) {
+  private suspend fun updatePodcasts(dto: BestPodcastDTO, param: BestQueryParam) {
     val podcasts = mapper.jsonToEntities(dto.podcasts ?: emptyList())
     val trendingPodcasts =
       podcasts.map {
         TrendingPodcastEntity(
           id = 0L,
           podcast_id = it.id,
-          page = param.page,
+          page = param.page
         )
       }
     updateLocal(param.page, podcasts, trendingPodcasts)
   }
 
-  override fun observePodcasts(param: BestQueryParam): Flow<List<Podcast>> =
-    trendingPodcastDAO
-      .getBestPodcasts(param.page)
-      .map { entities -> mapper.entityToModels(entities) }
-      .flowOn(dispatcher.computation)
+  override fun observePodcasts(param: BestQueryParam): Flow<List<Podcast>> = trendingPodcastDAO
+    .getBestPodcasts(param.page)
+    .map { entities -> mapper.entityToModels(entities) }
+    .flowOn(dispatcher.computation)
 
   private suspend fun fetchPodcastsFromRemote(param: BestQueryParam): BestPodcastDTO {
     val queryMap =
       mutableMapOf(
-        "page" to param.page.toString(),
+        "page" to param.page.toString()
       )
     param.genreId?.let { id ->
       queryMap["genre_id"] = id.toString()
@@ -217,7 +212,7 @@ internal class OfflineFirstBestPodcastRepository(
   private suspend fun updateLocal(
     page: Int,
     podcasts: List<PodcastEntity>,
-    trendingPodcasts: List<TrendingPodcastEntity>,
+    trendingPodcasts: List<TrendingPodcastEntity>
   ) = withContext(dispatcher.io) {
     transactionRunner {
       if (page == 1) {

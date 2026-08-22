@@ -15,41 +15,41 @@ import kotlinx.coroutines.withContext
 
 internal class KtorPocketNotesAPI(
   private val client: HttpClient,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : PocketNotesAPI {
-  override suspend fun getAllGenres(): RemoteResult<GenresDTO> =
-    withContext(dispatcher.io) {
-      safeApiCall { client.get("api/v2/genres") }
-    }
+  override suspend fun getAllGenres(): RemoteResult<GenresDTO> = withContext(dispatcher.io) {
+    safeApiCall { client.get("api/v2/genres") }
+  }
 
-  override suspend fun getBestPodcasts(queryMap: Map<String, String>): RemoteResult<BestPodcastDTO> =
-    withContext(dispatcher.io) {
-      safeApiCall {
-        val queries = getAllQueries(queryMap)
-        client.get("api/v2/best_podcasts?$queries")
-      }
+  override suspend fun getBestPodcasts(
+    queryMap: Map<String, String>
+  ): RemoteResult<BestPodcastDTO> = withContext(dispatcher.io) {
+    safeApiCall {
+      val queries = getAllQueries(queryMap)
+      client.get("api/v2/best_podcasts?$queries")
     }
+  }
 
   override suspend fun getCuratedPodcasts(page: Int): RemoteResult<CuratedPodcastsDTO> =
     withContext(dispatcher.io) {
       safeApiCall { client.get("api/v2/curated_podcasts") }
     }
 
-  override suspend fun getPodcastRecommendations(id: String): RemoteResult<PodcastRecommendationsDTO> =
-    withContext(dispatcher.io) {
-      safeApiCall { client.get("api/v2/podcasts/$id/recommendations") }
-    }
+  override suspend fun getPodcastRecommendations(
+    id: String
+  ): RemoteResult<PodcastRecommendationsDTO> = withContext(dispatcher.io) {
+    safeApiCall { client.get("api/v2/podcasts/$id/recommendations") }
+  }
 
   override suspend fun getPodcastDetails(
     id: String,
-    queryMap: Map<String, String>,
-  ): RemoteResult<PodcastDTO> =
-    withContext(dispatcher.io) {
-      safeApiCall {
-        val queries = getAllQueries(queryMap)
-        client.get("api/v2/podcasts/$id?$queries")
-      }
+    queryMap: Map<String, String>
+  ): RemoteResult<PodcastDTO> = withContext(dispatcher.io) {
+    safeApiCall {
+      val queries = getAllQueries(queryMap)
+      client.get("api/v2/podcasts/$id?$queries")
     }
+  }
 
   override suspend fun search(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO> =
     withContext(dispatcher.io) {
@@ -59,9 +59,8 @@ internal class KtorPocketNotesAPI(
       }
     }
 
-  private fun getAllQueries(queries: Map<String, String>) =
-    queries
-      .map {
-        "${it.key}=${it.value}"
-      }.joinToString("&")
+  private fun getAllQueries(queries: Map<String, String>) = queries
+    .map {
+      "${it.key}=${it.value}"
+    }.joinToString("&")
 }

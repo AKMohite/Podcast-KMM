@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @OptIn(SavedStateHandleSaveableApi::class)
 class LegacyMediaViewModel(
   private val serviceHandler: IServiceHandler,
-  savedStateHandle: SavedStateHandle,
+  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
   private var duration by savedStateHandle.saveable { mutableStateOf(0L) }
   internal var progress by savedStateHandle.saveable { mutableStateOf(0f) }
@@ -133,11 +133,11 @@ sealed interface UIEvent {
   data object PlayPause : UIEvent
 
   data class SelectedAudioChange(
-    val index: Int,
+    val index: Int
   ) : UIEvent
 
   data class SeekTo(
-    val position: Float,
+    val position: Float
   ) : UIEvent
 
   data object SeekToNext : UIEvent
@@ -147,7 +147,7 @@ sealed interface UIEvent {
   data object Forward : UIEvent
 
   data class UpdateProgress(
-    val newProgress: Float,
+    val newProgress: Float
   ) : UIEvent
 }
 

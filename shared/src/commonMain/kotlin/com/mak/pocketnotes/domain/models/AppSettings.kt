@@ -10,7 +10,7 @@ data class AppSettings(
   val autoPlayNext: Boolean = true,
   val downloadOnWifiOnly: Boolean = true,
   val episodeDeleteAfterPlayed: Boolean = false,
-  val streamingQuality: StreamQuality = StreamQuality.MEDIUM,
+  val streamingQuality: StreamQuality = StreamQuality.MEDIUM
 )
 
 enum class AppTheme { LIGHT, DARK, SYSTEM }
@@ -21,5 +21,5 @@ enum class TextSize {
   SMALL,
   MEDIUM,
   LARGE,
-  EXTRA_LARGE,
+  EXTRA_LARGE
 }

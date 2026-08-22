@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class ErrorDTO(
   val code: Int? = null,
-  val message: String? = null,
+  val message: String? = null
 )

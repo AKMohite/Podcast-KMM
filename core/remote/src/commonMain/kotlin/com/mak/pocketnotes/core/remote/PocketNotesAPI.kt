@@ -19,7 +19,7 @@ interface PocketNotesAPI {
 
   suspend fun getPodcastDetails(
     id: String,
-    queryMap: Map<String, String> = emptyMap(),
+    queryMap: Map<String, String> = emptyMap()
   ): RemoteResult<PodcastDTO>
 
   suspend fun search(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO>

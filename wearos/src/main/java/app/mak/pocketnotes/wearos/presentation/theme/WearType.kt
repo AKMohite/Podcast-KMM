@@ -17,5 +17,5 @@ val wearTypography =
     labelSmall = type.labelSmall,
     bodyLarge = type.bodyLarge,
     bodyMedium = type.bodyMedium,
-    bodySmall = type.bodySmall,
+    bodySmall = type.bodySmall
   )

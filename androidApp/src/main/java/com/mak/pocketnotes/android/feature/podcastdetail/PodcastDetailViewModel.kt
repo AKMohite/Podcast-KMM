@@ -18,71 +18,69 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 internal class PodcastDetailViewModel(
-    val podcastRepository: PodcastRepository,
-    val relatedPodcastRepository: RelatedPodcastRepository,
-    val episodeRepository: EpisodeRepository,
-    private val podcastId: String
-): ViewModel() {
-    private val _uiState = MutableStateFlow(PodcastDetailState(loading = true))
-    internal val uiState: StateFlow<PodcastDetailState> = _uiState.asStateFlow()
+  val podcastRepository: PodcastRepository,
+  val relatedPodcastRepository: RelatedPodcastRepository,
+  val episodeRepository: EpisodeRepository,
+  private val podcastId: String
+) : ViewModel() {
+  private val _uiState = MutableStateFlow(PodcastDetailState(loading = true))
+  internal val uiState: StateFlow<PodcastDetailState> = _uiState.asStateFlow()
 
-    init {
-        loadPodcastDetails()
+  init {
+    loadPodcastDetails()
+  }
+
+  private fun loadPodcastDetails() {
+    combine(
+      podcastRepository.refresh(podcastId),
+      relatedPodcastRepository.refresh(podcastId)
+    ) { podcast, recommendations ->
+      podcast.copy(recommendations = recommendations.related)
+    }.onEach { podcast ->
+      _uiState.update { it.copy(loading = false, podcast = podcast) }
+      if (_uiState.value.episodes.isEmpty()) {
+        loadEpisodes()
+      }
+    }.catch { e ->
+      _uiState.update { it.copy(loading = false, errorMsg = e.message) }
+    }.launchIn(viewModelScope)
+  }
+
+  fun loadMoreEpisodes() {
+    if (_uiState.value.loadingMore) return
+    val lastEpisode = _uiState.value.episodes.lastOrNull()
+    val nextDate = lastEpisode?.nextEpisodeAt
+    if (nextDate != null) {
+      loadEpisodes(nextDate)
     }
+  }
 
-    private fun loadPodcastDetails() {
-        combine(
-            podcastRepository.refresh(podcastId),
-            relatedPodcastRepository.refresh(podcastId)
-        ) { podcast, recommendations ->
-            podcast.copy(recommendations = recommendations.related)
-        }.onEach { podcast ->
-            _uiState.update { it.copy(loading = false, podcast = podcast) }
-            if (_uiState.value.episodes.isEmpty()) {
-                loadEpisodes()
-            }
-        }.catch { e ->
-            _uiState.update { it.copy(loading = false, errorMsg = e.message) }
-        }.launchIn(viewModelScope)
-    }
-
-    fun loadMoreEpisodes() {
-        if (_uiState.value.loadingMore) return
-        val lastEpisode = _uiState.value.episodes.lastOrNull()
-        val nextDate = lastEpisode?.nextEpisodeAt
-        if (nextDate != null) {
-            loadEpisodes(nextDate)
+  private fun loadEpisodes(nextEpisodeDate: Long? = null) {
+    _uiState.update { it.copy(loadingMore = true) }
+    episodeRepository.refresh(
+      EpisodeQueryParam(
+        podcastId = podcastId,
+        nextEpisodeDate = nextEpisodeDate
+      )
+    )
+      .onEach { newEpisodes ->
+        _uiState.update { state ->
+          state.copy(
+            loadingMore = false,
+            episodes = (state.episodes + newEpisodes).distinctBy { it.id }
+          )
         }
-    }
-
-    private fun loadEpisodes(nextEpisodeDate: Long? = null) {
-        _uiState.update { it.copy(loadingMore = true) }
-        episodeRepository.refresh(
-            EpisodeQueryParam(
-                podcastId = podcastId,
-                nextEpisodeDate = nextEpisodeDate
-            )
-        )
-            .onEach { newEpisodes ->
-                _uiState.update { state ->
-                    state.copy(
-                        loadingMore = false,
-                        episodes = (state.episodes + newEpisodes).distinctBy { it.id }
-                    )
-                }
-            }.catch { e ->
-                _uiState.update { it.copy(loadingMore = false, errorMsg = e.message) }
-            }
-            .launchIn(viewModelScope)
-    }
-
+      }.catch { e ->
+        _uiState.update { it.copy(loadingMore = false, errorMsg = e.message) }
+      }
+      .launchIn(viewModelScope)
+  }
 }
 
-
 internal data class PodcastDetailState(
-    val loading: Boolean = false,
-    val podcast: Podcast? = null,
-    val episodes: List<PodcastEpisode> = emptyList(),
-    val loadingMore: Boolean = false,
-    val errorMsg: String? = null
+  val loading: Boolean = false,
+  val podcast: Podcast? = null,
+  val episodes: List<PodcastEpisode> = emptyList(),
+  val loadingMore: Boolean = false,
+  val errorMsg: String? = null
 )

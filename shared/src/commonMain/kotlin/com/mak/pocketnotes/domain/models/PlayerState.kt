@@ -15,7 +15,7 @@ data class PlayerState(
   val repeatMode: RepeatMode = RepeatMode.NONE,
   val error: PlayerError? = null,
   val isSleepTimerActive: Boolean = false,
-  val sleepTimerRemainingMs: Long = 0L,
+  val sleepTimerRemainingMs: Long = 0L
 ) {
   /** 0f..1f scrubber position */
   val progress: Float
@@ -49,11 +49,11 @@ data class PlayerState(
 
 sealed interface PlayerError {
   data class NetworkError(
-    val message: String,
+    val message: String
   ) : PlayerError
 
   data class PlaybackError(
-    val message: String,
+    val message: String
   ) : PlayerError
 
   data object AudioFocusLost : PlayerError
@@ -64,5 +64,5 @@ sealed interface PlayerError {
 /** Carries the queue index alongside the episode so the UI can call skipToQueueItem. */
 data class IndexedEpisode(
   val index: Int,
-  val episode: PodcastEpisode,
+  val episode: PodcastEpisode
 )

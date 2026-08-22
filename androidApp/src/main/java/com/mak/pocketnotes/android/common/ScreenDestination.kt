@@ -59,7 +59,7 @@ object Settings : BottomDestination {
 
 @Serializable
 data class PodcastDetail(
-  @SerialName("podcast_id") val podcastId: String,
+  @SerialName("podcast_id") val podcastId: String
 ) : ScreenDestination {
   override val title: Int
     get() = R.string.podcast_details

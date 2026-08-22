@@ -25,48 +25,48 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun PodcastAppBar(
-    modifier: Modifier = Modifier,
-    canNavigateBack: Boolean = false,
-    currentScreen: ScreenDestination,
-    onNavigateBack: () -> Unit
+  modifier: Modifier = Modifier,
+  canNavigateBack: Boolean = false,
+  currentScreen: ScreenDestination,
+  onNavigateBack: () -> Unit
 ) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        tonalElevation = 4.dp,
-        color = MaterialTheme.colorScheme.primary
+  Surface(
+    modifier = modifier
+      .fillMaxWidth()
+      .height(56.dp),
+    tonalElevation = 4.dp,
+    color = MaterialTheme.colorScheme.primary
+  ) {
+    Row(
+      modifier = Modifier.padding(start = 8.dp),
+      verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(start = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AnimatedVisibility(visible = canNavigateBack) {
-                IconButton(onClick = onNavigateBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-                Spacer(modifier = Modifier.width(24.dp))
-            }
-            
-            Text(
-                modifier = Modifier.padding(12.dp),
-                text = stringResource(currentScreen.title),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+      AnimatedVisibility(visible = canNavigateBack) {
+        IconButton(onClick = onNavigateBack) {
+          Icon(
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onBackground
+          )
         }
+        Spacer(modifier = Modifier.width(24.dp))
+      }
+
+      Text(
+        modifier = Modifier.padding(12.dp),
+        text = stringResource(currentScreen.title),
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onSurface
+      )
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun PodcastAppBarPreview() {
-    PodcastAppBar(
-        currentScreen = PodcastDetail("some_id"),
-        onNavigateBack = {}
-    )
+  PodcastAppBar(
+    currentScreen = PodcastDetail("some_id"),
+    onNavigateBack = {}
+  )
 }

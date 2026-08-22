@@ -45,101 +45,101 @@ import com.mak.pocketnotes.utils.sample.sampleEpisodes
 // ─────────────────────────────────────────────────────────────────────────────
 @Composable
 internal fun CompactPlayer(
-    state: PlayerState,
-    onEvent: (PlayerEvent) -> Unit,
-    onShowQueue: () -> Unit,
-    modifier: Modifier = Modifier,
+  state: PlayerState,
+  onEvent: (PlayerEvent) -> Unit,
+  onShowQueue: () -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly,
+  Column(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(horizontal = 24.dp, vertical = 16.dp),
+    horizontalAlignment = Alignment.CenterHorizontally,
+    verticalArrangement = Arrangement.SpaceEvenly
+  ) {
+    NowPlayingArtwork(
+      artworkUrl = state.currentEpisode?.thumbnail,
+      isPlaying = state.isPlaying,
+      size = 260.dp
+    )
+
+    Spacer(Modifier.height(8.dp))
+
+    // Title + podcast
+    NowPlayingInfo(
+      episode = state.currentEpisode,
+      modifier = Modifier.fillMaxWidth()
+    )
+
+    Spacer(Modifier.height(8.dp))
+
+    // Scrubber
+    PlayerScrubber(
+      positionMs = state.positionMs,
+      durationMs = state.durationMs,
+      onSeekTo = {
+        onEvent(PlayerEvent.OnSeekTo(it))
+      },
+      modifier = Modifier.fillMaxWidth()
+    )
+
+    Spacer(Modifier.height(4.dp))
+
+    // Transport controls
+    PlayerControls(
+      isPlaying = state.isPlaying,
+      isLoading = state.isLoading,
+      hasNext = state.hasNext,
+      hasPrevious = state.hasPrevious,
+      onEvent = onEvent
+    )
+
+    // Secondary controls
+    SecondaryControls(
+      playbackSpeed = state.playbackSpeed,
+      isShuffleEnabled = state.isShuffleEnabled,
+      repeatMode = state.repeatMode,
+      onSetSpeed = {
+        onEvent(PlayerEvent.OnSetSpeed(it))
+      },
+      onToggleShuffle = {
+        onEvent(PlayerEvent.OnToggleShuffle)
+      },
+      onCycleRepeatMode = {
+        onEvent(PlayerEvent.OnCycleRepeatMode)
+      }
+    )
+
+    // Queue button
+    OutlinedButton(
+      onClick = onShowQueue,
+      modifier = Modifier.fillMaxWidth()
     ) {
-        NowPlayingArtwork(
-            artworkUrl = state.currentEpisode?.thumbnail,
-            isPlaying = state.isPlaying,
-            size = 260.dp,
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        // Title + podcast
-        NowPlayingInfo(
-            episode = state.currentEpisode,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        // Scrubber
-        PlayerScrubber(
-            positionMs = state.positionMs,
-            durationMs = state.durationMs,
-            onSeekTo = {
-                onEvent(PlayerEvent.OnSeekTo(it))
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        Spacer(Modifier.height(4.dp))
-
-        // Transport controls
-        PlayerControls(
-            isPlaying = state.isPlaying,
-            isLoading = state.isLoading,
-            hasNext = state.hasNext,
-            hasPrevious = state.hasPrevious,
-            onEvent = onEvent,
-        )
-
-        // Secondary controls
-        SecondaryControls(
-            playbackSpeed = state.playbackSpeed,
-            isShuffleEnabled = state.isShuffleEnabled,
-            repeatMode = state.repeatMode,
-            onSetSpeed = {
-                onEvent(PlayerEvent.OnSetSpeed(it))
-            },
-            onToggleShuffle = {
-                onEvent(PlayerEvent.OnToggleShuffle)
-            },
-            onCycleRepeatMode = {
-                onEvent(PlayerEvent.OnCycleRepeatMode)
-            },
-        )
-
-        // Queue button
-        OutlinedButton(
-            onClick = onShowQueue,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text(stringResource(R.string.queue_size, state.queue.size))
-        }
+      Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = null)
+      Spacer(Modifier.width(8.dp))
+      Text(stringResource(R.string.queue_size, state.queue.size))
     }
+  }
 }
 
 @Preview
 @ThemePreviews
 @Composable
 private fun CompactPlayerPreview() {
-    CompactPlayer(
-        state = PlayerState(
-            currentEpisode = sampleEpisodes[0],
-            queue = sampleEpisodes,
-            currentQueueIndex = 0,
-            isPlaying = true,
-            isLoading = false,
-            positionMs = 800_000L,
-            durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
-            playbackSpeed = 1.0f,
-            isShuffleEnabled = false,
-            repeatMode = RepeatMode.NONE
-        ),
-        onEvent = {},
-        onShowQueue = {}
-    )
+  CompactPlayer(
+    state = PlayerState(
+      currentEpisode = sampleEpisodes[0],
+      queue = sampleEpisodes,
+      currentQueueIndex = 0,
+      isPlaying = true,
+      isLoading = false,
+      positionMs = 800_000L,
+      durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+      playbackSpeed = 1.0f,
+      isShuffleEnabled = false,
+      repeatMode = RepeatMode.NONE
+    ),
+    onEvent = {},
+    onShowQueue = {}
+  )
 }

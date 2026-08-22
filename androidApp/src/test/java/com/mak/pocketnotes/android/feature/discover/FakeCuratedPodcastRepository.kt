@@ -20,7 +20,9 @@ class FakeCuratedPodcastRepository : CuratedPodcastRepository {
     return flowOf(sampleCuratedPodcasts)
   }
 
-  override fun refreshSection(param: CuratedPodcastsParam): Flow<SectionState<List<CuratedPodcast>>> {
+  override fun refreshSection(
+    param: CuratedPodcastsParam
+  ): Flow<SectionState<List<CuratedPodcast>>> {
     refreshCalls.tryEmit(param)
     return flowOf(sectionState)
   }

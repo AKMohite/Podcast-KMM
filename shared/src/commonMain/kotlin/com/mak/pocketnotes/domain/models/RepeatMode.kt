@@ -3,7 +3,7 @@ package com.mak.pocketnotes.domain.models
 enum class RepeatMode {
   NONE, // no repeat
   ONE, // loop current episode
-  ALL, // loop whole queue
+  ALL // loop whole queue
   ;
 
   fun next(): RepeatMode = entries[(ordinal + 1) % entries.size]

@@ -8,20 +8,19 @@ sealed interface SectionState<out T> {
 
   data class Success<T>(
     val data: T,
-    val isRefreshing: Boolean = false,
+    val isRefreshing: Boolean = false
   ) : SectionState<T>
 
   data object Empty : SectionState<Nothing>
 
   data class Error<T>(
     val type: ErrorType,
-    val cachedData: T? = null,
+    val cachedData: T? = null
   ) : SectionState<T>
 
-  fun isInFlight(): Boolean =
-    when (this) {
-      is Loading -> true
-      is Success -> isRefreshing
-      else -> false
-    }
+  fun isInFlight(): Boolean = when (this) {
+    is Loading -> true
+    is Success -> isRefreshing
+    else -> false
+  }
 }

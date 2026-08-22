@@ -9,14 +9,14 @@ val viewmodelModule =
   module {
     viewModel {
       WearTrendingPodcastsViewModel(
-        podcastRepository = get(),
+        podcastRepository = get()
       )
     }
     viewModel { params ->
       PodcastDetailViewModel(
         podcastRepository = get(),
         episodeRepository = get(),
-        podcastId = params.get(),
+        podcastId = params.get()
       )
     }
   }

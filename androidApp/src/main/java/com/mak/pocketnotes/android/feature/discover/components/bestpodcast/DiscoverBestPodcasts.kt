@@ -29,81 +29,80 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun DiscoverBestPodcasts(
-    modifier: Modifier = Modifier,
-    gotoDetails: (String) -> Unit,
-    podcasts: List<Podcast>,
-    sizeClass: WindowSizeClass
+  modifier: Modifier = Modifier,
+  gotoDetails: (String) -> Unit,
+  podcasts: List<Podcast>,
+  sizeClass: WindowSizeClass
 ) {
-
-    when{
-        sizeClass.isExpanded() -> DiscoverBestPodcastsExpanded(
-            modifier,
-            gotoDetails,
-            podcasts.take(10)
-        )
-        sizeClass.isMedium() -> DiscoverBestPodcastsMedium(
-            modifier,
-            gotoDetails,
-            podcasts
-        )
-        else -> DiscoverBestPodcastsCompact(
-            modifier,
-            gotoDetails,
-            podcasts,
-            sizeClass
-        )
-    }
+  when {
+    sizeClass.isExpanded() -> DiscoverBestPodcastsExpanded(
+      modifier,
+      gotoDetails,
+      podcasts.take(10)
+    )
+    sizeClass.isMedium() -> DiscoverBestPodcastsMedium(
+      modifier,
+      gotoDetails,
+      podcasts
+    )
+    else -> DiscoverBestPodcastsCompact(
+      modifier,
+      gotoDetails,
+      podcasts,
+      sizeClass
+    )
+  }
 }
 
 @Composable
 internal fun PodcastColumn(
-    title: String,
-    publisher: String,
-    image: String,
-    modifier: Modifier = Modifier
+  title: String,
+  publisher: String,
+  image: String,
+  modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        AsyncImage(
-            model = image,
-            contentDescription = title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(MaterialTheme.shapes.small),
-            placeholder = debugPlaceholder()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Bold,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = publisher,
-            style = MaterialTheme.typography.labelSmall,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
+  Column(
+    modifier = modifier
+  ) {
+    AsyncImage(
+      model = image,
+      contentDescription = title,
+      contentScale = ContentScale.Crop,
+      modifier = Modifier
+        .fillMaxWidth()
+        .aspectRatio(1f)
+        .clip(MaterialTheme.shapes.small),
+      placeholder = debugPlaceholder()
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+      text = title,
+      style = MaterialTheme.typography.bodySmall,
+      fontWeight = FontWeight.Bold,
+      maxLines = 2,
+      overflow = TextOverflow.Ellipsis
+    )
+    Text(
+      text = publisher,
+      style = MaterialTheme.typography.labelSmall,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+      color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+  }
 }
 
 @Preview
 @PreviewScreenSizes
 @Composable
 private fun DiscoverBestPodcastsPreview() {
-    PocketNotesTheme {
-        Surface {
-            DiscoverBestPodcasts(
-                podcasts = samplePodcasts.take(8),
-                gotoDetails = {},
-                sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
-            )
-        }
+  PocketNotesTheme {
+    Surface {
+      DiscoverBestPodcasts(
+        podcasts = samplePodcasts.take(8),
+        gotoDetails = {},
+        sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
+      )
     }
+  }
 }

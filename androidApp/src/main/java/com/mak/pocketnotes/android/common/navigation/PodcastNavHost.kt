@@ -20,39 +20,39 @@ import com.mak.pocketnotes.android.feature.settings.settingsEntry
 
 @Composable
 internal fun PodcastNavDisplay(
-    navigationState: NavigationState,
-    navigator: Navigator,
-    modifier: Modifier = Modifier,
+  navigationState: NavigationState,
+  navigator: Navigator,
+  modifier: Modifier = Modifier
 ) {
-    val entryProvider : (NavKey) -> NavEntry<NavKey> = entryProvider {
-        discoverEntry(navigator)
+  val entryProvider: (NavKey) -> NavEntry<NavKey> = entryProvider {
+    discoverEntry(navigator)
 
-        podcastDetailEntry(navigator)
+    podcastDetailEntry(navigator)
 
-        nowPlayingEntry(navigator)
+    nowPlayingEntry(navigator)
 
-        searchEntry(navigator)
+    searchEntry(navigator)
 
-        playQueueEntry(navigator)
+    playQueueEntry(navigator)
 
-        entry<Subscribed> {
-            EmptyScreen(Subscribed.title)
-        }
-
-        settingsEntry()
+    entry<Subscribed> {
+      EmptyScreen(Subscribed.title)
     }
 
-    NavDisplay(
-        modifier = modifier,
-        entries = navigationState.toEntries(entryProvider),
-        onBack = { navigator.goBack() }
-    )
+    settingsEntry()
+  }
+
+  NavDisplay(
+    modifier = modifier,
+    entries = navigationState.toEntries(entryProvider),
+    onBack = { navigator.goBack() }
+  )
 }
 
-
 @Composable
-internal fun EmptyScreen(
-    @StringRes title: Int
-) {
-    Text(text = "${stringResource(id = title)} Work in progress", style = MaterialTheme.typography.headlineSmall)
+internal fun EmptyScreen(@StringRes title: Int) {
+  Text(
+    text = "${stringResource(id = title)} Work in progress",
+    style = MaterialTheme.typography.headlineSmall
+  )
 }

@@ -19,48 +19,52 @@ import com.mak.pocketnotes.android.feature.player.v2.PlayerTestTags
 
 @Composable
 internal fun PlayerScrubber(
-    positionMs: Long,
-    durationMs: Long,
-    onSeekTo: (Long) -> Unit,
-    modifier: Modifier = Modifier,
+  positionMs: Long,
+  durationMs: Long,
+  onSeekTo: (Long) -> Unit,
+  modifier: Modifier = Modifier
 ) {
-    // Local drag state — don't update positionMs while user is dragging
-    var isDragging by remember { mutableStateOf(false) }
-    var dragValue by remember { mutableFloatStateOf(0f) }
+  // Local drag state — don't update positionMs while user is dragging
+  var isDragging by remember { mutableStateOf(false) }
+  var dragValue by remember { mutableFloatStateOf(0f) }
 
-    val displayProgress = if (isDragging) dragValue
-    else if (durationMs > 0L) positionMs.toFloat() / durationMs.toFloat()
-    else 0f
+  val displayProgress = if (isDragging) {
+    dragValue
+  } else if (durationMs > 0L) {
+    positionMs.toFloat() / durationMs.toFloat()
+  } else {
+    0f
+  }
 
-    Column(modifier = modifier) {
-        Slider(
-            value = displayProgress,
-            onValueChange = { value ->
-                isDragging = true
-                dragValue = value
-            },
-            onValueChangeFinished = {
-                onSeekTo((dragValue * durationMs).toLong())
-                isDragging = false
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag(PlayerTestTags.SCRUBBER),
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = formatDuration(positionMs),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = formatDuration(durationMs),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+  Column(modifier = modifier) {
+    Slider(
+      value = displayProgress,
+      onValueChange = { value ->
+        isDragging = true
+        dragValue = value
+      },
+      onValueChangeFinished = {
+        onSeekTo((dragValue * durationMs).toLong())
+        isDragging = false
+      },
+      modifier = Modifier
+        .fillMaxWidth()
+        .testTag(PlayerTestTags.SCRUBBER)
+    )
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+      Text(
+        text = formatDuration(positionMs),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+      Text(
+        text = formatDuration(durationMs),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
     }
+  }
 }

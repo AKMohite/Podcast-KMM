@@ -10,15 +10,12 @@ import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mak.pocketnotes.android.R
 
-internal fun discoverRobot(
-  rule: ComposeContentTestRule,
-  block: DiscoverRobot.() -> Unit,
-) {
+internal fun discoverRobot(rule: ComposeContentTestRule, block: DiscoverRobot.() -> Unit) {
   DiscoverRobot(rule).block()
 }
 
 internal class DiscoverRobot(
-  private val rule: ComposeContentTestRule,
+  private val rule: ComposeContentTestRule
 ) {
   private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
@@ -26,50 +23,43 @@ internal class DiscoverRobot(
     state: DiscoverScreenState,
     gotoDetails: (String) -> Unit = {},
     refreshPodcasts: () -> Unit = {},
-    onErrorConsumed: () -> Unit = {},
+    onErrorConsumed: () -> Unit = {}
   ) = apply {
     rule.setContent {
       DiscoverScreen(
         state = state,
         gotoDetails = gotoDetails,
         refreshPodcasts = refreshPodcasts,
-        onErrorConsumed = onErrorConsumed,
+        onErrorConsumed = onErrorConsumed
       )
     }
   }
 
-  fun assertShimmerVisible() =
-    apply {
-      rule.onNodeWithTag(DiscoverScreenTestTag.SHIMMER).assertIsDisplayed()
-    }
+  fun assertShimmerVisible() = apply {
+    rule.onNodeWithTag(DiscoverScreenTestTag.SHIMMER).assertIsDisplayed()
+  }
 
-  fun assertShimmerDoesNotExist() =
-    apply {
-      rule.onNodeWithTag(DiscoverScreenTestTag.SHIMMER).assertDoesNotExist()
-    }
+  fun assertShimmerDoesNotExist() = apply {
+    rule.onNodeWithTag(DiscoverScreenTestTag.SHIMMER).assertDoesNotExist()
+  }
 
-  fun assertContentVisible() =
-    apply {
-      rule.onNodeWithTag(DiscoverScreenTestTag.CONTENT).assertIsDisplayed()
-    }
+  fun assertContentVisible() = apply {
+    rule.onNodeWithTag(DiscoverScreenTestTag.CONTENT).assertIsDisplayed()
+  }
 
-  fun assertContentDoesNotExist() =
-    apply {
-      rule.onNodeWithTag(DiscoverScreenTestTag.CONTENT).assertDoesNotExist()
-    }
+  fun assertContentDoesNotExist() = apply {
+    rule.onNodeWithTag(DiscoverScreenTestTag.CONTENT).assertDoesNotExist()
+  }
 
-  fun assertPodcastVisible(title: String) =
-    apply {
-      rule.onAllNodesWithText(title).onFirst().assertIsDisplayed()
-    }
+  fun assertPodcastVisible(title: String) = apply {
+    rule.onAllNodesWithText(title).onFirst().assertIsDisplayed()
+  }
 
-  fun assertRetryVisible() =
-    apply {
-      rule.onNodeWithText(context.getString(R.string.action_retry)).assertIsDisplayed()
-    }
+  fun assertRetryVisible() = apply {
+    rule.onNodeWithText(context.getString(R.string.action_retry)).assertIsDisplayed()
+  }
 
-  fun clickRetry() =
-    apply {
-      rule.onNodeWithText(context.getString(R.string.action_retry)).performClick()
-    }
+  fun clickRetry() = apply {
+    rule.onNodeWithText(context.getString(R.string.action_retry)).performClick()
+  }
 }
