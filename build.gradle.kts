@@ -4,33 +4,67 @@ plugins {
     alias(libs.plugins.androidKMMLibrary).apply(false)
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.compose.compiler).apply(false)
-    alias(libs.plugins.detekt) apply false
-    alias(libs.plugins.android.test) apply false
-    alias(libs.plugins.baselineprofile) apply false
+  alias(libs.plugins.detekt).apply(false)
+  alias(libs.plugins.android.test).apply(false)
+  alias(libs.plugins.baselineprofile).apply(false)
     alias(libs.plugins.kotlinxSerialization).apply(false)
     alias(libs.plugins.sqldelight).apply(false)
     alias(libs.plugins.skie).apply(false)
+  alias(libs.plugins.spotless).apply(false)
+}
+
+allprojects {
+  pluginManager.apply(rootProject.libs.plugins.spotless.get().pluginId)
+
+  extensions.configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    kotlin {
+      target("**/*.kt")
+      targetExclude("**/build/**/*.kt")
+      ktlint()
+    }
+    kotlinGradle {
+      target("*.gradle.kts")
+      ktlint()
+    }
+    format("xml") {
+      target("**/*.xml")
+      targetExclude("**/build/**/*.xml")
+      leadingTabsToSpaces()
+      trimTrailingWhitespace()
+      endWithNewline()
+    }
+    format("misc") {
+      target("**/*.md", "**/*.yaml", "**/*.yml", "**/*.properties", "**/*.json", "**/.gitignore")
+      targetExclude("**/build/**")
+      leadingTabsToSpaces()
+      trimTrailingWhitespace()
+      endWithNewline()
+    }
+    }
+
+  // Disable automatic check during build
+  tasks.whenTaskAdded {
+    if (name == "spotlessCheck") {
+      enabled = false
+    }
+    }
 }
 
 subprojects {
-//    region detekt
-    apply(plugin = rootProject.libs.plugins.detekt.get().pluginId)
+  pluginManager.apply(rootProject.libs.plugins.detekt.get().pluginId)
 
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt> {
         config.setFrom(files("${rootProject.projectDir}/config/detekt/detekt.yml"))
-//        baseline.set(file("${rootProject.projectDir}/config/detekt/baseline.xml"))
-//        debug = true
         reports {
-            html.required.set(true) // observe findings in your browser with structure and code snippets
-            xml.required.set(true) // checkstyle like format mainly for integrations like Jenkins
-            txt.required.set(true) // similar to the console output, contains issue signature to manually edit baseline files
-            sarif.required.set(true) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with Github Code Scanning
-            md.required.set(true) // simple Markdown format
+          html.required.set(true)
+          xml.required.set(true)
+          txt.required.set(true)
+          sarif.required.set(true)
+          md.required.set(true)
         }
     }
-//    endregion
 }
 
-tasks.register("clean", Delete::class) {
+tasks.named("clean", Delete::class) {
     delete(rootProject.layout.buildDirectory)
 }

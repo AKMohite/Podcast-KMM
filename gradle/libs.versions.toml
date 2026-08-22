@@ -40,6 +40,7 @@ benchmarkMacroJunit4 = "1.4.1"
 baselineprofile = "1.5.0-alpha06"
 turbine = "1.2.1"
 junit4 = "4.13.2"
+spotless = "8.10.0"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -119,3 +120,4 @@ baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprof
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
