@@ -12,6 +12,7 @@ plugins {
   alias(libs.plugins.skie).apply(false)
   alias(libs.plugins.spotless).apply(false)
   alias(libs.plugins.kover).apply(false)
+  alias(libs.plugins.dokka).apply(false)
 }
 
 allprojects {
@@ -25,11 +26,21 @@ allprojects {
       .get()
       .pluginId
   )
+  pluginManager.apply(
+    rootProject.libs.plugins.dokka
+      .get()
+      .pluginId
+  )
 
   extensions.configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
       target("**/*.kt")
-      targetExclude("**/build/**/*.kt", "**/devastation/**/*.kt")
+      targetExclude(
+        "**/build/**/*.kt",
+        "**/devastation/**/*.kt",
+        "**/.idea/**/*.kt",
+        "**/.kotlin/**/*.kt"
+      )
       ktlint(libs.versions.ktlint.get()).editorConfigOverride(
         mapOf(
           "ktlint_code_style" to "android_studio",
@@ -47,14 +58,14 @@ allprojects {
     }
     format("xml") {
       target("**/*.xml")
-      targetExclude("**/build/**/*.xml", "**/devastation/**/*.xml")
+      targetExclude("**/build/**/*.xml", "**/devastation/**/*.xml", "**/.idea/**/*.xml")
       leadingTabsToSpaces()
       trimTrailingWhitespace()
       endWithNewline()
     }
     format("misc") {
       target("**/*.md", "**/*.yaml", "**/*.yml", "**/*.properties", "**/*.json", "**/.gitignore")
-      targetExclude("**/build/**", "**/devastation/**")
+      targetExclude("**/build/**", "**/devastation/**", "**/.idea/**", "**/.kotlin/**")
       leadingTabsToSpaces()
       trimTrailingWhitespace()
       endWithNewline()
@@ -82,6 +93,11 @@ allprojects {
 subprojects {
   pluginManager.apply(
     rootProject.libs.plugins.detekt
+      .get()
+      .pluginId
+  )
+  pluginManager.apply(
+    rootProject.libs.plugins.dokka
       .get()
       .pluginId
   )
