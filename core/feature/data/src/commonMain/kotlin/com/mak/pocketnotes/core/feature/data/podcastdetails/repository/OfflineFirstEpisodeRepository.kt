@@ -85,6 +85,7 @@ class OfflineFirstEpisodeRepository(
       api = api,
       episodeDAO = episodeDAO,
       pagingKeysDAO = pagingKeysDAO,
+      lastSyncDAO = lastSyncDAO,
       transactionRunner = transactionRunner,
       mapper = mapper,
       dispatcher = dispatcher
@@ -150,6 +151,7 @@ internal expect fun createEpisodePager(
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,
   pagingKeysDAO: EpisodePagingKeysDAO,
+  lastSyncDAO: LastSyncDAO,
   transactionRunner: DatabaseTransactionRunner,
   mapper: PodcastMapper,
   dispatcher: DispatcherProvider

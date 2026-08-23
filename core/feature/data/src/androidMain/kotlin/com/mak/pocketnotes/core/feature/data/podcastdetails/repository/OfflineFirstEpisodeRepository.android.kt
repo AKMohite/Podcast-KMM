@@ -10,6 +10,7 @@ import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
 import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
+import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
@@ -22,6 +23,7 @@ internal actual fun createEpisodePager(
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,
   pagingKeysDAO: EpisodePagingKeysDAO,
+  lastSyncDAO: LastSyncDAO,
   transactionRunner: DatabaseTransactionRunner,
   mapper: PodcastMapper,
   dispatcher: DispatcherProvider
@@ -36,6 +38,7 @@ internal actual fun createEpisodePager(
       api = api,
       episodeDAO = episodeDAO,
       pagingKeysDAO = pagingKeysDAO,
+      lastSyncDAO = lastSyncDAO,
       transactionRunner = transactionRunner,
       mapper = mapper
     ),

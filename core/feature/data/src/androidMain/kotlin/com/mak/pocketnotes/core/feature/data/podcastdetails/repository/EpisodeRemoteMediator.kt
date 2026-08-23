@@ -4,12 +4,15 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
 import com.mak.pocketnotes.core.database.dao.EpisodeEntity
 import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
+import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
 
 @OptIn(ExperimentalPagingApi::class)
@@ -18,9 +21,24 @@ class EpisodeRemoteMediator(
   private val api: PocketNotesAPI,
   private val episodeDAO: EpisodeDAO,
   private val pagingKeysDAO: EpisodePagingKeysDAO,
+  private val lastSyncDAO: LastSyncDAO,
   private val transactionRunner: DatabaseTransactionRunner,
   private val mapper: PodcastMapper
 ) : RemoteMediator<Int, EpisodeEntity>() {
+
+  override suspend fun initialize(): InitializeAction {
+    val isFresh = lastSyncDAO.isRequestValid(
+      requestType = SyncRequest.PODCAST_EPISODES,
+      entityId = podcastId,
+      threshold = 1.days
+    )
+
+    return if (isFresh) {
+      InitializeAction.SKIP_INITIAL_REFRESH
+    } else {
+      InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
+  }
 
   override suspend fun load(
     loadType: LoadType,
@@ -63,6 +81,9 @@ class EpisodeRemoteMediator(
           podcastId,
           nextDate?.let { Instant.fromEpochMilliseconds(it) }
         )
+        if (loadType == LoadType.REFRESH) {
+          lastSyncDAO.insertLastSync(SyncRequest.PODCAST_EPISODES, podcastId)
+        }
       }
 
       MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
