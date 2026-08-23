@@ -143,20 +143,22 @@ class PodcastMapper {
 
   fun episodeEntityToModels(entities: List<EpisodeEntity>): List<PodcastEpisode> =
     entities.map { entity ->
-      with(entity) {
-        PodcastEpisode(
-          id = id,
-          title = title,
-          description = description,
-          image = image,
-          listennotesUrl = listen_notes_url,
-          thumbnail = thumbnail,
-          uploadedAt = published_on.toEpochMilliseconds(),
-          nextEpisodeAt = next_episode_published_on?.toEpochMilliseconds(),
-          audio = audio,
-          duration = audio_length.toInt(),
-          podcastId = podcast_id
-        )
-      }
+      episodeEntityToModel(entity)
     }
+
+  fun episodeEntityToModel(entity: EpisodeEntity): PodcastEpisode = with(entity) {
+    PodcastEpisode(
+      id = id,
+      title = title,
+      description = description,
+      image = image,
+      listennotesUrl = listen_notes_url,
+      thumbnail = thumbnail,
+      uploadedAt = published_on.toEpochMilliseconds(),
+      nextEpisodeAt = next_episode_published_on?.toEpochMilliseconds(),
+      audio = audio,
+      duration = audio_length.toInt(),
+      podcastId = podcast_id
+    )
+  }
 }

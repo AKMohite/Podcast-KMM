@@ -55,7 +55,7 @@ internal actual fun createEpisodePager(
       )
     }
   ).flow.map { pagingData ->
-    pagingData.map { mapper.episodeEntityToModels(listOf(it)).first() }
+    pagingData.map { mapper.episodeEntityToModel(it) }
   }
 }
 
@@ -103,6 +103,6 @@ internal actual fun createEpisodePagerV2(
       )
     }
   ).flow.map { pagingData ->
-    pagingData.map { mapper.episodeEntityToModels(listOf(it)).first() }
+    pagingData.map { mapper.episodeEntityToModel(it) }
   }
 }
