@@ -55,16 +55,16 @@ data class PodcastDTO(
   val image: String? = null,
   @SerialName("is_claimed")
   val isClaimed: Boolean? = null,
-  @SerialName("itunes_id")
-  val itunesId: Int? = null,
+//  @SerialName("itunes_id")
+//  val itunesId: Int? = null, // for pro version it will return string else it will return int
   @SerialName("language")
   val language: String? = null,
   @SerialName("latest_episode_id")
   val latestEpisodeId: String? = null,
   @SerialName("latest_pub_date_ms")
   val latestPubDateMs: Long? = null,
-  @SerialName("listen_score")
-  val listenScore: Int? = null, // for pro version it will return int else it will return string
+//  @SerialName("listen_score")
+//  val listenScore: Int? = null, // for pro version it will return int else it will return string
   @SerialName("listen_score_global_rank")
   val listenScoreGlobalRank: String? = null,
   @SerialName("listennotes_url")

@@ -3,6 +3,7 @@ package com.mak.pocketnotes.core.remote.di
 import com.mak.pocketnotes.core.common.exception.ExceptionType
 import com.mak.pocketnotes.core.common.exception.PocketAPIException
 import com.mak.pocketnotes.core.common.exception.UnknownAPIException
+import com.mak.pocketnotes.core.remote.SecretConstant
 import com.mak.pocketnotes.core.remote.dto.ErrorDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -95,7 +96,7 @@ private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? = tr
 }
 
 // const val a = BuildCo
-private const val API_HOST = "listen-api-test.listennotes.com"
+//private const val API_HOST = "listen-api-test.listennotes.com"
 
-// private const val API_HOST = "listen-api.listennotes.com"
-private const val API_KEY = ""
+private const val API_HOST = "listen-api.listennotes.com"
+private const val API_KEY = SecretConstant.API_KEY

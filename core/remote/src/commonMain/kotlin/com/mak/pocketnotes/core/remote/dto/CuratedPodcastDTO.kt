@@ -9,8 +9,8 @@ data class CuratedPodcastDTO(
   val id: String? = null,
   @SerialName("image")
   val image: String? = null,
-  @SerialName("listen_score")
-  val listenScore: Int? = null,
+//  @SerialName("listen_score")
+//  val listenScore: Int? = null, // for pro version it will return string else it will return int
   @SerialName("listen_score_global_rank")
   val listenScoreGlobalRank: String? = null,
   @SerialName("listennotes_url")
