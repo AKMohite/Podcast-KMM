@@ -47,6 +47,7 @@ val coreDataModule =
         transactionRunner = get(),
         podcastDAO = get(),
         episodeDAO = get(),
+        pagingKeysDAO = get(),
         lastSyncDAO = get(),
         dispatcher = get(),
         mapper = get()

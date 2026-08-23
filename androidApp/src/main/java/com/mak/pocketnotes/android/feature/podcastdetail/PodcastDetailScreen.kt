@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -266,6 +267,19 @@ private fun PodcastDetailCompact(
             )
           }
         }
+
+      if (episodes.loadState.append is LoadState.Loading) {
+        item {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(16.dp),
+            contentAlignment = Alignment.Center
+          ) {
+            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+          }
+        }
+      }
     }
 }
 
@@ -370,7 +384,20 @@ private fun PodcastDetailExpanded(
                 modifier = Modifier.fillMaxWidth()
               )
             }
+          }
+
+          if (episodes.loadState.append is LoadState.Loading) {
+            item {
+              Box(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(16.dp),
+                contentAlignment = Alignment.Center
+              ) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+              }
             }
+          }
         }
 
         // Supporting Pane: Recommendations

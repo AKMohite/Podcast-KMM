@@ -49,10 +49,8 @@ class EpisodeRemoteMediator(
         LoadType.REFRESH -> null
         LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
         LoadType.APPEND -> {
-          val remoteKeys =
-            pagingKeysDAO.getNextEpisodeDate(podcastId) ?: return MediatorResult.Success(
-              endOfPaginationReached = true
-            )
+          val remoteKeys = pagingKeysDAO.getNextEpisodeDate(podcastId)
+            ?: return MediatorResult.Success(endOfPaginationReached = true)
           remoteKeys
         }
       }
@@ -66,8 +64,7 @@ class EpisodeRemoteMediator(
       val episodes = response.episodes ?: emptyList()
       val nextDate = response.nextEpisodeDate
 
-      val endOfPaginationReached =
-        episodes.isEmpty() || nextDate == null || episodes.any { it.pubDateMs == nextDate }
+      val endOfPaginationReached = episodes.isEmpty() || nextDate == null
 
       transactionRunner {
         if (loadType == LoadType.REFRESH) {

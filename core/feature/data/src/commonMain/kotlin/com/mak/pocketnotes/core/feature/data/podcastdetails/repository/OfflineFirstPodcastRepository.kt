@@ -4,6 +4,7 @@ import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
+import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
@@ -12,6 +13,7 @@ import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
@@ -29,6 +31,7 @@ internal class OfflineFirstPodcastRepository(
   private val transactionRunner: DatabaseTransactionRunner,
   private val podcastDAO: PodcastDAO,
   private val episodeDAO: EpisodeDAO,
+  private val pagingKeysDAO: EpisodePagingKeysDAO,
   private val lastSyncDAO: LastSyncDAO,
   private val dispatcher: DispatcherProvider,
   private val mapper: PodcastMapper
@@ -93,6 +96,7 @@ internal class OfflineFirstPodcastRepository(
     withContext(dispatcher.io) {
       transactionRunner {
         podcastDAO.insertPodcast(mapper.jsonToEntity(dto))
+        // TODO Episodes must be fetched and saved in remote mediator only?
         val episodes =
           mapper.mapEpisodeEntities(
             dto.episodes,
@@ -100,6 +104,10 @@ internal class OfflineFirstPodcastRepository(
             dto.nextEpisodeDate
           )
         episodeDAO.insertEpisodes(episodes)
+        pagingKeysDAO.insertKey(
+          podcastId,
+          dto.nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) }
+        )
         lastSyncDAO.insertLastSync(
           SyncRequest.PODCAST_DETAILS,
           podcastId
