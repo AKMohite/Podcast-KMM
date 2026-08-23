@@ -52,6 +52,15 @@ internal class SQLDelightEpisodeDAO(
 
   override fun countEpisodes(podcastId: String): Query<Long> = dbQuery.countEpisodes(podcastId)
 
+  override fun getEpisodesKeyset(
+    podcastId: String,
+    lastTimestamp: Instant,
+    limit: Long
+  ): Query<EpisodeEntity> = dbQuery.getEpisodesKeyset(podcastId, lastTimestamp, limit)
+
+  override fun getEpisodesInitial(podcastId: String, limit: Long): Query<EpisodeEntity> =
+    dbQuery.getEpisodesInitial(podcastId, limit)
+
   override fun removeEpisodes(podcastId: String) {
     dbQuery.deleteWithId(podcastId)
   }
@@ -79,6 +88,14 @@ interface EpisodeDAO {
   fun getEpisodesPaginated(podcastId: String, limit: Long, offset: Long): Query<EpisodeEntity>
 
   fun countEpisodes(podcastId: String): Query<Long>
+
+  fun getEpisodesKeyset(
+    podcastId: String,
+    lastTimestamp: Instant,
+    limit: Long
+  ): Query<EpisodeEntity>
+
+  fun getEpisodesInitial(podcastId: String, limit: Long): Query<EpisodeEntity>
 
   fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
 

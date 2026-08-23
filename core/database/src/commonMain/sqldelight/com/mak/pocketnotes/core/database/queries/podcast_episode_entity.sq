@@ -28,6 +28,19 @@ SELECT * FROM episodes WHERE podcast_id = :podcastId ORDER BY published_on DESC 
 countEpisodes:
 SELECT count(*) FROM episodes WHERE podcast_id = :podcastId;
 
+getEpisodesKeyset:
+SELECT * FROM episodes
+WHERE podcast_id = :podcastId
+AND published_on < :lastTimestamp
+ORDER BY published_on DESC
+LIMIT :limit;
+
+getEpisodesInitial:
+SELECT * FROM episodes
+WHERE podcast_id = :podcastId
+ORDER BY published_on DESC
+LIMIT :limit;
+
 deleteWithId:
 DELETE FROM episodes WHERE podcast_id =:podcastId;
 

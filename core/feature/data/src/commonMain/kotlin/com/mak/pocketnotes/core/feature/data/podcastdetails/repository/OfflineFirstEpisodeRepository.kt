@@ -91,6 +91,18 @@ class OfflineFirstEpisodeRepository(
       dispatcher = dispatcher
     )
 
+  override fun getEpisodesPagingV2(podcastId: String): Flow<PagingData<PodcastEpisode>> =
+    createEpisodePagerV2(
+      podcastId = podcastId,
+      api = api,
+      episodeDAO = episodeDAO,
+      pagingKeysDAO = pagingKeysDAO,
+      lastSyncDAO = lastSyncDAO,
+      transactionRunner = transactionRunner,
+      mapper = mapper,
+      dispatcher = dispatcher
+    )
+
   private suspend fun isDataFresh(episodes: List<PodcastEpisode>): Boolean =
     withContext(dispatcher.io) {
       if (episodes.isEmpty()) return@withContext false
@@ -147,6 +159,17 @@ class OfflineFirstEpisodeRepository(
 }
 
 internal expect fun createEpisodePager(
+  podcastId: String,
+  api: PocketNotesAPI,
+  episodeDAO: EpisodeDAO,
+  pagingKeysDAO: EpisodePagingKeysDAO,
+  lastSyncDAO: LastSyncDAO,
+  transactionRunner: DatabaseTransactionRunner,
+  mapper: PodcastMapper,
+  dispatcher: DispatcherProvider
+): Flow<PagingData<PodcastEpisode>>
+
+internal expect fun createEpisodePagerV2(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,

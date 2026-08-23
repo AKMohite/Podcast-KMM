@@ -26,3 +26,16 @@ internal actual fun createEpisodePager(
   // Returning empty flow for now.
   return flowOf(PagingData.empty())
 }
+
+internal actual fun createEpisodePagerV2(
+  podcastId: String,
+  api: PocketNotesAPI,
+  episodeDAO: EpisodeDAO,
+  pagingKeysDAO: EpisodePagingKeysDAO,
+  lastSyncDAO: LastSyncDAO,
+  transactionRunner: DatabaseTransactionRunner,
+  mapper: PodcastMapper,
+  dispatcher: DispatcherProvider
+): Flow<PagingData<PodcastEpisode>> {
+  return flowOf(PagingData.empty())
+}

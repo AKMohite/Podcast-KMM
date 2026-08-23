@@ -11,4 +11,6 @@ interface EpisodeRepository {
   fun observeEpisodes(params: EpisodeQueryParam): Flow<List<PodcastEpisode>>
 
   fun getEpisodesPaging(podcastId: String): Flow<PagingData<PodcastEpisode>>
+
+  fun getEpisodesPagingV2(podcastId: String): Flow<PagingData<PodcastEpisode>>
 }

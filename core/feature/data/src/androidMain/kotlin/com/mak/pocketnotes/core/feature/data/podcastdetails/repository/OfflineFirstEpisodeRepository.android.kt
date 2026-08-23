@@ -56,3 +56,40 @@ internal actual fun createEpisodePager(
     pagingData.map { mapper.episodeEntityToModels(listOf(it)).first() }
   }
 }
+
+@OptIn(ExperimentalPagingApi::class)
+internal actual fun createEpisodePagerV2(
+  podcastId: String,
+  api: PocketNotesAPI,
+  episodeDAO: EpisodeDAO,
+  pagingKeysDAO: EpisodePagingKeysDAO,
+  lastSyncDAO: LastSyncDAO,
+  transactionRunner: DatabaseTransactionRunner,
+  mapper: PodcastMapper,
+  dispatcher: DispatcherProvider
+): Flow<PagingData<PodcastEpisode>> {
+  return Pager(
+    config = PagingConfig(
+      pageSize = 10,
+      enablePlaceholders = false
+    ),
+    remoteMediator = EpisodeKeysetRemoteMediator(
+      podcastId = podcastId,
+      api = api,
+      episodeDAO = episodeDAO,
+      pagingKeysDAO = pagingKeysDAO,
+      lastSyncDAO = lastSyncDAO,
+      transactionRunner = transactionRunner,
+      mapper = mapper
+    ),
+    pagingSourceFactory = {
+      EpisodeKeysetPagingSource(
+        episodeDAO = episodeDAO,
+        podcastId = podcastId,
+        dispatcher = dispatcher
+      )
+    }
+  ).flow.map { pagingData ->
+    pagingData.map { mapper.episodeEntityToModels(listOf(it)).first() }
+  }
+}
