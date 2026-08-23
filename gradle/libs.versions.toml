@@ -89,6 +89,7 @@ ios-sql-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "
 sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-paging = { module = "app.cash.sqldelight:androidx-paging3-extensions", version.ref = "sqldelight" }
 sqldelight-primitive = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
+sqldelight-sqlite-dialect = { module = "app.cash.sqldelight:sqlite-3-35-dialect", version.ref = "sqldelight" }
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidPaging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidPaging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidPaging" }

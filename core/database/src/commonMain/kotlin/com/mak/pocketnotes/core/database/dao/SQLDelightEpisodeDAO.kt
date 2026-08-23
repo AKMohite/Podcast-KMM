@@ -61,6 +61,19 @@ internal class SQLDelightEpisodeDAO(
   override fun getEpisodesInitial(podcastId: String, limit: Long): Query<EpisodeEntity> =
     dbQuery.getEpisodesInitial(podcastId, limit)
 
+  override fun getEpisodePageBoundaries(
+    podcastId: String,
+    anchor: Instant?,
+    limit: Long
+  ): Query<Instant> =
+    dbQuery.getEpisodePageBoundaries(limit = limit, anchor = anchor, podcastId = podcastId)
+
+  override fun getEpisodesByBoundary(
+    podcastId: String,
+    beginInclusive: Instant,
+    endExclusive: Instant?
+  ): Query<EpisodeEntity> = dbQuery.getEpisodesByBoundary(podcastId, beginInclusive, endExclusive)
+
   override fun removeEpisodes(podcastId: String) {
     dbQuery.deleteWithId(podcastId)
   }
@@ -96,6 +109,14 @@ interface EpisodeDAO {
   ): Query<EpisodeEntity>
 
   fun getEpisodesInitial(podcastId: String, limit: Long): Query<EpisodeEntity>
+
+  fun getEpisodePageBoundaries(podcastId: String, anchor: Instant?, limit: Long): Query<Instant>
+
+  fun getEpisodesByBoundary(
+    podcastId: String,
+    beginInclusive: Instant,
+    endExclusive: Instant?
+  ): Query<EpisodeEntity>
 
   fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
 

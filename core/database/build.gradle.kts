@@ -96,6 +96,7 @@ sqldelight {
   databases {
     create("PocketDatabase") {
       packageName.set("com.mak.pocketnotes.core.database.queries")
+      dialect(libs.sqldelight.sqlite.dialect)
     }
   }
 }

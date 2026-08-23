@@ -9,11 +9,13 @@ import app.cash.sqldelight.paging3.QueryPagingSource
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
+import com.mak.pocketnotes.core.database.dao.EpisodeEntity
 import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -71,6 +73,7 @@ internal actual fun createEpisodePagerV2(
   return Pager(
     config = PagingConfig(
       pageSize = 10,
+      initialLoadSize = 10,
       enablePlaceholders = false
     ),
     remoteMediator = EpisodeKeysetRemoteMediator(
@@ -83,10 +86,20 @@ internal actual fun createEpisodePagerV2(
       mapper = mapper
     ),
     pagingSourceFactory = {
-      EpisodeKeysetPagingSource(
-        episodeDAO = episodeDAO,
-        podcastId = podcastId,
-        dispatcher = dispatcher
+//      EpisodeKeysetPagingSource(
+//        episodeDAO = episodeDAO,
+//        podcastId = podcastId,
+//        dispatcher = dispatcher
+//      )
+      QueryPagingSource<Instant, EpisodeEntity>(
+        transacter = episodeDAO.getTransacter(),
+        context = dispatcher.io,
+        pageBoundariesProvider = { anchor, limit ->
+          episodeDAO.getEpisodePageBoundaries(podcastId, anchor, limit)
+        },
+        queryProvider = { beginInclusive, endExclusive ->
+          episodeDAO.getEpisodesByBoundary(podcastId, beginInclusive, endExclusive)
+        }
       )
     }
   ).flow.map { pagingData ->

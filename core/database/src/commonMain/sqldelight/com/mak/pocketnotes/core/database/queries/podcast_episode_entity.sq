@@ -41,6 +41,29 @@ WHERE podcast_id = :podcastId
 ORDER BY published_on DESC
 LIMIT :limit;
 
+getEpisodePageBoundaries:
+SELECT published_on
+FROM (
+  SELECT
+    published_on,
+    CASE
+      WHEN ((row_number() OVER(ORDER BY published_on DESC) - 1) % :limit) = 0 THEN 1
+      WHEN (:anchor IS NOT NULL AND published_on = :anchor) THEN 1
+      ELSE 0
+    END page_boundary
+  FROM episodes
+  WHERE podcast_id = :podcastId
+  ORDER BY published_on DESC
+)
+WHERE page_boundary = 1;
+
+getEpisodesByBoundary:
+SELECT * FROM episodes
+WHERE podcast_id = :podcastId
+AND published_on <= :beginInclusive
+AND (published_on > :endExclusive OR :endExclusive IS NULL)
+ORDER BY published_on DESC;
+
 deleteWithId:
 DELETE FROM episodes WHERE podcast_id =:podcastId;
 
