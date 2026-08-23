@@ -1,0 +1,17 @@
+CREATE TABLE episode_paging_keys (
+    podcast_id TEXT PRIMARY KEY NOT NULL,
+    next_episode_date INTEGER AS kotlin.time.Instant,
+    FOREIGN KEY(podcast_id) REFERENCES podcasts(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+insertKey:
+INSERT OR REPLACE INTO episode_paging_keys (podcast_id, next_episode_date) VALUES (?, ?);
+
+getNextEpisodeDate:
+SELECT next_episode_date FROM episode_paging_keys WHERE podcast_id = :podcastId;
+
+deleteKey:
+DELETE FROM episode_paging_keys WHERE podcast_id = :podcastId;
+
+deleteAllKeys:
+DELETE FROM episode_paging_keys;

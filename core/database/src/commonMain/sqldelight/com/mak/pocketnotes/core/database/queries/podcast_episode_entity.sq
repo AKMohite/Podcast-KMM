@@ -22,6 +22,12 @@ SELECT * FROM episodes WHERE podcast_id =:podcastId;
 getPaginatedEpisodes:
 SELECT * FROM episodes WHERE podcast_id =:podcastId AND published_on <=:nextEpisodeDate LIMIT 10;
 
+getEpisodesPaginated:
+SELECT * FROM episodes WHERE podcast_id = :podcastId ORDER BY published_on DESC LIMIT :limit OFFSET :offset;
+
+countEpisodes:
+SELECT count(*) FROM episodes WHERE podcast_id = :podcastId;
+
 deleteWithId:
 DELETE FROM episodes WHERE podcast_id =:podcastId;
 

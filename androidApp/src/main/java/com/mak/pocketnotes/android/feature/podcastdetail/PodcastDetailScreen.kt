@@ -43,6 +43,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import androidx.window.core.layout.WindowSizeClass
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.R
@@ -59,6 +63,7 @@ import com.mak.pocketnotes.android.ui.theme.isLarge
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.utils.sample.samplePodcasts
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -74,11 +79,18 @@ fun EntryProviderScope<NavKey>.podcastDetailEntry(
             viewModelStoreOwner = LocalActivity.current as ComponentActivity
         )
         val state by detailViewModel.uiState.collectAsStateWithLifecycle()
+      val episodes = detailViewModel.episodesPagingData.collectAsLazyPagingItems()
         PodcastDetailScreen(
             state = state,
-            episodes = state.episodes,
+          episodes = episodes,
             startPodcast = {
-                playerViewModel.onEvent(PlayerEvent.OnPlayQueue(state.episodes.take(10)))
+              playerViewModel.onEvent(
+                PlayerEvent.OnPlayQueue(
+                  episodes.itemSnapshotList.items.take(
+                    10
+                  )
+                )
+              )
 //                startPodcastEpisodes(detailViewModel.episodesState)
             },
             gotoDetails = { podcastId ->
@@ -91,7 +103,7 @@ fun EntryProviderScope<NavKey>.podcastDetailEntry(
 @Composable
 internal fun PodcastDetailScreen(
     state: PodcastDetailState,
-    episodes: List<PodcastEpisode>,
+    episodes: LazyPagingItems<PodcastEpisode>,
     startPodcast: () -> Unit,
     gotoDetails: (String) -> Unit
 ) {
@@ -107,7 +119,7 @@ internal fun PodcastDetailScreen(
 private fun PodcastDetailContent(
     modifier: Modifier = Modifier,
     uiState: PodcastDetailState,
-    episodes: List<PodcastEpisode>,
+    episodes: LazyPagingItems<PodcastEpisode>,
     gotoDetails: (String) -> Unit,
     startPodcast: () -> Unit
 ) {
@@ -143,14 +155,14 @@ private fun PodcastDetailContent(
 @Composable
 private fun PodcastDetailCompact(
     podcast: Podcast,
-    episodes: List<PodcastEpisode>,
+    episodes: LazyPagingItems<PodcastEpisode>,
     gotoDetails: (String) -> Unit,
     startPodcast: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
         item(key = "poster-image") {
@@ -160,15 +172,15 @@ private fun PodcastDetailCompact(
                 contentDescription = podcast.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
+                  .fillMaxWidth()
+                  .height(300.dp)
             )
         }
         item(key = "podcast-overview") {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
+                  .fillMaxWidth()
+                  .padding(20.dp)
             ) {
                 Text(
                     text = podcast.title,
@@ -226,8 +238,8 @@ private fun PodcastDetailCompact(
                     ) { recommendation ->
                         PodcastRow(
                             modifier = Modifier
-                                .clickable { gotoDetails(recommendation.id) }
-                                .width(300.dp),
+                              .clickable { gotoDetails(recommendation.id) }
+                              .width(300.dp),
                             podcast = recommendation
                         )
                     }
@@ -244,13 +256,15 @@ private fun PodcastDetailCompact(
             )
         }
         items(
-            items = episodes,
-            key = { episode: PodcastEpisode -> episode.id }
-        ) { episode ->
+          count = episodes.itemCount,
+          key = episodes.itemKey { it.id }
+        ) { index ->
+          episodes[index]?.let { episode ->
             PodcastEpisodeItem(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                episode = episode
+              modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+              episode = episode
             )
+          }
         }
     }
 }
@@ -258,7 +272,7 @@ private fun PodcastDetailCompact(
 @Composable
 private fun PodcastDetailExpanded(
     podcast: Podcast,
-    episodes: List<PodcastEpisode>,
+    episodes: LazyPagingItems<PodcastEpisode>,
     gotoDetails: (String) -> Unit,
     startPodcast: () -> Unit,
     sizeClass: WindowSizeClass
@@ -266,16 +280,16 @@ private fun PodcastDetailExpanded(
     val isLarge = sizeClass.isLarge()
     Row(
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = if (isLarge) 40.dp else 24.dp),
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.background)
+          .padding(horizontal = if (isLarge) 40.dp else 24.dp),
         horizontalArrangement = Arrangement.spacedBy(if (isLarge) 40.dp else 24.dp)
     ) {
         // Main Pane: Podcast Header and Episodes
         LazyColumn(
             modifier = Modifier
-                .weight(if (isLarge) 0.7f else 0.65f)
-                .fillMaxHeight(),
+              .weight(if (isLarge) 0.7f else 0.65f)
+              .fillMaxHeight(),
             contentPadding = PaddingValues(vertical = 32.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -288,8 +302,8 @@ private fun PodcastDetailExpanded(
                         model = podcast.image,
                         contentDescription = podcast.title,
                         modifier = Modifier
-                            .size(if (isLarge) 240.dp else 180.dp)
-                            .clip(MaterialTheme.shapes.large),
+                          .size(if (isLarge) 240.dp else 180.dp)
+                          .clip(MaterialTheme.shapes.large),
                         contentScale = ContentScale.Crop,
                         placeholder = debugPlaceholder()
                     )
@@ -320,7 +334,7 @@ private fun PodcastDetailExpanded(
                     }
                 }
             }
-            
+
             item {
                 Column {
                     Text(
@@ -345,22 +359,27 @@ private fun PodcastDetailExpanded(
                 )
             }
 
-            items(episodes, key = { it.id }) { episode ->
-                PodcastEpisodeItem(
-                    episode = episode,
-                    showImage = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
+          items(
+            count = episodes.itemCount,
+            key = episodes.itemKey { it.id }
+          ) { index ->
+            episodes[index]?.let { episode ->
+              PodcastEpisodeItem(
+                episode = episode,
+                showImage = true,
+                modifier = Modifier.fillMaxWidth()
+              )
+            }
             }
         }
 
         // Supporting Pane: Recommendations
         Column(
             modifier = Modifier
-                .weight(if (isLarge) 0.3f else 0.35f)
-                .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-                .padding(horizontal = 20.dp)
+              .weight(if (isLarge) 0.3f else 0.35f)
+              .fillMaxHeight()
+              .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+              .padding(horizontal = 20.dp)
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
@@ -377,11 +396,11 @@ private fun PodcastDetailExpanded(
                 items(podcast.recommendations, key = { it.id }) { recommendation ->
                     PodcastRow(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { gotoDetails(recommendation.id) }
-                            .clip(MaterialTheme.shapes.medium)
-                            .background(MaterialTheme.colorScheme.surface)
-                            .padding(8.dp),
+                          .fillMaxWidth()
+                          .clickable { gotoDetails(recommendation.id) }
+                          .clip(MaterialTheme.shapes.medium)
+                          .background(MaterialTheme.colorScheme.surface)
+                          .padding(8.dp),
                         podcast = recommendation
                     )
                 }
@@ -394,12 +413,14 @@ private fun PodcastDetailExpanded(
 @PreviewScreenSizes
 @Composable
 private fun PodcastDetailScreenPreview() {
+  val episodes =
+    MutableStateFlow(PagingData.from(samplePodcasts.flatMap { it.episodes })).collectAsLazyPagingItems()
     PocketNotesTheme {
         PodcastDetailContent(
             uiState = PodcastDetailState(
                 podcast = samplePodcasts[0].copy(recommendations = samplePodcasts)
             ),
-            episodes = samplePodcasts.flatMap { it.episodes },
+          episodes = episodes,
             gotoDetails = {},
             startPodcast = {}
         )

@@ -1,5 +1,7 @@
 package com.mak.pocketnotes.core.database.dao
 
+import app.cash.sqldelight.Query
+import app.cash.sqldelight.Transacter
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
@@ -15,6 +17,8 @@ internal class SQLDelightEpisodeDAO(
   private val dispatcher: DispatcherProvider
 ) : EpisodeDAO {
   private val dbQuery = database.podcast_episode_entityQueries
+
+  override fun getTransacter(): Transacter = dbQuery
 
   override fun insert(entity: EpisodeEntity) {
     dbQuery.insert(entity)
@@ -37,6 +41,17 @@ internal class SQLDelightEpisodeDAO(
       .asFlow()
       .mapToList(dispatcher.io)
 
+  override fun getEpisodesQuery(podcastId: String): Query<EpisodeEntity> =
+    dbQuery.getEpisodes(podcastId)
+
+  override fun getEpisodesPaginated(
+    podcastId: String,
+    limit: Long,
+    offset: Long
+  ): Query<EpisodeEntity> = dbQuery.getEpisodesPaginated(podcastId, limit, offset)
+
+  override fun countEpisodes(podcastId: String): Query<Long> = dbQuery.countEpisodes(podcastId)
+
   override fun removeEpisodes(podcastId: String) {
     dbQuery.deleteWithId(podcastId)
   }
@@ -51,11 +66,19 @@ internal class SQLDelightEpisodeDAO(
 }
 
 interface EpisodeDAO {
+  fun getTransacter(): Transacter
+
   fun insert(entity: EpisodeEntity)
 
   fun insertEpisodes(entities: List<EpisodeEntity>)
 
   fun getEpisodes(podcastId: String): Flow<List<EpisodeEntity>>
+
+  fun getEpisodesQuery(podcastId: String): Query<EpisodeEntity>
+
+  fun getEpisodesPaginated(podcastId: String, limit: Long, offset: Long): Query<EpisodeEntity>
+
+  fun countEpisodes(podcastId: String): Query<Long>
 
   fun getEpisodes(podcastId: String, nextEpisodeDate: Instant): Flow<List<EpisodeEntity>>
 

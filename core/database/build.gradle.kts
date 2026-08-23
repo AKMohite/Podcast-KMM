@@ -75,6 +75,7 @@ kotlin {
       dependencies {
         implementation(libs.koin.android)
         implementation(libs.android.sql.driver)
+        implementation(libs.sqldelight.paging)
       }
     }
 

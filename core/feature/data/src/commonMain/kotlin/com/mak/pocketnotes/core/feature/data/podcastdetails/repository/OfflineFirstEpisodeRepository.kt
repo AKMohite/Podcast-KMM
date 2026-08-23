@@ -1,9 +1,11 @@
 package com.mak.pocketnotes.core.feature.data.podcastdetails.repository
 
+import androidx.paging.PagingData
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
+import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO.Companion.DEFAULT_ID
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
@@ -31,6 +33,7 @@ class OfflineFirstEpisodeRepository(
   private val api: PocketNotesAPI,
   private val transactionRunner: DatabaseTransactionRunner,
   private val episodeDAO: EpisodeDAO,
+  private val pagingKeysDAO: EpisodePagingKeysDAO,
   private val lastSyncDAO: LastSyncDAO,
   private val dispatcher: DispatcherProvider,
   private val mapper: PodcastMapper
@@ -75,6 +78,17 @@ class OfflineFirstEpisodeRepository(
     .map { response ->
       response.requireData()
     }.flowOn(dispatcher.io)
+
+  override fun getEpisodesPaging(podcastId: String): Flow<PagingData<PodcastEpisode>> =
+    createEpisodePager(
+      podcastId = podcastId,
+      api = api,
+      episodeDAO = episodeDAO,
+      pagingKeysDAO = pagingKeysDAO,
+      transactionRunner = transactionRunner,
+      mapper = mapper,
+      dispatcher = dispatcher
+    )
 
   private suspend fun isDataFresh(episodes: List<PodcastEpisode>): Boolean =
     withContext(dispatcher.io) {
@@ -130,3 +144,13 @@ class OfflineFirstEpisodeRepository(
     return api.getPodcastDetails(podcastId, queryMap = query).getOrThrow()
   }
 }
+
+internal expect fun createEpisodePager(
+  podcastId: String,
+  api: PocketNotesAPI,
+  episodeDAO: EpisodeDAO,
+  pagingKeysDAO: EpisodePagingKeysDAO,
+  transactionRunner: DatabaseTransactionRunner,
+  mapper: PodcastMapper,
+  dispatcher: DispatcherProvider
+): Flow<PagingData<PodcastEpisode>>

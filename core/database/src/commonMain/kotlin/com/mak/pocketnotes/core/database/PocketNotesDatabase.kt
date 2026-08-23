@@ -12,6 +12,7 @@ import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.RelatedPodcastDAO
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastDAO
 import com.mak.pocketnotes.core.database.queries.Curated_sections
+import com.mak.pocketnotes.core.database.queries.Episode_paging_keys
 import com.mak.pocketnotes.core.database.queries.Episodes
 import com.mak.pocketnotes.core.database.queries.Genres
 import com.mak.pocketnotes.core.database.queries.Last_syncs
@@ -39,6 +40,9 @@ internal class PocketNotesDatabase(
     Episodes.Adapter(
       published_onAdapter = InstantStringColumnAdapter,
       next_episode_published_onAdapter = InstantStringColumnAdapter
+    ),
+    episode_paging_keysAdapter = Episode_paging_keys.Adapter(
+      next_episode_dateAdapter = InstantStringColumnAdapter
     )
   )
 }

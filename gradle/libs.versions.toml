@@ -27,6 +27,7 @@ profileinstaller = "1.4.1"
 skie = "0.10.14"
 stately = "2.1.0"
 sqldelight= "2.3.2"
+androidPaging = "3.3.6"
 store5 = "5.1.0-alpha10"
 playServicesWearable = "20.0.1"
 composeWear = "1.6.2"
@@ -86,7 +87,11 @@ ktor-content-negotiation = { group = "io.ktor", name = "ktor-client-content-nego
 ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ios-sql-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-paging = { module = "app.cash.sqldelight:androidx-paging3-extensions", version.ref = "sqldelight" }
 sqldelight-primitive = { module = "app.cash.sqldelight:primitive-adapters", version.ref = "sqldelight" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidPaging" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidPaging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidPaging" }
 stately-common = { module = "co.touchlab:stately-common", version.ref = "stately" }
 store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }

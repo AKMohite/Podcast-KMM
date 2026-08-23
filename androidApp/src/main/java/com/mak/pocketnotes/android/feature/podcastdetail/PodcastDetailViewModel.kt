@@ -2,12 +2,14 @@ package com.mak.pocketnotes.android.feature.podcastdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mak.pocketnotes.core.feature.domain.home.models.EpisodeQueryParam
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.RelatedPodcastRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +28,10 @@ internal class PodcastDetailViewModel(
   private val _uiState = MutableStateFlow(PodcastDetailState(loading = true))
   internal val uiState: StateFlow<PodcastDetailState> = _uiState.asStateFlow()
 
+  val episodesPagingData: Flow<PagingData<PodcastEpisode>> = episodeRepository
+    .getEpisodesPaging(podcastId)
+    .cachedIn(viewModelScope)
+
   init {
     loadPodcastDetails()
   }
@@ -38,49 +44,14 @@ internal class PodcastDetailViewModel(
       podcast.copy(recommendations = recommendations.related)
     }.onEach { podcast ->
       _uiState.update { it.copy(loading = false, podcast = podcast) }
-      if (_uiState.value.episodes.isEmpty()) {
-        loadEpisodes()
-      }
     }.catch { e ->
       _uiState.update { it.copy(loading = false, errorMsg = e.message) }
     }.launchIn(viewModelScope)
-  }
-
-  fun loadMoreEpisodes() {
-    if (_uiState.value.loadingMore) return
-    val lastEpisode = _uiState.value.episodes.lastOrNull()
-    val nextDate = lastEpisode?.nextEpisodeAt
-    if (nextDate != null) {
-      loadEpisodes(nextDate)
-    }
-  }
-
-  private fun loadEpisodes(nextEpisodeDate: Long? = null) {
-    _uiState.update { it.copy(loadingMore = true) }
-    episodeRepository.refresh(
-      EpisodeQueryParam(
-        podcastId = podcastId,
-        nextEpisodeDate = nextEpisodeDate
-      )
-    )
-      .onEach { newEpisodes ->
-        _uiState.update { state ->
-          state.copy(
-            loadingMore = false,
-            episodes = (state.episodes + newEpisodes).distinctBy { it.id }
-          )
-        }
-      }.catch { e ->
-        _uiState.update { it.copy(loadingMore = false, errorMsg = e.message) }
-      }
-      .launchIn(viewModelScope)
   }
 }
 
 internal data class PodcastDetailState(
   val loading: Boolean = false,
   val podcast: Podcast? = null,
-  val episodes: List<PodcastEpisode> = emptyList(),
-  val loadingMore: Boolean = false,
   val errorMsg: String? = null
 )

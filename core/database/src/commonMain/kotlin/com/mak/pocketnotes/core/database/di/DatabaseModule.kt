@@ -6,12 +6,14 @@ import com.mak.pocketnotes.core.database.PocketNotesDatabase
 import com.mak.pocketnotes.core.database.SQLDatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.CuratedPodcastDAO
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
+import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.GenresDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.database.dao.RelatedPodcastDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightCuratedPodcastDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightEpisodeDAO
+import com.mak.pocketnotes.core.database.dao.SQLDelightEpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightGenresDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightLastSyncDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightPodcastDAO
@@ -31,6 +33,7 @@ val localModule =
     single<GenresDAO> { SQLDelightGenresDAO(get(), get()) }
     single<PodcastDAO> { SQLDelightPodcastDAO(get(), get()) }
     single<EpisodeDAO> { SQLDelightEpisodeDAO(get(), get()) }
+    single<EpisodePagingKeysDAO> { SQLDelightEpisodePagingKeysDAO(get()) }
     single<RelatedPodcastDAO> { SQLDelightRelatedPodcastDAO(get(), get()) }
     single<CuratedPodcastDAO> { SQLDelightCuratedPodcastDAO(get(), get()) }
     single<TrendingPodcastDAO> { SQLDelightTrendingPodcastDAO(get(), get()) }
