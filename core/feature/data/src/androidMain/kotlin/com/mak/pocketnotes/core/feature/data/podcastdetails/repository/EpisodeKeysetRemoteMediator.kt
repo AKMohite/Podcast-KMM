@@ -66,13 +66,12 @@ class EpisodeKeysetRemoteMediator(
       val episodes = response.episodes ?: emptyList()
       val nextDate = response.nextEpisodeDate
 
-      val endOfPaginationReached =
-        episodes.isEmpty() || nextDate == null || episodes.any { it.pubDateMs == nextDate }
+      val endOfPaginationReached = episodes.isEmpty() || nextDate == null
 
       transactionRunner {
         if (loadType == LoadType.REFRESH) {
           pagingKeysDAO.deleteKey(podcastId)
-          episodeDAO.removeEpisodes(podcastId)
+//          episodeDAO.removeEpisodes(podcastId)
         }
 
         val entities = mapper.mapEpisodeEntities(episodes, podcastId, nextDate)
