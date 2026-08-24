@@ -12,7 +12,7 @@ import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-internal actual fun createEpisodePager(
+internal actual fun createEpisodeOffsetPager(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,
@@ -27,7 +27,7 @@ internal actual fun createEpisodePager(
   return flowOf(PagingData.empty())
 }
 
-internal actual fun createEpisodePagerV2(
+internal actual fun createEpisodeKeysetPager(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,

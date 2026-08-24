@@ -9,7 +9,6 @@ import app.cash.sqldelight.paging3.QueryPagingSource
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
-import com.mak.pocketnotes.core.database.dao.EpisodeEntity
 import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalPagingApi::class)
-internal actual fun createEpisodePager(
+internal actual fun createEpisodeOffsetPager(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,
@@ -60,7 +59,7 @@ internal actual fun createEpisodePager(
 }
 
 @OptIn(ExperimentalPagingApi::class)
-internal actual fun createEpisodePagerV2(
+internal actual fun createEpisodeKeysetPager(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,
@@ -91,14 +90,22 @@ internal actual fun createEpisodePagerV2(
 //        podcastId = podcastId,
 //        dispatcher = dispatcher
 //      )
-      QueryPagingSource<Instant, EpisodeEntity>(
+      QueryPagingSource(
         transacter = episodeDAO.getTransacter(),
         context = dispatcher.io,
-        pageBoundariesProvider = { anchor, limit ->
-          episodeDAO.getEpisodePageBoundaries(podcastId, anchor, limit)
+        pageBoundariesProvider = { anchor: Instant?, limit: Long ->
+          episodeDAO.getEpisodePageBoundaries(
+            podcastId = podcastId,
+            anchor = anchor,
+            limit = limit
+          )
         },
-        queryProvider = { beginInclusive, endExclusive ->
-          episodeDAO.getEpisodesByBoundary(podcastId, beginInclusive, endExclusive)
+        queryProvider = { beginInclusive: Instant, endExclusive: Instant? ->
+          episodeDAO.getEpisodesByBoundary(
+            podcastId = podcastId,
+            beginInclusive = beginInclusive,
+            endExclusive = endExclusive
+          )
         }
       )
     }

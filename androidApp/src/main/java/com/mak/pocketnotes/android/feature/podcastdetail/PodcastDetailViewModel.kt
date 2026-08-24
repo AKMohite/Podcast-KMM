@@ -29,7 +29,7 @@ internal class PodcastDetailViewModel(
   internal val uiState: StateFlow<PodcastDetailState> = _uiState.asStateFlow()
 
   val episodesPagingData: Flow<PagingData<PodcastEpisode>> = episodeRepository
-    .getEpisodesPaging(podcastId)
+    .getEpisodesPagingV2(podcastId)
     .cachedIn(viewModelScope)
 
   init {

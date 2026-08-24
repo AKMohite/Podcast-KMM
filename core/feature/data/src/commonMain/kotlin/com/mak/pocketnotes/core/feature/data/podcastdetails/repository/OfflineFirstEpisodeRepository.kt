@@ -80,7 +80,7 @@ class OfflineFirstEpisodeRepository(
     }.flowOn(dispatcher.io)
 
   override fun getEpisodesPaging(podcastId: String): Flow<PagingData<PodcastEpisode>> =
-    createEpisodePager(
+    createEpisodeOffsetPager(
       podcastId = podcastId,
       api = api,
       episodeDAO = episodeDAO,
@@ -92,7 +92,7 @@ class OfflineFirstEpisodeRepository(
     )
 
   override fun getEpisodesPagingV2(podcastId: String): Flow<PagingData<PodcastEpisode>> =
-    createEpisodePagerV2(
+    createEpisodeKeysetPager(
       podcastId = podcastId,
       api = api,
       episodeDAO = episodeDAO,
@@ -158,7 +158,7 @@ class OfflineFirstEpisodeRepository(
   }
 }
 
-internal expect fun createEpisodePager(
+internal expect fun createEpisodeOffsetPager(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,
@@ -169,7 +169,7 @@ internal expect fun createEpisodePager(
   dispatcher: DispatcherProvider
 ): Flow<PagingData<PodcastEpisode>>
 
-internal expect fun createEpisodePagerV2(
+internal expect fun createEpisodeKeysetPager(
   podcastId: String,
   api: PocketNotesAPI,
   episodeDAO: EpisodeDAO,

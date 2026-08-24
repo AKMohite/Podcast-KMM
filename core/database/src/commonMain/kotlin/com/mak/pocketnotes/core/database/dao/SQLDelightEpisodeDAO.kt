@@ -85,6 +85,10 @@ internal class SQLDelightEpisodeDAO(
   override fun removeEpisodes() {
     dbQuery.deleteAll()
   }
+
+  override fun getOldestEpisodeNextPageCursor(podcastId: String): Instant? =
+    dbQuery.getOldestEpisodeNextPageCursor(podcastId)
+      .executeAsOneOrNull()?.next_episode_published_on
 }
 
 interface EpisodeDAO {
@@ -125,4 +129,6 @@ interface EpisodeDAO {
   fun removeEpisodes()
 
   fun removeEpisodes(podcastId: String, nextDate: Instant)
+
+  fun getOldestEpisodeNextPageCursor(podcastId: String): Instant?
 }

@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS `episodes` (
     FOREIGN KEY(`podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE INDEX IF NOT EXISTS `index_episodes_podcast_id_published_on` ON `episodes` (`podcast_id`, `published_on`);
+
 insert:
 INSERT OR REPLACE INTO episodes (id, title, description, listen_notes_url, thumbnail, image, audio, audio_length, published_on, next_episode_published_on, podcast_id) VALUES ?;
 
@@ -47,13 +49,13 @@ FROM (
   SELECT
     published_on,
     CASE
-      WHEN ((row_number() OVER(ORDER BY published_on DESC) - 1) % :limit) = 0 THEN 1
+      WHEN ((row_number() OVER(ORDER BY published_on DESC, id ASC) - 1) % :limit) = 0 THEN 1
       WHEN (:anchor IS NOT NULL AND published_on = :anchor) THEN 1
       ELSE 0
     END page_boundary
   FROM episodes
   WHERE podcast_id = :podcastId
-  ORDER BY published_on DESC
+  ORDER BY published_on DESC, id ASC
 )
 WHERE page_boundary = 1;
 
@@ -62,7 +64,7 @@ SELECT * FROM episodes
 WHERE podcast_id = :podcastId
 AND published_on <= :beginInclusive
 AND (published_on > :endExclusive OR :endExclusive IS NULL)
-ORDER BY published_on DESC;
+ORDER BY published_on DESC, id ASC;
 
 deleteWithId:
 DELETE FROM episodes WHERE podcast_id =:podcastId;
@@ -72,3 +74,6 @@ DELETE FROM episodes WHERE podcast_id=:podcastId AND published_on <=:nextEpisode
 
 deleteAll:
 DELETE FROM episodes;
+
+getOldestEpisodeNextPageCursor:
+SELECT next_episode_published_on FROM episodes WHERE podcast_id = :podcastId ORDER BY published_on ASC LIMIT 1;
