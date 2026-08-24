@@ -71,7 +71,8 @@ internal actual fun createEpisodeKeysetPager(
   return Pager(
     config = PagingConfig(
       pageSize = 10,
-      initialLoadSize = 20,
+      initialLoadSize = 10,
+      prefetchDistance = 1,
       enablePlaceholders = false
     ),
     remoteMediator = EpisodeKeysetRemoteMediator(

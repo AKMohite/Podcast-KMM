@@ -2,6 +2,7 @@ package com.mak.pocketnotes.core.feature.data.podcastdetails.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import app.cash.sqldelight.Query
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.dao.EpisodeDAO
 import com.mak.pocketnotes.core.database.dao.EpisodeEntity
@@ -14,6 +15,17 @@ class EpisodeKeysetPagingSource(
   private val podcastId: String,
   private val dispatcher: DispatcherProvider
 ) : PagingSource<Instant, EpisodeEntity>() {
+
+  private val listener = Query.Listener {
+    invalidate()
+  }
+
+  init {
+    episodeDAO.getEpisodesQuery(podcastId).addListener(listener)
+    registerInvalidatedCallback {
+      episodeDAO.getEpisodesQuery(podcastId).removeListener(listener)
+    }
+  }
 
   override suspend fun load(params: LoadParams<Instant>): LoadResult<Instant, EpisodeEntity> {
     return withContext(dispatcher.io) {
