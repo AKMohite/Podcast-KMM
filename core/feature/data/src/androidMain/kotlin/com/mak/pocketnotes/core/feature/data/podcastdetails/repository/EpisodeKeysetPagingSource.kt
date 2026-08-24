@@ -28,11 +28,11 @@ class EpisodeKeysetPagingSource(
         }
 
         val data = query.executeAsList()
-        val nextKey = data.lastOrNull()?.published_on
+        val nextKey = data.lastOrNull()?.next_episode_published_on
 
         LoadResult.Page(
           data = data,
-          prevKey = null, // Only forward paging for now
+          prevKey = null, // Only forward paging for now          prevKey = null, // Only forward paging for now
           nextKey = if (data.size < params.loadSize) null else nextKey
         )
       } catch (e: Exception) {

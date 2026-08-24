@@ -14,7 +14,6 @@ import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
-import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -72,7 +71,7 @@ internal actual fun createEpisodeKeysetPager(
   return Pager(
     config = PagingConfig(
       pageSize = 10,
-      initialLoadSize = 10,
+      initialLoadSize = 20,
       enablePlaceholders = false
     ),
     remoteMediator = EpisodeKeysetRemoteMediator(
@@ -85,12 +84,12 @@ internal actual fun createEpisodeKeysetPager(
       mapper = mapper
     ),
     pagingSourceFactory = {
-//      EpisodeKeysetPagingSource(
-//        episodeDAO = episodeDAO,
-//        podcastId = podcastId,
-//        dispatcher = dispatcher
-//      )
-      QueryPagingSource(
+      EpisodeKeysetPagingSource(
+        episodeDAO = episodeDAO,
+        podcastId = podcastId,
+        dispatcher = dispatcher
+      )
+      /*QueryPagingSource(
         transacter = episodeDAO.getTransacter(),
         context = dispatcher.io,
         pageBoundariesProvider = { anchor: Instant?, limit: Long ->
@@ -107,7 +106,7 @@ internal actual fun createEpisodeKeysetPager(
             endExclusive = endExclusive
           )
         }
-      )
+      )*/
     }
   ).flow.map { pagingData ->
     pagingData.map { mapper.episodeEntityToModel(it) }
