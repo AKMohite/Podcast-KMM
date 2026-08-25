@@ -16,14 +16,15 @@ class EpisodeKeysetPagingSource(
   private val dispatcher: DispatcherProvider
 ) : PagingSource<Instant, EpisodeEntity>() {
 
+  private val query = episodeDAO.getEpisodesQuery(podcastId)
   private val listener = Query.Listener {
     invalidate()
   }
 
   init {
-    episodeDAO.getEpisodesQuery(podcastId).addListener(listener)
+    query.addListener(listener)
     registerInvalidatedCallback {
-      episodeDAO.getEpisodesQuery(podcastId).removeListener(listener)
+      query.removeListener(listener)
     }
   }
 

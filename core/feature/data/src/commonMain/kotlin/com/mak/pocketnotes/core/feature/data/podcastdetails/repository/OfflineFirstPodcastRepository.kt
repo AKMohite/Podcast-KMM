@@ -13,7 +13,6 @@ import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.Podcast
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
@@ -97,25 +96,25 @@ internal class OfflineFirstPodcastRepository(
       transactionRunner {
         podcastDAO.insertPodcast(mapper.jsonToEntity(dto))
         // TODO Episodes must be fetched and saved in remote mediator only?
-        val episodes =
-          mapper.mapEpisodeEntities(
-            dto.episodes,
-            podcastId,
-            dto.nextEpisodeDate
-          )
-        episodeDAO.insertEpisodes(episodes)
-        pagingKeysDAO.insertKey(
-          podcastId,
-          dto.nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) }
-        )
+//        val episodes =
+//          mapper.mapEpisodeEntities(
+//            dto.episodes,
+//            podcastId,
+//            dto.nextEpisodeDate
+//          )
+//        episodeDAO.insertEpisodes(episodes)
+//        pagingKeysDAO.insertKey(
+//          podcastId,
+//          dto.nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) }
+//        )
         lastSyncDAO.insertLastSync(
           SyncRequest.PODCAST_DETAILS,
           podcastId
         )
-        lastSyncDAO.insertLastSync(
-          SyncRequest.PODCAST_EPISODES,
-          podcastId
-        )
+//        lastSyncDAO.insertLastSync(
+//          SyncRequest.PODCAST_EPISODES,
+//          podcastId
+//        )
       }
     }
   }

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `episodes` (
     FOREIGN KEY(`podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS `index_episodes_podcast_id_published_on` ON `episodes` (`podcast_id`, `published_on`);
+CREATE INDEX IF NOT EXISTS `index_episodes_podcast_id_published_on` ON `episodes` (`podcast_id`, `published_on` DESC, `id` ASC);
 
 insert:
 INSERT OR REPLACE INTO episodes (id, title, description, listen_notes_url, thumbnail, image, audio, audio_length, published_on, next_episode_published_on, podcast_id) VALUES ?;
@@ -55,9 +55,9 @@ FROM (
     END page_boundary
   FROM episodes
   WHERE podcast_id = :podcastId
-  ORDER BY published_on DESC, id ASC
 )
-WHERE page_boundary = 1;
+WHERE page_boundary = 1
+ORDER BY published_on DESC;
 
 getEpisodesByBoundary:
 SELECT * FROM episodes
