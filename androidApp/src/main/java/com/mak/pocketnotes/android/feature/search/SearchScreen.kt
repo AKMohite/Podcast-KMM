@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,12 +25,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation3.runtime.EntryProviderScope
-import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.common.PodcastDetail
-import com.mak.pocketnotes.android.common.Search
-import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.feature.discover.components.PodcastRow
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.feature.search.views.GenreCells
@@ -39,9 +33,8 @@ import com.mak.pocketnotes.android.feature.search.views.SearchField
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 import kotlinx.coroutines.flow.StateFlow
-import org.koin.androidx.compose.koinViewModel
 
-fun EntryProviderScope<NavKey>.searchEntry(navigator: Navigator) {
+/*fun EntryProviderScope<NavKey>.searchEntry(navigator: Navigator) {
   entry<Search> {
     val viewModel: SearchViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
@@ -53,7 +46,7 @@ fun EntryProviderScope<NavKey>.searchEntry(navigator: Navigator) {
       }
     )
   }
-}
+}*/
 
 @Composable
 internal fun SearchScreen(

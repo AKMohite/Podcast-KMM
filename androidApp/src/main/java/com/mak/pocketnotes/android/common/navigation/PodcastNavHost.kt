@@ -15,7 +15,7 @@ import com.mak.pocketnotes.android.feature.discover.discoverEntry
 import com.mak.pocketnotes.android.feature.player.v2.nowPlayingEntry
 import com.mak.pocketnotes.android.feature.podcastdetail.podcastDetailEntry
 import com.mak.pocketnotes.android.feature.queue.playQueueEntry
-import com.mak.pocketnotes.android.feature.search.searchEntry
+import com.mak.pocketnotes.android.feature.search.v2.searchEntryV2
 import com.mak.pocketnotes.android.feature.settings.settingsEntry
 
 @Composable
@@ -31,7 +31,7 @@ internal fun PodcastNavDisplay(
 
     nowPlayingEntry(navigator)
 
-    searchEntry(navigator)
+    searchEntryV2(navigator)
 
     playQueueEntry(navigator)
 
