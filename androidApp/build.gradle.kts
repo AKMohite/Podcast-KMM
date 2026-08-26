@@ -29,6 +29,18 @@ android {
     versionCode = Integer.parseInt(libs.versions.versionCode.get())
     versionName = libs.versions.versionName.get()
   }
+
+  flavorDimensions += "environment"
+  productFlavors {
+    create("dev") {
+      dimension = "environment"
+      applicationIdSuffix = ".dev"
+    }
+    create("prod") {
+      dimension = "environment"
+    }
+  }
+
   buildFeatures {
     compose = true
   }

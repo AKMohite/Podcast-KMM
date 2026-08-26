@@ -3,7 +3,7 @@ package com.mak.pocketnotes.core.remote.di
 import com.mak.pocketnotes.core.common.exception.ExceptionType
 import com.mak.pocketnotes.core.common.exception.PocketAPIException
 import com.mak.pocketnotes.core.common.exception.UnknownAPIException
-import com.mak.pocketnotes.core.remote.SecretConstant
+import com.mak.pocketnotes.core.common.utils.AppConfig
 import com.mak.pocketnotes.core.remote.dto.ErrorDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -22,7 +22,11 @@ internal fun createJson() = Json {
   ignoreUnknownKeys = true
 }
 
-internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): HttpClient =
+internal fun createHttpClient(
+  json: Json,
+  config: AppConfig,
+  enableNetworkLogs: Boolean = false
+): HttpClient =
   HttpClient {
     install(ContentNegotiation) {
       json(
@@ -35,8 +39,8 @@ internal fun createHttpClient(json: Json, enableNetworkLogs: Boolean = false): H
     defaultRequest {
       url {
         protocol = URLProtocol.HTTPS
-        host = API_HOST
-        header("X-ListenAPI-Key", API_KEY)
+        host = config.listenApiHost
+        header("X-ListenAPI-Key", config.listenApiKey)
 //                path("api/")
 //                parametersOf("api_key", "")
       }
@@ -95,8 +99,3 @@ private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? = tr
   null
 }
 
-// const val a = BuildCo
-//private const val API_HOST = "listen-api-test.listennotes.com"
-
-private const val API_HOST = "listen-api.listennotes.com"
-private const val API_KEY = SecretConstant.API_KEY
