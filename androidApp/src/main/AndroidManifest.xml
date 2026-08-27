@@ -63,6 +63,16 @@
             <data android:pathPrefix="/player" />
             <data android:pathPrefix="/queue" />
           </intent-filter>
+
+          <!-- Custom Scheme (pocketnotes://) -->
+          <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="pocketnotes" />
+          </intent-filter>
         </activity>
 
         <service android:name="com.mak.pocketnotes.service.media.service.MediaPlayerService"

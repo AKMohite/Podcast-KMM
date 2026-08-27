@@ -52,28 +52,50 @@ internal class AppMainViewmodel : ViewModel() {
   }
 
   private fun parseUri(uri: Uri): NavKey? {
+    val host = uri.host ?: ""
     val path = uri.path ?: ""
-    return when {
-      path.startsWith("/podcast/") -> {
-        val id = path.substringAfter("/podcast/").substringBefore("/")
-        if (id.isNotEmpty()) PodcastDetail(id) else Discover
-      }
 
-      path.startsWith("/search") -> {
-        val query = uri.getQueryParameter("q")
-        Search(query = query)
-      }
+    // Normalize path/host depending on scheme
+    return if (uri.scheme == "pocketnotes") {
+      // Handle pocketnotes://host/path
+      when (host) {
+        "podcast" -> {
+          val id = path.substringAfter("/", "").substringBefore("/")
+          if (id.isNotEmpty()) PodcastDetail(id) else Discover
+        }
 
-      path.startsWith("/subscribed") -> Subscribed
-      path.startsWith("/settings") -> Settings
-      path.startsWith("/player") -> {
-        _navEvents.trySend(NavEvent.ShowPlayer)
-        null
-      }
+        "search" -> Search(query = uri.getQueryParameter("q"))
+        "subscribed" -> Subscribed
+        "settings" -> Settings
+        "player" -> {
+          _navEvents.trySend(NavEvent.ShowPlayer)
+          null
+        }
 
-      path.startsWith("/queue") -> PlayerQueue
-      path.startsWith("/discover") || path == "/" || path.isEmpty() -> Discover
-      else -> Discover // Fallback to Discover
+        "queue" -> PlayerQueue
+        "discover" -> Discover
+        else -> Discover
+      }
+    } else {
+      // Handle https://pocketnotes.mak.com/path
+      when {
+        path.startsWith("/podcast/") -> {
+          val id = path.substringAfter("/podcast/").substringBefore("/")
+          if (id.isNotEmpty()) PodcastDetail(id) else Discover
+        }
+
+        path.startsWith("/search") -> Search(query = uri.getQueryParameter("q"))
+        path.startsWith("/subscribed") -> Subscribed
+        path.startsWith("/settings") -> Settings
+        path.startsWith("/player") -> {
+          _navEvents.trySend(NavEvent.ShowPlayer)
+          null
+        }
+
+        path.startsWith("/queue") -> PlayerQueue
+        path.startsWith("/discover") || path == "/" || path.isEmpty() -> Discover
+        else -> Discover
+      }
     }
   }
 }
