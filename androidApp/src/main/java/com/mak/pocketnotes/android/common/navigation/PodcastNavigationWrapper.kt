@@ -35,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mak.pocketnotes.android.AppMainViewmodel
+import com.mak.pocketnotes.android.NavEvent
 import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.PlayerQueue
 import com.mak.pocketnotes.android.common.PodcastDetail
@@ -44,7 +46,6 @@ import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.Settings
 import com.mak.pocketnotes.android.common.Subscribed
 import com.mak.pocketnotes.android.common.ui.PermanentMinPlayer
-import com.mak.pocketnotes.android.feature.player.v2.NavEvent
 import com.mak.pocketnotes.android.feature.player.v2.PlayerEvent
 import com.mak.pocketnotes.android.feature.player.v2.PlayerExpansionViewModel
 import com.mak.pocketnotes.android.feature.player.v2.PlayerScreen
@@ -103,6 +104,9 @@ internal fun PodcastNavigationWrapper(
     val expansionViewModel: PlayerExpansionViewModel = koinViewModel(
         viewModelStoreOwner = LocalActivity.current as ComponentActivity
     )
+  val appMainViewModel: AppMainViewmodel = koinViewModel(
+    viewModelStoreOwner = LocalActivity.current as ComponentActivity
+  )
     val playerState by playerViewModel.playerState.collectAsStateWithLifecycle()
     val expansionState by expansionViewModel.expansionState.collectAsStateWithLifecycle()
     // ── Sync episode playing state → expansion state ──────────────────────
@@ -119,7 +123,7 @@ internal fun PodcastNavigationWrapper(
 
     // ── Notification / deep-link nav events ───────────────────────────────
     LaunchedEffect(Unit) {
-        expansionViewModel.navEvents.collect { event ->
+      appMainViewModel.navEvents.collect { event ->
             when (event) {
                 NavEvent.ShowPlayer -> {
                     expansionViewModel.expand()
@@ -135,12 +139,12 @@ internal fun PodcastNavigationWrapper(
                   navigator.navigate(PlayerQueue)
                 }
 
-//                is NavEvent.Navigate -> {
-//                    coroutineScope.launch {
-//                        drawerState.close()
-//                    }
-//                    navigator.navigate(event.route)
-//                }
+              is NavEvent.Navigate -> {
+                coroutineScope.launch {
+                  drawerState.close()
+                }
+                navigator.navigate(event.route)
+              }
             }
         }
     }

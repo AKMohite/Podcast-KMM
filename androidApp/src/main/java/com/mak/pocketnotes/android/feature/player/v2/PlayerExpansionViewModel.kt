@@ -1,21 +1,14 @@
 package com.mak.pocketnotes.android.feature.player.v2
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
 class PlayerExpansionViewModel : ViewModel() {
   private val _expansionState = MutableStateFlow(PlayerExpansionState())
   val expansionState: StateFlow<PlayerExpansionState> = _expansionState.asStateFlow()
-
-  // Channel is one-shot: collected once in the root composable and dispatched
-  // directly to the nav controller / scaffold state.
-  private val _navEvents = Channel<NavEvent>(Channel.BUFFERED)
-  val navEvents = _navEvents.receiveAsFlow()
 
   // ── Expansion control ─────────────────────────────────────────────────
 
@@ -72,17 +65,4 @@ data class PlayerExpansionState(
   val isVisible: Boolean get() = expansion != PlayerExpansion.HIDDEN
   val isFullyExpanded: Boolean get() = expansion == PlayerExpansion.FULL
   val isMini: Boolean get() = expansion == PlayerExpansion.MINI
-}
-
-sealed interface NavEvent {
-  /** Expand the player pane/overlay to full. */
-  data object ShowPlayer : NavEvent
-
-  /** Navigate to a specific episode detail AND start playback. */
-  data class ShowEpisode(
-    val episodeId: String
-  ) : NavEvent
-
-  /** Navigate to the queue screen (Compact) or reveal queue pane (Expanded+). */
-  data object ShowQueue : NavEvent
 }
