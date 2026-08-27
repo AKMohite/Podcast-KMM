@@ -42,7 +42,7 @@ internal fun PodNavigationDrawer(
         modifier = Modifier
           .fillMaxWidth()
           .padding(horizontal = 16.dp),
-        selected = currentKey == item,
+        selected = currentKey?.let { it::class == item::class } ?: false,
         onClick = {
           onBottomNavigate(item)
         },
@@ -67,7 +67,7 @@ private fun PodNavigationDrawerPreview() {
   PodNavigationDrawer(
     bottomBarItems = listOf(
       Discover,
-      Search,
+      Search(),
       Subscribed,
       Settings
     ),

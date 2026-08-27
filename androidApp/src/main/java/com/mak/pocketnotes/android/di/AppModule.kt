@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.di
 
+import com.mak.pocketnotes.android.AppMainViewmodel
 import com.mak.pocketnotes.android.feature.discover.DiscoverViewmodel
 import com.mak.pocketnotes.android.feature.player.v2.PlayerExpansionViewModel
 import com.mak.pocketnotes.android.feature.player.v2.PlayerViewModel
@@ -33,6 +34,7 @@ internal val appModule =
         controller = get()
       )
     }
+    viewModel { AppMainViewmodel() }
     viewModel { PlayerExpansionViewModel() }
     viewModel { params ->
       PodcastDetailViewModel(
@@ -42,11 +44,12 @@ internal val appModule =
         podcastId = params.get()
       )
     }
-    viewModel {
+    viewModel { params ->
       SearchViewModel(
         genreRepository = get(),
         searchPodcast = get(),
-        bestPodcastRepository = get()
+        bestPodcastRepository = get(),
+        initialQuery = params.getOrNull()
       )
     }
     viewModel {

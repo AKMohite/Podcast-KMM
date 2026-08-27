@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mak.pocketnotes.android.common.Discover
 import com.mak.pocketnotes.android.common.PlayerQueue
+import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.PodcastPlayer
 import com.mak.pocketnotes.android.common.ScreenDestination
 import com.mak.pocketnotes.android.common.Search
@@ -81,7 +82,7 @@ internal fun PodcastNavigationWrapper(
 
     val navigationState = rememberNavigationState(
         startRoute = Discover,
-        topLevelRoutes = setOf(Discover, Search, Subscribed, Settings)
+      topLevelRoutes = setOf(Discover, Search(), Subscribed, Settings)
     )
     val navigator = remember { Navigator(navigationState) }
 
@@ -90,7 +91,7 @@ internal fun PodcastNavigationWrapper(
     val coroutineScope = rememberCoroutineScope()
     val bottomBarItems = listOf(
         Discover,
-        Search,
+      Search(),
         Subscribed,
         Settings
     )
@@ -125,20 +126,21 @@ internal fun PodcastNavigationWrapper(
                 }
 
                 is NavEvent.ShowEpisode -> {
-//                    navController.navigateToEpisodeDetail(event.episodeId)
+                  navigator.navigate(PodcastDetail(event.episodeId))
                     expansionViewModel.expand()
                 }
 
                 NavEvent.ShowQueue -> {
-//                    if (windowSize.showInlineQueue) {
-//                        // Expanded+: queue is already in the player pane
-//                        expansionViewModel.expand()
-//                    } else {
-//                        // Compact/Medium: navigate to QueueRoute
-//                        expansionViewModel.collapse()
-//                        navController.navigateToQueue()
-//                    }
+                  expansionViewModel.collapse()
+                  navigator.navigate(PlayerQueue)
                 }
+
+//                is NavEvent.Navigate -> {
+//                    coroutineScope.launch {
+//                        drawerState.close()
+//                    }
+//                    navigator.navigate(event.route)
+//                }
             }
         }
     }
@@ -228,8 +230,8 @@ internal fun PodcastNavigationWrapper(
                         navigationState = navigationState,
                         navigator = navigator,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
+                          .fillMaxWidth()
+                          .weight(1f)
                     )
                     // TODO handle this properly
                     AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail) {
@@ -260,16 +262,16 @@ internal fun PodcastNavigationWrapper(
                     targetOffsetY = { it },
                 ) + fadeOut(tween(100)),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .testTag(ScaffoldTestTags.PLAYER_OVERLAY),
+                  .fillMaxSize()
+                  .testTag(ScaffoldTestTags.PLAYER_OVERLAY),
             ) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     Column {
                         IconButton(
                             onClick = { expansionViewModel.collapse() },
                             modifier = Modifier
-                                .padding(4.dp)
-                                .testTag(ScaffoldTestTags.COLLAPSE_PLAYER),
+                              .padding(4.dp)
+                              .testTag(ScaffoldTestTags.COLLAPSE_PLAYER),
                         ) {
                             Icon(Icons.Default.KeyboardArrowDown, "Collapse player")
                         }

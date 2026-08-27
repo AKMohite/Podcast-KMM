@@ -21,13 +21,15 @@ internal class SearchViewModel(
   private val genreRepository: GenreRepository,
   private val searchPodcast: SearchPodcast,
   private val bestPodcastRepository: BestPodcastRepository,
+  initialQuery: String? = null
 ) : ViewModel(),
   SearchActions {
-  private val _state = MutableStateFlow(SearchState())
+  private val _state = MutableStateFlow(SearchState(searchText = initialQuery ?: ""))
   override val state: StateFlow<SearchState> = _state.asStateFlow()
 
   init {
     getAllGenres()
+    initialQuery?.let { onSearchClick(it) }
   }
 
   private fun getAllGenres() {

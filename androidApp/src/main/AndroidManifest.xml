@@ -20,11 +20,14 @@
 
         <activity
             android:name=".AppMainActivity"
-            android:exported="true">
+          android:exported="true"
+          android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+          <!-- Custom Internal Actions -->
             <intent-filter>
                 <action android:name="com.podcast.app.action.SHOW_PLAYER" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -39,6 +42,27 @@
                 <action android:name="com.podcast.app.action.SHOW_QUEUE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+          <!-- App Links / Deep Links -->
+          <intent-filter android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="https" />
+            <data android:host="pocketnotes.mak.com" />
+
+            <!-- Supported Paths -->
+            <data android:pathPattern="/.*" />
+            <data android:pathPrefix="/discover" />
+            <data android:pathPrefix="/search" />
+            <data android:pathPrefix="/subscribed" />
+            <data android:pathPrefix="/settings" />
+            <data android:pathPrefix="/podcast" />
+            <data android:pathPrefix="/player" />
+            <data android:pathPrefix="/queue" />
+          </intent-filter>
         </activity>
 
         <service android:name="com.mak.pocketnotes.service.media.service.MediaPlayerService"

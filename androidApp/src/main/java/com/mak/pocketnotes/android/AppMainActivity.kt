@@ -22,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AppMainActivity : ComponentActivity() {
   private val settingsViewModel by viewModel<SettingsViewModel>()
+  private val appMainViewmodel by viewModel<AppMainViewmodel>()
   private var isServiceRunning = false
   private var mediaIntent: Intent? = null
 
@@ -39,6 +40,7 @@ class AppMainActivity : ComponentActivity() {
       )
     )
     super.onCreate(savedInstanceState)
+    appMainViewmodel.handleIntent(intent)
     setContent {
       val settingsState by settingsViewModel.state.collectAsStateWithLifecycle(SettingsState())
       val fontScale = settingsState.getFontScale()
@@ -60,6 +62,12 @@ class AppMainActivity : ComponentActivity() {
     isServiceRunning = false
     mediaIntent = null
     super.onDestroy()
+  }
+
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    setIntent(intent)
+    appMainViewmodel.handleIntent(intent)
   }
 
   private fun startMediaService() {

@@ -27,7 +27,7 @@ internal fun PodBottomNavigation(
   ) {
     bottomBarItems.forEach { item ->
       NavigationBarItem(
-        selected = currentKey == item,
+        selected = currentKey?.let { it::class == item::class } ?: false,
         onClick = {
           onBottomNavigate(item)
         },
@@ -49,7 +49,7 @@ private fun PodBottomNavigationPreview() {
   PodBottomNavigation(
     bottomBarItems = listOf(
       Discover,
-      Search,
+      Search(),
       Subscribed,
       Settings
     ),

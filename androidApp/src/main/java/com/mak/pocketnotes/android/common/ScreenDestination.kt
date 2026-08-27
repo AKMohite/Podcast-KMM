@@ -34,7 +34,7 @@ object Discover : BottomDestination {
 }
 
 @Serializable
-object Search : BottomDestination {
+data class Search(val query: String? = null) : BottomDestination {
   override val icon: ImageVector
     get() = Icons.Outlined.Search
   override val title: Int
@@ -77,4 +77,5 @@ object PlayerQueue : ScreenDestination {
     get() = R.string.player_queue
 }
 
-internal val appDestinations = listOf(Discover, Search, Subscribed, Settings)
+internal val appDestinations: List<BottomDestination> =
+  listOf(Discover, Search(), Subscribed, Settings)

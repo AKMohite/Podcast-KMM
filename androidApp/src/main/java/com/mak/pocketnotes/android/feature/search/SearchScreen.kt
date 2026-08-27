@@ -70,7 +70,7 @@ private fun SearchContent(
   onPodcastClick: (String) -> Unit
 ) {
   val controller = LocalSoftwareKeyboardController.current
-  var searchText by rememberSaveable { mutableStateOf("") }
+  var searchText by rememberSaveable { mutableStateOf(state.searchText) }
   BackHandler(enabled = !state.canShowGenres()) {
     searchText = ""
     actions.closeSearch()
