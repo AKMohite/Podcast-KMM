@@ -11,7 +11,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun PodcastListItem(podcast: Podcast) {
@@ -23,11 +25,17 @@ internal fun PodcastListItem(podcast: Podcast) {
         model = podcast.thumbnail,
         contentDescription = null,
         modifier = Modifier
-            .size(56.dp)
-            .clip(RoundedCornerShape(4.dp)),
+          .size(56.dp)
+          .clip(RoundedCornerShape(4.dp)),
         contentScale = ContentScale.Crop
       )
     },
     modifier = Modifier.clickable { /* TODO */ }
   )
+}
+
+@ThemePreviews
+@Composable
+private fun PodcastListItemPreview() {
+  PodcastListItem(podcast = samplePodcasts[0])
 }

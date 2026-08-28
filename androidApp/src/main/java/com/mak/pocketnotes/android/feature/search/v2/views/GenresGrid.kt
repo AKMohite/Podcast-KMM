@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 
 @Composable
@@ -65,4 +66,19 @@ private fun GenreCard(genre: Genre, modifier: Modifier = Modifier) {
       fontWeight = FontWeight.Bold
     )
   }
+}
+
+@ThemePreviews
+@Composable
+private fun GenresGridPreview() {
+  GenresGrid(
+    genres = listOf(
+      Genre(1, "True Crime", 0),
+      Genre(2, "Comedy", 0),
+      Genre(3, "Technology", 0),
+      Genre(4, "News", 0),
+      Genre(5, "Arts", 0),
+      Genre(6, "Business", 0)
+    )
+  )
 }

@@ -6,7 +6,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun ForYouPodcastsList(podcasts: List<Podcast>) {
@@ -18,4 +20,10 @@ internal fun ForYouPodcastsList(podcasts: List<Podcast>) {
       PodcastCard(podcast)
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun ForYouPodcastsListPreview() {
+  ForYouPodcastsList(podcasts = samplePodcasts)
 }

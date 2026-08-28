@@ -27,6 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.search.v2.SearchUiState
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun SearchOverlayContent(
@@ -62,8 +64,8 @@ internal fun SearchOverlayContent(
       if (uiState.recentSearches.isNotEmpty()) {
         Row(
           modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = 16.dp, vertical = 8.dp),
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
           horizontalArrangement = Arrangement.SpaceBetween,
           verticalAlignment = Alignment.CenterVertically
         ) {
@@ -113,4 +115,31 @@ internal fun SearchOverlayContent(
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun SearchOverlayContentSuggestionsPreview() {
+  SearchOverlayContent(
+    uiState = SearchUiState(
+      suggestions = samplePodcasts.take(3)
+    ),
+    onSuggestionClick = {},
+    onRecentDelete = {},
+    onClearRecent = {}
+  )
+}
+
+@ThemePreviews
+@Composable
+private fun SearchOverlayContentRecentPreview() {
+  SearchOverlayContent(
+    uiState = SearchUiState(
+      recentSearches = listOf("Android", "Kotlin", "Compose"),
+      trendingSearches = listOf("Design Matters", "The Daily")
+    ),
+    onSuggestionClick = {},
+    onRecentDelete = {},
+    onClearRecent = {}
+  )
 }

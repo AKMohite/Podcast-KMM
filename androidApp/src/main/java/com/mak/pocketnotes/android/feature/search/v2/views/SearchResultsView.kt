@@ -19,6 +19,9 @@ import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
 import com.mak.pocketnotes.android.feature.search.v2.SearchResults
 import com.mak.pocketnotes.android.feature.search.v2.SearchResultsFilters
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun SearchResultsView(results: SearchResults, padding: PaddingValues) {
@@ -26,8 +29,8 @@ internal fun SearchResultsView(results: SearchResults, padding: PaddingValues) {
     contentPadding = padding,
     verticalArrangement = Arrangement.spacedBy(16.dp),
     modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp)
+      .fillMaxSize()
+      .padding(horizontal = 16.dp)
   ) {
     item {
       SearchResultsFilters()
@@ -71,4 +74,17 @@ internal fun SearchResultsView(results: SearchResults, padding: PaddingValues) {
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun SearchResultsViewPreview() {
+  SearchResultsView(
+    results = SearchResults(
+      topResult = samplePodcasts[0],
+      episodes = sampleEpisodes,
+      otherPodcasts = samplePodcasts.drop(1)
+    ),
+    padding = PaddingValues(0.dp)
+  )
 }

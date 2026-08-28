@@ -22,14 +22,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.R
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun TrendingSearchesSidebar(trending: List<String>) {
   Column(
     modifier = Modifier
-        .width(250.dp)
-        .fillMaxHeight()
-        .padding(16.dp)
+      .width(250.dp)
+      .fillMaxHeight()
+      .padding(16.dp)
   ) {
     Text(
       text = stringResource(R.string.trending_searches_header),
@@ -40,9 +41,9 @@ internal fun TrendingSearchesSidebar(trending: List<String>) {
     trending.forEach { term ->
       Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { /* TODO */ }
-            .padding(vertical = 8.dp),
+          .fillMaxWidth()
+          .clickable { /* TODO */ }
+          .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
       ) {
         Icon(
@@ -55,4 +56,18 @@ internal fun TrendingSearchesSidebar(trending: List<String>) {
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun TrendingSearchesSidebarPreview() {
+  TrendingSearchesSidebar(
+    trending = listOf(
+      "Design Matters",
+      "The Daily",
+      "Tech News Today",
+      "Artificial Intelligence",
+      "Startups & Venture"
+    )
+  )
 }

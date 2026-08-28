@@ -12,6 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.search.v2.SearchUiState
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun SearchIdleView(
@@ -47,4 +50,21 @@ internal fun SearchIdleView(
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun SearchIdleViewPreview() {
+  SearchIdleView(
+    uiState = SearchUiState(
+      forYouPodcasts = samplePodcasts.take(5),
+      recentSearches = listOf("Android", "Kotlin", "Compose"),
+      genres = listOf(
+        Genre(1, "True Crime", 0),
+        Genre(2, "Comedy", 0),
+        Genre(3, "Technology", 0)
+      )
+    ),
+    padding = PaddingValues(0.dp)
+  )
 }

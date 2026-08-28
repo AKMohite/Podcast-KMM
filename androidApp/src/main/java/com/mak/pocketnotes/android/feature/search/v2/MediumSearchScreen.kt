@@ -29,6 +29,11 @@ import com.mak.pocketnotes.android.feature.search.v2.views.SearchIdleView
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchOverlayContent
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchResultsView
 import com.mak.pocketnotes.android.feature.search.v2.views.TrendingSearchesSidebar
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -107,8 +112,8 @@ internal fun MediumSearchScreen(
   ) { padding ->
     Row(
       modifier = Modifier
-          .fillMaxSize()
-          .padding(padding)
+        .fillMaxSize()
+        .padding(padding)
     ) {
       Column(modifier = Modifier.weight(1f)) {
         if (screenState == SearchScreenState.RESULTS) {
@@ -122,4 +127,37 @@ internal fun MediumSearchScreen(
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun MediumSearchScreenIdlePreview() {
+  PocketNotesTheme {
+    MediumSearchScreen(
+      uiState = SearchUiState(
+        forYouPodcasts = samplePodcasts.take(5),
+        genres = listOf(Genre(1, "True Crime", 0), Genre(2, "Comedy", 0)),
+        trendingSearches = listOf("Design Matters", "The Daily")
+      ),
+      searchQuery = "",
+      screenState = SearchScreenState.IDLE,
+      onEvent = {}
+    )
+  }
+}
+
+@ThemePreviews
+@Composable
+private fun MediumSearchScreenResultsPreview() {
+  MediumSearchScreen(
+    uiState = SearchUiState(
+      searchResults = SearchResults(
+        topResult = samplePodcasts[0],
+        episodes = sampleEpisodes
+      )
+    ),
+    searchQuery = "The Daily",
+    screenState = SearchScreenState.RESULTS,
+    onEvent = {}
+  )
 }

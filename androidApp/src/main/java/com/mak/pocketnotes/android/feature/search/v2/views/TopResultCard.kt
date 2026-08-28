@@ -21,7 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun TopResultCard(podcast: Podcast) {
@@ -56,4 +58,10 @@ internal fun TopResultCard(podcast: Podcast) {
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun TopResultCardPreview() {
+  TopResultCard(podcast = samplePodcasts[0])
 }

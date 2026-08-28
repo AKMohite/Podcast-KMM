@@ -16,7 +16,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
 internal fun PodcastCard(podcast: Podcast) {
@@ -25,8 +27,8 @@ internal fun PodcastCard(podcast: Podcast) {
       model = podcast.thumbnail,
       contentDescription = null,
       modifier = Modifier
-          .size(140.dp)
-          .clip(RoundedCornerShape(8.dp)),
+        .size(140.dp)
+        .clip(RoundedCornerShape(8.dp)),
       contentScale = ContentScale.Crop
     )
     Spacer(modifier = Modifier.height(4.dp))
@@ -45,4 +47,10 @@ internal fun PodcastCard(podcast: Podcast) {
       overflow = TextOverflow.Ellipsis
     )
   }
+}
+
+@ThemePreviews
+@Composable
+private fun PodcastCardPreview() {
+  PodcastCard(podcast = samplePodcasts[0])
 }

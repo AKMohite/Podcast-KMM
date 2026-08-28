@@ -38,6 +38,11 @@ import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchIdleView
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchOverlayContent
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchResultsView
+import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.core.feature.domain.search.models.Genre
+import com.mak.pocketnotes.utils.sample.sampleEpisodes
+import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -128,6 +133,38 @@ internal fun CompactSearchScreen(
       SearchIdleView(uiState, padding)
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun CompactSearchScreenIdlePreview() {
+  PocketNotesTheme {
+    CompactSearchScreen(
+      uiState = SearchUiState(
+        forYouPodcasts = samplePodcasts.take(5),
+        genres = listOf(Genre(1, "True Crime", 0), Genre(2, "Comedy", 0))
+      ),
+      searchQuery = "",
+      screenState = SearchScreenState.IDLE,
+      onEvent = {}
+    )
+  }
+}
+
+@ThemePreviews
+@Composable
+private fun CompactSearchScreenResultsPreview() {
+  CompactSearchScreen(
+    uiState = SearchUiState(
+      searchResults = SearchResults(
+        topResult = samplePodcasts[0],
+        episodes = sampleEpisodes
+      )
+    ),
+    searchQuery = "The Daily",
+    screenState = SearchScreenState.RESULTS,
+    onEvent = {}
+  )
 }
 
 @Composable

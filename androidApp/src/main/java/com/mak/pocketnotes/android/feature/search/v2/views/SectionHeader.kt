@@ -14,13 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mak.pocketnotes.android.R
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun SectionHeader(title: String, onSeeAll: (() -> Unit)?) {
   Row(
     modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 8.dp),
+      .fillMaxWidth()
+      .padding(horizontal = 16.dp, vertical = 8.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween
   ) {
@@ -35,4 +36,10 @@ internal fun SectionHeader(title: String, onSeeAll: (() -> Unit)?) {
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun SectionHeaderPreview() {
+  SectionHeader(title = "Section Header", onSeeAll = {})
 }

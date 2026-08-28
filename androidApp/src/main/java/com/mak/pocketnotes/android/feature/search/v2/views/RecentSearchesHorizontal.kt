@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun RecentSearchesHorizontal(recent: List<String>) {
@@ -50,4 +51,10 @@ internal fun RecentSearchesHorizontal(recent: List<String>) {
       }
     }
   }
+}
+
+@ThemePreviews
+@Composable
+private fun RecentSearchesHorizontalPreview() {
+  RecentSearchesHorizontal(recent = listOf("Android", "Kotlin", "Compose", "Listen Notes"))
 }

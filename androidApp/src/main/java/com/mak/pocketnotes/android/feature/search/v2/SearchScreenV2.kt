@@ -19,6 +19,7 @@ import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.navigation.Navigator
+import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -73,4 +74,10 @@ internal fun SearchResultsFilters() {
       onClick = {},
       label = { Text(stringResource(R.string.episodes_chip)) })
   }
+}
+
+@ThemePreviews
+@Composable
+private fun SearchResultsFiltersPreview() {
+  SearchResultsFilters()
 }
