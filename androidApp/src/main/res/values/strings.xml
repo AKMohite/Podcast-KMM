@@ -235,4 +235,23 @@
     <string name="play_episode">Play %1$s</string>
     <string name="remove_queue_episode">Remove from queue</string>
     <string name="notification_channel_name">podtalk-notification-channel</string>
+  <string name="search_query_placeholder">Search podcasts or episodes</string>
+  <string name="for_you_header">For You</string>
+  <string name="recent_searches_header">Recent Searches</string>
+  <string name="browse_genre_header">Browse all</string>
+  <string name="see_all_link">See all</string>
+  <string name="trending_searches_header">Trending Searches</string>
+  <string name="suggestions_header">Suggestions</string>
+  <string name="podcast_search_suggestion">Podcast • %1$s</string>
+  <string name="recent_header">RECENT</string>
+  <string name="clear">Clear</string>
+  <string name="trending_now">TRENDING NOW</string>
+  <string name="top_result">Top Result</string>
+  <string name="episodes">Episodes</string>
+  <string name="more_podcasts">More Podcasts</string>
+  <string name="all_chip">All</string>
+  <string name="podcasts_chip">Podcasts</string>
+  <string name="episodes_chip">Episodes</string>
+  <string name="back">Back</string>
+  <string name="text_to_speech">Mic</string>
 </resources>

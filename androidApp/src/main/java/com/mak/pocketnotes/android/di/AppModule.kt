@@ -7,6 +7,7 @@ import com.mak.pocketnotes.android.feature.player.v2.PlayerViewModel
 import com.mak.pocketnotes.android.feature.podcastdetail.PodcastDetailViewModel
 import com.mak.pocketnotes.android.feature.queue.QueueViewModel
 import com.mak.pocketnotes.android.feature.search.SearchViewModel
+import com.mak.pocketnotes.android.feature.search.v2.SearchViewModelV2
 import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
 import com.mak.pocketnotes.android.media.ExoPlayerController
 import com.mak.pocketnotes.media.PlayerController
@@ -50,6 +51,14 @@ internal val appModule =
         searchPodcast = get(),
         bestPodcastRepository = get(),
         initialQuery = params.getOrNull()
+      )
+    }
+    viewModel {
+      SearchViewModelV2(
+        bestPodcastsRepository = get(),
+        genreRepository = get(),
+        searchRepository = get(),
+        savedStateHandle = get()
       )
     }
     viewModel {

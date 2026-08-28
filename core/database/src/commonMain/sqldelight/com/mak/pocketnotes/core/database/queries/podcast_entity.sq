@@ -22,3 +22,9 @@ DELETE FROM podcasts WHERE id = :id;
 
 removeAllPodcasts:
 DELETE FROM podcasts;
+
+searchPodcasts:
+SELECT * FROM podcasts
+WHERE title LIKE ('%' || :query || '%')
+   OR publisher LIKE ('%' || :query || '%')
+   OR description LIKE ('%' || :query || '%') LIMIT 10;

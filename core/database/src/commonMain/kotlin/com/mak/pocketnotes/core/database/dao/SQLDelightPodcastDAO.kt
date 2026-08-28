@@ -1,6 +1,7 @@
 package com.mak.pocketnotes.core.database.dao
 
 import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.queries.PocketDatabase
@@ -35,6 +36,11 @@ internal class SQLDelightPodcastDAO(
     .asFlow()
     .mapToOne(dispatcher.io)
 
+  override fun searchPodcasts(query: String): Flow<List<PodcastEntity>> = dbQuery
+    .searchPodcasts(query)
+    .asFlow()
+    .mapToList(dispatcher.io)
+
   override suspend fun removePodcast(podcastId: String): Long = dbQuery.delete(podcastId).await()
 }
 
@@ -46,6 +52,8 @@ interface PodcastDAO {
   suspend fun removePodcasts(): Long
 
   fun getPodcast(id: String): Flow<PodcastEntity>
+
+  fun searchPodcasts(query: String): Flow<List<PodcastEntity>>
 
   suspend fun removePodcast(podcastId: String): Long
 }
