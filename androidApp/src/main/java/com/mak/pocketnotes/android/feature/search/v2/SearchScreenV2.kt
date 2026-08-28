@@ -37,6 +37,7 @@ import androidx.compose.material3.rememberContainedSearchBarState
 import androidx.compose.material3.rememberSearchBarWithGapState
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +48,7 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.mak.pocketnotes.android.common.Search
@@ -54,6 +56,7 @@ import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 
 fun EntryProviderScope<NavKey>.searchEntryV2(navigator: Navigator) {
@@ -76,7 +79,9 @@ internal fun SearchScreenV2() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CompactSearchScreen() {
+private fun CompactSearchScreen() {
+  val viewModel: SearchViewModelV2 = koinViewModel()
+  val searchResults by viewModel.searchResultsState.collectAsStateWithLifecycle()
   val textFieldState = rememberTextFieldState()
   val searchBarState = rememberContainedSearchBarState()
   val scope = rememberCoroutineScope()
@@ -144,7 +149,7 @@ fun CompactSearchScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediumSearchScreen() {
+private fun MediumSearchScreen() {
   val textFieldState = rememberTextFieldState()
   val searchBarState = rememberSearchBarWithGapState()
   val scope = rememberCoroutineScope()
