@@ -77,3 +77,6 @@ DELETE FROM episodes;
 
 getOldestEpisodeNextPageCursor:
 SELECT next_episode_published_on FROM episodes WHERE podcast_id = :podcastId ORDER BY published_on ASC LIMIT 1;
+
+getEpisodeById:
+SELECT * FROM episodes WHERE id = :id;

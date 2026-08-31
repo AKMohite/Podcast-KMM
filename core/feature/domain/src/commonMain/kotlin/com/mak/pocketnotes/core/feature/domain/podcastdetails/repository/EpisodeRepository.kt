@@ -13,4 +13,6 @@ interface EpisodeRepository {
   fun getEpisodesPaging(podcastId: String): Flow<PagingData<PodcastEpisode>>
 
   fun getEpisodesPagingV2(podcastId: String): Flow<PagingData<PodcastEpisode>>
+
+  suspend fun getEpisodeById(id: String): PodcastEpisode?
 }

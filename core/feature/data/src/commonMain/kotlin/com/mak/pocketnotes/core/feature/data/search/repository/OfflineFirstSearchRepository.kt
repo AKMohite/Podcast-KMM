@@ -25,6 +25,13 @@ internal class OfflineFirstSearchRepository(
     // For now, if searching podcasts, we might need a separate endpoint or DTO.
     // As a placeholder, we use the local search if remote podcast search isn't ready.
     // Or we can try to call search with type=podcast and handle potential issues.
+//    val response = api.search(mapOf("q" to query, "type" to "podcast"))
+//    if (response is RemoteResult.Success) {
+//      val episodes = mapper.getPodcastEpisodes(response.data.results, "")
+//      emit(episodes)
+//    } else {
+//      emit(emptyList())
+//    }
     emit(emptyList())
   }.flowOn(dispatcher.io)
 

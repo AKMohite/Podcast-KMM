@@ -8,6 +8,7 @@ versionName = "0.0.1"
 
 accompanist = "0.36.0"
 agp = "9.3.1"
+appfunctionsService = "1.0.0-alpha09"
 coil = "2.7.0"
 composeBom = "2026.08.00"
 coroutines = "1.11.0"
@@ -45,6 +46,8 @@ ktlint = "1.2.1"
 kover = "0.9.9"
 dokka = "2.2.0"
 spotless = "8.10.0"
+appfunctions = "1.0.0-alpha10"
+ksp = "2.3.11"
 
 [libraries]
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -113,6 +116,9 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-wear-material3 = { group = "androidx.wear.compose", name = "compose-material3", version.ref = "composeWear" }
 androidx-wear-ui-tooling = { group = "androidx.wear.compose", name = "compose-ui-tooling", version.ref = "composeWear" }
+androidx-appfunctions = { group = "androidx.appfunctions", name = "appfunctions", version.ref = "appfunctions" }
+androidx-appfunctions-service = { module = "androidx.appfunctions:appfunctions-service", version.ref = "appfunctions" }
+androidx-appfunctions-compiler = { group = "androidx.appfunctions", name = "appfunctions-compiler", version.ref = "appfunctions" }
 
 [bundles]
 compose = [ "androidx-navigation3-runtime", "androidx-navigation3-ui", "androidx-lifecycle-viewmodel-navigation3", "compose-coil", "compose-material", "compose-material-adaptinve", "compose-ui-preview", "compose-material-icons" ]
@@ -132,3 +138,4 @@ skie = { id = "co.touchlab.skie", version.ref = "skie" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

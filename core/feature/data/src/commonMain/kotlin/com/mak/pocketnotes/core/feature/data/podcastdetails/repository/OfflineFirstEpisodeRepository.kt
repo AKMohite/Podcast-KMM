@@ -103,6 +103,11 @@ class OfflineFirstEpisodeRepository(
       dispatcher = dispatcher
     )
 
+  override suspend fun getEpisodeById(id: String): PodcastEpisode? =
+    withContext(dispatcher.io) {
+      episodeDAO.getEpisodeById(id)?.let { mapper.episodeEntityToModel(it) }
+    }
+
   private suspend fun isDataFresh(episodes: List<PodcastEpisode>): Boolean =
     withContext(dispatcher.io) {
       if (episodes.isEmpty()) return@withContext false

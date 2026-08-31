@@ -68,5 +68,13 @@ To generate the API documentation:
 
 The documentation will be generated in `build/dokka/html`.
 
+### AI & Agentic Capabilities
+
+This project implements **Android AppFunctions**, allowing system AI agents to interact with podcast
+discovery and playback.
+
+- [AI App Functions Developer Guide](dev/ai_app_functions.md): A complete list of exposed functions
+  and ADB commands for testing.
+
 ### References
 - App icon from [Icon kitchen](https://icon.kitchen/)

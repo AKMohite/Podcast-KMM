@@ -5,6 +5,7 @@ plugins {
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.baselineprofile)
   alias(libs.plugins.kotlinxSerialization)
+  alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -109,6 +110,10 @@ dependencies {
   // baseline profile
   implementation(libs.androidx.profileinstaller)
   baselineProfile(project(":baselineprofiles"))
+
+  implementation(libs.androidx.appfunctions)
+  implementation(libs.androidx.appfunctions.service)
+  ksp(libs.androidx.appfunctions.compiler)
 
   androidTestImplementation(platform(libs.compose.bom))
   androidTestImplementation(libs.compose.test.junit4)

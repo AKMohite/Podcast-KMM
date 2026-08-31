@@ -1,0 +1,14 @@
+<AppFunctionAppMetadata xmlns:appfn="http://schemas.android.com/apk/androidx.appfunctions"
+  appfn:description="This app provides tools for podcast discovery, management, and playback.
+
+    Operational Patterns:
+    - Always use 'searchPodcasts' or 'searchEpisodes' to find valid entities and IDs before attempting playback functions if the specific ID is unknown.
+    - Prefer 'playLatestEpisode' for quick voice-triggered playback of known shows.
+    - Use 'addToQueue' for hands-free playlist management without interrupting current playback.
+    - Use 'getPlaybackState' to verify what is currently playing or to check progress.
+    - Control playback flow using 'pausePlayback', 'resumePlayback', 'skipForward', 'skipBackward', 'skipToNext', and 'skipToPrevious'.
+
+    Constraints:
+    - Playback requires an active internet connection for streaming.
+    - Search results are limited to the 20 most relevant matches."
+  appfn:displayDescription="@string/app_name" />
