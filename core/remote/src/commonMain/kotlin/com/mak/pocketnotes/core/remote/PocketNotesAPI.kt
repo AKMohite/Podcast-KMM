@@ -6,6 +6,7 @@ import com.mak.pocketnotes.core.remote.dto.GenresDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastRecommendationsDTO
 import com.mak.pocketnotes.core.remote.dto.SearchEpisodesDTO
+import com.mak.pocketnotes.core.remote.dto.SearchPodcastDTO
 import com.mak.pocketnotes.core.remote.utils.RemoteResult
 
 interface PocketNotesAPI {
@@ -22,5 +23,6 @@ interface PocketNotesAPI {
     queryMap: Map<String, String> = emptyMap()
   ): RemoteResult<PodcastDTO>
 
-  suspend fun search(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO>
+  suspend fun searchEpisodes(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO>
+  suspend fun searchPodcasts(queries: Map<String, String>): RemoteResult<SearchPodcastDTO>
 }

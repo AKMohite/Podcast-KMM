@@ -112,7 +112,7 @@ dependencies {
   baselineProfile(project(":baselineprofiles"))
 
   implementation(libs.androidx.appfunctions)
-  implementation(libs.androidx.appfunctions.service)
+//  implementation(libs.androidx.appfunctions.service)
   ksp(libs.androidx.appfunctions.compiler)
 
   androidTestImplementation(platform(libs.compose.bom))

@@ -7,6 +7,7 @@ import com.mak.pocketnotes.core.remote.dto.GenresDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastRecommendationsDTO
 import com.mak.pocketnotes.core.remote.dto.SearchEpisodesDTO
+import com.mak.pocketnotes.core.remote.dto.SearchPodcastDTO
 import com.mak.pocketnotes.core.remote.utils.RemoteResult
 import com.mak.pocketnotes.core.remote.utils.safeApiCall
 import io.ktor.client.HttpClient
@@ -51,13 +52,22 @@ internal class KtorPocketNotesAPI(
     }
   }
 
-  override suspend fun search(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO> =
+  override suspend fun searchEpisodes(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO> =
     withContext(dispatcher.io) {
       safeApiCall {
         val queryMap = getAllQueries(queries)
         client.get("api/v2/search?$queryMap")
       }
     }
+
+  override suspend fun searchPodcasts(
+    queries: Map<String, String>
+  ): RemoteResult<SearchPodcastDTO> = withContext(dispatcher.io) {
+    safeApiCall {
+      val queryMap = getAllQueries(queries)
+      client.get("api/v2/search?$queryMap")
+    }
+  }
 
   private fun getAllQueries(queries: Map<String, String>) = queries
     .map {

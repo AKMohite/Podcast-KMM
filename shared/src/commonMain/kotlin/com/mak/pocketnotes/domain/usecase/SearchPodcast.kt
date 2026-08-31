@@ -26,7 +26,7 @@ class SearchPodcast : KoinComponent {
       )
     val episodeDTOs =
       api
-        .search(episodeQuery)
+        .searchEpisodes(episodeQuery)
         .getOrThrow()
         .results
         .orEmpty()

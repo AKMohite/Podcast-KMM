@@ -7,6 +7,7 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.remote.dto.EpisodeDTO
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
+import com.mak.pocketnotes.core.remote.dto.SearchPodcastResultDTO
 import kotlin.time.Instant
 
 class PodcastMapper {
@@ -160,5 +161,18 @@ class PodcastMapper {
       duration = audio_length.toInt(),
       podcastId = podcast_id
     )
+  }
+
+  fun getSearchPodcastResults(results: List<SearchPodcastResultDTO>?): List<Podcast> {
+    return results?.map {
+      Podcast(
+        id = it.id.orEmpty(),
+        title = it.titleOriginal.orEmpty(),
+        description = it.descriptionOriginal.orEmpty(),
+        image = it.image.orEmpty(),
+        thumbnail = it.thumbnail.orEmpty(),
+        publisher = it.publisherOriginal.orEmpty(),
+      )
+    } ?: emptyList()
   }
 }

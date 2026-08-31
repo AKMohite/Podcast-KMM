@@ -123,12 +123,12 @@ internal class SearchViewModelV2(
   private fun performRemoteSearch(query: String) {
     viewModelScope.launch {
       _isLoading.value = true
-      searchRepository.searchEpisodes(query).collect { episodes ->
+      searchRepository.searchPodcasts(query).collect { podcasts ->
         _remoteSearchResults.update {
           it.copy(
             topResult = null,
-            episodes = episodes,
-            otherPodcasts = emptyList()
+            episodes = emptyList(),
+            podcasts = podcasts
           )
         }
         _isLoading.value = false
@@ -172,6 +172,7 @@ data class SearchUiState(
 data class SearchResults(
   val topResult: Podcast? = null,
   val episodes: List<PodcastEpisode> = emptyList(),
+  val podcasts: List<Podcast> = emptyList(),
   val otherPodcasts: List<Podcast> = emptyList()
 )
 
