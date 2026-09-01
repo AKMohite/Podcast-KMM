@@ -23,7 +23,6 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import org.koin.compose.viewmodel.koinViewModel
 
-
 fun EntryProviderScope<NavKey>.searchEntryV2(navigator: Navigator) {
   entry<Search> {
     SearchScreenV2()
@@ -68,11 +67,13 @@ internal fun SearchResultsFilters() {
     FilterChip(
       selected = false,
       onClick = {},
-      label = { Text(stringResource(R.string.podcasts_chip)) })
+      label = { Text(stringResource(R.string.podcasts_chip)) }
+    )
     FilterChip(
       selected = false,
       onClick = {},
-      label = { Text(stringResource(R.string.episodes_chip)) })
+      label = { Text(stringResource(R.string.episodes_chip)) }
+    )
   }
 }
 

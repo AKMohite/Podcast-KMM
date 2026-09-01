@@ -52,13 +52,14 @@ internal class KtorPocketNotesAPI(
     }
   }
 
-  override suspend fun searchEpisodes(queries: Map<String, String>): RemoteResult<SearchEpisodesDTO> =
-    withContext(dispatcher.io) {
-      safeApiCall {
-        val queryMap = getAllQueries(queries)
-        client.get("api/v2/search?$queryMap")
-      }
+  override suspend fun searchEpisodes(
+    queries: Map<String, String>
+  ): RemoteResult<SearchEpisodesDTO> = withContext(dispatcher.io) {
+    safeApiCall {
+      val queryMap = getAllQueries(queries)
+      client.get("api/v2/search?$queryMap")
     }
+  }
 
   override suspend fun searchPodcasts(
     queries: Map<String, String>

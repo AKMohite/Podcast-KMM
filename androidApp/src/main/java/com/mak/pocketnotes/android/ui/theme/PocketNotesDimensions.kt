@@ -26,7 +26,9 @@ fun dimensionTokens(): PocketNotesDimensions {
     val info = currentWindowAdaptiveInfoV2()
     val sizeClass = info.windowSizeClass
     return when {
-        sizeClass.isExtraLarge() || sizeClass.isLarge() || sizeClass.isExpanded() ->PocketNotesDimensions(
+      sizeClass.isExtraLarge() ||
+        sizeClass.isLarge() ||
+        sizeClass.isExpanded() -> PocketNotesDimensions(
             screenHorizontalPadding = 32.dp,
             cardMaxWidth            = 900.dp,
             gridColumns             = 4,

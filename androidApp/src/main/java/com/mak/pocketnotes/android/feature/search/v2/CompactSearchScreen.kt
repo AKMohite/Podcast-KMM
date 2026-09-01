@@ -96,7 +96,7 @@ internal fun CompactSearchScreen(
             onBack = { onEvent(SearchUiEvent.SearchBack) }
           )
         },
-        trailingIcon = { SearchbarTrailingIcon() },
+        trailingIcon = { SearchbarTrailingIcon() }
       )
     }
 
@@ -107,12 +107,12 @@ internal fun CompactSearchScreen(
         scrollBehavior = scrollBehavior,
         state = searchBarState,
         colors = appBarWithSearchColors,
-        inputField = inputField,
+        inputField = inputField
       )
       ExpandedFullScreenContainedSearchBar(
         state = searchBarState,
         inputField = inputField,
-        colors = appBarWithSearchColors.searchBarColors,
+        colors = appBarWithSearchColors.searchBarColors
       ) {
         SearchOverlayContent(
           uiState = uiState,
@@ -125,7 +125,7 @@ internal fun CompactSearchScreen(
           onClearRecent = { onEvent(SearchUiEvent.ClearRecentSearches) }
         )
       }
-    },
+    }
   ) { padding ->
     if (screenState == SearchScreenState.RESULTS) {
       SearchResultsView(uiState.searchResults, padding)
@@ -172,42 +172,7 @@ internal fun SearchbarLeadingIcon(
   searchBarState: SearchBarState,
   scope: CoroutineScope,
   onBack: () -> Unit
-) =
-  if (searchBarState.currentValue == SearchBarValue.Expanded) {
-    TooltipBox(
-      positionProvider =
-        rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
-      tooltip = {
-        PlainTooltip(
-          modifier =
-            Modifier.semantics {
-              liveRegion = LiveRegionMode.Assertive
-              paneTitle = "Back"
-            }
-        ) {
-          Text(stringResource(R.string.back))
-        }
-      },
-      state = rememberTooltipState(),
-    ) {
-      IconButton(
-        onClick = {
-          onBack()
-          scope.launch { searchBarState.animateToCollapsed() }
-        }
-      ) {
-        Icon(
-          Icons.AutoMirrored.Default.ArrowBack,
-          contentDescription = stringResource(R.string.back)
-        )
-      }
-    }
-  } else {
-    Icon(Icons.Default.Search, contentDescription = null)
-  }
-
-@Composable
-internal fun SearchbarTrailingIcon() =
+) = if (searchBarState.currentValue == SearchBarValue.Expanded) {
   TooltipBox(
     positionProvider =
       rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
@@ -216,18 +181,51 @@ internal fun SearchbarTrailingIcon() =
         modifier =
           Modifier.semantics {
             liveRegion = LiveRegionMode.Assertive
-            paneTitle = "Mic"
+            paneTitle = "Back"
           }
       ) {
-        Text(stringResource(R.string.text_to_speech))
+        Text(stringResource(R.string.back))
       }
     },
-    state = rememberTooltipState(),
+    state = rememberTooltipState()
   ) {
-    IconButton(onClick = { /* doSomething() */ }) {
+    IconButton(
+      onClick = {
+        onBack()
+        scope.launch { searchBarState.animateToCollapsed() }
+      }
+    ) {
       Icon(
-        imageVector = Icons.Default.Mic,
-        contentDescription = stringResource(R.string.text_to_speech)
+        Icons.AutoMirrored.Default.ArrowBack,
+        contentDescription = stringResource(R.string.back)
       )
     }
   }
+} else {
+  Icon(Icons.Default.Search, contentDescription = null)
+}
+
+@Composable
+internal fun SearchbarTrailingIcon() = TooltipBox(
+  positionProvider =
+    rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
+  tooltip = {
+    PlainTooltip(
+      modifier =
+        Modifier.semantics {
+          liveRegion = LiveRegionMode.Assertive
+          paneTitle = "Mic"
+        }
+    ) {
+      Text(stringResource(R.string.text_to_speech))
+    }
+  },
+  state = rememberTooltipState()
+) {
+  IconButton(onClick = { /* doSomething() */ }) {
+    Icon(
+      imageVector = Icons.Default.Mic,
+      contentDescription = stringResource(R.string.text_to_speech)
+    )
+  }
+}

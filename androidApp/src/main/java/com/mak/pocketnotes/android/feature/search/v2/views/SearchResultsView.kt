@@ -61,15 +61,18 @@ internal fun SearchResultsView(results: SearchResults, padding: PaddingValues) {
       }
     }
 
-    if (results.otherPodcasts.isNotEmpty()) {
-      item {
-        Text(
-          text = stringResource(R.string.more_podcasts),
-          style = MaterialTheme.typography.titleMedium,
-          fontWeight = FontWeight.Bold
-        )
-      }
-      items(results.otherPodcasts) { podcast ->
+    if (results.podcasts.isNotEmpty()) {
+//      item {
+//        Text(
+//          text = stringResource(R.string.more_podcasts),
+//          style = MaterialTheme.typography.titleMedium,
+//          fontWeight = FontWeight.Bold
+//        )
+//      }
+      items(
+        items = results.podcasts,
+        key = { podcast -> podcast.id }
+      ) { podcast ->
         PodcastListItem(podcast)
       }
     }

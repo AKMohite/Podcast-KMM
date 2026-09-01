@@ -58,231 +58,239 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 internal object ScaffoldTestTags {
-    const val BOTTOM_NAV      = "scaffold:bottom_nav"
-    const val NAV_RAIL        = "scaffold:nav_rail"
-    const val NAV_DRAWER      = "scaffold:nav_drawer"
-    const val PLAYER_OVERLAY  = "scaffold:player_overlay"
-    const val PLAYER_PANE     = "scaffold:player_pane"
-    const val CONTENT_PANE    = "scaffold:content_pane"
-    const val COLLAPSE_PLAYER = "scaffold:collapse_player"
+  const val BOTTOM_NAV = "scaffold:bottom_nav"
+  const val NAV_RAIL = "scaffold:nav_rail"
+  const val NAV_DRAWER = "scaffold:nav_drawer"
+  const val PLAYER_OVERLAY = "scaffold:player_overlay"
+  const val PLAYER_PANE = "scaffold:player_pane"
+  const val CONTENT_PANE = "scaffold:content_pane"
+  const val COLLAPSE_PLAYER = "scaffold:collapse_player"
 }
 
 @Composable
-internal fun PodcastNavigationWrapper(
-    modifier: Modifier = Modifier
-) {
-    val adaptiveInfo = adaptiveScreenInfo()
+internal fun PodcastNavigationWrapper(modifier: Modifier = Modifier) {
+  val adaptiveInfo = adaptiveScreenInfo()
 
-    val sizeClass = adaptiveInfo.windowSizeClass
-    val navLayoutType = when {
-        adaptiveInfo.windowPosture.isTabletop -> NavigationSuiteType.NavigationBar
-        sizeClass.isLarge() -> NavigationSuiteType.NavigationDrawer
-        sizeClass.isMedium() -> NavigationSuiteType.NavigationRail
-        else -> NavigationSuiteType.NavigationBar
-    }
+  val sizeClass = adaptiveInfo.windowSizeClass
+  val navLayoutType = when {
+    adaptiveInfo.windowPosture.isTabletop -> NavigationSuiteType.NavigationBar
+    sizeClass.isLarge() -> NavigationSuiteType.NavigationDrawer
+    sizeClass.isMedium() -> NavigationSuiteType.NavigationRail
+    else -> NavigationSuiteType.NavigationBar
+  }
 
-    val navigationState = rememberNavigationState(
-        startRoute = Discover,
-      topLevelRoutes = setOf(Discover, Search(), Subscribed, Settings)
-    )
-    val navigator = remember { Navigator(navigationState) }
+  val navigationState = rememberNavigationState(
+    startRoute = Discover,
+    topLevelRoutes = setOf(Discover, Search(), Subscribed, Settings)
+  )
+  val navigator = remember { Navigator(navigationState) }
 
-    val currentKey = navigationState.backStacks[navigationState.topLevelRoute]?.lastOrNull() ?: navigationState.topLevelRoute
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val coroutineScope = rememberCoroutineScope()
-    val bottomBarItems = listOf(
-        Discover,
-      Search(),
-        Subscribed,
-        Settings
-    )
-    val isFullScreen = ScreenDestination.isFullScreen(currentKey)
+  val currentKey = navigationState.backStacks[navigationState.topLevelRoute]
+    ?.lastOrNull() ?: navigationState.topLevelRoute
+  val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+  val coroutineScope = rememberCoroutineScope()
+  val bottomBarItems = listOf(
+    Discover,
+    Search(),
+    Subscribed,
+    Settings
+  )
+  val isFullScreen = ScreenDestination.isFullScreen(currentKey)
 
-    val playerViewModel: PlayerViewModel = koinViewModel(
-        viewModelStoreOwner = LocalActivity.current as ComponentActivity
-    )
-    val expansionViewModel: PlayerExpansionViewModel = koinViewModel(
-        viewModelStoreOwner = LocalActivity.current as ComponentActivity
-    )
+  val playerViewModel: PlayerViewModel = koinViewModel(
+    viewModelStoreOwner = LocalActivity.current as ComponentActivity
+  )
+  val expansionViewModel: PlayerExpansionViewModel = koinViewModel(
+    viewModelStoreOwner = LocalActivity.current as ComponentActivity
+  )
   val appMainViewModel: AppMainViewmodel = koinViewModel(
     viewModelStoreOwner = LocalActivity.current as ComponentActivity
   )
-    val playerState by playerViewModel.playerState.collectAsStateWithLifecycle()
-    val expansionState by expansionViewModel.expansionState.collectAsStateWithLifecycle()
-    // ── Sync episode playing state → expansion state ──────────────────────
-    //
-    // When an episode starts (null → non-null) the mini bar should appear.
-    // When playback is fully cleared the bar should vanish.
-    LaunchedEffect(playerState.currentEpisode) {
-        if (playerState.currentEpisode != null && !expansionState.isVisible) {
-            expansionViewModel.onEpisodeStarted()
-        } else if (playerState.currentEpisode == null) {
-            expansionViewModel.onEpisodeStopped()
-        }
+  val playerState by playerViewModel.playerState.collectAsStateWithLifecycle()
+  val expansionState by expansionViewModel.expansionState.collectAsStateWithLifecycle()
+  // ── Sync episode playing state → expansion state ──────────────────────
+  //
+  // When an episode starts (null → non-null) the mini bar should appear.
+  // When playback is fully cleared the bar should vanish.
+  LaunchedEffect(playerState.currentEpisode) {
+    if (playerState.currentEpisode != null && !expansionState.isVisible) {
+      expansionViewModel.onEpisodeStarted()
+    } else if (playerState.currentEpisode == null) {
+      expansionViewModel.onEpisodeStopped()
     }
+  }
 
-    // ── Notification / deep-link nav events ───────────────────────────────
-    LaunchedEffect(Unit) {
-      appMainViewModel.navEvents.collect { event ->
-            when (event) {
-                NavEvent.ShowPlayer -> {
-                    expansionViewModel.expand()
-                }
+  // ── Notification / deep-link nav events ───────────────────────────────
+  LaunchedEffect(Unit) {
+    appMainViewModel.navEvents.collect { event ->
+      when (event) {
+        NavEvent.ShowPlayer -> {
+          expansionViewModel.expand()
+        }
 
-                is NavEvent.ShowEpisode -> {
-                  navigator.navigate(PodcastDetail(event.episodeId))
-                    expansionViewModel.expand()
-                }
+        is NavEvent.ShowEpisode -> {
+          navigator.navigate(PodcastDetail(event.episodeId))
+          expansionViewModel.expand()
+        }
 
-                NavEvent.ShowQueue -> {
-                  expansionViewModel.collapse()
-                  navigator.navigate(PlayerQueue)
-                }
+        NavEvent.ShowQueue -> {
+          expansionViewModel.collapse()
+          navigator.navigate(PlayerQueue)
+        }
 
-              is NavEvent.Navigate -> {
-                coroutineScope.launch {
-                  drawerState.close()
+        is NavEvent.Navigate -> {
+          coroutineScope.launch {
+            drawerState.close()
+          }
+          navigator.navigate(event.route)
+        }
+      }
+    }
+  }
+  BackHandler(enabled = drawerState.isOpen) {
+    coroutineScope.launch {
+      drawerState.close()
+    }
+  }
+  Surface(
+    modifier = modifier
+  ) {
+    Box(
+      modifier = Modifier.fillMaxSize()
+    ) {
+      NavigationSuiteScaffoldLayout(
+        layoutType = navLayoutType,
+        navigationSuite = {
+          when (navLayoutType) {
+            NavigationSuiteType.NavigationBar -> {
+              Column {
+                // TODO handle this properly
+                AnimatedVisibility(visible = !isFullScreen) {
+                  MiniPlayer(
+                    //                                    modifier = Modifier
+                    //                                        .fillMaxWidth()
+                    //                                        .wrapContentHeight()
+                    //                                        .padding(horizontal = 4.dp)
+                    //                                        .clickable { navigator.navigate(PodcastPlayer) },
+                    state = playerState,
+                    onExpand = { expansionViewModel.expand() },
+                    onTogglePlayPause = {
+                      playerViewModel.onEvent(
+                        PlayerEvent.OnTogglePlayPause
+                      )
+                    }
+                  )
                 }
-                navigator.navigate(event.route)
+                AnimatedVisibility(visible = !isFullScreen) {
+                  PodBottomNavigation(
+                    bottomBarItems = bottomBarItems,
+                    onBottomNavigate = { destination ->
+                      navigator.navigate(destination)
+                    },
+                    currentKey = navigationState.topLevelRoute,
+                    modifier = Modifier.testTag(ScaffoldTestTags.BOTTOM_NAV)
+                  )
+                }
               }
             }
-        }
-    }
-    BackHandler(enabled = drawerState.isOpen) {
-        coroutineScope.launch {
-            drawerState.close()
-        }
-    }
-    Surface(
-        modifier = modifier
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            NavigationSuiteScaffoldLayout(
-                layoutType = navLayoutType,
-                navigationSuite = {
-                    when (navLayoutType) {
-                        NavigationSuiteType.NavigationBar -> {
-                            Column {
-                                // TODO handle this properly
-                                AnimatedVisibility(visible = !isFullScreen) {
-                                    MiniPlayer(
-                                        //                                    modifier = Modifier
-                                        //                                        .fillMaxWidth()
-                                        //                                        .wrapContentHeight()
-                                        //                                        .padding(horizontal = 4.dp)
-                                        //                                        .clickable { navigator.navigate(PodcastPlayer) },
-                                        state = playerState,
-                                        onExpand = { expansionViewModel.expand() },
-                                        onTogglePlayPause = { playerViewModel.onEvent(PlayerEvent.OnTogglePlayPause) }
-                                    )
-                                }
-                                AnimatedVisibility(visible = !isFullScreen) {
-                                    PodBottomNavigation(
-                                        bottomBarItems = bottomBarItems,
-                                        onBottomNavigate = { destination ->
-                                            navigator.navigate(destination)
-                                        },
-                                        currentKey = navigationState.topLevelRoute,
-                                        modifier = Modifier.testTag(ScaffoldTestTags.BOTTOM_NAV)
-                                    )
-                                }
-                            }
 
-                        }
-
-                        NavigationSuiteType.NavigationRail -> {
-                            PodModalWideNavigationRail(
-                                bottomBarItems = bottomBarItems,
-                                currentKey = navigationState.topLevelRoute,
-                                onBottomNavigate = { destination ->
-                                    navigator.navigate(destination)
-                                },
-                                modifier = Modifier.testTag(ScaffoldTestTags.NAV_RAIL)
-                            )
-                        }
-
-                        NavigationSuiteType.NavigationDrawer -> PodNavigationDrawer(
-                            modifier = Modifier.testTag(ScaffoldTestTags.NAV_DRAWER),
-                            bottomBarItems = bottomBarItems,
-                            currentKey = navigationState.topLevelRoute,
-                            onBottomNavigate = { destination ->
-                                navigator.navigate(destination)
-                            },
-                            bottomContent = {
-                                AnimatedVisibility(visible = playerState.currentEpisode != null) {
-                                    PermanentMinPlayer(
-                                        modifier = Modifier
-                                            .clickable { navigator.navigate(PodcastPlayer) },
-                                        episode = playerState.currentEpisode,
-                                        playPause = { },
-                                        isMediaPlaying = true,
-                                        previousClick = {},
-                                        nextClick = { }
-                                    )
-                                }
-                            }
-                        )
-                    }
+            NavigationSuiteType.NavigationRail -> {
+              PodModalWideNavigationRail(
+                bottomBarItems = bottomBarItems,
+                currentKey = navigationState.topLevelRoute,
+                onBottomNavigate = { destination ->
+                  navigator.navigate(destination)
                 },
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    PodcastNavDisplay(
-                        navigationState = navigationState,
-                        navigator = navigator,
-                        modifier = Modifier
-                          .fillMaxWidth()
-                          .weight(1f)
-                    )
-                    // TODO handle this properly
-                    AnimatedVisibility(visible = navLayoutType == NavigationSuiteType.NavigationRail) {
-                        MiniPlayer(
-                            //                        modifier = Modifier
-                            //                            .fillMaxWidth()
-                            //                            .wrapContentHeight(Alignment.Bottom)
-                            //                            .weight(1f)
-                            //                            .padding(horizontal = 4.dp)
-                            //                            .clickable { navigator.navigate(PodcastPlayer) },
-                            state = playerState,
-                            onExpand = { expansionViewModel.expand() },
-                            onTogglePlayPause = { playerViewModel.onEvent(PlayerEvent.OnTogglePlayPause) }
-                        )
-                    }
-                }
+                modifier = Modifier.testTag(ScaffoldTestTags.NAV_RAIL)
+              )
             }
 
-            // Full-player overlay
-            AnimatedVisibility(
-                visible = expansionState.isFullyExpanded,
-                enter = slideInVertically(
-                    animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                    initialOffsetY = { it },
-                ) + fadeIn(tween(150)),
-                exit = slideOutVertically(
-                    animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                    targetOffsetY = { it },
-                ) + fadeOut(tween(100)),
-                modifier = Modifier
-                  .fillMaxSize()
-                  .testTag(ScaffoldTestTags.PLAYER_OVERLAY),
+            NavigationSuiteType.NavigationDrawer -> PodNavigationDrawer(
+              modifier = Modifier.testTag(ScaffoldTestTags.NAV_DRAWER),
+              bottomBarItems = bottomBarItems,
+              currentKey = navigationState.topLevelRoute,
+              onBottomNavigate = { destination ->
+                navigator.navigate(destination)
+              },
+              bottomContent = {
+                AnimatedVisibility(visible = playerState.currentEpisode != null) {
+                  PermanentMinPlayer(
+                    modifier = Modifier
+                      .clickable { navigator.navigate(PodcastPlayer) },
+                    episode = playerState.currentEpisode,
+                    playPause = { },
+                    isMediaPlaying = true,
+                    previousClick = {},
+                    nextClick = { }
+                  )
+                }
+              }
+            )
+          }
+        }
+      ) {
+        Column(
+          modifier = Modifier.fillMaxSize()
+        ) {
+          PodcastNavDisplay(
+            navigationState = navigationState,
+            navigator = navigator,
+            modifier = Modifier
+              .fillMaxWidth()
+              .weight(1f)
+          )
+          // TODO handle this properly
+          AnimatedVisibility(
+            visible = navLayoutType == NavigationSuiteType.NavigationRail
+          ) {
+            MiniPlayer(
+              //                        modifier = Modifier
+              //                            .fillMaxWidth()
+              //                            .wrapContentHeight(Alignment.Bottom)
+              //                            .weight(1f)
+              //                            .padding(horizontal = 4.dp)
+              //                            .clickable { navigator.navigate(PodcastPlayer) },
+              state = playerState,
+              onExpand = { expansionViewModel.expand() },
+              onTogglePlayPause = {
+                playerViewModel.onEvent(
+                  PlayerEvent.OnTogglePlayPause
+                )
+              }
+            )
+          }
+        }
+      }
+
+      // Full-player overlay
+      AnimatedVisibility(
+        visible = expansionState.isFullyExpanded,
+        enter = slideInVertically(
+          animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+          initialOffsetY = { it }
+        ) + fadeIn(tween(150)),
+        exit = slideOutVertically(
+          animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+          targetOffsetY = { it }
+        ) + fadeOut(tween(100)),
+        modifier = Modifier
+          .fillMaxSize()
+          .testTag(ScaffoldTestTags.PLAYER_OVERLAY)
+      ) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+          Column {
+            IconButton(
+              onClick = { expansionViewModel.collapse() },
+              modifier = Modifier
+                .padding(4.dp)
+                .testTag(ScaffoldTestTags.COLLAPSE_PLAYER)
             ) {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    Column {
-                        IconButton(
-                            onClick = { expansionViewModel.collapse() },
-                            modifier = Modifier
-                              .padding(4.dp)
-                              .testTag(ScaffoldTestTags.COLLAPSE_PLAYER),
-                        ) {
-                            Icon(Icons.Default.KeyboardArrowDown, "Collapse player")
-                        }
-                        PlayerScreen {
-                            navigator.navigate(PlayerQueue)
-                            expansionViewModel.collapse()
-                        }
+              Icon(Icons.Default.KeyboardArrowDown, "Collapse player")
+            }
+            PlayerScreen {
+              navigator.navigate(PlayerQueue)
+              expansionViewModel.collapse()
+            }
 //                        CompactPlayerLayout(
 //                            state = playerState,
 //                            callbacks = playerCallbacks,
@@ -291,9 +299,9 @@ internal fun PodcastNavigationWrapper(
 //                                onCollapsePlayer()
 //                            },
 //                        )
-                    }
-                }
-            }
+          }
         }
+      }
     }
+  }
 }

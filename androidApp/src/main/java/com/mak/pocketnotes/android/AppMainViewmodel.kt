@@ -13,7 +13,6 @@ import com.mak.pocketnotes.android.common.Subscribed
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
-
 internal class AppMainViewmodel : ViewModel() {
 
   private val _navEvents = Channel<NavEvent>(Channel.BUFFERED)
@@ -99,7 +98,6 @@ internal class AppMainViewmodel : ViewModel() {
     }
   }
 }
-
 
 sealed interface NavEvent {
   /** Expand the player pane/overlay to full. */

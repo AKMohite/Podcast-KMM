@@ -26,38 +26,37 @@ internal fun createHttpClient(
   json: Json,
   config: AppConfig,
   enableNetworkLogs: Boolean = false
-): HttpClient =
-  HttpClient {
-    install(ContentNegotiation) {
-      json(
-        Json {
-          ignoreUnknownKeys = true
-          useAlternativeNames = false
-        }
-      )
-    }
-    defaultRequest {
-      url {
-        protocol = URLProtocol.HTTPS
-        host = config.listenApiHost
-        header("X-ListenAPI-Key", config.listenApiKey)
+): HttpClient = HttpClient {
+  install(ContentNegotiation) {
+    json(
+      Json {
+        ignoreUnknownKeys = true
+        useAlternativeNames = false
+      }
+    )
+  }
+  defaultRequest {
+    url {
+      protocol = URLProtocol.HTTPS
+      host = config.listenApiHost
+      header("X-ListenAPI-Key", config.listenApiKey)
 //                path("api/")
 //                parametersOf("api_key", "")
-      }
     }
+  }
 
-    HttpResponseValidator {
-      handleResponseExceptionWithRequest { exception, request ->
+  HttpResponseValidator {
+    handleResponseExceptionWithRequest { exception, request ->
                 /*val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
                 val exceptionResponse = clientException.response
                 if (exceptionResponse.status == HttpStatusCode.NotFound) {
                     val exceptionResponseText = exceptionResponse.bodyAsText()
                     throw MissingPageException(exceptionResponse, exceptionResponseText)
                 }*/
-        throw handleKtorExceptions(exception) ?: UnknownAPIException(throwable = exception)
-      }
+      throw handleKtorExceptions(exception) ?: UnknownAPIException(throwable = exception)
     }
   }
+}
 
 private suspend fun handleKtorExceptions(exception: Throwable): Throwable? {
 //        todo check for ktor exceptions instead java
@@ -98,4 +97,3 @@ private suspend fun getErrorDTO(exceptionResponse: HttpResponse): ErrorDTO? = tr
 //        might throw json parse exception
   null
 }
-

@@ -171,7 +171,7 @@ class PodcastMapper {
         description = it.descriptionOriginal.orEmpty(),
         image = it.image.orEmpty(),
         thumbnail = it.thumbnail.orEmpty(),
-        publisher = it.publisherOriginal.orEmpty(),
+        publisher = it.publisherOriginal.orEmpty()
       )
     } ?: emptyList()
   }

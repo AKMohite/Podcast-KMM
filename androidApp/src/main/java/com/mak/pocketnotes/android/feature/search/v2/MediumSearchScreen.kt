@@ -83,7 +83,7 @@ internal fun MediumSearchScreen(
             onBack = { onEvent(SearchUiEvent.SearchBack) }
           )
         },
-        trailingIcon = { SearchbarTrailingIcon() },
+        trailingIcon = { SearchbarTrailingIcon() }
       )
     }
 
@@ -94,7 +94,7 @@ internal fun MediumSearchScreen(
         scrollBehavior = scrollBehavior,
         state = searchBarState,
         colors = appBarWithSearchColors,
-        inputField = inputField,
+        inputField = inputField
       )
       ExpandedDockedSearchBarWithGap(state = searchBarState, inputField = inputField) {
         SearchOverlayContent(
@@ -108,7 +108,7 @@ internal fun MediumSearchScreen(
           onClearRecent = { onEvent(SearchUiEvent.ClearRecentSearches) }
         )
       }
-    },
+    }
   ) { padding ->
     Row(
       modifier = Modifier

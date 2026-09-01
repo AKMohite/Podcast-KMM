@@ -7,5 +7,4 @@ interface AppConfig {
   val listenApiKey: String
 }
 
-
 val appConfigQualifier = named("listenNotesQualifier")
