@@ -104,3 +104,15 @@ private class MobileThemeProvider : PreviewWrapperProvider {
 @Preview(name = "Light Mode", showBackground = true)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 annotation class ThemePreviews
+
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.FUNCTION)
+@PreviewWrapper(MobileThemeProvider::class)
+@Preview(name = "Medium", device = "spec:width=673dp,height=841dp", showBackground = true)
+annotation class MediumPreviews
+
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.FUNCTION)
+@PreviewWrapper(MobileThemeProvider::class)
+@Preview(name = "Expanded", device = "spec:width=1280dp,height=800dp", showBackground = true)
+annotation class ExpandedPreviews

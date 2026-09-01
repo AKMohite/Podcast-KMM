@@ -2,8 +2,9 @@ package com.mak.pocketnotes.android.feature.search.v2.views
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -21,13 +22,17 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun PodcastCard(podcast: Podcast) {
-  Column(modifier = Modifier.width(140.dp)) {
+internal fun PodcastCard(
+  podcast: Podcast,
+  modifier: Modifier = Modifier
+) {
+  Column(modifier = modifier) {
     AsyncImage(
       model = podcast.thumbnail,
       contentDescription = null,
       modifier = Modifier
-        .size(140.dp)
+        .fillMaxWidth()
+        .aspectRatio(1f)
         .clip(RoundedCornerShape(8.dp)),
       contentScale = ContentScale.Crop
     )
@@ -52,5 +57,5 @@ internal fun PodcastCard(podcast: Podcast) {
 @ThemePreviews
 @Composable
 private fun PodcastCardPreview() {
-  PodcastCard(podcast = samplePodcasts[0])
+  PodcastCard(podcast = samplePodcasts[0], modifier = Modifier.width(140.dp))
 }
