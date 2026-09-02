@@ -1,5 +1,8 @@
 package com.mak.pocketnotes.core.feature.data.search.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
@@ -20,17 +23,22 @@ internal class OfflineFirstSearchRepository(
   private val dispatcher: DispatcherProvider
 ) : SearchRepository {
 
-  override fun searchPodcasts(query: String): Flow<List<Podcast>> = flow<List<Podcast>> {
-    // Current SearchEpisodesDTO is hardcoded to EpisodeDTO.
-    // For now, if searching podcasts, we might need a separate endpoint or DTO.
-    // As a placeholder, we use the local search if remote podcast search isn't ready.
-    // Or we can try to call search with type=podcast and handle potential issues.
+  override fun searchPodcasts(query: String): Flow<PagingData<Podcast>> {
+    return Pager(
+      config = PagingConfig(
+        pageSize = 10,
+        enablePlaceholders = false
+      ),
+      pagingSourceFactory = {
+        SearchPagingSource(api, mapper, query)
+      }
+    ).flow
+  }
+
+  override fun searchPodcastsList(query: String): Flow<List<Podcast>> = flow {
     val queries = mapOf(
       "q" to query,
-      "type" to "podcast",
-      "sort_by" to "recent",
-      "offset" to "0",
-      "limit" to "10"
+      "type" to "podcast"
     )
     val response = api.searchPodcasts(queries)
     if (response is RemoteResult.Success) {
@@ -42,7 +50,12 @@ internal class OfflineFirstSearchRepository(
   }.flowOn(dispatcher.io)
 
   override fun searchEpisodes(query: String): Flow<List<PodcastEpisode>> = flow {
-    val response = api.searchEpisodes(mapOf("q" to query, "type" to "episode"))
+    val response = api.searchEpisodes(
+      mapOf(
+        "q" to query,
+        "type" to "episode"
+      )
+    )
     if (response is RemoteResult.Success) {
       val episodes = mapper.getPodcastEpisodes(response.data.results, "")
       emit(episodes)

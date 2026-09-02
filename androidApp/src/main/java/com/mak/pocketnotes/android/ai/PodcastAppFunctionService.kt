@@ -35,7 +35,7 @@ abstract class BasePodcastAppFunctionService : AppFunctionService() {
    */
   @AppFunction(isDescribedByKDoc = true)
   suspend fun searchPodcasts(query: String): List<PodcastResponse> {
-    val podcasts = searchRepository.searchPodcasts(query).first()
+    val podcasts = searchRepository.searchPodcastsList(query).first()
     return podcasts.map {
       PodcastResponse(
         id = it.id,
@@ -69,7 +69,7 @@ abstract class BasePodcastAppFunctionService : AppFunctionService() {
    */
   @AppFunction(isDescribedByKDoc = true)
   suspend fun playLatestEpisode(podcastName: String) {
-    val podcasts = searchRepository.searchPodcasts(podcastName).first()
+    val podcasts = searchRepository.searchPodcastsList(podcastName).first()
 
     if (podcasts.isEmpty()) {
       throw AppFunctionElementNotFoundException("Podcast '$podcastName' not found.")

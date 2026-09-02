@@ -80,3 +80,9 @@ SELECT next_episode_published_on FROM episodes WHERE podcast_id = :podcastId ORD
 
 getEpisodeById:
 SELECT * FROM episodes WHERE id = :id;
+
+searchEpisodes:
+SELECT * FROM episodes
+WHERE title LIKE ('%' || :query || '%')
+   OR description LIKE ('%' || :query || '%')
+LIMIT 10;

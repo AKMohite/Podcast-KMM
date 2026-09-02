@@ -3,10 +3,11 @@ package com.mak.pocketnotes.android.feature.search.v2
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.mak.pocketnotes.core.common.coroutines.combine
 import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
-import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
 import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 import com.mak.pocketnotes.core.feature.domain.search.repository.GenreRepository
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class SearchViewModelV2(
@@ -38,11 +38,10 @@ internal class SearchViewModelV2(
   private val _screenState = MutableStateFlow(SearchScreenState.IDLE)
   val screenState = _screenState.asStateFlow()
 
-  private val _remoteSearchResults = MutableStateFlow(SearchResults())
+  private val _remoteSearchResults = MutableStateFlow<PagingData<Podcast>>(PagingData.empty())
   val remoteSearchResults = _remoteSearchResults.asStateFlow()
 
   private val _isLoading = MutableStateFlow(false)
-  private val isLoading = _isLoading.asStateFlow()
 
   @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
   private val suggestions = searchQuery
@@ -67,16 +66,14 @@ internal class SearchViewModelV2(
     getRecentSearches(),
     getTrendingSearches(),
     suggestions,
-    _remoteSearchResults,
     _isLoading
-  ) { forYouPodcasts, genres, recentSearches, trendingSearches, suggestions, searchResults, isLoading ->
+  ) { forYou, genres, recent, trending, suggestions, isLoading ->
     SearchUiState(
-      forYouPodcasts = forYouPodcasts,
+      forYouPodcasts = forYou,
       genres = genres,
-      recentSearches = recentSearches,
-      trendingSearches = trendingSearches,
+      recentSearches = recent,
+      trendingSearches = trending,
       suggestions = suggestions,
-      searchResults = searchResults,
       isLoading = isLoading
     )
   }
@@ -117,22 +114,20 @@ internal class SearchViewModelV2(
       SearchUiEvent.ClearRecentSearches -> {
         // TODO
       }
+
+      SearchUiEvent.LoadMore -> {
+        // Managed by Paging 3 in UI
+      }
     }
   }
 
   private fun performRemoteSearch(query: String) {
     viewModelScope.launch {
-      _isLoading.value = true
-      searchRepository.searchPodcasts(query).collect { podcasts ->
-        _remoteSearchResults.update {
-          it.copy(
-            topResult = null,
-            episodes = emptyList(),
-            podcasts = podcasts
-          )
+      searchRepository.searchPodcasts(query)
+        .cachedIn(viewModelScope)
+        .collect { pagingData ->
+          _remoteSearchResults.value = pagingData
         }
-        _isLoading.value = false
-      }
     }
   }
 
@@ -164,16 +159,8 @@ data class SearchUiState(
   val genres: List<Genre> = emptyList(),
   val trendingSearches: List<String> = emptyList(),
   val suggestions: List<Podcast> = emptyList(),
-  val searchResults: SearchResults = SearchResults(),
   val isLoading: Boolean = false,
   val error: String? = null
-)
-
-data class SearchResults(
-  val topResult: Podcast? = null,
-  val episodes: List<PodcastEpisode> = emptyList(),
-  val podcasts: List<Podcast> = emptyList(),
-  val otherPodcasts: List<Podcast> = emptyList()
 )
 
 enum class SearchScreenState {
@@ -187,4 +174,5 @@ sealed interface SearchUiEvent {
   data class SearchSubmit(val query: String) : SearchUiEvent
   data class RecentSearchDelete(val query: String) : SearchUiEvent
   data object ClearRecentSearches : SearchUiEvent
+  data object LoadMore : SearchUiEvent
 }

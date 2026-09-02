@@ -1,38 +1,32 @@
 package com.mak.pocketnotes.android.feature.search.v2.views
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.mak.pocketnotes.android.R
-import com.mak.pocketnotes.android.feature.podcastdetail.views.PodcastEpisodeItem
-import com.mak.pocketnotes.android.feature.search.v2.SearchResults
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.mak.pocketnotes.android.feature.search.v2.SearchResultsFilters
-import com.mak.pocketnotes.android.ui.theme.ExpandedPreviews
-import com.mak.pocketnotes.android.ui.theme.MediumPreviews
-import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
-import com.mak.pocketnotes.utils.sample.sampleEpisodes
-import com.mak.pocketnotes.utils.sample.samplePodcasts
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 
 @Composable
 internal fun SearchResultsView(
-  results: SearchResults,
+  podcasts: LazyPagingItems<Podcast>,
   padding: PaddingValues
 ) {
   val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
@@ -55,39 +49,13 @@ internal fun SearchResultsView(
       SearchResultsFilters()
     }
 
-    results.topResult?.let { podcast ->
-      item(span = { GridItemSpan(maxLineSpan) }) {
-        Text(
-          text = stringResource(R.string.top_result),
-          style = MaterialTheme.typography.titleMedium,
-          fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TopResultCard(podcast)
-      }
-    }
-
-    if (results.episodes.isNotEmpty()) {
-      item(span = { GridItemSpan(maxLineSpan) }) {
-        Text(
-          text = stringResource(R.string.episodes),
-          style = MaterialTheme.typography.titleMedium,
-          fontWeight = FontWeight.Bold
-        )
-      }
-      items(
-        items = results.episodes,
-        span = { GridItemSpan(maxLineSpan) }
-      ) { episode ->
-        PodcastEpisodeItem(episode = episode, showImage = true)
-      }
-    }
-
-    if (results.podcasts.isNotEmpty()) {
-      items(
-        items = results.podcasts,
-        key = { podcast -> podcast.id }
-      ) { podcast ->
+    items(
+      count = podcasts.itemCount,
+      key = podcasts.itemKey { it.id },
+      contentType = podcasts.itemContentType { "podcast" }
+    ) { index ->
+      val podcast = podcasts[index]
+      if (podcast != null) {
         if (columns > 1) {
           PodcastCard(podcast)
         } else {
@@ -95,44 +63,39 @@ internal fun SearchResultsView(
         }
       }
     }
+
+    when (podcasts.loadState.append) {
+      is LoadState.Loading -> {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(16.dp),
+            contentAlignment = Alignment.Center
+          ) {
+            CircularProgressIndicator()
+          }
+        }
+      }
+
+      is LoadState.Error -> {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+          val error = (podcasts.loadState.append as LoadState.Error).error
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(16.dp),
+            contentAlignment = Alignment.Center
+          ) {
+            androidx.compose.material3.Text(
+              text = error.message ?: "An unexpected error occurred",
+              color = androidx.compose.material3.MaterialTheme.colorScheme.error
+            )
+          }
+        }
+      }
+
+      else -> Unit
+    }
   }
-}
-
-@ThemePreviews
-@Composable
-private fun SearchResultsViewPreview() {
-  SearchResultsView(
-    results = SearchResults(
-      topResult = samplePodcasts[0],
-      episodes = sampleEpisodes,
-      podcasts = samplePodcasts.drop(1)
-    ),
-    padding = PaddingValues(0.dp)
-  )
-}
-
-@MediumPreviews
-@Composable
-private fun SearchResultsViewMediumPreview() {
-  SearchResultsView(
-    results = SearchResults(
-      topResult = samplePodcasts[0],
-      episodes = sampleEpisodes,
-      podcasts = samplePodcasts.drop(1)
-    ),
-    padding = PaddingValues(0.dp)
-  )
-}
-
-@ExpandedPreviews
-@Composable
-private fun SearchResultsViewExpandedPreview() {
-  SearchResultsView(
-    results = SearchResults(
-      topResult = samplePodcasts[0],
-      episodes = sampleEpisodes,
-      podcasts = samplePodcasts.drop(1)
-    ),
-    padding = PaddingValues(0.dp)
-  )
 }

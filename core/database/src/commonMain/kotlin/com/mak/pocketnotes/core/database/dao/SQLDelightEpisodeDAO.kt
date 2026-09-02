@@ -92,6 +92,11 @@ internal class SQLDelightEpisodeDAO(
 
   override fun getEpisodeById(id: String): EpisodeEntity? =
     dbQuery.getEpisodeById(id).executeAsOneOrNull()
+
+  override fun searchEpisodes(query: String): Flow<List<EpisodeEntity>> = dbQuery
+    .searchEpisodes(query)
+    .asFlow()
+    .mapToList(dispatcher.io)
 }
 
 interface EpisodeDAO {
@@ -136,4 +141,6 @@ interface EpisodeDAO {
   fun getOldestEpisodeNextPageCursor(podcastId: String): Instant?
 
   fun getEpisodeById(id: String): EpisodeEntity?
+
+  fun searchEpisodes(query: String): Flow<List<EpisodeEntity>>
 }

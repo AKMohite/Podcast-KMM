@@ -34,17 +34,21 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchIdleView
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchOverlayContent
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchResultsView
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.search.models.Genre
-import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +57,7 @@ internal fun CompactSearchScreen(
   uiState: SearchUiState,
   searchQuery: String,
   screenState: SearchScreenState,
+  searchResults: LazyPagingItems<Podcast>,
   onEvent: (SearchUiEvent) -> Unit
 ) {
   val textFieldState = rememberTextFieldState(searchQuery)
@@ -128,7 +133,7 @@ internal fun CompactSearchScreen(
     }
   ) { padding ->
     if (screenState == SearchScreenState.RESULTS) {
-      SearchResultsView(uiState.searchResults, padding)
+      SearchResultsView(searchResults, padding)
     } else {
       SearchIdleView(uiState, padding)
     }
@@ -146,7 +151,8 @@ private fun CompactSearchScreenIdlePreview() {
       ),
       searchQuery = "",
       screenState = SearchScreenState.IDLE,
-      onEvent = {}
+      onEvent = {},
+      searchResults = flowOf(PagingData.from(samplePodcasts.take(5))).collectAsLazyPagingItems()
     )
   }
 }
@@ -155,15 +161,11 @@ private fun CompactSearchScreenIdlePreview() {
 @Composable
 private fun CompactSearchScreenResultsPreview() {
   CompactSearchScreen(
-    uiState = SearchUiState(
-      searchResults = SearchResults(
-        topResult = samplePodcasts[0],
-        episodes = sampleEpisodes
-      )
-    ),
+    uiState = SearchUiState(),
     searchQuery = "The Daily",
     screenState = SearchScreenState.RESULTS,
-    onEvent = {}
+    onEvent = {},
+    searchResults = flowOf(PagingData.from(samplePodcasts.take(5))).collectAsLazyPagingItems()
   )
 }
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.navigation.Navigator
@@ -34,6 +35,7 @@ internal fun SearchScreenV2() {
   val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
   val viewModel: SearchViewModelV2 = koinViewModel()
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val searchResults = viewModel.remoteSearchResults.collectAsLazyPagingItems()
   val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
   val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -44,6 +46,7 @@ internal fun SearchScreenV2() {
   when {
     sizeClass.isMedium() -> MediumSearchScreen(
       uiState = uiState,
+      searchResults = searchResults,
       searchQuery = searchQuery,
       screenState = screenState,
       onEvent = viewModel::onEvent
@@ -51,6 +54,7 @@ internal fun SearchScreenV2() {
     else -> {
       CompactSearchScreen(
         uiState = uiState,
+        searchResults = searchResults,
         searchQuery = searchQuery,
         screenState = screenState,
         onEvent = viewModel::onEvent

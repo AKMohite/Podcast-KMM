@@ -24,6 +24,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.mak.pocketnotes.android.R
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchIdleView
 import com.mak.pocketnotes.android.feature.search.v2.views.SearchOverlayContent
@@ -31,10 +34,11 @@ import com.mak.pocketnotes.android.feature.search.v2.views.SearchResultsView
 import com.mak.pocketnotes.android.feature.search.v2.views.TrendingSearchesSidebar
 import com.mak.pocketnotes.android.ui.theme.PocketNotesTheme
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
+import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.search.models.Genre
-import com.mak.pocketnotes.utils.sample.sampleEpisodes
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,6 +47,7 @@ internal fun MediumSearchScreen(
   uiState: SearchUiState,
   searchQuery: String,
   screenState: SearchScreenState,
+  searchResults: LazyPagingItems<Podcast>,
   onEvent: (SearchUiEvent) -> Unit
 ) {
   val textFieldState = rememberTextFieldState(searchQuery)
@@ -117,7 +122,7 @@ internal fun MediumSearchScreen(
     ) {
       Column(modifier = Modifier.weight(1f)) {
         if (screenState == SearchScreenState.RESULTS) {
-          SearchResultsView(uiState.searchResults, PaddingValues(0.dp))
+          SearchResultsView(searchResults, PaddingValues(0.dp))
         } else {
           SearchIdleView(uiState, PaddingValues(0.dp), isMedium = true)
         }
@@ -141,7 +146,8 @@ private fun MediumSearchScreenIdlePreview() {
       ),
       searchQuery = "",
       screenState = SearchScreenState.IDLE,
-      onEvent = {}
+      onEvent = {},
+      searchResults = flowOf(PagingData.from(samplePodcasts.take(5))).collectAsLazyPagingItems()
     )
   }
 }
@@ -150,14 +156,10 @@ private fun MediumSearchScreenIdlePreview() {
 @Composable
 private fun MediumSearchScreenResultsPreview() {
   MediumSearchScreen(
-    uiState = SearchUiState(
-      searchResults = SearchResults(
-        topResult = samplePodcasts[0],
-        episodes = sampleEpisodes
-      )
-    ),
+    uiState = SearchUiState(),
     searchQuery = "The Daily",
     screenState = SearchScreenState.RESULTS,
-    onEvent = {}
+    onEvent = {},
+    searchResults = flowOf(PagingData.from(samplePodcasts.take(5))).collectAsLazyPagingItems()
   )
 }
