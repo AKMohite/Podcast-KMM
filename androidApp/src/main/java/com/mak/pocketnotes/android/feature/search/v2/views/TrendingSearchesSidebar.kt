@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,33 +26,35 @@ import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 
 @Composable
 internal fun TrendingSearchesSidebar(trending: List<String>) {
-  Column(
-    modifier = Modifier
-      .width(250.dp)
-      .fillMaxHeight()
-      .padding(16.dp)
-  ) {
-    Text(
-      text = stringResource(R.string.trending_searches_header),
-      style = MaterialTheme.typography.titleMedium,
-      fontWeight = FontWeight.Bold
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    trending.forEach { term ->
-      Row(
-        modifier = Modifier
-          .fillMaxWidth()
-          .clickable { /* TODO */ }
-          .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-      ) {
-        Icon(
-          Icons.Default.TrendingUp,
-          contentDescription = null,
-          modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(text = term, style = MaterialTheme.typography.bodyLarge)
+  if (trending.isNotEmpty()) {
+    Column(
+      modifier = Modifier
+        .width(250.dp)
+        .fillMaxHeight()
+        .padding(16.dp)
+    ) {
+      Text(
+        text = stringResource(R.string.trending_searches_header),
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold
+      )
+      Spacer(modifier = Modifier.height(16.dp))
+      trending.forEach { term ->
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .clickable { /* TODO */ }
+            .padding(vertical = 8.dp),
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Icon(
+            Icons.AutoMirrored.Filled.TrendingUp,
+            contentDescription = null,
+            modifier = Modifier.size(20.dp)
+          )
+          Spacer(modifier = Modifier.width(12.dp))
+          Text(text = term, style = MaterialTheme.typography.bodyLarge)
+        }
       }
     }
   }

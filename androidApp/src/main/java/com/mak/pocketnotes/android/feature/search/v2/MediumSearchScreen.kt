@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.feature.search.v2
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -138,7 +139,7 @@ internal fun MediumSearchScreen(
           )
         }
       }
-      if (screenState != SearchScreenState.RESULTS) {
+      AnimatedVisibility(screenState != SearchScreenState.RESULTS && uiState.trendingSearches.isNotEmpty()) {
         TrendingSearchesSidebar(uiState.trendingSearches)
       }
     }

@@ -172,7 +172,12 @@ data class SearchUiState(
   val suggestions: List<Podcast> = emptyList(),
   val isLoading: Boolean = false,
   val error: String? = null
-)
+) {
+  val hasAnySections: Boolean
+    get() = forYouPodcasts.isNotEmpty() || recentSearches.isNotEmpty() || genres.isNotEmpty()
+  val isIdleSearchLoading: Boolean
+    get() = isLoading && forYouPodcasts.isEmpty() && recentSearches.isEmpty() && genres.isEmpty()
+}
 
 enum class SearchScreenState {
   IDLE, ACTIVE, RESULTS
