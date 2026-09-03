@@ -4,5 +4,5 @@ import com.mak.pocketnotes.core.common.utils.AppConfig
 
 class ProdAppConfig : AppConfig {
   override val listenApiHost: String = "listen-api.listennotes.com"
-  override val listenApiKey: String = "YOUR_PROD_API_KEY"
+  override val listenApiKey: String = SecretConstant.API_KEY
 }
