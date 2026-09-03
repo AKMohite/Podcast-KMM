@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.feature.search.v2.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
@@ -13,13 +14,23 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun ForYouPodcastsList(podcasts: List<Podcast>) {
+internal fun ForYouPodcastsList(
+  podcasts: List<Podcast>,
+  onPodcastClick: (String) -> Unit
+) {
   LazyRow(
     contentPadding = PaddingValues(horizontal = 16.dp),
     horizontalArrangement = Arrangement.spacedBy(12.dp)
   ) {
     items(podcasts) { podcast ->
-      PodcastCard(podcast, Modifier.width(140.dp))
+      PodcastCard(
+        podcast = podcast,
+        modifier = Modifier
+          .width(140.dp)
+          .clickable {
+            onPodcastClick(podcast.id)
+          }
+      )
     }
   }
 }
@@ -27,5 +38,5 @@ internal fun ForYouPodcastsList(podcasts: List<Podcast>) {
 @ThemePreviews
 @Composable
 private fun ForYouPodcastsListPreview() {
-  ForYouPodcastsList(podcasts = samplePodcasts)
+  ForYouPodcastsList(podcasts = samplePodcasts, onPodcastClick = {})
 }

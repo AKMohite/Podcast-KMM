@@ -1,6 +1,5 @@
 package com.mak.pocketnotes.android.feature.search.v2.views
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ListItem
@@ -16,7 +15,10 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun PodcastListItem(podcast: Podcast) {
+internal fun PodcastListItem(
+  podcast: Podcast,
+  modifier: Modifier = Modifier
+) {
   ListItem(
     headlineContent = { Text(podcast.title) },
     supportingContent = { Text(podcast.publisher) },
@@ -30,7 +32,7 @@ internal fun PodcastListItem(podcast: Podcast) {
         contentScale = ContentScale.Crop
       )
     },
-    modifier = Modifier.clickable { /* TODO */ }
+    modifier = modifier
   )
 }
 

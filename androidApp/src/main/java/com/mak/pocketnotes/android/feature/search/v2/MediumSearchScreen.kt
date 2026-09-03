@@ -122,9 +122,20 @@ internal fun MediumSearchScreen(
     ) {
       Column(modifier = Modifier.weight(1f)) {
         if (screenState == SearchScreenState.RESULTS) {
-          SearchResultsView(searchResults, PaddingValues(0.dp))
+          SearchResultsView(
+            podcasts = searchResults,
+            padding = PaddingValues(0.dp),
+            onPodcastClick = { id -> onEvent(SearchUiEvent.OnPodcastClick(id)) }
+          )
         } else {
-          SearchIdleView(uiState, PaddingValues(0.dp), isMedium = true)
+          SearchIdleView(
+            uiState = uiState,
+            padding = PaddingValues(0.dp),
+            isMedium = true,
+            onPodcastClick = { id ->
+              onEvent(SearchUiEvent.OnPodcastClick(id))
+            }
+          )
         }
       }
       if (screenState != SearchScreenState.RESULTS) {

@@ -9,6 +9,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,26 +19,44 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.mak.pocketnotes.android.R
+import com.mak.pocketnotes.android.common.PodcastDetail
 import com.mak.pocketnotes.android.common.Search
 import com.mak.pocketnotes.android.common.navigation.Navigator
 import com.mak.pocketnotes.android.ui.theme.ThemePreviews
 import com.mak.pocketnotes.android.ui.theme.isMedium
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 
 fun EntryProviderScope<NavKey>.searchEntryV2(navigator: Navigator) {
   entry<Search> {
-    SearchScreenV2()
+    SearchScreenV2(
+      openPodcast = { id ->
+        navigator.navigate(PodcastDetail(id))
+      }
+    )
   }
 }
 
 @Composable
-internal fun SearchScreenV2() {
+internal fun SearchScreenV2(
+  openPodcast: (id: String) -> Unit
+) {
   val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
   val viewModel: SearchViewModelV2 = koinViewModel()
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()
   val searchResults = viewModel.remoteSearchResults.collectAsLazyPagingItems()
   val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
   val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+
+  LaunchedEffect(Unit) {
+    viewModel.uiEffect.collectLatest { effect ->
+      when (effect) {
+        is SearchUiEffect.NavigateToPodcastDetail -> {
+          openPodcast(effect.id)
+        }
+      }
+    }
+  }
 
   BackHandler(enabled = screenState != SearchScreenState.IDLE) {
     viewModel.onEvent(SearchUiEvent.SearchBack)

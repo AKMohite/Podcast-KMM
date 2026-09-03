@@ -20,7 +20,8 @@ import com.mak.pocketnotes.utils.sample.samplePodcasts
 internal fun SearchIdleView(
   uiState: SearchUiState,
   padding: PaddingValues,
-  isMedium: Boolean = false
+  isMedium: Boolean = false,
+  onPodcastClick: (String) -> Unit
 ) {
   LazyColumn(
     contentPadding = padding,
@@ -29,7 +30,10 @@ internal fun SearchIdleView(
   ) {
     item {
       SectionHeader(stringResource(R.string.for_you_header), onSeeAll = {})
-      ForYouPodcastsList(uiState.forYouPodcasts)
+      ForYouPodcastsList(
+        podcasts = uiState.forYouPodcasts,
+        onPodcastClick = onPodcastClick
+      )
     }
 
     if (!isMedium) {
@@ -65,6 +69,7 @@ private fun SearchIdleViewPreview() {
         Genre(3, "Technology", 0)
       )
     ),
-    padding = PaddingValues(0.dp)
+    padding = PaddingValues(0.dp),
+    onPodcastClick = {}
   )
 }

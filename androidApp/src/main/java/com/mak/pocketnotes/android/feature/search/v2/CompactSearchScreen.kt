@@ -133,9 +133,19 @@ internal fun CompactSearchScreen(
     }
   ) { padding ->
     if (screenState == SearchScreenState.RESULTS) {
-      SearchResultsView(searchResults, padding)
+      SearchResultsView(
+        podcasts = searchResults,
+        padding = padding,
+        onPodcastClick = { id -> onEvent(SearchUiEvent.OnPodcastClick(id)) }
+      )
     } else {
-      SearchIdleView(uiState, padding)
+      SearchIdleView(
+        uiState = uiState,
+        padding = padding,
+        onPodcastClick = { id ->
+          onEvent(SearchUiEvent.OnPodcastClick(id))
+        }
+      )
     }
   }
 }

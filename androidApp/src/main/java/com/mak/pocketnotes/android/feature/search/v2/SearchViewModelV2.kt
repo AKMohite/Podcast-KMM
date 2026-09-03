@@ -15,6 +15,7 @@ import com.mak.pocketnotes.core.feature.domain.search.repository.SearchRepositor
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -40,6 +42,9 @@ internal class SearchViewModelV2(
 
   private val _remoteSearchResults = MutableStateFlow<PagingData<Podcast>>(PagingData.empty())
   val remoteSearchResults = _remoteSearchResults.asStateFlow()
+
+  private val _uiEffect = Channel<SearchUiEffect>()
+  val uiEffect = _uiEffect.receiveAsFlow()
 
   private val _isLoading = MutableStateFlow(false)
 
@@ -107,6 +112,12 @@ internal class SearchViewModelV2(
         updateRecentSearches(event.query)
       }
 
+      is SearchUiEvent.OnPodcastClick -> {
+        viewModelScope.launch {
+          _uiEffect.send(SearchUiEffect.NavigateToPodcastDetail(event.id))
+        }
+      }
+
       is SearchUiEvent.RecentSearchDelete -> {
         // TODO
       }
@@ -167,12 +178,18 @@ enum class SearchScreenState {
   IDLE, ACTIVE, RESULTS
 }
 
+sealed interface SearchUiEffect {
+  data class NavigateToPodcastDetail(val id: String) : SearchUiEffect
+}
+
 sealed interface SearchUiEvent {
   data class QueryChange(val query: String) : SearchUiEvent
   data class SearchFocusChange(val isFocused: Boolean) : SearchUiEvent
   data object SearchBack : SearchUiEvent
   data class SearchSubmit(val query: String) : SearchUiEvent
   data class RecentSearchDelete(val query: String) : SearchUiEvent
+
+  data class OnPodcastClick(val id: String) : SearchUiEvent
   data object ClearRecentSearches : SearchUiEvent
   data object LoadMore : SearchUiEvent
 }

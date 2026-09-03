@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.android.feature.search.v2.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,7 +28,8 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 @Composable
 internal fun SearchResultsView(
   podcasts: LazyPagingItems<Podcast>,
-  padding: PaddingValues
+  padding: PaddingValues,
+  onPodcastClick: (String) -> Unit
 ) {
   val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
   val columns = when {
@@ -57,9 +59,21 @@ internal fun SearchResultsView(
       val podcast = podcasts[index]
       if (podcast != null) {
         if (columns > 1) {
-          PodcastCard(podcast)
+          PodcastCard(
+            podcast = podcast,
+            modifier = Modifier
+              .clickable {
+                onPodcastClick(podcast.id)
+              }
+          )
         } else {
-          PodcastListItem(podcast)
+          PodcastListItem(
+            podcast = podcast,
+            modifier = Modifier
+              .clickable {
+                onPodcastClick(podcast.id)
+              }
+          )
         }
       }
     }
