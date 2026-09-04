@@ -13,8 +13,6 @@ import com.mak.pocketnotes.core.feature.domain.search.models.Genre
 import com.mak.pocketnotes.core.feature.domain.search.repository.GenreRepository
 import com.mak.pocketnotes.core.feature.domain.search.repository.SearchRepository
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -48,7 +46,6 @@ internal class SearchViewModelV2(
 
   private val _isLoading = MutableStateFlow(false)
 
-  @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
   private val suggestions = searchQuery
     .debounce(300.milliseconds)
     .distinctUntilChanged()

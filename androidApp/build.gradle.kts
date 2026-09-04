@@ -13,6 +13,11 @@ kotlin {
     jvmTarget.set(JvmTarget.JVM_21)
     optIn.add("androidx.compose.material3.ExperimentalMaterial3Api")
     optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+    optIn.add("androidx.compose.foundation.style.ExperimentalFoundationStyleApi")
+    optIn.add("androidx.compose.ui.ExperimentalMediaQueryApi")
+    optIn.add("androidx.compose.ui.ExperimentalComposeUiApi")
+    optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+    optIn.add("kotlinx.coroutines.FlowPreview")
   }
 }
 

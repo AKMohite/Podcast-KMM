@@ -4,7 +4,6 @@ import app.cash.turbine.test
 import com.mak.pocketnotes.core.common.models.ErrorType
 import com.mak.pocketnotes.core.common.models.SectionState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -17,7 +16,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class DiscoverViewModelTest {
   private val bestPodcastRepository = FakeBestPodcastRepository()
   private val curatedPodcastRepository = FakeCuratedPodcastRepository()

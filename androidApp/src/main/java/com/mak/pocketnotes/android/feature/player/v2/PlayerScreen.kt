@@ -7,6 +7,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.UiMediaScope.Posture
+import androidx.compose.ui.mediaQuery
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -60,10 +62,14 @@ internal fun PlayerScreen(onShowQueue: () -> Unit) {
     viewModelStoreOwner = LocalActivity.current as ComponentActivity
   )
   val state by viewModel.playerState.collectAsStateWithLifecycle()
+
+  val posture = mediaQuery { windowPosture }
+
   PlayerContent(
     modifier = Modifier
       .fillMaxSize(),
     state = state,
+    posture = posture,
     onEvent = viewModel::onEvent,
     onShowQueue = onShowQueue
   )
@@ -73,45 +79,72 @@ internal fun PlayerScreen(onShowQueue: () -> Unit) {
 private fun PlayerContent(
   modifier: Modifier = Modifier,
   state: PlayerState,
+  posture: Posture,
   onEvent: (PlayerEvent) -> Unit,
   onShowQueue: () -> Unit
 ) {
-  val sizeClass = adaptiveScreenInfo().windowSizeClass
-  when {
-    sizeClass.isExtraLarge() -> ExtraLargePlayerLayout(
-      state = state,
-      onEvent = onEvent,
-      modifier = modifier
-    )
-    sizeClass.isLarge() -> LargePlayerLayout(
-      state = state,
-      onEvent = onEvent,
-      modifier = modifier
-    )
-    sizeClass.isExpanded() -> ExpandedPlayerLayout(
-      state = state,
-      onEvent = onEvent,
-      modifier = modifier
-    )
-    sizeClass.isMedium() -> MediumPlayerLayout(
-      state = state,
-      onEvent = onEvent,
-      onShowQueue = onShowQueue,
-      modifier = modifier
-    )
-    else -> CompactPlayer(
-      state = state,
-      onEvent = onEvent,
-      onShowQueue = onShowQueue,
-      modifier = modifier
-    )
+
+  // Handle foldable postures first
+  when (posture) {
+    Posture.Tabletop -> {
+      TabletopPlayerLayout(
+        state = state,
+        onEvent = onEvent,
+        modifier = modifier
+      )
+    }
+
+    Posture.Book -> {
+      BookPlayerLayout(
+        state = state,
+        onEvent = onEvent,
+        modifier = modifier
+      )
+    }
+
+    else -> {
+      val sizeClass = adaptiveScreenInfo().windowSizeClass
+
+      when {
+        sizeClass.isExtraLarge() -> ExtraLargePlayerLayout(
+          state = state,
+          onEvent = onEvent,
+          modifier = modifier
+        )
+
+        sizeClass.isLarge() -> LargePlayerLayout(
+          state = state,
+          onEvent = onEvent,
+          modifier = modifier
+        )
+
+        sizeClass.isExpanded() -> ExpandedPlayerLayout(
+          state = state,
+          onEvent = onEvent,
+          modifier = modifier
+        )
+
+        sizeClass.isMedium() -> MediumPlayerLayout(
+          state = state,
+          onEvent = onEvent,
+          onShowQueue = onShowQueue,
+          modifier = modifier
+        )
+
+        else -> CompactPlayer(
+          state = state,
+          onEvent = onEvent,
+          onShowQueue = onShowQueue,
+          modifier = modifier
+        )
+      }
+    }
   }
 }
 
-@Preview
-@PreviewScreenSizes
+@Preview(name = "Tabletop", device = "spec:width=673dp,height=841dp,orientation=portrait")
 @Composable
-private fun PlayerContentPreview() {
+private fun TabletopPlayerPreview() {
   PocketNotesTheme {
     Surface {
       PlayerContent(
@@ -127,6 +160,59 @@ private fun PlayerContentPreview() {
           isShuffleEnabled = false,
           repeatMode = RepeatMode.NONE
         ),
+        posture = Posture.Tabletop,
+        onEvent = {},
+        onShowQueue = {}
+      )
+    }
+  }
+}
+
+@Preview(name = "Book", device = "spec:width=673dp,height=841dp,orientation=landscape")
+@Composable
+private fun BookPlayerPreview() {
+  PocketNotesTheme {
+    Surface {
+      PlayerContent(
+        state = PlayerState(
+          currentEpisode = sampleEpisodes[0],
+          queue = sampleEpisodes,
+          currentQueueIndex = 0,
+          isPlaying = true,
+          isLoading = false,
+          positionMs = 50_000L,
+          durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+          playbackSpeed = 1.0f,
+          isShuffleEnabled = false,
+          repeatMode = RepeatMode.NONE
+        ),
+        posture = Posture.Book,
+        onEvent = {},
+        onShowQueue = {}
+      )
+    }
+  }
+}
+
+@PreviewScreenSizes
+@Composable
+private fun AdaptivePlayerPreview() {
+  PocketNotesTheme {
+    Surface {
+      PlayerContent(
+        state = PlayerState(
+          currentEpisode = sampleEpisodes[0],
+          queue = sampleEpisodes,
+          currentQueueIndex = 0,
+          isPlaying = true,
+          isLoading = false,
+          positionMs = 50_000L,
+          durationMs = sampleEpisodes[0].duration.toLong() * 1000L,
+          playbackSpeed = 1.0f,
+          isShuffleEnabled = false,
+          repeatMode = RepeatMode.NONE
+        ),
+        posture = Posture.Flat,
         onEvent = {},
         onShowQueue = {}
       )
