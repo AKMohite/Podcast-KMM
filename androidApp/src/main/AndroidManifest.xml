@@ -73,6 +73,10 @@
 
             <data android:scheme="pocketnotes" />
           </intent-filter>
+
+          <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/shortcuts" />
         </activity>
 
         <service android:name="com.mak.pocketnotes.service.media.service.MediaPlayerService"

@@ -1,0 +1,50 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_search"
+    android:shortcutId="search"
+    android:shortcutLongLabel="@string/shortcut_search_long_label"
+    android:shortcutShortLabel="@string/shortcut_search_label">
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:data="pocketnotes://search"
+      android:targetClass="com.mak.pocketnotes.android.AppMainActivity"
+      android:targetPackage="com.mak.pocketnotes.android.dev" />
+  </shortcut>
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_discover"
+    android:shortcutId="discover"
+    android:shortcutLongLabel="@string/shortcut_discover_long_label"
+    android:shortcutShortLabel="@string/shortcut_discover_label">
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:data="pocketnotes://discover"
+      android:targetClass="com.mak.pocketnotes.android.AppMainActivity"
+      android:targetPackage="com.mak.pocketnotes.android.dev" />
+  </shortcut>
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_subscriptions"
+    android:shortcutId="subscriptions"
+    android:shortcutLongLabel="@string/shortcut_subscriptions_long_label"
+    android:shortcutShortLabel="@string/shortcut_subscriptions_label">
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:data="pocketnotes://subscribed"
+      android:targetClass="com.mak.pocketnotes.android.AppMainActivity"
+      android:targetPackage="com.mak.pocketnotes.android.dev" />
+  </shortcut>
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_queue"
+    android:shortcutId="queue"
+    android:shortcutLongLabel="@string/shortcut_queue_long_label"
+    android:shortcutShortLabel="@string/shortcut_queue_label">
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:data="pocketnotes://queue"
+      android:targetClass="com.mak.pocketnotes.android.AppMainActivity"
+      android:targetPackage="com.mak.pocketnotes.android.dev" />
+  </shortcut>
+</shortcuts>
