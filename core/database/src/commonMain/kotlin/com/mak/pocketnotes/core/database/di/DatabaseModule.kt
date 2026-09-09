@@ -18,7 +18,9 @@ import com.mak.pocketnotes.core.database.dao.SQLDelightGenresDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightLastSyncDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightPodcastDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightRelatedPodcastDAO
+import com.mak.pocketnotes.core.database.dao.SQLDelightSubscriptionDAO
 import com.mak.pocketnotes.core.database.dao.SQLDelightTrendingPodcastDAO
+import com.mak.pocketnotes.core.database.dao.SubscriptionDAO
 import com.mak.pocketnotes.core.database.dao.TrendingPodcastDAO
 import com.mak.pocketnotes.core.database.queries.PocketDatabase
 import org.koin.core.module.Module
@@ -37,6 +39,7 @@ val localModule =
     single<RelatedPodcastDAO> { SQLDelightRelatedPodcastDAO(get(), get()) }
     single<CuratedPodcastDAO> { SQLDelightCuratedPodcastDAO(get(), get()) }
     single<TrendingPodcastDAO> { SQLDelightTrendingPodcastDAO(get(), get()) }
+    single<SubscriptionDAO> { SQLDelightSubscriptionDAO(get(), get()) }
   }
 
 internal expect fun Module.databasePlatformModule()

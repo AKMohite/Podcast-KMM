@@ -7,4 +7,12 @@ interface PodcastRepository {
   fun refresh(podcastId: String): Flow<Podcast>
 
   fun observePodcast(podcastId: String): Flow<Podcast>
+
+  fun isSubscribed(podcastId: String): Flow<Boolean>
+
+  suspend fun subscribe(podcastId: String)
+
+  suspend fun unsubscribe(podcastId: String)
+
+  fun getSubscribedPodcasts(): Flow<List<Podcast>>
 }

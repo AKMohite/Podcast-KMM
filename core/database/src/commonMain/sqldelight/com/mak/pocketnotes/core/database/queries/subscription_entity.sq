@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS `subscriptions` (
+    `podcast_id` TEXT PRIMARY KEY NOT NULL,
+    `subscribed_at` INTEGER AS kotlin.time.Instant NOT NULL,
+    FOREIGN KEY(`podcast_id`) REFERENCES `podcasts`(`id`) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+insertSubscription:
+INSERT OR REPLACE INTO subscriptions (podcast_id, subscribed_at) VALUES (?, ?);
+
+deleteSubscription:
+DELETE FROM subscriptions WHERE podcast_id = :podcastId;
+
+isSubscribed:
+SELECT count(*) FROM subscriptions WHERE podcast_id = :podcastId;
+
+getSubscribedPodcasts:
+SELECT podcasts.* FROM subscriptions
+INNER JOIN podcasts ON podcasts.id = subscriptions.podcast_id
+ORDER BY subscribed_at DESC;

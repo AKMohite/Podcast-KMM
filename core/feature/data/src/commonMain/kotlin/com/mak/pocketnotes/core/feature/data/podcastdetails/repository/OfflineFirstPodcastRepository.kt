@@ -7,11 +7,13 @@ import com.mak.pocketnotes.core.database.dao.EpisodeDAO
 import com.mak.pocketnotes.core.database.dao.EpisodePagingKeysDAO
 import com.mak.pocketnotes.core.database.dao.LastSyncDAO
 import com.mak.pocketnotes.core.database.dao.PodcastDAO
+import com.mak.pocketnotes.core.database.dao.SubscriptionDAO
 import com.mak.pocketnotes.core.feature.data.home.PodcastMapper
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
 import com.mak.pocketnotes.core.remote.PocketNotesAPI
 import com.mak.pocketnotes.core.remote.dto.PodcastDTO
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
@@ -29,6 +31,7 @@ internal class OfflineFirstPodcastRepository(
   private val api: PocketNotesAPI,
   private val transactionRunner: DatabaseTransactionRunner,
   private val podcastDAO: PodcastDAO,
+  private val subscriptionDAO: SubscriptionDAO,
   private val episodeDAO: EpisodeDAO,
   private val pagingKeysDAO: EpisodePagingKeysDAO,
   private val lastSyncDAO: LastSyncDAO,
@@ -74,6 +77,26 @@ internal class OfflineFirstPodcastRepository(
     .getPodcast(podcastId)
     .map { podcastEntity ->
       mapper.entityToModel(podcastEntity)
+    }.flowOn(dispatcher.computation)
+
+  override fun isSubscribed(podcastId: String): Flow<Boolean> =
+    subscriptionDAO.isSubscribed(podcastId).flowOn(dispatcher.io)
+
+  override suspend fun subscribe(podcastId: String) = withContext(dispatcher.io) {
+    subscriptionDAO.subscribe(
+      podcastId = podcastId,
+      subscribedAt = Clock.System.now()
+    )
+  }
+
+  override suspend fun unsubscribe(podcastId: String) = withContext(dispatcher.io) {
+    subscriptionDAO.unsubscribe(podcastId)
+  }
+
+  override fun getSubscribedPodcasts(): Flow<List<Podcast>> = subscriptionDAO
+    .getSubscribedPodcasts()
+    .map { entities ->
+      entities.map { mapper.entityToModel(it) }
     }.flowOn(dispatcher.computation)
 
   private suspend fun needsRefresh(podcast: Podcast?): Boolean = withContext(dispatcher.io) {

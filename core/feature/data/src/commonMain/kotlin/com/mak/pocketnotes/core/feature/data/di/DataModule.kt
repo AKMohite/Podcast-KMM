@@ -52,7 +52,8 @@ val coreDataModule =
         pagingKeysDAO = get(),
         lastSyncDAO = get(),
         dispatcher = get(),
-        mapper = get()
+        mapper = get(),
+        subscriptionDAO = get()
       )
     }
 

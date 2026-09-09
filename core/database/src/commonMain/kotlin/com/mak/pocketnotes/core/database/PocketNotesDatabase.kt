@@ -17,6 +17,7 @@ import com.mak.pocketnotes.core.database.queries.Episodes
 import com.mak.pocketnotes.core.database.queries.Genres
 import com.mak.pocketnotes.core.database.queries.Last_syncs
 import com.mak.pocketnotes.core.database.queries.PocketDatabase
+import com.mak.pocketnotes.core.database.queries.Subscriptions
 import com.mak.pocketnotes.core.database.queries.Trending_podcasts
 
 internal class PocketNotesDatabase(
@@ -43,6 +44,9 @@ internal class PocketNotesDatabase(
     ),
     episode_paging_keysAdapter = Episode_paging_keys.Adapter(
       next_episode_dateAdapter = InstantStringColumnAdapter
+    ),
+    subscriptionsAdapter = Subscriptions.Adapter(
+      subscribed_atAdapter = InstantStringColumnAdapter
     )
   )
 }
