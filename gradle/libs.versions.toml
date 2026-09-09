@@ -8,7 +8,6 @@ versionName = "0.0.1"
 
 accompanist = "0.36.0"
 agp = "9.3.1"
-appfunctionsService = "1.0.0-alpha09"
 coil = "2.7.0"
 composeBom = "2026.08.00"
 coroutines = "1.11.0"
@@ -48,8 +47,11 @@ dokka = "2.2.0"
 spotless = "8.10.0"
 appfunctions = "1.0.0-alpha10"
 ksp = "2.3.11"
+glance = "1.2.0"
 
 [libraries]
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 androidx-compose-wear-navigation3 = { module = "androidx.wear.compose:compose-navigation3", version.ref = "composeWear" }
 androidx-datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }

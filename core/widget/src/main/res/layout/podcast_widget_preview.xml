@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="#F5F5F5"
+  android:orientation="horizontal"
+  android:padding="8dp">
+
+  <View
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:background="#CCCCCC" />
+
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Now Playing"
+      android:textSize="12sp" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Episode Title"
+      android:textColor="#000000"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Podcast Publisher"
+      android:textSize="14sp" />
+  </LinearLayout>
+
+  <TextView
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:background="#E0E0E0"
+    android:gravity="center"
+    android:text="▶"
+    android:textSize="20sp" />
+</LinearLayout>

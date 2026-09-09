@@ -98,6 +98,7 @@ baselineProfile {
 
 dependencies {
   implementation(project(":core:designsystem"))
+  implementation(project(":core:widget"))
   implementation(project(":shared"))
   implementation(platform(libs.compose.bom))
   implementation(libs.bundles.compose)
