@@ -3,7 +3,6 @@ package com.mak.pocketnotes.core.widget
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,14 +29,13 @@ import androidx.glance.layout.size
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import androidx.glance.unit.ColorProvider
 import com.mak.pocketnotes.core.widget.ui.PocketGlanceTheme
 
 class PodcastWidget : GlanceAppWidget() {
 
   companion object {
-    private val SMALL_SQUARE = DpSize(60.dp, 60.dp)
-    private val HORIZONTAL_RECTANGLE = DpSize(200.dp, 60.dp)
+    private val SMALL_SQUARE = DpSize(48.dp, 48.dp)
+    private val HORIZONTAL_RECTANGLE = DpSize(140.dp, 48.dp)
     private val LARGE_RECTANGLE = DpSize(200.dp, 120.dp)
   }
 
@@ -55,15 +53,11 @@ class PodcastWidget : GlanceAppWidget() {
   }
 
   override suspend fun providePreview(context: Context, widgetCategory: Int) {
-    super.providePreview(context, widgetCategory)
     provideContent {
       PocketGlanceTheme {
-        val size = LocalSize.current
-        PodcastWidgetContent(size)
+        PodcastWidgetContent(HORIZONTAL_RECTANGLE)
       }
     }
-//    val manager = GlanceAppWidgetManager(context)
-//    manager.setWidgetPreviews()
   }
 
   @Composable
@@ -145,7 +139,7 @@ class PodcastWidget : GlanceAppWidget() {
     Box(
       modifier = GlanceModifier
         .size(size)
-        .background(ColorProvider(Color.Gray))
+        .background(GlanceTheme.colors.surface)
     ) {}
   }
 
