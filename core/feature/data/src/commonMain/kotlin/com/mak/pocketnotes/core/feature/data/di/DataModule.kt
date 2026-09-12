@@ -53,7 +53,8 @@ val coreDataModule =
         lastSyncDAO = get(),
         dispatcher = get(),
         mapper = get(),
-        subscriptionDAO = get()
+        subscriptionDAO = get(),
+        widgetUpdater = getOrNull()
       )
     }
 

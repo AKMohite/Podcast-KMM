@@ -23,6 +23,8 @@ android {
 
 dependencies {
   implementation(project(":core:designsystem"))
+  implementation(project(":core:database"))
+  implementation(project(":core:common"))
   implementation(libs.compose.material)
   implementation(libs.androidx.glance.appwidget)
   implementation(libs.androidx.glance.material3)

@@ -1,5 +1,6 @@
 package com.mak.pocketnotes.core.feature.data.podcastdetails.repository
 
+import com.mak.pocketnotes.core.common.WidgetUpdater
 import com.mak.pocketnotes.core.common.coroutines.DispatcherProvider
 import com.mak.pocketnotes.core.common.models.SyncRequest
 import com.mak.pocketnotes.core.database.DatabaseTransactionRunner
@@ -36,7 +37,8 @@ internal class OfflineFirstPodcastRepository(
   private val pagingKeysDAO: EpisodePagingKeysDAO,
   private val lastSyncDAO: LastSyncDAO,
   private val dispatcher: DispatcherProvider,
-  private val mapper: PodcastMapper
+  private val mapper: PodcastMapper,
+  private val widgetUpdater: WidgetUpdater? = null
 ) : PodcastRepository {
   private val store by lazy {
     StoreBuilder
@@ -82,15 +84,17 @@ internal class OfflineFirstPodcastRepository(
   override fun isSubscribed(podcastId: String): Flow<Boolean> =
     subscriptionDAO.isSubscribed(podcastId).flowOn(dispatcher.io)
 
-  override suspend fun subscribe(podcastId: String) = withContext(dispatcher.io) {
+  override suspend fun subscribe(podcastId: String): Unit = withContext(dispatcher.io) {
     subscriptionDAO.subscribe(
       podcastId = podcastId,
       subscribedAt = Clock.System.now()
     )
+    widgetUpdater?.updateSubscriptionWidget()
   }
 
-  override suspend fun unsubscribe(podcastId: String) = withContext(dispatcher.io) {
+  override suspend fun unsubscribe(podcastId: String): Unit = withContext(dispatcher.io) {
     subscriptionDAO.unsubscribe(podcastId)
+    widgetUpdater?.updateSubscriptionWidget()
   }
 
   override fun getSubscribedPodcasts(): Flow<List<Podcast>> = subscriptionDAO

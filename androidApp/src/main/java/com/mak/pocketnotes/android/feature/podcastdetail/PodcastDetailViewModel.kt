@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 internal class PodcastDetailViewModel(
   val podcastRepository: PodcastRepository,
@@ -39,19 +40,36 @@ internal class PodcastDetailViewModel(
   private fun loadPodcastDetails() {
     combine(
       podcastRepository.refresh(podcastId),
-      relatedPodcastRepository.refresh(podcastId)
-    ) { podcast, recommendations ->
-      podcast.copy(recommendations = recommendations.related)
-    }.onEach { podcast ->
-      _uiState.update { it.copy(loading = false, podcast = podcast) }
+      relatedPodcastRepository.refresh(podcastId),
+      podcastRepository.isSubscribed(podcastId)
+    ) { podcast, recommendations, isSubscribed ->
+      PodcastDetailState(
+        loading = false,
+        podcast = podcast.copy(recommendations = recommendations.related),
+        isSubscribed = isSubscribed
+      )
+    }.onEach { newState ->
+      _uiState.update { newState }
     }.catch { e ->
       _uiState.update { it.copy(loading = false, errorMsg = e.message) }
     }.launchIn(viewModelScope)
+  }
+
+  fun toggleSubscription() {
+    viewModelScope.launch {
+      val currentIsSubscribed = _uiState.value.isSubscribed
+      if (currentIsSubscribed) {
+        podcastRepository.unsubscribe(podcastId)
+      } else {
+        podcastRepository.subscribe(podcastId)
+      }
+    }
   }
 }
 
 internal data class PodcastDetailState(
   val loading: Boolean = false,
   val podcast: Podcast? = null,
+  val isSubscribed: Boolean = false,
   val errorMsg: String? = null
 )

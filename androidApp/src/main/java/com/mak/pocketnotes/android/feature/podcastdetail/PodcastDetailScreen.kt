@@ -21,11 +21,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -94,6 +97,7 @@ fun EntryProviderScope<NavKey>.podcastDetailEntry(
               )
 //                startPodcastEpisodes(detailViewModel.episodesState)
             },
+          toggleSubscription = { detailViewModel.toggleSubscription() },
             gotoDetails = { podcastId ->
                 navigator.navigate(PodcastDetail(podcastId))
             }
@@ -106,12 +110,14 @@ internal fun PodcastDetailScreen(
     state: PodcastDetailState,
     episodes: LazyPagingItems<PodcastEpisode>,
     startPodcast: () -> Unit,
+    toggleSubscription: () -> Unit,
     gotoDetails: (String) -> Unit
 ) {
     PodcastDetailContent(
         uiState = state,
         startPodcast = startPodcast,
         episodes = episodes,
+      toggleSubscription = toggleSubscription,
         gotoDetails = gotoDetails
     )
 }
@@ -122,6 +128,7 @@ private fun PodcastDetailContent(
     uiState: PodcastDetailState,
     episodes: LazyPagingItems<PodcastEpisode>,
     gotoDetails: (String) -> Unit,
+    toggleSubscription: () -> Unit,
     startPodcast: () -> Unit
 ) {
     val sizeClass = adaptiveScreenInfo().windowSizeClass
@@ -134,16 +141,20 @@ private fun PodcastDetailContent(
                 PodcastDetailExpanded(
                     podcast = podcast,
                     episodes = episodes,
+                  isSubscribed = uiState.isSubscribed,
                     gotoDetails = gotoDetails,
                     startPodcast = startPodcast,
+                  toggleSubscription = toggleSubscription,
                     sizeClass = sizeClass
                 )
             } else {
                 PodcastDetailCompact(
                     podcast = podcast,
                     episodes = episodes,
+                  isSubscribed = uiState.isSubscribed,
                     gotoDetails = gotoDetails,
-                    startPodcast = startPodcast
+                  startPodcast = startPodcast,
+                  toggleSubscription = toggleSubscription
                 )
             }
         }
@@ -157,7 +168,9 @@ private fun PodcastDetailContent(
 private fun PodcastDetailCompact(
     podcast: Podcast,
     episodes: LazyPagingItems<PodcastEpisode>,
+    isSubscribed: Boolean,
     gotoDetails: (String) -> Unit,
+    toggleSubscription: () -> Unit,
     startPodcast: () -> Unit
 ) {
     LazyColumn(
@@ -189,20 +202,44 @@ private fun PodcastDetailCompact(
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+              Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+              ) {
                 Button(
                     onClick = startPodcast,
-                    modifier = Modifier.fillMaxWidth(),
+                  modifier = Modifier.weight(1f),
                     shape = MaterialTheme.shapes.medium,
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.PlayArrow,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary
+                      imageVector = Icons.Filled.PlayArrow,
+                      contentDescription = null,
+                      tint = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = stringResource(R.string.start_listening_now)
+                      text = stringResource(R.string.start_listening_now)
                     )
+                }
+
+                OutlinedButton(
+                  onClick = toggleSubscription,
+                  modifier = Modifier.weight(1f),
+                  shape = MaterialTheme.shapes.medium,
+                ) {
+                  Icon(
+                    imageVector = if (isSubscribed) Icons.Filled.Check else Icons.Filled.Add,
+                    contentDescription = null
+                  )
+                  Spacer(modifier = Modifier.width(4.dp))
+                  Text(
+                    text = if (isSubscribed) {
+                      stringResource(R.string.action_subscribed)
+                    } else {
+                      stringResource(R.string.action_subscribe)
+                    }
+                  )
+                }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -287,7 +324,9 @@ private fun PodcastDetailCompact(
 private fun PodcastDetailExpanded(
     podcast: Podcast,
     episodes: LazyPagingItems<PodcastEpisode>,
+    isSubscribed: Boolean,
     gotoDetails: (String) -> Unit,
+    toggleSubscription: () -> Unit,
     startPodcast: () -> Unit,
     sizeClass: WindowSizeClass
 ) {
@@ -336,6 +375,7 @@ private fun PodcastDetailExpanded(
                             color = MaterialTheme.colorScheme.secondary
                         )
                         Spacer(modifier = Modifier.height(16.dp))
+                      Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Button(
                             onClick = startPodcast,
                             shape = MaterialTheme.shapes.medium,
@@ -344,6 +384,26 @@ private fun PodcastDetailExpanded(
                             Icon(Icons.Filled.PlayArrow, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(stringResource(R.string.start_listening_now))
+                        }
+
+                        OutlinedButton(
+                          onClick = toggleSubscription,
+                          shape = MaterialTheme.shapes.medium,
+                          contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                        ) {
+                          Icon(
+                            imageVector = if (isSubscribed) Icons.Filled.Check else Icons.Filled.Add,
+                            contentDescription = null
+                          )
+                          Spacer(modifier = Modifier.width(8.dp))
+                          Text(
+                            text = if (isSubscribed) {
+                              stringResource(R.string.action_subscribed)
+                            } else {
+                              stringResource(R.string.action_subscribe)
+                            }
+                          )
+                        }
                         }
                     }
                 }
@@ -442,14 +502,15 @@ private fun PodcastDetailExpanded(
 private fun PodcastDetailScreenPreview() {
   val episodes =
     MutableStateFlow(PagingData.from(samplePodcasts.flatMap { it.episodes })).collectAsLazyPagingItems()
-    PocketNotesTheme {
-        PodcastDetailContent(
-            uiState = PodcastDetailState(
-                podcast = samplePodcasts[0].copy(recommendations = samplePodcasts)
-            ),
-          episodes = episodes,
-            gotoDetails = {},
-            startPodcast = {}
-        )
-    }
+  PocketNotesTheme {
+    PodcastDetailContent(
+      uiState = PodcastDetailState(
+        podcast = samplePodcasts[0].copy(recommendations = samplePodcasts)
+      ),
+      episodes = episodes,
+      gotoDetails = {},
+      toggleSubscription = {},
+      startPodcast = {}
+    )
+  }
 }

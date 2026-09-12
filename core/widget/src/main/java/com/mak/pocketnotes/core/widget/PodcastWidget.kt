@@ -43,6 +43,10 @@ class PodcastWidget : GlanceAppWidget() {
     setOf(SMALL_SQUARE, HORIZONTAL_RECTANGLE, LARGE_RECTANGLE)
   )
 
+  override val previewSizeMode = SizeMode.Responsive(
+    setOf(SMALL_SQUARE, HORIZONTAL_RECTANGLE, LARGE_RECTANGLE)
+  )
+
   override suspend fun provideGlance(context: Context, id: GlanceId) {
     provideContent {
       PocketGlanceTheme {
