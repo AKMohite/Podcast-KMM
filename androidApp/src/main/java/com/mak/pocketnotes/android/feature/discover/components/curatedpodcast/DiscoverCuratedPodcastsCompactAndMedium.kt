@@ -2,6 +2,7 @@ package com.mak.pocketnotes.android.feature.discover.components.curatedpodcast
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import coil.compose.AsyncImage
 import com.mak.pocketnotes.android.common.ui.debugPlaceholder
-import com.mak.pocketnotes.android.ui.theme.isExpanded
 import com.mak.pocketnotes.android.ui.theme.isMedium
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
 import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
@@ -41,12 +41,6 @@ internal fun DiscoverCuratedPodcastsCompactAndMedium(
     sizeClass: WindowSizeClass,
 ) {
 
-    val itemWidth = when {
-        sizeClass.isExpanded() -> 360.dp   // Fits comfortably on foldables/medium displays
-        sizeClass.isMedium() -> 280.dp // Larger width for desktop/tablets
-        else -> 180.dp                          // WindowWidthSizeClass.COMPACT (Standard mobile)
-    }
-
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -55,24 +49,27 @@ internal fun DiscoverCuratedPodcastsCompactAndMedium(
             overflow = TextOverflow.Ellipsis,
             style = if (sizeClass.isMedium()) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
         )
+      BoxWithConstraints {
+        val itemWidth = maxWidth * 0.8f
         LazyHorizontalGrid(
-            rows = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 160.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+          rows = GridCells.Fixed(2),
+          modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(max = 160.dp),
+          contentPadding = PaddingValues(horizontal = 16.dp),
+          horizontalArrangement = Arrangement.spacedBy(12.dp),
+          verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
-                CuratedPodcastItem(
-                    modifier = Modifier
-                        .width(itemWidth)
-                        .clickable { goToDetails(podcast.id) },
-                    podcast = podcast
-                )
-            }
+          items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
+            CuratedPodcastItem(
+              modifier = Modifier
+                .width(itemWidth)
+                .clickable { goToDetails(podcast.id) },
+              podcast = podcast
+            )
+          }
         }
+      }
     }
 }
 
@@ -90,14 +87,14 @@ private fun CuratedPodcastItem(
             contentDescription = podcast.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(70.dp)
-                .clip(MaterialTheme.shapes.small),
+              .size(70.dp)
+              .clip(MaterialTheme.shapes.small),
             placeholder = debugPlaceholder()
         )
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
+              .fillMaxWidth()
+              .padding(10.dp)
         ) {
             Text(
                 text = podcast.title,
