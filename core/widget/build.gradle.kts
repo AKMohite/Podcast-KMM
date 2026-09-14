@@ -5,7 +5,11 @@ plugins {
 
 android {
   namespace = "com.mak.pocketnotes.core.widget"
-  compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+  compileSdk {
+    version = release(Integer.parseInt(libs.versions.compileSdk.get())) {
+      minorApiLevel = Integer.parseInt(libs.versions.compileSdkMin.get())
+    }
+  }
 
   defaultConfig {
     minSdk = Integer.parseInt(libs.versions.minSdk.get())

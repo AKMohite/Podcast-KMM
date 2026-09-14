@@ -27,7 +27,11 @@ composeCompiler {
 
 android {
   namespace = "com.mak.pocketnotes.android"
-  compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+  compileSdk {
+    version = release(Integer.parseInt(libs.versions.compileSdk.get())) {
+      minorApiLevel = Integer.parseInt(libs.versions.compileSdkMin.get())
+    }
+  }
   defaultConfig {
     applicationId = "com.mak.pocketnotes.android"
     minSdk = Integer.parseInt(libs.versions.minSdk.get())
