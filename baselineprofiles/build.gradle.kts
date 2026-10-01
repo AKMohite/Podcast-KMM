@@ -26,6 +26,16 @@ android {
     testInstrumentationRunnerArguments["androidx.benchmark.profiling.mode"] = "MethodTracing"
   }
 
+  flavorDimensions += "environment"
+  productFlavors {
+    create("dev") {
+      dimension = "environment"
+    }
+    create("prod") {
+      dimension = "environment"
+    }
+  }
+
   targetProjectPath = ":androidApp"
 }
 

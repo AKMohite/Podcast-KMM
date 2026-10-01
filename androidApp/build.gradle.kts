@@ -67,15 +67,15 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 
-    create("staging") {
-//            initWith(getByName("debug"))
-      applicationIdSuffix = ".debugStaging"
-      isMinifyEnabled = true
-      isShrinkResources = true
-//            isDebuggable = true
-      matchingFallbacks += listOf("debug")
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
+//    create("staging") {
+////            initWith(getByName("debug"))
+//      applicationIdSuffix = ".debugStaging"
+//      isMinifyEnabled = true
+//      isShrinkResources = true
+////            isDebuggable = true
+//      matchingFallbacks += listOf("debug")
+//      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//    }
 
     create("benchmark") {
       initWith(getByName("release"))

@@ -56,6 +56,7 @@ class StartupBenchmarks {
       startupMode = StartupMode.COLD,
       iterations = 8,
       setupBlock = {
+//        killProcess()
         pressHome()
       },
       measureBlock = {
