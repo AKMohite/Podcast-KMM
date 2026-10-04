@@ -15,6 +15,11 @@
     native <methods>;
 }
 
+# Keep WorkManager database classes from being stripped or obfuscated by R8
+-keep class androidx.work.impl.WorkDatabase { *; }
+-keep class androidx.work.impl.WorkDatabase_Impl { *; }
+
+
 # We only need to keep ComposeView
 -keep public class androidx.compose.ui.platform.ComposeView {
     public <init>(android.content.Context, android.util.AttributeSet);

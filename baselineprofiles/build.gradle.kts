@@ -19,11 +19,12 @@ android {
   }
 
   defaultConfig {
-    minSdk = 28
+    minSdk = 29
     targetSdk = Integer.parseInt(libs.versions.targetSdk.get())
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     testInstrumentationRunnerArguments["androidx.benchmark.profiling.mode"] = "MethodTracing"
+//testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR,METHOD-TRACING-ENABLED"
   }
 
   flavorDimensions += "environment"
