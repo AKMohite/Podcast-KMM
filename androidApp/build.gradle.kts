@@ -69,11 +69,11 @@ android {
     }
 
 //    create("staging") {
-////            initWith(getByName("debug"))
+// //            initWith(getByName("debug"))
 //      applicationIdSuffix = ".debugStaging"
 //      isMinifyEnabled = true
 //      isShrinkResources = true
-////            isDebuggable = true
+// //            isDebuggable = true
 //      matchingFallbacks += listOf("debug")
 //      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 //    }

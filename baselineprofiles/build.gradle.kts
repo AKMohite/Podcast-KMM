@@ -24,7 +24,7 @@ android {
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     testInstrumentationRunnerArguments["androidx.benchmark.profiling.mode"] = "MethodTracing"
-//testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR,METHOD-TRACING-ENABLED"
+// testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR,METHOD-TRACING-ENABLED"
   }
 
   flavorDimensions += "environment"

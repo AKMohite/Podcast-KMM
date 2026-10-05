@@ -90,13 +90,11 @@ private val colors = colorProviders(
   inverseOnSurface = ColorProvider(day = inverseOnSurfaceLight, night = inverseOnSurfaceDark),
   inverseSurface = ColorProvider(day = inverseSurfaceLight, night = inverseSurfaceDark),
   inversePrimary = ColorProvider(day = inversePrimaryLight, night = inversePrimaryDark),
-  widgetBackground = ColorProvider(day = backgroundLight, night = backgroundDark),
+  widgetBackground = ColorProvider(day = backgroundLight, night = backgroundDark)
 )
 
 @Composable
-internal fun PocketGlanceTheme(
-  content: @Composable () -> Unit
-) {
+internal fun PocketGlanceTheme(content: @Composable () -> Unit) {
   GlanceTheme(
     colors = colors
   ) {

@@ -22,10 +22,7 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun PodcastCard(
-  podcast: Podcast,
-  modifier: Modifier = Modifier
-) {
+internal fun PodcastCard(podcast: Podcast, modifier: Modifier = Modifier) {
   Column(modifier = modifier) {
     AsyncImage(
       model = podcast.thumbnail,

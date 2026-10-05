@@ -15,10 +15,7 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun PodcastListItem(
-  podcast: Podcast,
-  modifier: Modifier = Modifier
-) {
+internal fun PodcastListItem(podcast: Podcast, modifier: Modifier = Modifier) {
   ListItem(
     headlineContent = { Text(podcast.title) },
     supportingContent = { Text(podcast.publisher) },

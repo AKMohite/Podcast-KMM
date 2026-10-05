@@ -137,7 +137,9 @@ internal fun MediumSearchScreen(
           )
         }
       }
-      AnimatedVisibility(screenState != SearchScreenState.RESULTS && uiState.trendingSearches.isNotEmpty()) {
+      AnimatedVisibility(
+        screenState != SearchScreenState.RESULTS && uiState.trendingSearches.isNotEmpty()
+      ) {
         TrendingSearchesSidebar(uiState.trendingSearches)
       }
     }

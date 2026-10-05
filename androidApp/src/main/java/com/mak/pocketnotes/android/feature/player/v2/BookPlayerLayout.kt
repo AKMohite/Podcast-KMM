@@ -41,7 +41,6 @@ internal fun BookPlayerLayout(
   Row(
     modifier = modifier.fillMaxSize()
   ) {
-
     Column(
       modifier = Modifier
         .weight(1f)

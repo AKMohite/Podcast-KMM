@@ -15,7 +15,9 @@ import org.koin.core.context.startKoin
 class KoinInitializer : Initializer<KoinApplication> {
   override fun create(context: Context): KoinApplication = startKoin {
     androidContext(context)
-    modules(appModule + flavorModule + getSharedModules() + mediaModuleV2 + mediaModule + widgetModule)
+    modules(
+      appModule + flavorModule + getSharedModules() + mediaModuleV2 + mediaModule + widgetModule
+    )
   }
 
   override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()

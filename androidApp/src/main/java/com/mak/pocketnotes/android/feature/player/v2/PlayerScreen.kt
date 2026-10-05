@@ -83,7 +83,6 @@ private fun PlayerContent(
   onEvent: (PlayerEvent) -> Unit,
   onShowQueue: () -> Unit
 ) {
-
   // Handle foldable postures first
   when (posture) {
     Posture.Tabletop -> {

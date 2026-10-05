@@ -37,9 +37,7 @@ fun EntryProviderScope<NavKey>.searchEntryV2(navigator: Navigator) {
 }
 
 @Composable
-internal fun SearchScreenV2(
-  openPodcast: (id: String) -> Unit
-) {
+internal fun SearchScreenV2(openPodcast: (id: String) -> Unit) {
   val sizeClass = currentWindowAdaptiveInfoV2().windowSizeClass
   val viewModel: SearchViewModelV2 = koinViewModel()
   val uiState by viewModel.uiState.collectAsStateWithLifecycle()

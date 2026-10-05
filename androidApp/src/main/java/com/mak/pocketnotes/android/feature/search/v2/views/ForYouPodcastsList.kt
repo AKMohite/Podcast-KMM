@@ -14,10 +14,7 @@ import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.utils.sample.samplePodcasts
 
 @Composable
-internal fun ForYouPodcastsList(
-  podcasts: List<Podcast>,
-  onPodcastClick: (String) -> Unit
-) {
+internal fun ForYouPodcastsList(podcasts: List<Podcast>, onPodcastClick: (String) -> Unit) {
   LazyRow(
     contentPadding = PaddingValues(horizontal = 16.dp),
     horizontalArrangement = Arrangement.spacedBy(12.dp)
