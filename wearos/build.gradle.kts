@@ -8,7 +8,11 @@ plugins {
 
 android {
   namespace = "app.mak.pocketnotes.wearos"
-  compileSdk = Integer.parseInt(libs.versions.compileSdk.get())
+  compileSdk {
+    version = release(Integer.parseInt(libs.versions.compileSdk.get())) {
+      minorApiLevel = Integer.parseInt(libs.versions.compileSdkMin.get())
+    }
+  }
 
   defaultConfig {
     applicationId = "app.mak.pocketnotes.wearos"

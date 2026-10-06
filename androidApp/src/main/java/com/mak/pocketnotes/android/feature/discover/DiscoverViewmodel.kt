@@ -4,86 +4,56 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mak.pocketnotes.core.common.models.ErrorType
 import com.mak.pocketnotes.core.common.models.SectionState
-import com.mak.pocketnotes.core.feature.domain.home.models.BestQueryParam
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast
-import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcastsParam
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
-import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastRepository
-import com.mak.pocketnotes.core.feature.domain.home.repository.CuratedPodcastRepository
-import kotlinx.coroutines.flow.Flow
+import com.mak.pocketnotes.core.feature.domain.home.usecase.GetDiscoverFeedUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class DiscoverViewmodel(
-  private val bestPodcastsRepository: BestPodcastRepository,
-  private val curatedPodcastsRepository: CuratedPodcastRepository,
+  private val getDiscoverFeedUseCase: GetDiscoverFeedUseCase
 ) : ViewModel() {
   private val refreshTrigger = MutableSharedFlow<Boolean>(replay = 1).apply { tryEmit(false) }
   private val errorMsg = MutableStateFlow<ErrorType?>(null)
 
   internal val uiState: StateFlow<DiscoverScreenState> =
     combine(
-      refreshBanner(),
-      refreshBestPodcasts(),
-      refreshCuratedPodcasts(),
-      errorMsg,
-    ) { bannerSection, bestSection, curatedSection, error ->
+      refreshTrigger.flatMapLatest { forceRefresh ->
+        getDiscoverFeedUseCase(forceRefresh = forceRefresh).onEach { feed ->
+          updateError(feed.bannerSection)
+          updateError(feed.trendingSection)
+          updateError(feed.curatedSection)
+        }
+      },
+      errorMsg
+    ) { feed, error ->
       DiscoverScreenState(
-        isPullToRefreshing = bannerSection.isInFlight() || bestSection.isInFlight() || curatedSection.isInFlight(),
-        bannerPodcastsSection = bannerSection,
-        trendingPodcastsSection = bestSection,
-        curatedPodcastsSection = curatedSection,
-        errorType = error,
+        isPullToRefreshing = feed.isPullToRefreshing,
+        bannerPodcastsSection = feed.bannerSection,
+        trendingPodcastsSection = feed.trendingSection,
+        curatedPodcastsSection = feed.curatedSection,
+        errorType = error
       )
     }.stateIn(
       scope = viewModelScope,
       started = SharingStarted.WhileSubscribed(5000),
-      initialValue =
-        DiscoverScreenState(
-          bannerPodcastsSection = SectionState.Loading,
-          trendingPodcastsSection = SectionState.Loading,
-          curatedPodcastsSection = SectionState.Loading,
-          isPullToRefreshing = false,
-        ),
+      initialValue = DiscoverScreenState(
+        bannerPodcastsSection = SectionState.Loading,
+        trendingPodcastsSection = SectionState.Loading,
+        curatedPodcastsSection = SectionState.Loading,
+        isPullToRefreshing = false
+      )
     )
-
-  private fun refreshCuratedPodcasts(): Flow<SectionState<List<CuratedPodcast>>> =
-    refreshTrigger
-      .flatMapLatest {
-        curatedPodcastsRepository
-          .refreshSection(
-            CuratedPodcastsParam(
-              forceRefresh = it,
-            ),
-          ).distinctUntilChanged()
-      }.onEach { updateError(it) }
-
-  private fun refreshBestPodcasts(): Flow<SectionState<List<Podcast>>> =
-    refreshTrigger
-      .flatMapLatest {
-        bestPodcastsRepository
-          .refreshSection(
-            BestQueryParam(forceRefresh = it),
-          ).distinctUntilChanged()
-      }.onEach { updateError(it) }
-
-  private fun refreshBanner(): Flow<SectionState<List<Podcast>>> =
-    refreshTrigger
-      .flatMapLatest {
-        bestPodcastsRepository
-          .refreshBannerSection(
-            BestQueryParam(forceRefresh = it),
-          ).distinctUntilChanged()
-      }.onEach { updateError(it) }
 
   private fun updateError(state: SectionState<*>) {
     if (state is SectionState.Error) {
@@ -107,10 +77,8 @@ internal data class DiscoverScreenState(
   val trendingPodcastsSection: SectionState<List<Podcast>>,
   val curatedPodcastsSection: SectionState<List<CuratedPodcast>>,
   val isPullToRefreshing: Boolean,
-  val errorType: ErrorType? = null,
+  val errorType: ErrorType? = null
 ) {
-  /** True if any region is actively loading or mid a background refresh - used to know when
-   * a PullToRefresh-triggered fetch has fully settled (see HomeViewModel). */
   internal fun hasSectionInFlight(): Boolean =
     bannerPodcastsSection.isInFlight() || trendingPodcastsSection.isInFlight() || curatedPodcastsSection.isInFlight()
 
@@ -121,7 +89,7 @@ internal data class DiscoverScreenState(
 private fun isInitialLoading(
   banner: SectionState<*>,
   trending: SectionState<*>,
-  curated: SectionState<*>,
+  curated: SectionState<*>
 ): Boolean = banner.isInitial() && trending.isInitial() && curated.isInitial()
 
 private fun SectionState<*>.isInitial(): Boolean =

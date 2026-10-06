@@ -131,6 +131,8 @@ dependencies {
   androidTestImplementation(libs.compose.test.junit4)
   debugImplementation(libs.compose.test.manifest)
 
+  testImplementation(project(":core:testing"))
+  testImplementation(libs.koin.test)
   testImplementation(libs.junit4)
   testImplementation(libs.turbine)
   testImplementation(libs.kotlinx.coroutines.test)

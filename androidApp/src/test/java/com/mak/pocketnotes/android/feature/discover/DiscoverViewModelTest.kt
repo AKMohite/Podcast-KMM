@@ -3,6 +3,9 @@ package com.mak.pocketnotes.android.feature.discover
 import app.cash.turbine.test
 import com.mak.pocketnotes.core.common.models.ErrorType
 import com.mak.pocketnotes.core.common.models.SectionState
+import com.mak.pocketnotes.core.feature.domain.home.usecase.GetDiscoverFeedUseCase
+import com.mak.pocketnotes.core.testing.fakes.FakeBestPodcastRepository
+import com.mak.pocketnotes.core.testing.fakes.FakeCuratedPodcastRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -19,6 +22,7 @@ import org.junit.Test
 class DiscoverViewModelTest {
   private val bestPodcastRepository = FakeBestPodcastRepository()
   private val curatedPodcastRepository = FakeCuratedPodcastRepository()
+  private val getDiscoverFeedUseCase = GetDiscoverFeedUseCase(bestPodcastRepository, curatedPodcastRepository)
   private val testDispatcher = UnconfinedTestDispatcher()
 
   private lateinit var viewModel: DiscoverViewmodel
@@ -35,7 +39,7 @@ class DiscoverViewModelTest {
 
   @Test
   fun `initial state is success when repositories return data`() = runTest {
-    viewModel = DiscoverViewmodel(bestPodcastRepository, curatedPodcastRepository)
+    viewModel = DiscoverViewmodel(getDiscoverFeedUseCase)
 
     viewModel.uiState.test {
       val state = awaitItem()
@@ -50,7 +54,7 @@ class DiscoverViewModelTest {
   fun `error in section updates errorType in state`() = runTest {
     bestPodcastRepository.sectionState = SectionState.Error(ErrorType.SERVER_ERROR)
 
-    viewModel = DiscoverViewmodel(bestPodcastRepository, curatedPodcastRepository)
+    viewModel = DiscoverViewmodel(getDiscoverFeedUseCase)
 
     viewModel.uiState.test {
       val state = awaitItem()
@@ -60,23 +64,19 @@ class DiscoverViewModelTest {
 
   @Test
   fun `refreshPodcasts triggers forced refresh in repositories`() = runTest {
-    viewModel = DiscoverViewmodel(bestPodcastRepository, curatedPodcastRepository)
+    viewModel = DiscoverViewmodel(getDiscoverFeedUseCase)
 
     viewModel.uiState.test {
-      // Wait for initial state to ensure repositories were called
       awaitItem()
 
-      // Wait for initial (false) calls to settle in repositories
       bestPodcastRepository.refreshCalls.first { !it.forceRefresh }
       curatedPodcastRepository.refreshCalls.first { !it.forceRefresh }
 
       viewModel.refreshPodcasts()
 
-      // Verify that repositories are eventually called with forceRefresh = true
       assertTrue(bestPodcastRepository.refreshCalls.first { it.forceRefresh }.forceRefresh)
       assertTrue(curatedPodcastRepository.refreshCalls.first { it.forceRefresh }.forceRefresh)
 
-      // Cleanup: ensure we don't have pending items if needed, or just let test finish
       cancelAndIgnoreRemainingEvents()
     }
   }
@@ -84,7 +84,7 @@ class DiscoverViewModelTest {
   @Test
   fun `onErrorConsumed clears errorType`() = runTest {
     bestPodcastRepository.sectionState = SectionState.Error(ErrorType.SERVER_ERROR)
-    viewModel = DiscoverViewmodel(bestPodcastRepository, curatedPodcastRepository)
+    viewModel = DiscoverViewmodel(getDiscoverFeedUseCase)
 
     viewModel.uiState.test {
       assertEquals(ErrorType.SERVER_ERROR, awaitItem().errorType)

@@ -7,23 +7,22 @@ import androidx.paging.cachedIn
 import com.mak.pocketnotes.core.feature.domain.home.models.Podcast
 import com.mak.pocketnotes.core.feature.domain.home.models.PodcastEpisode
 import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.EpisodeRepository
-import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.PodcastRepository
-import com.mak.pocketnotes.core.feature.domain.podcastdetails.repository.RelatedPodcastRepository
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.usecase.GetPodcastDetailsUseCase
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.usecase.TogglePodcastSubscriptionUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class PodcastDetailViewModel(
-  val podcastRepository: PodcastRepository,
-  val relatedPodcastRepository: RelatedPodcastRepository,
-  val episodeRepository: EpisodeRepository,
+  getPodcastDetailsUseCase: GetPodcastDetailsUseCase,
+  private val togglePodcastSubscriptionUseCase: TogglePodcastSubscriptionUseCase,
+  episodeRepository: EpisodeRepository,
   private val podcastId: String
 ) : ViewModel() {
   private val _uiState = MutableStateFlow(PodcastDetailState(loading = true))
@@ -34,35 +33,25 @@ internal class PodcastDetailViewModel(
     .cachedIn(viewModelScope)
 
   init {
-    loadPodcastDetails()
-  }
-
-  private fun loadPodcastDetails() {
-    combine(
-      podcastRepository.refresh(podcastId),
-      relatedPodcastRepository.refresh(podcastId),
-      podcastRepository.isSubscribed(podcastId)
-    ) { podcast, recommendations, isSubscribed ->
-      PodcastDetailState(
-        loading = false,
-        podcast = podcast.copy(recommendations = recommendations.related),
-        isSubscribed = isSubscribed
-      )
-    }.onEach { newState ->
-      _uiState.update { newState }
-    }.catch { e ->
-      _uiState.update { it.copy(loading = false, errorMsg = e.message) }
-    }.launchIn(viewModelScope)
+    getPodcastDetailsUseCase(podcastId)
+      .onEach { details ->
+        _uiState.update {
+          PodcastDetailState(
+            loading = false,
+            podcast = details.podcast,
+            isSubscribed = details.isSubscribed
+          )
+        }
+      }
+      .catch { e ->
+        _uiState.update { it.copy(loading = false, errorMsg = e.message) }
+      }
+      .launchIn(viewModelScope)
   }
 
   fun toggleSubscription() {
     viewModelScope.launch {
-      val currentIsSubscribed = _uiState.value.isSubscribed
-      if (currentIsSubscribed) {
-        podcastRepository.unsubscribe(podcastId)
-      } else {
-        podcastRepository.subscribe(podcastId)
-      }
+      togglePodcastSubscriptionUseCase(podcastId)
     }
   }
 }

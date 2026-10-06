@@ -10,6 +10,9 @@ import com.mak.pocketnotes.android.feature.search.SearchViewModel
 import com.mak.pocketnotes.android.feature.search.v2.SearchViewModelV2
 import com.mak.pocketnotes.android.feature.settings.SettingsViewModel
 import com.mak.pocketnotes.android.media.ExoPlayerController
+import com.mak.pocketnotes.core.feature.domain.home.usecase.GetDiscoverFeedUseCase
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.usecase.GetPodcastDetailsUseCase
+import com.mak.pocketnotes.core.feature.domain.podcastdetails.usecase.TogglePodcastSubscriptionUseCase
 import com.mak.pocketnotes.media.PlayerController
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -19,10 +22,13 @@ internal val appModule =
 
     single<PlayerController> { ExoPlayerController(get(), get()) }
 
+    factory { GetDiscoverFeedUseCase(bestPodcastRepository = get(), curatedPodcastRepository = get()) }
+    factory { GetPodcastDetailsUseCase(podcastRepository = get(), relatedPodcastRepository = get()) }
+    factory { TogglePodcastSubscriptionUseCase(podcastRepository = get()) }
+
     viewModel {
       DiscoverViewmodel(
-        bestPodcastsRepository = get(),
-        curatedPodcastsRepository = get()
+        getDiscoverFeedUseCase = get()
       )
     }
     viewModel {
@@ -39,8 +45,8 @@ internal val appModule =
     viewModel { PlayerExpansionViewModel() }
     viewModel { params ->
       PodcastDetailViewModel(
-        podcastRepository = get(),
-        relatedPodcastRepository = get(),
+        getPodcastDetailsUseCase = get(),
+        togglePodcastSubscriptionUseCase = get(),
         episodeRepository = get(),
         podcastId = params.get()
       )
