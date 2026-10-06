@@ -59,9 +59,7 @@ enum class PlayerExpansion {
   FULL
 }
 
-data class PlayerExpansionState(
-  val expansion: PlayerExpansion = PlayerExpansion.HIDDEN
-) {
+data class PlayerExpansionState(val expansion: PlayerExpansion = PlayerExpansion.HIDDEN) {
   val isVisible: Boolean get() = expansion != PlayerExpansion.HIDDEN
   val isFullyExpanded: Boolean get() = expansion == PlayerExpansion.FULL
   val isMini: Boolean get() = expansion == PlayerExpansion.MINI

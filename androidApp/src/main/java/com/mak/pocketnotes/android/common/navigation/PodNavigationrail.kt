@@ -87,24 +87,24 @@ internal fun PodModalWideNavigationRail(
     header = {
       TooltipBox(
         positionProvider =
-        TooltipDefaults.rememberTooltipPositionProvider(
-          TooltipAnchorPosition.Above
-        ),
+          TooltipDefaults.rememberTooltipPositionProvider(
+            TooltipAnchorPosition.Above
+          ),
         tooltip = { PlainTooltip { Text(headerDescription) } },
         state = rememberTooltipState()
       ) {
         IconButton(
           modifier =
-          Modifier
-            .padding(start = 24.dp)
-            .semantics {
-              stateDescription =
-                if (state.currentValue == WideNavigationRailValue.Expanded) {
-                  "Expanded"
-                } else {
-                  "Collapsed"
-                }
-            },
+            Modifier
+              .padding(start = 24.dp)
+              .semantics {
+                stateDescription =
+                  if (state.currentValue == WideNavigationRailValue.Expanded) {
+                    "Expanded"
+                  } else {
+                    "Collapsed"
+                  }
+              },
           onClick = {
             scope.launch {
               if (state.targetValue == WideNavigationRailValue.Expanded) {

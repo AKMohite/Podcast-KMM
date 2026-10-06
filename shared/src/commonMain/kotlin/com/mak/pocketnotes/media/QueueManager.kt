@@ -132,24 +132,13 @@ class QueueManager {
 }
 
 sealed class QueueOperation {
-  data class SetQueue(
-    val episodes: List<PodcastEpisode>,
-    val startIndex: Int
-  ) : QueueOperation()
+  data class SetQueue(val episodes: List<PodcastEpisode>, val startIndex: Int) : QueueOperation()
 
-  data class AddAt(
-    val episode: PodcastEpisode,
-    val index: Int
-  ) : QueueOperation()
+  data class AddAt(val episode: PodcastEpisode, val index: Int) : QueueOperation()
 
-  data class RemoveAt(
-    val index: Int
-  ) : QueueOperation()
+  data class RemoveAt(val index: Int) : QueueOperation()
 
-  data class Move(
-    val from: Int,
-    val to: Int
-  ) : QueueOperation()
+  data class Move(val from: Int, val to: Int) : QueueOperation()
 
   data object Clear : QueueOperation()
 }

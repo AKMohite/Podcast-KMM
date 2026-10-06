@@ -2,10 +2,7 @@ package com.mak.pocketnotes.core.common.exception
 
 const val EXCEPTION_GENERIC_MSG = "Something went wrong. Please try again later"
 
-enum class ExceptionType(
-  val key: String,
-  val message: String
-) {
+enum class ExceptionType(val key: String, val message: String) {
   INVALID_TOKEN(
     "api.exception.authenticate",
     "You need to authenticate yourself."

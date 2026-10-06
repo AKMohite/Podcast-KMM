@@ -64,15 +64,20 @@ internal class AppMainViewmodel : ViewModel() {
         }
 
         "search" -> Search(query = uri.getQueryParameter("q"))
+
         "subscribed" -> Subscribed
+
         "settings" -> Settings
+
         "player" -> {
           _navEvents.trySend(NavEvent.ShowPlayer)
           null
         }
 
         "queue" -> PlayerQueue
+
         "discover" -> Discover
+
         else -> Discover
       }
     } else {
@@ -84,15 +89,20 @@ internal class AppMainViewmodel : ViewModel() {
         }
 
         path.startsWith("/search") -> Search(query = uri.getQueryParameter("q"))
+
         path.startsWith("/subscribed") -> Subscribed
+
         path.startsWith("/settings") -> Settings
+
         path.startsWith("/player") -> {
           _navEvents.trySend(NavEvent.ShowPlayer)
           null
         }
 
         path.startsWith("/queue") -> PlayerQueue
+
         path.startsWith("/discover") || path == "/" || path.isEmpty() -> Discover
+
         else -> Discover
       }
     }
@@ -104,9 +114,7 @@ sealed interface NavEvent {
   data object ShowPlayer : NavEvent
 
   /** Navigate to a specific episode detail AND start playback. */
-  data class ShowEpisode(
-    val episodeId: String
-  ) : NavEvent
+  data class ShowEpisode(val episodeId: String) : NavEvent
 
   /** Navigate to the queue screen (Compact) or reveal queue pane (Expanded+). */
   data object ShowQueue : NavEvent

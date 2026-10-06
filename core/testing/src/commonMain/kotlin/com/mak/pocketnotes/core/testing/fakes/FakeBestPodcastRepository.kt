@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 
 class FakeBestPodcastRepository : BestPodcastRepository {
-  var sectionState: SectionState<List<Podcast>> = SectionState.Success(TestPodcastData.samplePodcastList)
+  var sectionState: SectionState<List<Podcast>> = SectionState.Success(
+    TestPodcastData.samplePodcastList
+  )
   var podcastsToReturn: List<Podcast> = TestPodcastData.samplePodcastList
 
   val refreshCalls = mutableListOf<BestQueryParam>()
@@ -26,11 +28,8 @@ class FakeBestPodcastRepository : BestPodcastRepository {
     return MutableStateFlow(sectionState).asStateFlow()
   }
 
-  override fun refresh(param: BestQueryParam): Flow<List<Podcast>> {
-    return flowOf(podcastsToReturn)
-  }
+  override fun refresh(param: BestQueryParam): Flow<List<Podcast>> = flowOf(podcastsToReturn)
 
-  override fun observePodcasts(param: BestQueryParam): Flow<List<Podcast>> {
-    return flowOf(podcastsToReturn)
-  }
+  override fun observePodcasts(param: BestQueryParam): Flow<List<Podcast>> =
+    flowOf(podcastsToReturn)
 }

@@ -36,7 +36,7 @@ internal class OfflineFirstCuratedPodcastRepository(
   private val podcastDAO: PodcastDAO,
   private val curatedPodcastDAO: CuratedPodcastDAO,
   private val lastSyncDAO: LastSyncDAO,
-  private val dispatcher: DispatcherProvider,
+  private val dispatcher: DispatcherProvider
 ) : CuratedPodcastRepository {
   private val store by lazy {
     StoreBuilder
@@ -62,35 +62,36 @@ internal class OfflineFirstCuratedPodcastRepository(
             },
             delete = { param ->
               delete(param)
-            },
-          ),
+            }
+          )
       ).validator(
         Validator.by { podcasts ->
           return@by needsRefresh(podcasts)
-        },
+        }
       ).build()
   }
 
-  override fun refresh(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> =
-    getStoreStream(
-      param,
-    ).map { response ->
-      when (response) {
-        is StoreReadResponse.Data -> {
-          response.value
-        }
+  override fun refresh(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> = getStoreStream(
+    param
+  ).map { response ->
+    when (response) {
+      is StoreReadResponse.Data -> {
+        response.value
+      }
 
-        is StoreReadResponse.Error -> {
-          throw response.exception()
-        }
+      is StoreReadResponse.Error -> {
+        throw response.exception()
+      }
 
-        else -> {
-          emptyList()
-        }
+      else -> {
+        emptyList()
       }
     }
+  }
 
-  override fun refreshSection(param: CuratedPodcastsParam): Flow<SectionState<List<CuratedPodcast>>> {
+  override fun refreshSection(
+    param: CuratedPodcastsParam
+  ): Flow<SectionState<List<CuratedPodcast>>> {
     var lastKnownGoodPage: List<CuratedPodcast>? = null
     return getStoreStream(param)
       .map { response ->
@@ -113,7 +114,7 @@ internal class OfflineFirstCuratedPodcastRepository(
           is StoreReadResponse.Error -> {
             SectionState.Error(
               response.exception().type,
-              cachedData = lastKnownGoodPage,
+              cachedData = lastKnownGoodPage
             )
           }
 
@@ -124,7 +125,9 @@ internal class OfflineFirstCuratedPodcastRepository(
       }
   }
 
-  private fun getStoreStream(param: CuratedPodcastsParam): Flow<StoreReadResponse<List<CuratedPodcast>>> =
+  private fun getStoreStream(
+    param: CuratedPodcastsParam
+  ): Flow<StoreReadResponse<List<CuratedPodcast>>> =
     store.stream(StoreReadRequest.cached(param, param.forceRefresh))
 
   override fun observePodcasts(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> =
@@ -139,7 +142,7 @@ internal class OfflineFirstCuratedPodcastRepository(
               id = sectionId,
               title = section.sectionTitle,
               description = section.sectionDescription,
-              podcasts = mapPodcasts(podcasts),
+              podcasts = mapPodcasts(podcasts)
             )
           }
       }.flowOn(dispatcher.computation)
@@ -149,26 +152,22 @@ internal class OfflineFirstCuratedPodcastRepository(
     return withContext(dispatcher.io) {
       lastSyncDAO.isRequestValid(
         requestType = SyncRequest.CURATED_PODCASTS,
-        threshold = 90.minutes,
+        threshold = 90.minutes
       )
     }
   }
 
-  private suspend fun delete(param: CuratedPodcastsParam) =
-    withContext(dispatcher.io) {
-      transactionRunner {
-        curatedPodcastDAO.deletePage(param.page)
-      }
+  private suspend fun delete(param: CuratedPodcastsParam) = withContext(dispatcher.io) {
+    transactionRunner {
+      curatedPodcastDAO.deletePage(param.page)
     }
+  }
 
   private fun deleteAll() {
 //        TODO need to handle eviction logic
   }
 
-  private fun updateCuratedPodcasts(
-    dto: List<SectionPodcastDTO>,
-    param: CuratedPodcastsParam,
-  ) {
+  private fun updateCuratedPodcasts(dto: List<SectionPodcastDTO>, param: CuratedPodcastsParam) {
     val (sectionEntities, podcastEntities) = dto.toSectionEntities()
     val podcasts =
       dto
@@ -183,7 +182,7 @@ internal class OfflineFirstCuratedPodcastRepository(
             image = it.image ?: "",
             description = "",
             publisher = it.publisher ?: "",
-            genres = "",
+            genres = ""
           )
         }
     transactionRunner {
@@ -196,14 +195,17 @@ internal class OfflineFirstCuratedPodcastRepository(
     }
   }
 
-  private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<List<CuratedSectionEntity>, List<CuratedPodcastEntity>> {
+  private fun List<SectionPodcastDTO>.toSectionEntities(): Pair<
+    List<CuratedSectionEntity>,
+    List<CuratedPodcastEntity>
+    > {
     val sectionEntities =
       this.map { section ->
         CuratedSectionEntity(
           id = section.id!!,
           title = section.title.orEmpty(),
           description = section.description.orEmpty(),
-          page = 1,
+          page = 1
         )
       }
     val podcastEntities =
@@ -213,7 +215,7 @@ internal class OfflineFirstCuratedPodcastRepository(
             CuratedPodcastEntity(
               id = "${section.id!!}-${podcast.id!!}",
               podcast_id = podcast.id!!,
-              section_id = section.id!!,
+              section_id = section.id!!
             )
           }
         }.flatten()
@@ -227,7 +229,7 @@ internal class OfflineFirstCuratedPodcastRepository(
         thumbnail = podcast.thumbnail.orEmpty(),
         image = podcast.image.orEmpty(),
         title = podcast.podcastTitle,
-        publisher = podcast.publisher,
+        publisher = podcast.publisher
       )
     }
 }

@@ -12,19 +12,12 @@ class FakeSearchRepository : SearchRepository {
   var podcastsToReturn: List<Podcast> = TestPodcastData.samplePodcastList
   var episodesToReturn: List<PodcastEpisode> = listOf(TestPodcastData.sampleEpisode)
 
-  override fun searchPodcasts(query: String): Flow<PagingData<Podcast>> {
-    return flowOf(PagingData.from(podcastsToReturn))
-  }
+  override fun searchPodcasts(query: String): Flow<PagingData<Podcast>> =
+    flowOf(PagingData.from(podcastsToReturn))
 
-  override fun searchPodcastsList(query: String): Flow<List<Podcast>> {
-    return flowOf(podcastsToReturn)
-  }
+  override fun searchPodcastsList(query: String): Flow<List<Podcast>> = flowOf(podcastsToReturn)
 
-  override fun searchEpisodes(query: String): Flow<List<PodcastEpisode>> {
-    return flowOf(episodesToReturn)
-  }
+  override fun searchEpisodes(query: String): Flow<List<PodcastEpisode>> = flowOf(episodesToReturn)
 
-  override fun getLocalSuggestions(query: String): Flow<List<Podcast>> {
-    return flowOf(podcastsToReturn)
-  }
+  override fun getLocalSuggestions(query: String): Flow<List<Podcast>> = flowOf(podcastsToReturn)
 }

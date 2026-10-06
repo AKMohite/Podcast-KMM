@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-internal class PlayerViewModel(
-  private val controller: PlayerController
-) : ViewModel() {
+internal class PlayerViewModel(private val controller: PlayerController) : ViewModel() {
   val playerState: StateFlow<PlayerState> =
     controller.playerState
       .stateIn(
@@ -54,33 +52,19 @@ internal sealed interface PlayerEvent {
 
   data object OnSkipForward : PlayerEvent
 
-  data class OnSeekTo(
-    val duration: Long
-  ) : PlayerEvent
+  data class OnSeekTo(val duration: Long) : PlayerEvent
 
-  data class OnSetSpeed(
-    val speed: Float
-  ) : PlayerEvent
+  data class OnSetSpeed(val speed: Float) : PlayerEvent
 
   data object OnToggleShuffle : PlayerEvent
 
   data object OnCycleRepeatMode : PlayerEvent
 
-  data class OnSkipToQueueItem(
-    val queueIndex: Int
-  ) : PlayerEvent
+  data class OnSkipToQueueItem(val queueIndex: Int) : PlayerEvent
 
-  data class OnRemoveFromQueue(
-    val index: Int
-  ) : PlayerEvent
+  data class OnRemoveFromQueue(val index: Int) : PlayerEvent
 
-  data class OnMoveQueueItem(
-    val fromIndex: Int,
-    val toIndex: Int
-  ) : PlayerEvent
+  data class OnMoveQueueItem(val fromIndex: Int, val toIndex: Int) : PlayerEvent
 
-  data class OnPlayQueue(
-    val episodes: List<PodcastEpisode>,
-    val startIndex: Int = 0
-  ) : PlayerEvent
+  data class OnPlayQueue(val episodes: List<PodcastEpisode>, val startIndex: Int = 0) : PlayerEvent
 }

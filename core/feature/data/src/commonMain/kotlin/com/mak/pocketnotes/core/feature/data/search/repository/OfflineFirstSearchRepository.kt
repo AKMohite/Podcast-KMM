@@ -23,17 +23,15 @@ internal class OfflineFirstSearchRepository(
   private val dispatcher: DispatcherProvider
 ) : SearchRepository {
 
-  override fun searchPodcasts(query: String): Flow<PagingData<Podcast>> {
-    return Pager(
-      config = PagingConfig(
-        pageSize = 10,
-        enablePlaceholders = false
-      ),
-      pagingSourceFactory = {
-        SearchPagingSource(api, mapper, query)
-      }
-    ).flow
-  }
+  override fun searchPodcasts(query: String): Flow<PagingData<Podcast>> = Pager(
+    config = PagingConfig(
+      pageSize = 10,
+      enablePlaceholders = false
+    ),
+    pagingSourceFactory = {
+      SearchPagingSource(api, mapper, query)
+    }
+  ).flow
 
   override fun searchPodcastsList(query: String): Flow<List<Podcast>> = flow {
     val queries = mapOf(

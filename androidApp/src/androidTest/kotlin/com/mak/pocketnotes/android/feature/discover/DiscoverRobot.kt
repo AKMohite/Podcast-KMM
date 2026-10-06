@@ -14,9 +14,7 @@ internal fun discoverRobot(rule: ComposeContentTestRule, block: DiscoverRobot.()
   DiscoverRobot(rule).block()
 }
 
-internal class DiscoverRobot(
-  private val rule: ComposeContentTestRule
-) {
+internal class DiscoverRobot(private val rule: ComposeContentTestRule) {
   private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
   fun setContent(

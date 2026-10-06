@@ -46,9 +46,8 @@ fun PocketNotesTheme(
   )
 }
 
-private fun isContrastAvailable(): Boolean {
-  return Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-}
+private fun isContrastAvailable(): Boolean =
+  Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
 
 @Composable
 private fun selectSchemeForContrast(isDark: Boolean): ColorScheme {

@@ -37,10 +37,10 @@ actual fun platformModule() = module {
     val aeadSerializer =
       AeadSerializer(
         aead =
-        keysetHandle.getPrimitive(
-          RegistryConfiguration.get(),
-          Aead::class.java
-        ),
+          keysetHandle.getPrimitive(
+            RegistryConfiguration.get(),
+            Aead::class.java
+          ),
         wrappedSerializer = AppSettingsSerializer(get<DispatcherProvider>()),
         associatedData = "pod_settings_data".encodeToByteArray()
       )
@@ -71,9 +71,7 @@ actual fun platformModule() = module {
   }
 }
 
-class AppSettingsSerializer(
-  private val dispatcher: DispatcherProvider
-) : Serializer<AppSettings> {
+class AppSettingsSerializer(private val dispatcher: DispatcherProvider) : Serializer<AppSettings> {
   override val defaultValue: AppSettings
     get() = AppSettings()
 

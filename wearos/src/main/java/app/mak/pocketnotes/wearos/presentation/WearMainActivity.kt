@@ -83,12 +83,15 @@ class WearMainActivity : ComponentActivity() {
                       HomeNavigation.Podcasts -> backStack.add(
                         WearRoute.TrendingPodcastsRoute
                       )
+
                       HomeNavigation.Downloads -> backStack.add(
                         WearRoute.DownloadsRoute
                       )
+
                       HomeNavigation.Subscribed -> backStack.add(
                         WearRoute.SubscribedRoute
                       )
+
                       HomeNavigation.Settings -> backStack.add(
                         WearRoute.SettingsRoute
                       )
@@ -138,22 +141,23 @@ fun WearApp(greetingName: String) {
         EdgeButton(
           onClick = { /*TODO*/ },
           colors =
-          ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-          )
+            ButtonDefaults.buttonColors(
+              containerColor = MaterialTheme.colorScheme.secondaryContainer,
+              contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
         ) {
           Text("More")
         }
       }
-    ) { contentPadding -> // ScreenScaffold provides default padding; adjust as needed
+    ) { contentPadding ->
+      // ScreenScaffold provides default padding; adjust as needed
       TransformingLazyColumn(contentPadding = contentPadding, state = listState) {
         item {
           ListHeader(
             modifier =
-            Modifier
-              .fillMaxWidth()
-              .transformedHeight(this, transformationSpec),
+              Modifier
+                .fillMaxWidth()
+                .transformedHeight(this, transformationSpec),
             transformation = SurfaceTransformation(transformationSpec)
           ) {
             Text(text = stringResource(R.string.hello_world, greetingName))

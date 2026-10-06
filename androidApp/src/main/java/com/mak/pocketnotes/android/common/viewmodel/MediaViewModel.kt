@@ -132,13 +132,9 @@ class LegacyMediaViewModel(
 sealed interface UIEvent {
   data object PlayPause : UIEvent
 
-  data class SelectedAudioChange(
-    val index: Int
-  ) : UIEvent
+  data class SelectedAudioChange(val index: Int) : UIEvent
 
-  data class SeekTo(
-    val position: Float
-  ) : UIEvent
+  data class SeekTo(val position: Float) : UIEvent
 
   data object SeekToNext : UIEvent
 
@@ -146,9 +142,7 @@ sealed interface UIEvent {
 
   data object Forward : UIEvent
 
-  data class UpdateProgress(
-    val newProgress: Float
-  ) : UIEvent
+  data class UpdateProgress(val newProgress: Float) : UIEvent
 }
 
 sealed interface UIState {

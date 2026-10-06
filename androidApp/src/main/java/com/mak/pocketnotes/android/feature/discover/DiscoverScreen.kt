@@ -111,15 +111,13 @@ internal fun DiscoverScreen(
   }
 }
 
-internal fun ErrorType.toUserMessage(resources: Resources): String {
-  return when (this) {
-    ErrorType.NOT_FOUND -> resources.getString(R.string.error_not_found)
-    ErrorType.SERVER_ERROR -> resources.getString(R.string.error_server)
-    ErrorType.UNAUTHORIZED -> resources.getString(R.string.error_unauthorized)
-    ErrorType.NO_CONNECTIVITY -> resources.getString(R.string.error_no_internet)
-    ErrorType.PARSE -> resources.getString(R.string.error_serialization)
-    ErrorType.UNKNOWN -> resources.getString(R.string.error_unknown)
-  }
+internal fun ErrorType.toUserMessage(resources: Resources): String = when (this) {
+  ErrorType.NOT_FOUND -> resources.getString(R.string.error_not_found)
+  ErrorType.SERVER_ERROR -> resources.getString(R.string.error_server)
+  ErrorType.UNAUTHORIZED -> resources.getString(R.string.error_unauthorized)
+  ErrorType.NO_CONNECTIVITY -> resources.getString(R.string.error_no_internet)
+  ErrorType.PARSE -> resources.getString(R.string.error_serialization)
+  ErrorType.UNKNOWN -> resources.getString(R.string.error_unknown)
 }
 
 @Composable
@@ -215,6 +213,7 @@ private fun <T> LazyListScope.renderSection(
 ) {
   when (state) {
     is SectionState.Success -> item { onSuccess(state.data) }
+
     is SectionState.Error -> {
       state.cachedData?.let { item { onSuccess(it) } }
     }
@@ -283,9 +282,7 @@ private class DiscoverScreenStateProvider : PreviewParameterProvider<DiscoverScr
   override val values: Sequence<DiscoverScreenState>
     get() = data.map { it.second }.asSequence()
 
-  override fun getDisplayName(index: Int): String {
-    return data[index].first
-  }
+  override fun getDisplayName(index: Int): String = data[index].first
 }
 
 @Preview

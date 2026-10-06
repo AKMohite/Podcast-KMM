@@ -7,9 +7,8 @@ import com.mak.pocketnotes.core.feature.domain.home.repository.BestPodcastReposi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 
-class WearTrendingPodcastsViewModel(
-  private val podcastRepository: BestPodcastRepository
-) : ViewModel() {
+class WearTrendingPodcastsViewModel(private val podcastRepository: BestPodcastRepository) :
+  ViewModel() {
   val state =
     podcastRepository
       .refresh(BestQueryParam())

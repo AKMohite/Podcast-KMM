@@ -19,9 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class PodtalkServiceHandler(
-  private val exoPlayer: Player
-) : Player.Listener,
+internal class PodtalkServiceHandler(private val exoPlayer: Player) :
+  Player.Listener,
   IServiceHandler {
   private val _audioState: MutableStateFlow<MediaState> = MutableStateFlow(MediaState.Initial)
   override val audioState: StateFlow<MediaState> = _audioState.asStateFlow()
@@ -115,6 +114,7 @@ internal class PodtalkServiceHandler(
           MediaState.Buffering(exoPlayer.currentPosition)
 
       ExoPlayer.STATE_READY -> _audioState.value = MediaState.Ready(exoPlayer.duration)
+
       else -> Unit
     }
   }
@@ -201,31 +201,19 @@ sealed interface MediaEvent {
 
   data object SeekTo : MediaEvent
 
-  data class UpdateProgress(
-    val newProgress: Float
-  ) : MediaEvent
+  data class UpdateProgress(val newProgress: Float) : MediaEvent
 }
 
 sealed interface MediaState {
   data object Initial : MediaState
 
-  data class Ready(
-    val duration: Long
-  ) : MediaState
+  data class Ready(val duration: Long) : MediaState
 
-  data class Progress(
-    val progress: Long
-  ) : MediaState
+  data class Progress(val progress: Long) : MediaState
 
-  data class Buffering(
-    val progress: Long
-  ) : MediaState
+  data class Buffering(val progress: Long) : MediaState
 
-  data class PLaying(
-    val isPLaying: Boolean
-  ) : MediaState
+  data class PLaying(val isPLaying: Boolean) : MediaState
 
-  data class CurrentPlaying(
-    val mediaIndex: Int
-  ) : MediaState
+  data class CurrentPlaying(val mediaIndex: Int) : MediaState
 }

@@ -47,7 +47,9 @@ class EpisodeRemoteMediator(
     return try {
       val nextEpisodeDate: Instant? = when (loadType) {
         LoadType.REFRESH -> null
+
         LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+
         LoadType.APPEND -> {
           val remoteKeys = pagingKeysDAO.getNextEpisodeDate(podcastId)
             ?: return MediatorResult.Success(endOfPaginationReached = true)

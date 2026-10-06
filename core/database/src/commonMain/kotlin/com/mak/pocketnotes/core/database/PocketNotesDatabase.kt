@@ -20,28 +20,26 @@ import com.mak.pocketnotes.core.database.queries.PocketDatabase
 import com.mak.pocketnotes.core.database.queries.Subscriptions
 import com.mak.pocketnotes.core.database.queries.Trending_podcasts
 
-internal class PocketNotesDatabase(
-  private val driver: SqlDriver
-) {
+internal class PocketNotesDatabase(private val driver: SqlDriver) {
   fun build(): PocketDatabase = PocketDatabase(
     driver = driver,
     trending_podcastsAdapter = Trending_podcasts.Adapter(IntColumnAdapter),
     curated_sectionsAdapter = Curated_sections.Adapter(IntColumnAdapter),
     genresAdapter =
-    Genres.Adapter(
-      idAdapter = IntColumnAdapter,
-      parent_idAdapter = IntColumnAdapter
-    ),
+      Genres.Adapter(
+        idAdapter = IntColumnAdapter,
+        parent_idAdapter = IntColumnAdapter
+      ),
     last_syncsAdapter =
-    Last_syncs.Adapter(
-      request_typeAdapter = SyncRequestColumnAdapter,
-      timestampAdapter = InstantStringColumnAdapter
-    ),
+      Last_syncs.Adapter(
+        request_typeAdapter = SyncRequestColumnAdapter,
+        timestampAdapter = InstantStringColumnAdapter
+      ),
     episodesAdapter =
-    Episodes.Adapter(
-      published_onAdapter = InstantStringColumnAdapter,
-      next_episode_published_onAdapter = InstantStringColumnAdapter
-    ),
+      Episodes.Adapter(
+        published_onAdapter = InstantStringColumnAdapter,
+        next_episode_published_onAdapter = InstantStringColumnAdapter
+      ),
     episode_paging_keysAdapter = Episode_paging_keys.Adapter(
       next_episode_dateAdapter = InstantStringColumnAdapter
     ),

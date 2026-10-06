@@ -82,7 +82,7 @@ internal class SearchViewModel(
           it.copy(
             episodes = results.episodes,
             podcasts = results.podcasts,
-            genrePodcasts = emptyList(),
+            genrePodcasts = emptyList()
           )
         }
       } catch (t: Throwable) {
@@ -109,10 +109,14 @@ internal data class SearchState(
   val genrePodcasts: List<Podcast> = emptyList(),
   val episodes: List<PodcastEpisode> = emptyList(),
   val error: String? = null,
-  val loading: Boolean = false,
+  val loading: Boolean = false
 ) {
-  fun canShowGenres(): Boolean =
-    genres.isNotEmpty() && (!arePodcastsAvailable() && !areEpisodesAvailable() && !areGenrePodcastsAvailable())
+  fun canShowGenres(): Boolean = genres.isNotEmpty() &&
+    (
+      !arePodcastsAvailable() &&
+        !areEpisodesAvailable() &&
+        !areGenrePodcastsAvailable()
+      )
 
   fun areEpisodesAvailable() = episodes.isNotEmpty()
 

@@ -43,10 +43,9 @@ internal class SearchPagingSource(
     }
   }
 
-  override fun getRefreshKey(state: PagingState<Int, Podcast>): Int? {
-    return state.anchorPosition?.let { anchorPosition ->
+  override fun getRefreshKey(state: PagingState<Int, Podcast>): Int? =
+    state.anchorPosition?.let { anchorPosition ->
       state.closestPageToPosition(anchorPosition)?.prevKey?.plus(state.config.pageSize)
         ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(state.config.pageSize)
     }
-  }
 }

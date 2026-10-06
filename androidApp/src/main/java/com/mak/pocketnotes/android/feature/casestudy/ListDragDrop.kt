@@ -35,10 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
 // 1. State holder to manage complex drag-and-drop calculations
-class DragDropState(
-  val lazyListState: LazyListState,
-  private val onMove: (Int, Int) -> Unit
-) {
+class DragDropState(val lazyListState: LazyListState, private val onMove: (Int, Int) -> Unit) {
   var draggedIndex by mutableStateOf<Int?>(null)
     private set
   var dragOffset by mutableFloatStateOf(0f)
@@ -97,11 +94,10 @@ class DragDropState(
 }
 
 @Composable
-fun rememberDragDropState(lazyListState: LazyListState, onMove: (Int, Int) -> Unit): DragDropState {
-  return remember(lazyListState, onMove) {
+fun rememberDragDropState(lazyListState: LazyListState, onMove: (Int, Int) -> Unit): DragDropState =
+  remember(lazyListState, onMove) {
     DragDropState(lazyListState, onMove)
   }
-}
 
 @Composable
 fun HandleDragDropLazyColumn() {
@@ -164,7 +160,8 @@ fun HandleDragDropLazyColumn() {
           tint = Color.White,
           modifier = Modifier
             .padding(8.dp)
-            .pointerInput(item) { // Use 'item' as key to keep the gesture alive during reordering
+            .pointerInput(item) {
+              // Use 'item' as key to keep the gesture alive during reordering
               detectDragGesturesAfterLongPress(
                 onDragStart = { dragDropState.onDragStart(currentIndex) },
                 onDrag = { change, dragAmount ->

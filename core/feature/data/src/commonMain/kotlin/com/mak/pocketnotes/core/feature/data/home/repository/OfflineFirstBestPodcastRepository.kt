@@ -41,24 +41,24 @@ internal class OfflineFirstBestPodcastRepository(
     StoreBuilder
       .from<BestQueryParam, BestPodcastDTO, List<Podcast>>(
         fetcher =
-        Fetcher.of { param ->
-          fetchPodcastsFromRemote(param)
-        },
+          Fetcher.of { param ->
+            fetchPodcastsFromRemote(param)
+          },
         sourceOfTruth =
-        SourceOfTruth.of(
-          reader = { param ->
-            observePodcasts(param)
-          },
-          writer = { param, dto ->
-            updatePodcasts(dto, param)
-          },
-          deleteAll = {
-            deleteAll()
-          },
-          delete = { param ->
-            delete(param)
-          }
-        )
+          SourceOfTruth.of(
+            reader = { param ->
+              observePodcasts(param)
+            },
+            writer = { param, dto ->
+              updatePodcasts(dto, param)
+            },
+            deleteAll = {
+              deleteAll()
+            },
+            delete = { param ->
+              delete(param)
+            }
+          )
       ).validator(
         Validator.by { podcasts ->
           return@by needsRefresh(podcasts)

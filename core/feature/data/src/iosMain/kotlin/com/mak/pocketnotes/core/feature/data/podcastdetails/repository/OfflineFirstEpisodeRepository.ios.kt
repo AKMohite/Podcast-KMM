@@ -36,6 +36,4 @@ internal actual fun createEpisodeKeysetPager(
   transactionRunner: DatabaseTransactionRunner,
   mapper: PodcastMapper,
   dispatcher: DispatcherProvider
-): Flow<PagingData<PodcastEpisode>> {
-  return flowOf(PagingData.empty())
-}
+): Flow<PagingData<PodcastEpisode>> = flowOf(PagingData.empty())

@@ -163,8 +163,8 @@ class PodcastMapper {
     )
   }
 
-  fun getSearchPodcastResults(results: List<SearchPodcastResultDTO>?): List<Podcast> {
-    return results?.map {
+  fun getSearchPodcastResults(results: List<SearchPodcastResultDTO>?): List<Podcast> =
+    results?.map {
       Podcast(
         id = it.id.orEmpty(),
         title = it.titleOriginal.orEmpty(),
@@ -174,5 +174,4 @@ class PodcastMapper {
         publisher = it.publisherOriginal.orEmpty()
       )
     } ?: emptyList()
-  }
 }

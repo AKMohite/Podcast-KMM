@@ -20,9 +20,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DiscoverViewmodel(
-  private val getDiscoverFeedUseCase: GetDiscoverFeedUseCase
-) : ViewModel() {
+class DiscoverViewmodel(private val getDiscoverFeedUseCase: GetDiscoverFeedUseCase) : ViewModel() {
   private val refreshTrigger = MutableSharedFlow<Boolean>(replay = 1).apply { tryEmit(false) }
   private val errorMsg = MutableStateFlow<ErrorType?>(null)
 
@@ -79,8 +77,9 @@ internal data class DiscoverScreenState(
   val isPullToRefreshing: Boolean,
   val errorType: ErrorType? = null
 ) {
-  internal fun hasSectionInFlight(): Boolean =
-    bannerPodcastsSection.isInFlight() || trendingPodcastsSection.isInFlight() || curatedPodcastsSection.isInFlight()
+  internal fun hasSectionInFlight(): Boolean = bannerPodcastsSection.isInFlight() ||
+    trendingPodcastsSection.isInFlight() ||
+    curatedPodcastsSection.isInFlight()
 
   fun initialLoading(): Boolean =
     isInitialLoading(bannerPodcastsSection, trendingPodcastsSection, curatedPodcastsSection)
@@ -92,10 +91,9 @@ private fun isInitialLoading(
   curated: SectionState<*>
 ): Boolean = banner.isInitial() && trending.isInitial() && curated.isInitial()
 
-private fun SectionState<*>.isInitial(): Boolean =
-  when (this) {
-    is SectionState.Loading -> true
-    is SectionState.Error<*> -> (this.cachedData as? Collection<*>)?.isEmpty() ?: true
-    is SectionState.Success<*> -> (this.data as? Collection<*>)?.isEmpty() ?: true
-    is SectionState.Empty -> true
-  }
+private fun SectionState<*>.isInitial(): Boolean = when (this) {
+  is SectionState.Loading -> true
+  is SectionState.Error<*> -> (this.cachedData as? Collection<*>)?.isEmpty() ?: true
+  is SectionState.Success<*> -> (this.data as? Collection<*>)?.isEmpty() ?: true
+  is SectionState.Empty -> true
+}

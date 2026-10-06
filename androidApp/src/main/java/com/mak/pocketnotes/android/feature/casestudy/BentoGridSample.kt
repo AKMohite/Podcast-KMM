@@ -109,47 +109,46 @@ private fun getGridSpanSize(
   position: Int,
   isTablet: Boolean = false,
   gridColumnCount: Int = 12
-): Int {
-  return if (isTablet) {
+): Int = if (isTablet) {
 //            TODO maybe for tablet it can be staggered grid like this: https://stackoverflow.com/a/65511718
-    /**
-     * here 12 is [gridColumnCount] for tablet
-     * With span size for tablet it will be as below:
-     * |         7         | |    5     |
-     * |   3  | |  3  | |       6       |
-     * |    5     | |         7         |
-     * |       6       | |   3  | |  3  |
-     */
+  /**
+   * here 12 is [gridColumnCount] for tablet
+   * With span size for tablet it will be as below:
+   * |         7         | |    5     |
+   * |   3  | |  3  | |       6       |
+   * |    5     | |         7         |
+   * |       6       | |   3  | |  3  |
+   */
 //            TODO maybe some calculations to get the span size
 //            here 10 is number after which sequence will be repeated
 //            doing this easy way ;P
-    val result = position % 10
-    when (result) {
-      0, 6 -> 7
-      1, 5 -> 5
-      2, 3, 8, 9 -> 3
-      else -> 6 // position = 4, 7
-    }
+  val result = position % 10
+  when (result) {
+    0, 6 -> 7
+    1, 5 -> 5
+    2, 3, 8, 9 -> 3
+    else -> 6 // position = 4, 7
+  }
         /*when(result) {
             0 ,1 , 4, 5, 6, 7 -> 2
             else -> 1 // position = 2, 3, 8, 9
         }*/
-  } else {
-    /**
-     * here 5 is [gridColumnCount] for mobile
-     * With span size for mobile it will be as below:
-     * |      5      |
-     * |   3   | | 2 |
-     */
+} else {
+  /**
+   * here 5 is [gridColumnCount] for mobile
+   * With span size for mobile it will be as below:
+   * |      5      |
+   * |   3   | | 2 |
+   */
 //            TODO maybe some calculations to get the span size
 //            here 10 is number after which sequence will be repeated
 //            doing this easy way ;P
-    val result = position % 10
-    when (result) {
-      0, 5 -> gridColumnCount
-      1, 4, 7, 8 -> 3
-      else -> 2 // result = 2, 3, 6, 9
-    }
+  val result = position % 10
+  when (result) {
+    0, 5 -> gridColumnCount
+    1, 4, 7, 8 -> 3
+    else -> 2 // result = 2, 3, 6, 9
+  }
 
 //            This also works but we have different layout
         /*val result = position % 6
@@ -158,5 +157,4 @@ private fun getGridSpanSize(
             (result == 1 || result == 5) -> 2
             else -> 1
         }*/
-  }
 }

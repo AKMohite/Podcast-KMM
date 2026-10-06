@@ -40,11 +40,13 @@ internal fun DiscoverBestPodcasts(
       gotoDetails,
       podcasts.take(10)
     )
+
     sizeClass.isMedium() -> DiscoverBestPodcastsMedium(
       modifier,
       gotoDetails,
       podcasts
     )
+
     else -> DiscoverBestPodcastsCompact(
       modifier,
       gotoDetails,

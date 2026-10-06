@@ -17,9 +17,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class SettingsViewModel(
-  private val repository: SettingsRepository
-) : ViewModel() {
+internal class SettingsViewModel(private val repository: SettingsRepository) : ViewModel() {
   private val _state = MutableStateFlow(SettingsState())
   val state = _state.asStateFlow()
 
@@ -105,33 +103,19 @@ data class SettingsState(
 }
 
 sealed interface SettingsAction {
-  data class OnThemeChange(
-    val theme: AppTheme
-  ) : SettingsAction
+  data class OnThemeChange(val theme: AppTheme) : SettingsAction
 
-  data class OnLanguageChange(
-    val lang: String
-  ) : SettingsAction
+  data class OnLanguageChange(val lang: String) : SettingsAction
 
-  data class OnTextSizeChange(
-    val size: TextSize
-  ) : SettingsAction
+  data class OnTextSizeChange(val size: TextSize) : SettingsAction
 
-  data class OnAutoPlayNextChange(
-    val enabled: Boolean
-  ) : SettingsAction
+  data class OnAutoPlayNextChange(val enabled: Boolean) : SettingsAction
 
-  data class OnDownloadWifiOnlyChange(
-    val enabled: Boolean
-  ) : SettingsAction
+  data class OnDownloadWifiOnlyChange(val enabled: Boolean) : SettingsAction
 
-  data class OnDeleteAfterPlayedChange(
-    val enabled: Boolean
-  ) : SettingsAction
+  data class OnDeleteAfterPlayedChange(val enabled: Boolean) : SettingsAction
 
-  data class OnStreamQualityChange(
-    val quality: StreamQuality
-  ) : SettingsAction
+  data class OnStreamQualityChange(val quality: StreamQuality) : SettingsAction
 
   data object OnOpenPrivacyPolicy : SettingsAction
 
@@ -141,9 +125,7 @@ sealed interface SettingsAction {
 }
 
 sealed interface SettingsEvent {
-  data class OpenUrl(
-    val url: String
-  ) : SettingsEvent
+  data class OpenUrl(val url: String) : SettingsEvent
 
   data object NavigateToLicenses : SettingsEvent
 }

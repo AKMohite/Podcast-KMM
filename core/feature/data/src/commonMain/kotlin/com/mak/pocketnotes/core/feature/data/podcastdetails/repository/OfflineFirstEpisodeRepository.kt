@@ -42,26 +42,26 @@ class OfflineFirstEpisodeRepository(
     StoreBuilder
       .from<EpisodeQueryParam, PodcastDTO, List<PodcastEpisode>>(
         fetcher =
-        Fetcher.of { (podcastId, nextEpisodeDate) ->
-          fetchEpisodes(nextEpisodeDate, podcastId)
-        },
+          Fetcher.of { (podcastId, nextEpisodeDate) ->
+            fetchEpisodes(nextEpisodeDate, podcastId)
+          },
         sourceOfTruth =
-        SourceOfTruth.of(
-          reader = { (podcastId, nextEpisodeDate) ->
-            observeEpisodes(podcastId, nextEpisodeDate)
-          },
-          writer = { (podcastId, _), dto ->
-            update(dto, podcastId)
-          },
-          deleteAll = {
+          SourceOfTruth.of(
+            reader = { (podcastId, nextEpisodeDate) ->
+              observeEpisodes(podcastId, nextEpisodeDate)
+            },
+            writer = { (podcastId, _), dto ->
+              update(dto, podcastId)
+            },
+            deleteAll = {
 //                    withContext(dispatcher.io) {
 //                        episodeDAO.removeEpisodes()
 //                    }
-          },
-          delete = { (podcastId, nextDate) ->
-            delete(podcastId, nextDate)
-          }
-        )
+            },
+            delete = { (podcastId, nextDate) ->
+              delete(podcastId, nextDate)
+            }
+          )
       ).validator(
         Validator.by { episodes ->
           isDataFresh(episodes)
@@ -148,8 +148,8 @@ class OfflineFirstEpisodeRepository(
     .getEpisodes(
       podcastId = podcastId,
       nextEpisodeDate =
-      nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) }
-        ?: Clock.System.now()
+        nextEpisodeDate?.let { Instant.fromEpochMilliseconds(it) }
+          ?: Clock.System.now()
     ).map { mapper.episodeEntityToModels(it) }
     .flowOn(dispatcher.computation)
 

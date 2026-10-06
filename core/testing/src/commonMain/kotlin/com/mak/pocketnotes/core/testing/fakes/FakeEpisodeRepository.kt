@@ -11,23 +11,19 @@ import kotlinx.coroutines.flow.flowOf
 class FakeEpisodeRepository : EpisodeRepository {
   var episodesToReturn: List<PodcastEpisode> = listOf(TestPodcastData.sampleEpisode)
 
-  override fun refresh(params: EpisodeQueryParam): Flow<List<PodcastEpisode>> {
-    return flowOf(episodesToReturn)
-  }
+  override fun refresh(params: EpisodeQueryParam): Flow<List<PodcastEpisode>> =
+    flowOf(episodesToReturn)
 
-  override fun observeEpisodes(params: EpisodeQueryParam): Flow<List<PodcastEpisode>> {
-    return flowOf(episodesToReturn)
-  }
+  override fun observeEpisodes(params: EpisodeQueryParam): Flow<List<PodcastEpisode>> =
+    flowOf(episodesToReturn)
 
-  override fun getEpisodesPaging(podcastId: String): Flow<PagingData<PodcastEpisode>> {
-    return flowOf(PagingData.from(episodesToReturn))
-  }
+  override fun getEpisodesPaging(podcastId: String): Flow<PagingData<PodcastEpisode>> =
+    flowOf(PagingData.from(episodesToReturn))
 
-  override fun getEpisodesPagingV2(podcastId: String): Flow<PagingData<PodcastEpisode>> {
-    return flowOf(PagingData.from(episodesToReturn))
-  }
+  override fun getEpisodesPagingV2(podcastId: String): Flow<PagingData<PodcastEpisode>> =
+    flowOf(PagingData.from(episodesToReturn))
 
-  override suspend fun getEpisodeById(id: String): PodcastEpisode? {
-    return episodesToReturn.find { it.id == id }
+  override suspend fun getEpisodeById(id: String): PodcastEpisode? = episodesToReturn.find {
+    it.id == id
   }
 }

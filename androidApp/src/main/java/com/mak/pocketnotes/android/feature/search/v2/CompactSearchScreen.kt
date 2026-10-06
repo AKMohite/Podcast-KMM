@@ -185,14 +185,14 @@ internal fun SearchbarLeadingIcon(
 ) = if (searchBarState.currentValue == SearchBarValue.Expanded) {
   TooltipBox(
     positionProvider =
-    rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
+      rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
     tooltip = {
       PlainTooltip(
         modifier =
-        Modifier.semantics {
-          liveRegion = LiveRegionMode.Assertive
-          paneTitle = "Back"
-        }
+          Modifier.semantics {
+            liveRegion = LiveRegionMode.Assertive
+            paneTitle = "Back"
+          }
       ) {
         Text(stringResource(R.string.back))
       }
@@ -218,14 +218,14 @@ internal fun SearchbarLeadingIcon(
 @Composable
 internal fun SearchbarTrailingIcon() = TooltipBox(
   positionProvider =
-  rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
+    rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
   tooltip = {
     PlainTooltip(
       modifier =
-      Modifier.semantics {
-        liveRegion = LiveRegionMode.Assertive
-        paneTitle = "Mic"
-      }
+        Modifier.semantics {
+          liveRegion = LiveRegionMode.Assertive
+          paneTitle = "Mic"
+        }
     ) {
       Text(stringResource(R.string.text_to_speech))
     }

@@ -48,13 +48,9 @@ data class PlayerState(
 }
 
 sealed interface PlayerError {
-  data class NetworkError(
-    val message: String
-  ) : PlayerError
+  data class NetworkError(val message: String) : PlayerError
 
-  data class PlaybackError(
-    val message: String
-  ) : PlayerError
+  data class PlaybackError(val message: String) : PlayerError
 
   data object AudioFocusLost : PlayerError
 
@@ -62,7 +58,4 @@ sealed interface PlayerError {
 }
 
 /** Carries the queue index alongside the episode so the UI can call skipToQueueItem. */
-data class IndexedEpisode(
-  val index: Int,
-  val episode: PodcastEpisode
-)
+data class IndexedEpisode(val index: Int, val episode: PodcastEpisode)

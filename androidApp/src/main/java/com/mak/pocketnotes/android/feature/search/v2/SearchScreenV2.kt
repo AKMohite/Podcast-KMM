@@ -67,6 +67,7 @@ internal fun SearchScreenV2(openPodcast: (id: String) -> Unit) {
       screenState = screenState,
       onEvent = viewModel::onEvent
     )
+
     else -> {
       CompactSearchScreen(
         uiState = uiState,

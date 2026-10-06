@@ -37,7 +37,9 @@ import com.mak.pocketnotes.core.widget.ui.PocketGlanceTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SubscriptionGridWidget : GlanceAppWidget(), KoinComponent {
+class SubscriptionGridWidget :
+  GlanceAppWidget(),
+  KoinComponent {
 
   private val subscriptionDAO: SubscriptionDAO by inject()
 

@@ -6,14 +6,10 @@ import kotlinx.coroutines.CancellationException
 sealed interface DomainResult<out T> {
   data object Loading : DomainResult<Nothing>
 
-  data class Success<T>(
-    val data: T
-  ) : DomainResult<T>
+  data class Success<T>(val data: T) : DomainResult<T>
 
-  data class Error(
-    val message: String? = null,
-    val throwable: Throwable? = null
-  ) : DomainResult<Nothing>
+  data class Error(val message: String? = null, val throwable: Throwable? = null) :
+    DomainResult<Nothing>
 }
 
 suspend fun <T> safeCall(call: suspend () -> T): DomainResult<T> = try {

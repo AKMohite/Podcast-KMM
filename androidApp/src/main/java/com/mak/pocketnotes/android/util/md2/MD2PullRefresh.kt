@@ -82,7 +82,10 @@ private class PullRefreshNestedScrollConnection(
 
   override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset = when {
     !enabled -> Offset.Zero
-    source == Drag && available.y < 0 -> Offset(0f, onPull(available.y)) // Swiping up
+
+    source == Drag && available.y < 0 -> Offset(0f, onPull(available.y))
+
+    // Swiping up
     else -> Offset.Zero
   }
 
@@ -92,11 +95,13 @@ private class PullRefreshNestedScrollConnection(
     source: NestedScrollSource
   ): Offset = when {
     !enabled -> Offset.Zero
-    source == Drag && available.y > 0 -> Offset(0f, onPull(available.y)) // Pulling down
+
+    source == Drag && available.y > 0 -> Offset(0f, onPull(available.y))
+
+    // Pulling down
     else -> Offset.Zero
   }
 
-  override suspend fun onPreFling(available: Velocity): Velocity {
-    return Velocity(0f, onRelease(available.y))
-  }
+  override suspend fun onPreFling(available: Velocity): Velocity =
+    Velocity(0f, onRelease(available.y))
 }

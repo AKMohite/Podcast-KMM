@@ -6,17 +6,11 @@ package com.mak.pocketnotes.core.common.models
 sealed interface SectionState<out T> {
   data object Loading : SectionState<Nothing>
 
-  data class Success<T>(
-    val data: T,
-    val isRefreshing: Boolean = false
-  ) : SectionState<T>
+  data class Success<T>(val data: T, val isRefreshing: Boolean = false) : SectionState<T>
 
   data object Empty : SectionState<Nothing>
 
-  data class Error<T>(
-    val type: ErrorType,
-    val cachedData: T? = null
-  ) : SectionState<T>
+  data class Error<T>(val type: ErrorType, val cachedData: T? = null) : SectionState<T>
 
   fun isInFlight(): Boolean = when (this) {
     is Loading -> true

@@ -53,8 +53,6 @@ data class PodcastEpisode(
   )
 }
 
-fun List<PodcastEpisode>.asPlayableEpisodes(): List<PlayableEpisode> {
-  return this.map {
-    it.asPlayableEpisode()
-  }
+fun List<PodcastEpisode>.asPlayableEpisodes(): List<PlayableEpisode> = this.map {
+  it.asPlayableEpisode()
 }

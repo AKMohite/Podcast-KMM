@@ -71,239 +71,381 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-
-fun EntryProviderScope<NavKey>.podcastDetailEntry(
-    navigator: Navigator
-) {
-    entry<PodcastDetail> { key ->
-        val detailViewModel: PodcastDetailViewModel = koinViewModel(
-            parameters = { parametersOf(key.podcastId) }
+fun EntryProviderScope<NavKey>.podcastDetailEntry(navigator: Navigator) {
+  entry<PodcastDetail> { key ->
+    val detailViewModel: PodcastDetailViewModel = koinViewModel(
+      parameters = { parametersOf(key.podcastId) }
+    )
+    val playerViewModel: PlayerViewModel = koinViewModel(
+      viewModelStoreOwner = LocalActivity.current as ComponentActivity
+    )
+    val state by detailViewModel.uiState.collectAsStateWithLifecycle()
+    val episodes = detailViewModel.episodesPagingData.collectAsLazyPagingItems()
+    PodcastDetailScreen(
+      state = state,
+      episodes = episodes,
+      startPodcast = {
+        playerViewModel.onEvent(
+          PlayerEvent.OnPlayQueue(
+            episodes.itemSnapshotList.items.take(
+              10
+            )
+          )
         )
-        val playerViewModel: PlayerViewModel = koinViewModel(
-            viewModelStoreOwner = LocalActivity.current as ComponentActivity
-        )
-        val state by detailViewModel.uiState.collectAsStateWithLifecycle()
-      val episodes = detailViewModel.episodesPagingData.collectAsLazyPagingItems()
-        PodcastDetailScreen(
-            state = state,
-          episodes = episodes,
-            startPodcast = {
-              playerViewModel.onEvent(
-                PlayerEvent.OnPlayQueue(
-                  episodes.itemSnapshotList.items.take(
-                    10
-                  )
-                )
-              )
 //                startPodcastEpisodes(detailViewModel.episodesState)
-            },
-          toggleSubscription = { detailViewModel.toggleSubscription() },
-            gotoDetails = { podcastId ->
-                navigator.navigate(PodcastDetail(podcastId))
-            }
-        )
-    }
+      },
+      toggleSubscription = { detailViewModel.toggleSubscription() },
+      gotoDetails = { podcastId ->
+        navigator.navigate(PodcastDetail(podcastId))
+      }
+    )
+  }
 }
 
 @Composable
 internal fun PodcastDetailScreen(
-    state: PodcastDetailState,
-    episodes: LazyPagingItems<PodcastEpisode>,
-    startPodcast: () -> Unit,
-    toggleSubscription: () -> Unit,
-    gotoDetails: (String) -> Unit
+  state: PodcastDetailState,
+  episodes: LazyPagingItems<PodcastEpisode>,
+  startPodcast: () -> Unit,
+  toggleSubscription: () -> Unit,
+  gotoDetails: (String) -> Unit
 ) {
-    PodcastDetailContent(
-        uiState = state,
-        startPodcast = startPodcast,
-        episodes = episodes,
-      toggleSubscription = toggleSubscription,
-        gotoDetails = gotoDetails
-    )
+  PodcastDetailContent(
+    uiState = state,
+    startPodcast = startPodcast,
+    episodes = episodes,
+    toggleSubscription = toggleSubscription,
+    gotoDetails = gotoDetails
+  )
 }
 
 @Composable
 private fun PodcastDetailContent(
-    modifier: Modifier = Modifier,
-    uiState: PodcastDetailState,
-    episodes: LazyPagingItems<PodcastEpisode>,
-    gotoDetails: (String) -> Unit,
-    toggleSubscription: () -> Unit,
-    startPodcast: () -> Unit
+  modifier: Modifier = Modifier,
+  uiState: PodcastDetailState,
+  episodes: LazyPagingItems<PodcastEpisode>,
+  gotoDetails: (String) -> Unit,
+  toggleSubscription: () -> Unit,
+  startPodcast: () -> Unit
 ) {
-    val sizeClass = adaptiveScreenInfo().windowSizeClass
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        uiState.podcast?.let { podcast ->
-            if (sizeClass.isLarge()) {
-                PodcastDetailExpanded(
-                    podcast = podcast,
-                    episodes = episodes,
-                  isSubscribed = uiState.isSubscribed,
-                    gotoDetails = gotoDetails,
-                    startPodcast = startPodcast,
-                  toggleSubscription = toggleSubscription,
-                    sizeClass = sizeClass
-                )
-            } else {
-                PodcastDetailCompact(
-                    podcast = podcast,
-                    episodes = episodes,
-                  isSubscribed = uiState.isSubscribed,
-                    gotoDetails = gotoDetails,
-                  startPodcast = startPodcast,
-                  toggleSubscription = toggleSubscription
-                )
-            }
-        }
-        if (uiState.loading) {
-            CircularProgressIndicator()
-        }
+  val sizeClass = adaptiveScreenInfo().windowSizeClass
+  Box(
+    modifier = modifier.fillMaxSize(),
+    contentAlignment = Alignment.Center
+  ) {
+    uiState.podcast?.let { podcast ->
+      if (sizeClass.isLarge()) {
+        PodcastDetailExpanded(
+          podcast = podcast,
+          episodes = episodes,
+          isSubscribed = uiState.isSubscribed,
+          gotoDetails = gotoDetails,
+          startPodcast = startPodcast,
+          toggleSubscription = toggleSubscription,
+          sizeClass = sizeClass
+        )
+      } else {
+        PodcastDetailCompact(
+          podcast = podcast,
+          episodes = episodes,
+          isSubscribed = uiState.isSubscribed,
+          gotoDetails = gotoDetails,
+          startPodcast = startPodcast,
+          toggleSubscription = toggleSubscription
+        )
+      }
     }
+    if (uiState.loading) {
+      CircularProgressIndicator()
+    }
+  }
 }
 
 @Composable
 private fun PodcastDetailCompact(
-    podcast: Podcast,
-    episodes: LazyPagingItems<PodcastEpisode>,
-    isSubscribed: Boolean,
-    gotoDetails: (String) -> Unit,
-    toggleSubscription: () -> Unit,
-    startPodcast: () -> Unit
+  podcast: Podcast,
+  episodes: LazyPagingItems<PodcastEpisode>,
+  isSubscribed: Boolean,
+  gotoDetails: (String) -> Unit,
+  toggleSubscription: () -> Unit,
+  startPodcast: () -> Unit
 ) {
-    LazyColumn(
+  LazyColumn(
+    modifier = Modifier
+      .fillMaxSize()
+      .background(MaterialTheme.colorScheme.background),
+    contentPadding = PaddingValues(bottom = 16.dp)
+  ) {
+    item(key = "poster-image") {
+      AsyncImage(
+        placeholder = debugPlaceholder(),
+        model = podcast.image,
+        contentDescription = podcast.title,
+        contentScale = ContentScale.Crop,
         modifier = Modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background),
-        contentPadding = PaddingValues(bottom = 16.dp)
-    ) {
-        item(key = "poster-image") {
-            AsyncImage(
-                placeholder = debugPlaceholder(),
-                model = podcast.image,
-                contentDescription = podcast.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .height(300.dp)
+          .fillMaxWidth()
+          .height(300.dp)
+      )
+    }
+    item(key = "podcast-overview") {
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(20.dp)
+      ) {
+        Text(
+          text = podcast.title,
+          style = MaterialTheme.typography.headlineSmall,
+          fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+          Button(
+            onClick = startPodcast,
+            modifier = Modifier.weight(1f),
+            shape = MaterialTheme.shapes.medium
+          ) {
+            Icon(
+              imageVector = Icons.Filled.PlayArrow,
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.onPrimary
             )
-        }
-        item(key = "podcast-overview") {
-            Column(
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(20.dp)
-            ) {
-                Text(
-                    text = podcast.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-              Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-              ) {
-                Button(
-                    onClick = startPodcast,
-                  modifier = Modifier.weight(1f),
-                    shape = MaterialTheme.shapes.medium,
-                ) {
-                    Icon(
-                      imageVector = Icons.Filled.PlayArrow,
-                      contentDescription = null,
-                      tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                      text = stringResource(R.string.start_listening_now)
-                    )
-                }
-
-                OutlinedButton(
-                  onClick = toggleSubscription,
-                  modifier = Modifier.weight(1f),
-                  shape = MaterialTheme.shapes.medium,
-                ) {
-                  Icon(
-                    imageVector = if (isSubscribed) Icons.Filled.Check else Icons.Filled.Add,
-                    contentDescription = null
-                  )
-                  Spacer(modifier = Modifier.width(4.dp))
-                  Text(
-                    text = if (isSubscribed) {
-                      stringResource(R.string.action_subscribed)
-                    } else {
-                      stringResource(R.string.action_subscribe)
-                    }
-                  )
-                }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "By: ${podcast.publisher}".uppercase(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = podcast.description,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-        item(key = "podcast-recommendations-title") {
-            if (podcast.recommendations.isNotEmpty()) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                    text = stringResource(R.string.reccomendations),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-        item(key = "podcast-recommendations") {
-            if (podcast.recommendations.isNotEmpty()) {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(
-                        items = podcast.recommendations,
-                        key = { recommendation: Podcast -> recommendation.id }
-                    ) { recommendation ->
-                        PodcastRow(
-                            modifier = Modifier
-                              .clickable { gotoDetails(recommendation.id) }
-                              .width(300.dp),
-                            podcast = recommendation
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
-        item(key = "episodes-title") {
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
-                text = stringResource(R.string.podcast_episodes),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+              text = stringResource(R.string.start_listening_now)
             )
-        }
-        items(
-          count = episodes.itemCount,
-          key = episodes.itemKey { it.id }
-        ) { index ->
-          episodes[index]?.let { episode ->
-            PodcastEpisodeItem(
-              modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-              episode = episode
+          }
+
+          OutlinedButton(
+            onClick = toggleSubscription,
+            modifier = Modifier.weight(1f),
+            shape = MaterialTheme.shapes.medium
+          ) {
+            Icon(
+              imageVector = if (isSubscribed) Icons.Filled.Check else Icons.Filled.Add,
+              contentDescription = null
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+              text = if (isSubscribed) {
+                stringResource(R.string.action_subscribed)
+              } else {
+                stringResource(R.string.action_subscribe)
+              }
             )
           }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+          text = "By: ${podcast.publisher}".uppercase(),
+          style = MaterialTheme.typography.labelSmall,
+          color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+          text = podcast.description,
+          style = MaterialTheme.typography.bodyMedium
+        )
+      }
+    }
+    item(key = "podcast-recommendations-title") {
+      if (podcast.recommendations.isNotEmpty()) {
+        Text(
+          modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+          text = stringResource(R.string.reccomendations),
+          style = MaterialTheme.typography.titleLarge,
+          fontWeight = FontWeight.Bold
+        )
+      }
+    }
+    item(key = "podcast-recommendations") {
+      if (podcast.recommendations.isNotEmpty()) {
+        LazyRow(
+          contentPadding = PaddingValues(horizontal = 16.dp),
+          horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+          items(
+            items = podcast.recommendations,
+            key = { recommendation: Podcast -> recommendation.id }
+          ) { recommendation ->
+            PodcastRow(
+              modifier = Modifier
+                .clickable { gotoDetails(recommendation.id) }
+                .width(300.dp),
+              podcast = recommendation
+            )
+          }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+      }
+    }
+    item(key = "episodes-title") {
+      Text(
+        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+        text = stringResource(R.string.podcast_episodes),
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold
+      )
+    }
+    items(
+      count = episodes.itemCount,
+      key = episodes.itemKey { it.id }
+    ) { index ->
+      episodes[index]?.let { episode ->
+        PodcastEpisodeItem(
+          modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+          episode = episode
+        )
+      }
+    }
+
+    if (episodes.loadState.append is LoadState.Loading) {
+      item {
+        Box(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+          contentAlignment = Alignment.Center
+        ) {
+          CircularProgressIndicator(modifier = Modifier.size(24.dp))
+        }
+      }
+    }
+  }
+}
+
+@Composable
+private fun PodcastDetailExpanded(
+  podcast: Podcast,
+  episodes: LazyPagingItems<PodcastEpisode>,
+  isSubscribed: Boolean,
+  gotoDetails: (String) -> Unit,
+  toggleSubscription: () -> Unit,
+  startPodcast: () -> Unit,
+  sizeClass: WindowSizeClass
+) {
+  val isLarge = sizeClass.isLarge()
+  Row(
+    modifier = Modifier
+      .fillMaxSize()
+      .background(MaterialTheme.colorScheme.background)
+      .padding(horizontal = if (isLarge) 40.dp else 24.dp),
+    horizontalArrangement = Arrangement.spacedBy(if (isLarge) 40.dp else 24.dp)
+  ) {
+    // Main Pane: Podcast Header and Episodes
+    LazyColumn(
+      modifier = Modifier
+        .weight(if (isLarge) 0.7f else 0.65f)
+        .fillMaxHeight(),
+      contentPadding = PaddingValues(vertical = 32.dp),
+      verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+      item {
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+          AsyncImage(
+            model = podcast.image,
+            contentDescription = podcast.title,
+            modifier = Modifier
+              .size(if (isLarge) 240.dp else 180.dp)
+              .clip(MaterialTheme.shapes.large),
+            contentScale = ContentScale.Crop,
+            placeholder = debugPlaceholder()
+          )
+          Column(modifier = Modifier.weight(1f)) {
+            Text(
+              text = podcast.title,
+              style = if (isLarge) {
+                MaterialTheme.typography.displaySmall
+              } else {
+                MaterialTheme.typography.headlineLarge
+              },
+              fontWeight = FontWeight.Bold,
+              maxLines = 3,
+              overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+              text = podcast.publisher.uppercase(),
+              style = MaterialTheme.typography.labelLarge,
+              color = MaterialTheme.colorScheme.secondary
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+              Button(
+                onClick = startPodcast,
+                shape = MaterialTheme.shapes.medium,
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+              ) {
+                Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.start_listening_now))
+              }
+
+              OutlinedButton(
+                onClick = toggleSubscription,
+                shape = MaterialTheme.shapes.medium,
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+              ) {
+                Icon(
+                  imageVector = if (isSubscribed) Icons.Filled.Check else Icons.Filled.Add,
+                  contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                  text = if (isSubscribed) {
+                    stringResource(R.string.action_subscribed)
+                  } else {
+                    stringResource(R.string.action_subscribe)
+                  }
+                )
+              }
+            }
+          }
+        }
+      }
+
+      item {
+        Column {
+          Text(
+            text = stringResource(R.string.podcast_about),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+          )
+          Spacer(modifier = Modifier.height(8.dp))
+          Text(
+            text = podcast.description,
+            style = MaterialTheme.typography.bodyLarge,
+            lineHeight = 24.sp
+          )
+        }
+      }
+
+      item {
+        Text(
+          text = stringResource(R.string.podcast_episodes),
+          style = MaterialTheme.typography.headlineSmall,
+          fontWeight = FontWeight.Bold
+        )
+      }
+
+      items(
+        count = episodes.itemCount,
+        key = episodes.itemKey { it.id }
+      ) { index ->
+        episodes[index]?.let { episode ->
+          PodcastEpisodeItem(
+            episode = episode,
+            showImage = true,
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
+      }
 
       if (episodes.loadState.append is LoadState.Loading) {
         item {
@@ -318,190 +460,49 @@ private fun PodcastDetailCompact(
         }
       }
     }
-}
 
-@Composable
-private fun PodcastDetailExpanded(
-    podcast: Podcast,
-    episodes: LazyPagingItems<PodcastEpisode>,
-    isSubscribed: Boolean,
-    gotoDetails: (String) -> Unit,
-    toggleSubscription: () -> Unit,
-    startPodcast: () -> Unit,
-    sizeClass: WindowSizeClass
-) {
-    val isLarge = sizeClass.isLarge()
-    Row(
-        modifier = Modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.background)
-          .padding(horizontal = if (isLarge) 40.dp else 24.dp),
-        horizontalArrangement = Arrangement.spacedBy(if (isLarge) 40.dp else 24.dp)
+    // Supporting Pane: Recommendations
+    Column(
+      modifier = Modifier
+        .weight(if (isLarge) 0.3f else 0.35f)
+        .fillMaxHeight()
+        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+        .padding(horizontal = 20.dp)
     ) {
-        // Main Pane: Podcast Header and Episodes
-        LazyColumn(
+      Spacer(modifier = Modifier.height(32.dp))
+      Text(
+        text = stringResource(R.string.reccomendations),
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold
+      )
+      Spacer(modifier = Modifier.height(16.dp))
+      LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(bottom = 32.dp)
+      ) {
+        items(podcast.recommendations, key = { it.id }) { recommendation ->
+          PodcastRow(
             modifier = Modifier
-              .weight(if (isLarge) 0.7f else 0.65f)
-              .fillMaxHeight(),
-            contentPadding = PaddingValues(vertical = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp)
-                ) {
-                    AsyncImage(
-                        model = podcast.image,
-                        contentDescription = podcast.title,
-                        modifier = Modifier
-                          .size(if (isLarge) 240.dp else 180.dp)
-                          .clip(MaterialTheme.shapes.large),
-                        contentScale = ContentScale.Crop,
-                        placeholder = debugPlaceholder()
-                    )
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = podcast.title,
-                            style = if (isLarge) MaterialTheme.typography.displaySmall else MaterialTheme.typography.headlineLarge,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 3,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = podcast.publisher.uppercase(),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                      Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Button(
-                            onClick = startPodcast,
-                            shape = MaterialTheme.shapes.medium,
-                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
-                        ) {
-                            Icon(Icons.Filled.PlayArrow, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.start_listening_now))
-                        }
-
-                        OutlinedButton(
-                          onClick = toggleSubscription,
-                          shape = MaterialTheme.shapes.medium,
-                          contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
-                        ) {
-                          Icon(
-                            imageVector = if (isSubscribed) Icons.Filled.Check else Icons.Filled.Add,
-                            contentDescription = null
-                          )
-                          Spacer(modifier = Modifier.width(8.dp))
-                          Text(
-                            text = if (isSubscribed) {
-                              stringResource(R.string.action_subscribed)
-                            } else {
-                              stringResource(R.string.action_subscribe)
-                            }
-                          )
-                        }
-                        }
-                    }
-                }
-            }
-
-            item {
-                Column {
-                    Text(
-                        text = stringResource(R.string.podcast_about),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = podcast.description,
-                        style = MaterialTheme.typography.bodyLarge,
-                        lineHeight = 24.sp
-                    )
-                }
-            }
-
-            item {
-                Text(
-                    text = stringResource(R.string.podcast_episodes),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-          items(
-            count = episodes.itemCount,
-            key = episodes.itemKey { it.id }
-          ) { index ->
-            episodes[index]?.let { episode ->
-              PodcastEpisodeItem(
-                episode = episode,
-                showImage = true,
-                modifier = Modifier.fillMaxWidth()
-              )
-            }
-          }
-
-          if (episodes.loadState.append is LoadState.Loading) {
-            item {
-              Box(
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(16.dp),
-                contentAlignment = Alignment.Center
-              ) {
-                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-              }
-            }
-          }
+              .fillMaxWidth()
+              .clickable { gotoDetails(recommendation.id) }
+              .clip(MaterialTheme.shapes.medium)
+              .background(MaterialTheme.colorScheme.surface)
+              .padding(8.dp),
+            podcast = recommendation
+          )
         }
-
-        // Supporting Pane: Recommendations
-        Column(
-            modifier = Modifier
-              .weight(if (isLarge) 0.3f else 0.35f)
-              .fillMaxHeight()
-              .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-              .padding(horizontal = 20.dp)
-        ) {
-            Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                text = stringResource(R.string.reccomendations),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(bottom = 32.dp)
-            ) {
-                items(podcast.recommendations, key = { it.id }) { recommendation ->
-                    PodcastRow(
-                        modifier = Modifier
-                          .fillMaxWidth()
-                          .clickable { gotoDetails(recommendation.id) }
-                          .clip(MaterialTheme.shapes.medium)
-                          .background(MaterialTheme.colorScheme.surface)
-                          .padding(8.dp),
-                        podcast = recommendation
-                    )
-                }
-            }
-        }
+      }
     }
+  }
 }
 
 @Preview
 @PreviewScreenSizes
 @Composable
 private fun PodcastDetailScreenPreview() {
-  val episodes =
-    MutableStateFlow(PagingData.from(samplePodcasts.flatMap { it.episodes })).collectAsLazyPagingItems()
+  val episodesFlow = MutableStateFlow(PagingData.from(samplePodcasts.flatMap { it.episodes }))
+  val episodes = episodesFlow.collectAsLazyPagingItems()
   PocketNotesTheme {
     PodcastDetailContent(
       uiState = PodcastDetailState(

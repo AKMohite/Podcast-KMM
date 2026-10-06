@@ -25,6 +25,7 @@ internal fun DiscoverCuratedPodcasts(
       goToDetails,
       podcastSection
     )
+
     else -> DiscoverCuratedPodcastsCompactAndMedium(
       modifier,
       goToDetails,

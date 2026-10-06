@@ -9,7 +9,4 @@ interface RelatedPodcastRepository {
   fun observe(podcastId: String): Flow<RelatedPodcasts>
 }
 
-data class RelatedPodcasts(
-  val podcastId: String,
-  val related: List<Podcast>
-)
+data class RelatedPodcasts(val podcastId: String, val related: List<Podcast>)

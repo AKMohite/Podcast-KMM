@@ -44,7 +44,7 @@ internal class SearchViewModelV2(
   private val _uiEffect = Channel<SearchUiEffect>()
   val uiEffect = _uiEffect.receiveAsFlow()
 
-  private val _isLoading = MutableStateFlow(false)
+  private val isLoading = MutableStateFlow(false)
 
   private val suggestions = searchQuery
     .debounce(300.milliseconds)
@@ -68,7 +68,7 @@ internal class SearchViewModelV2(
     getRecentSearches(),
     getTrendingSearches(),
     suggestions,
-    _isLoading
+    isLoading
   ) { forYou, genres, recent, trending, suggestions, isLoading ->
     SearchUiState(
       forYouPodcasts = forYou,
@@ -177,7 +177,9 @@ data class SearchUiState(
 }
 
 enum class SearchScreenState {
-  IDLE, ACTIVE, RESULTS
+  IDLE,
+  ACTIVE,
+  RESULTS
 }
 
 sealed interface SearchUiEffect {

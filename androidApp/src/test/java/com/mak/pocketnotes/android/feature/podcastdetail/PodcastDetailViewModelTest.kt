@@ -23,7 +23,8 @@ class PodcastDetailViewModelTest {
   private val relatedPodcastRepository = FakeRelatedPodcastRepository()
   private val episodeRepository = FakeEpisodeRepository()
 
-  private val getPodcastDetailsUseCase = GetPodcastDetailsUseCase(podcastRepository, relatedPodcastRepository)
+  private val getPodcastDetailsUseCase =
+    GetPodcastDetailsUseCase(podcastRepository, relatedPodcastRepository)
   private val togglePodcastSubscriptionUseCase = TogglePodcastSubscriptionUseCase(podcastRepository)
 
   private val testDispatcher = UnconfinedTestDispatcher()

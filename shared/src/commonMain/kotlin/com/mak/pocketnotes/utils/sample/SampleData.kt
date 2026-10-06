@@ -1,3 +1,5 @@
+@file:Suppress("ktlint")
+
 package com.mak.pocketnotes.utils.sample
 
 import com.mak.pocketnotes.core.feature.domain.home.models.CuratedPodcast

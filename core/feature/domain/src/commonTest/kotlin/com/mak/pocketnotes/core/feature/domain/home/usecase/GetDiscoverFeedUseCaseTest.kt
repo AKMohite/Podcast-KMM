@@ -5,11 +5,11 @@ import com.mak.pocketnotes.core.common.models.SectionState
 import com.mak.pocketnotes.core.testing.fakes.FakeBestPodcastRepository
 import com.mak.pocketnotes.core.testing.fakes.FakeCuratedPodcastRepository
 import com.mak.pocketnotes.core.testing.util.TestPodcastData
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.coroutines.test.runTest
 
 class GetDiscoverFeedUseCaseTest {
   private val bestPodcastRepository = FakeBestPodcastRepository()
@@ -24,7 +24,10 @@ class GetDiscoverFeedUseCaseTest {
       assertTrue(feed.bannerSection is SectionState.Success)
       assertTrue(feed.trendingSection is SectionState.Success)
       assertTrue(feed.curatedSection is SectionState.Success)
-      assertEquals(TestPodcastData.samplePodcastList, (feed.bannerSection as SectionState.Success).data)
+      assertEquals(
+        TestPodcastData.samplePodcastList,
+        (feed.bannerSection as SectionState.Success).data
+      )
       assertFalse(feed.isPullToRefreshing)
     }
   }

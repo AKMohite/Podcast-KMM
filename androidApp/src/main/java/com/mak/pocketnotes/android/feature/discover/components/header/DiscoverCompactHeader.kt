@@ -40,123 +40,124 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun DiscoverCompactHeader(
-    podcasts: List<Podcast>,
-    modifier: Modifier = Modifier,
-    onPodcastClick: (String) -> Unit
+  podcasts: List<Podcast>,
+  modifier: Modifier = Modifier,
+  onPodcastClick: (String) -> Unit
 ) {
+  val pagerState = rememberPagerState(pageCount = { podcasts.size })
+  val coroutineScope = rememberCoroutineScope()
 
-    val pagerState = rememberPagerState(pageCount = { podcasts.size })
-    val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(key1 = pagerState.settledPage) {
-        coroutineScope.launch {
-            delay(5_500)
-            val target =
-                if (pagerState.currentPage == pagerState.pageCount - 1) 0 else pagerState.currentPage + 1
-            pagerState.animateScrollToPage(target)
-        }
+  LaunchedEffect(key1 = pagerState.settledPage) {
+    coroutineScope.launch {
+      delay(5_500)
+      val target =
+        if (pagerState.currentPage == pagerState.pageCount - 1) 0 else pagerState.currentPage + 1
+      pagerState.animateScrollToPage(target)
     }
+  }
 
-    Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+  Column(
+    modifier = modifier
+      .background(MaterialTheme.colorScheme.surfaceContainer)
+  ) {
+    HorizontalPager(
+      state = pagerState
+    ) { page ->
+      DiscoverCarouselCard(
+        modifier = Modifier
+          .fillMaxWidth()
+          .clickable { onPodcastClick(podcasts[page].id) },
+        podcast = podcasts[page]
+      )
+    }
+    Spacer(modifier = Modifier.height(4.dp))
+    Row(
+      Modifier
+        .wrapContentHeight()
+        .fillMaxWidth()
+        .align(Alignment.CenterHorizontally)
+        .padding(bottom = 8.dp),
+      horizontalArrangement = Arrangement.Center
     ) {
-        HorizontalPager(
-            state = pagerState
-        ) { page ->
-            DiscoverCarouselCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onPodcastClick(podcasts[page].id) },
-                podcast = podcasts[page]
-            )
+      repeat(pagerState.pageCount) { iteration ->
+        val size = if (pagerState.currentPage == iteration) 16.dp else 6.dp
+        val color = if (pagerState.currentPage == iteration) {
+          MaterialTheme.colorScheme.tertiary
+        } else {
+          MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
         }
-        Spacer(modifier = Modifier.height(4.dp))
-        Row(
-            Modifier
-                .wrapContentHeight()
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            repeat(pagerState.pageCount) { iteration ->
-                val size = if (pagerState.currentPage == iteration) 16.dp else 6.dp
-                val color =
-                    if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
-                Box(
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .clip(MaterialTheme.shapes.medium)
-                        .clickable {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(iteration)
-                            }
-                        }
-                        .background(color)
-                        .size(height = 6.dp, width = size)
-                )
+
+        Box(
+          modifier = Modifier
+            .padding(2.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable {
+              coroutineScope.launch {
+                pagerState.animateScrollToPage(iteration)
+              }
             }
-        }
+            .background(color)
+            .size(height = 6.dp, width = size)
+        )
+      }
     }
+  }
 }
 
 @Composable
-internal fun DiscoverCarouselCard(
-    modifier: Modifier = Modifier,
-    podcast: Podcast
-) {
-    val description = stringResource(R.string.podcast_card_description, podcast.title, podcast.publisher)
-    Box(
-        modifier = modifier
-            .height(160.dp)
-            .semantics(mergeDescendants = true) {
-                contentDescription = description
-            }
+internal fun DiscoverCarouselCard(modifier: Modifier = Modifier, podcast: Podcast) {
+  val description =
+    stringResource(R.string.podcast_card_description, podcast.title, podcast.publisher)
+  Box(
+    modifier = modifier
+      .height(160.dp)
+      .semantics(mergeDescendants = true) {
+        contentDescription = description
+      }
+  ) {
+    Row(
+      modifier = Modifier
+        .padding(12.dp),
+      verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = podcast.thumbnail,
-                contentDescription = podcast.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(150.dp)
-                    .clip(MaterialTheme.shapes.medium),
-                placeholder = debugPlaceholder()
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = podcast.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = podcast.publisher,
-                    style = MaterialTheme.typography.labelLarge,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = podcast.genres,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
+      AsyncImage(
+        model = podcast.thumbnail,
+        contentDescription = podcast.title,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+          .size(150.dp)
+          .clip(MaterialTheme.shapes.medium),
+        placeholder = debugPlaceholder()
+      )
+      Spacer(modifier = Modifier.width(8.dp))
+      Column {
+        Text(
+          text = podcast.title,
+          style = MaterialTheme.typography.titleMedium,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis
+        )
+        Text(
+          text = podcast.publisher,
+          style = MaterialTheme.typography.labelLarge,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis
+        )
+        Text(
+          text = podcast.genres,
+          style = MaterialTheme.typography.bodySmall,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis
+        )
+      }
     }
+  }
 }
 
 @ThemePreviews
 @Composable
 private fun DiscoverCompactHeaderPreview() {
-    DiscoverCompactHeader(
-        podcasts = samplePodcasts.take(8)
-    ) {}
+  DiscoverCompactHeader(
+    podcasts = samplePodcasts.take(8)
+  ) {}
 }

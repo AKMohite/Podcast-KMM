@@ -28,34 +28,32 @@ internal actual fun createEpisodeOffsetPager(
   transactionRunner: DatabaseTransactionRunner,
   mapper: PodcastMapper,
   dispatcher: DispatcherProvider
-): Flow<PagingData<PodcastEpisode>> {
-  return Pager(
-    config = PagingConfig(
-      pageSize = 10,
-      enablePlaceholders = false
-    ),
-    remoteMediator = EpisodeRemoteMediator(
-      podcastId = podcastId,
-      api = api,
-      episodeDAO = episodeDAO,
-      pagingKeysDAO = pagingKeysDAO,
-      lastSyncDAO = lastSyncDAO,
-      transactionRunner = transactionRunner,
-      mapper = mapper
-    ),
-    pagingSourceFactory = {
-      QueryPagingSource(
-        countQuery = episodeDAO.countEpisodes(podcastId),
-        transacter = episodeDAO.getTransacter(),
-        context = dispatcher.io,
-        queryProvider = { limit, offset ->
-          episodeDAO.getEpisodesPaginated(podcastId, limit, offset)
-        }
-      )
-    }
-  ).flow.map { pagingData ->
-    pagingData.map { mapper.episodeEntityToModel(it) }
+): Flow<PagingData<PodcastEpisode>> = Pager(
+  config = PagingConfig(
+    pageSize = 10,
+    enablePlaceholders = false
+  ),
+  remoteMediator = EpisodeRemoteMediator(
+    podcastId = podcastId,
+    api = api,
+    episodeDAO = episodeDAO,
+    pagingKeysDAO = pagingKeysDAO,
+    lastSyncDAO = lastSyncDAO,
+    transactionRunner = transactionRunner,
+    mapper = mapper
+  ),
+  pagingSourceFactory = {
+    QueryPagingSource(
+      countQuery = episodeDAO.countEpisodes(podcastId),
+      transacter = episodeDAO.getTransacter(),
+      context = dispatcher.io,
+      queryProvider = { limit, offset ->
+        episodeDAO.getEpisodesPaginated(podcastId, limit, offset)
+      }
+    )
   }
+).flow.map { pagingData ->
+  pagingData.map { mapper.episodeEntityToModel(it) }
 }
 
 @OptIn(ExperimentalPagingApi::class)
@@ -68,49 +66,47 @@ internal actual fun createEpisodeKeysetPager(
   transactionRunner: DatabaseTransactionRunner,
   mapper: PodcastMapper,
   dispatcher: DispatcherProvider
-): Flow<PagingData<PodcastEpisode>> {
-  return Pager(
-    config = PagingConfig(
-      pageSize = 10,
-      initialLoadSize = 10,
-      prefetchDistance = 1,
-      enablePlaceholders = false
-    ),
-    remoteMediator = EpisodeKeysetRemoteMediator(
-      podcastId = podcastId,
-      api = api,
-      episodeDAO = episodeDAO,
-      pagingKeysDAO = pagingKeysDAO,
-      lastSyncDAO = lastSyncDAO,
-      transactionRunner = transactionRunner,
-      mapper = mapper
-    ),
-    pagingSourceFactory = {
+): Flow<PagingData<PodcastEpisode>> = Pager(
+  config = PagingConfig(
+    pageSize = 10,
+    initialLoadSize = 10,
+    prefetchDistance = 1,
+    enablePlaceholders = false
+  ),
+  remoteMediator = EpisodeKeysetRemoteMediator(
+    podcastId = podcastId,
+    api = api,
+    episodeDAO = episodeDAO,
+    pagingKeysDAO = pagingKeysDAO,
+    lastSyncDAO = lastSyncDAO,
+    transactionRunner = transactionRunner,
+    mapper = mapper
+  ),
+  pagingSourceFactory = {
       /*EpisodeKeysetPagingSource(
         episodeDAO = episodeDAO,
         podcastId = podcastId,
         dispatcher = dispatcher
       )*/
-      QueryPagingSource(
-        transacter = episodeDAO.getTransacter(),
-        context = dispatcher.io,
-        pageBoundariesProvider = { anchor: Instant?, limit: Long ->
-          episodeDAO.getEpisodePageBoundaries(
-            podcastId = podcastId,
-            anchor = anchor,
-            limit = limit
-          )
-        },
-        queryProvider = { beginInclusive: Instant, endExclusive: Instant? ->
-          episodeDAO.getEpisodesByBoundary(
-            podcastId = podcastId,
-            beginInclusive = beginInclusive,
-            endExclusive = endExclusive
-          )
-        }
-      )
-    }
-  ).flow.map { pagingData ->
-    pagingData.map { mapper.episodeEntityToModel(it) }
+    QueryPagingSource(
+      transacter = episodeDAO.getTransacter(),
+      context = dispatcher.io,
+      pageBoundariesProvider = { anchor: Instant?, limit: Long ->
+        episodeDAO.getEpisodePageBoundaries(
+          podcastId = podcastId,
+          anchor = anchor,
+          limit = limit
+        )
+      },
+      queryProvider = { beginInclusive: Instant, endExclusive: Instant? ->
+        episodeDAO.getEpisodesByBoundary(
+          podcastId = podcastId,
+          beginInclusive = beginInclusive,
+          endExclusive = endExclusive
+        )
+      }
+    )
   }
+).flow.map { pagingData ->
+  pagingData.map { mapper.episodeEntityToModel(it) }
 }

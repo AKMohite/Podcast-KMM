@@ -1,7 +1,6 @@
 package com.mak.pocketnotes.android.feature.search.v2
 
 import androidx.lifecycle.SavedStateHandle
-import app.cash.turbine.test
 import com.mak.pocketnotes.core.testing.fakes.FakeBestPodcastRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

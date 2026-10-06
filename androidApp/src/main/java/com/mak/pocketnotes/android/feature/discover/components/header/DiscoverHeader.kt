@@ -34,6 +34,7 @@ internal fun DiscoverHeader(
         modifier = modifier,
         onPodcastClick = onPodcastClick
       )
+
       else -> DiscoverCompactHeader(
         podcasts = podcasts,
         modifier = modifier,

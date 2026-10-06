@@ -4,17 +4,18 @@ import app.cash.turbine.test
 import com.mak.pocketnotes.core.testing.fakes.FakePodcastRepository
 import com.mak.pocketnotes.core.testing.fakes.FakeRelatedPodcastRepository
 import com.mak.pocketnotes.core.testing.util.TestPodcastData
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.coroutines.test.runTest
 
 class GetPodcastDetailsUseCaseTest {
   private val podcastRepository = FakePodcastRepository()
   private val relatedPodcastRepository = FakeRelatedPodcastRepository()
 
-  private val getDetailsUseCase = GetPodcastDetailsUseCase(podcastRepository, relatedPodcastRepository)
+  private val getDetailsUseCase =
+    GetPodcastDetailsUseCase(podcastRepository, relatedPodcastRepository)
   private val toggleSubscriptionUseCase = TogglePodcastSubscriptionUseCase(podcastRepository)
 
   @Test

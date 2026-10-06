@@ -44,22 +44,22 @@ internal class OfflineFirstPodcastRepository(
     StoreBuilder
       .from<String, PodcastDTO, Podcast>(
         fetcher =
-        Fetcher.Companion.of { podcastId ->
-          fetchPodcast(podcastId)
-        },
+          Fetcher.Companion.of { podcastId ->
+            fetchPodcast(podcastId)
+          },
         sourceOfTruth =
-        SourceOfTruth.Companion.of(
-          reader = { podcastId ->
-            observePodcast(podcastId)
-          },
-          writer = { podcastId, dto ->
-            updatePodcast(dto, podcastId)
-          },
-          deleteAll = {},
-          delete = { podcastId ->
-            delete(podcastId)
-          }
-        )
+          SourceOfTruth.Companion.of(
+            reader = { podcastId ->
+              observePodcast(podcastId)
+            },
+            writer = { podcastId, dto ->
+              updatePodcast(dto, podcastId)
+            },
+            deleteAll = {},
+            delete = { podcastId ->
+              delete(podcastId)
+            }
+          )
       ).validator(
         Validator.Companion.by { podcast ->
           return@by needsRefresh(podcast)

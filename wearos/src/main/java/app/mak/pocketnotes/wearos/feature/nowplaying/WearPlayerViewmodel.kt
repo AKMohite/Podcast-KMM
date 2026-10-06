@@ -89,9 +89,7 @@ data class WearQueueItem(
 )
 
 @Serializable
-data class WearQueueData(
-  val items: List<WearQueueItem> = emptyList()
-) {
+data class WearQueueData(val items: List<WearQueueItem> = emptyList()) {
 //    fun toJson(): String = json.encodeToString(serializer(), this)
   companion object {
 //        fun fromJson(raw: String): WearQueueData = runCatching {

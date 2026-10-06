@@ -1,15 +1,10 @@
 package com.mak.pocketnotes.core.common.exception
 
-abstract class PocketException(
-  errorMsg: String,
-  throwable: Throwable? = null
-) : Throwable(errorMsg, throwable)
+abstract class PocketException(errorMsg: String, throwable: Throwable? = null) :
+  Throwable(errorMsg, throwable)
 
-open class APIException(
-  val code: Int = 0,
-  val errorMsg: String,
-  throwable: Throwable? = null
-) : PocketException(errorMsg, throwable)
+open class APIException(val code: Int = 0, val errorMsg: String, throwable: Throwable? = null) :
+  PocketException(errorMsg, throwable)
 
 /**
  * @param firstLaunch is passed from SharedPreferences

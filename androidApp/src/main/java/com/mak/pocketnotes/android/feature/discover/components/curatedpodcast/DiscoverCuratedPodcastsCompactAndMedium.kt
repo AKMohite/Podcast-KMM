@@ -35,81 +35,81 @@ import com.mak.pocketnotes.core.feature.domain.home.models.SectionPodcast
 
 @Composable
 internal fun DiscoverCuratedPodcastsCompactAndMedium(
-    modifier: Modifier = Modifier,
-    goToDetails: (String) -> Unit,
-    podcastSection: CuratedPodcast,
-    sizeClass: WindowSizeClass,
+  modifier: Modifier = Modifier,
+  goToDetails: (String) -> Unit,
+  podcastSection: CuratedPodcast,
+  sizeClass: WindowSizeClass
 ) {
-
-    Column(modifier = modifier) {
-        Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = podcastSection.title,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = if (sizeClass.isMedium()) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
-        )
-      BoxWithConstraints {
-        val itemWidth = maxWidth * 0.8f
-        LazyHorizontalGrid(
-          rows = GridCells.Fixed(2),
-          modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(max = 160.dp),
-          contentPadding = PaddingValues(horizontal = 16.dp),
-          horizontalArrangement = Arrangement.spacedBy(12.dp),
-          verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-          items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
-            CuratedPodcastItem(
-              modifier = Modifier
-                .width(itemWidth)
-                .clickable { goToDetails(podcast.id) },
-              podcast = podcast
-            )
-          }
+  Column(modifier = modifier) {
+    Text(
+      modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+      text = podcastSection.title,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+      style = if (sizeClass.isMedium()) {
+        MaterialTheme.typography.titleLarge
+      } else {
+        MaterialTheme.typography.titleMedium
+      }
+    )
+    BoxWithConstraints {
+      val itemWidth = maxWidth * 0.8f
+      LazyHorizontalGrid(
+        rows = GridCells.Fixed(2),
+        modifier = Modifier
+          .fillMaxWidth()
+          .heightIn(max = 160.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        items(items = podcastSection.podcasts, key = SectionPodcast::id) { podcast ->
+          CuratedPodcastItem(
+            modifier = Modifier
+              .width(itemWidth)
+              .clickable { goToDetails(podcast.id) },
+            podcast = podcast
+          )
         }
       }
     }
+  }
 }
 
 @Composable
-private fun CuratedPodcastItem(
-    modifier: Modifier = Modifier,
-    podcast: SectionPodcast,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+private fun CuratedPodcastItem(modifier: Modifier = Modifier, podcast: SectionPodcast) {
+  Row(
+    modifier = modifier,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    AsyncImage(
+      model = podcast.thumbnail,
+      contentDescription = podcast.title,
+      contentScale = ContentScale.Crop,
+      modifier = Modifier
+        .size(70.dp)
+        .clip(MaterialTheme.shapes.small),
+      placeholder = debugPlaceholder()
+    )
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
     ) {
-        AsyncImage(
-            model = podcast.thumbnail,
-            contentDescription = podcast.title,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-              .size(70.dp)
-              .clip(MaterialTheme.shapes.small),
-            placeholder = debugPlaceholder()
-        )
-        Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(10.dp)
-        ) {
-            Text(
-                text = podcast.title,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = podcast.publisher,
-                style = MaterialTheme.typography.labelSmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+      Text(
+        text = podcast.title,
+        style = MaterialTheme.typography.bodySmall,
+        fontWeight = FontWeight.Bold,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+      )
+      Spacer(modifier = Modifier.height(4.dp))
+      Text(
+        text = podcast.publisher,
+        style = MaterialTheme.typography.labelSmall,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+      )
     }
+  }
 }

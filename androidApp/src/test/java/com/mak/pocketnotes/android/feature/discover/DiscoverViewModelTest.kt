@@ -22,7 +22,8 @@ import org.junit.Test
 class DiscoverViewModelTest {
   private val bestPodcastRepository = FakeBestPodcastRepository()
   private val curatedPodcastRepository = FakeCuratedPodcastRepository()
-  private val getDiscoverFeedUseCase = GetDiscoverFeedUseCase(bestPodcastRepository, curatedPodcastRepository)
+  private val getDiscoverFeedUseCase =
+    GetDiscoverFeedUseCase(bestPodcastRepository, curatedPodcastRepository)
   private val testDispatcher = UnconfinedTestDispatcher()
 
   private lateinit var viewModel: DiscoverViewmodel

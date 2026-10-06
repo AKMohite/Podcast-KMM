@@ -22,8 +22,18 @@ internal val appModule =
 
     single<PlayerController> { ExoPlayerController(get(), get()) }
 
-    factory { GetDiscoverFeedUseCase(bestPodcastRepository = get(), curatedPodcastRepository = get()) }
-    factory { GetPodcastDetailsUseCase(podcastRepository = get(), relatedPodcastRepository = get()) }
+    factory {
+      GetDiscoverFeedUseCase(
+        bestPodcastRepository = get(),
+        curatedPodcastRepository = get()
+      )
+    }
+    factory {
+      GetPodcastDetailsUseCase(
+        podcastRepository = get(),
+        relatedPodcastRepository = get()
+      )
+    }
     factory { TogglePodcastSubscriptionUseCase(podcastRepository = get()) }
 
     viewModel {

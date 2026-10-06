@@ -38,24 +38,24 @@ internal class OfflineFirstRelatedPodcastRepository(
     StoreBuilder
       .from<String, List<PodcastDTO>, RelatedPodcasts>(
         fetcher =
-        Fetcher.of { podcastId ->
-          fetch(podcastId)
-        },
+          Fetcher.of { podcastId ->
+            fetch(podcastId)
+          },
         sourceOfTruth =
-        SourceOfTruth.of(
-          reader = { podcastId ->
-            observe(podcastId)
-          },
-          writer = { podcastId, dto ->
-            update(podcastId, dto)
-          },
-          deleteAll = {
-            deleteAll()
-          },
-          delete = { podcastId ->
-            delete(podcastId)
-          }
-        )
+          SourceOfTruth.of(
+            reader = { podcastId ->
+              observe(podcastId)
+            },
+            writer = { podcastId, dto ->
+              update(podcastId, dto)
+            },
+            deleteAll = {
+              deleteAll()
+            },
+            delete = { podcastId ->
+              delete(podcastId)
+            }
+          )
       ).validator(
         Validator.by { relatedPodcasts ->
           isDataFresh(relatedPodcasts)

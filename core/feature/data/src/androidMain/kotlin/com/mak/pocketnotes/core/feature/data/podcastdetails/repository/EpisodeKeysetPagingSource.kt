@@ -28,8 +28,8 @@ class EpisodeKeysetPagingSource(
     }
   }
 
-  override suspend fun load(params: LoadParams<Instant>): LoadResult<Instant, EpisodeEntity> {
-    return withContext(dispatcher.io) {
+  override suspend fun load(params: LoadParams<Instant>): LoadResult<Instant, EpisodeEntity> =
+    withContext(dispatcher.io) {
       try {
         val lastTimestamp = params.key
         val limit = params.loadSize.toLong()
@@ -52,11 +52,9 @@ class EpisodeKeysetPagingSource(
         LoadResult.Error(e)
       }
     }
-  }
 
-  override fun getRefreshKey(state: PagingState<Instant, EpisodeEntity>): Instant? {
-    return state.anchorPosition?.let { anchorPosition ->
+  override fun getRefreshKey(state: PagingState<Instant, EpisodeEntity>): Instant? =
+    state.anchorPosition?.let { anchorPosition ->
       state.closestItemToPosition(anchorPosition)?.published_on
     }
-  }
 }

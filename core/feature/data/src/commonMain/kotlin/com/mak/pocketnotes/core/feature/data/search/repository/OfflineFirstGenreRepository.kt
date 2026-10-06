@@ -34,22 +34,22 @@ class OfflineFirstGenreRepository(
     StoreBuilder
       .from<Unit, List<GenreDTO>, List<Genre>>(
         fetcher =
-        Fetcher.of<Unit, List<GenreDTO>> {
-          fetch()
-        },
+          Fetcher.of<Unit, List<GenreDTO>> {
+            fetch()
+          },
         sourceOfTruth =
-        SourceOfTruth.of<Unit, List<GenreDTO>, List<Genre>>(
-          reader = {
-            observe()
-          },
-          writer = { _, dto ->
-            update(dto)
-          },
+          SourceOfTruth.of<Unit, List<GenreDTO>, List<Genre>>(
+            reader = {
+              observe()
+            },
+            writer = { _, dto ->
+              update(dto)
+            },
 //                delete = { dao.removeGenres() },
-          deleteAll = {
-            deleteAll()
-          }
-        )
+            deleteAll = {
+              deleteAll()
+            }
+          )
       ).validator(
         Validator.by { genres ->
           return@by needsRefresh(genres)

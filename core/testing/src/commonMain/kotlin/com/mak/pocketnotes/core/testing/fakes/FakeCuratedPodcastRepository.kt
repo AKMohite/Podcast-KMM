@@ -11,21 +11,23 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 
 class FakeCuratedPodcastRepository : CuratedPodcastRepository {
-  var sectionState: SectionState<List<CuratedPodcast>> = SectionState.Success(listOf(TestPodcastData.sampleCuratedPodcast))
+  var sectionState: SectionState<List<CuratedPodcast>> = SectionState.Success(
+    listOf(TestPodcastData.sampleCuratedPodcast)
+  )
   var curatedListToReturn: List<CuratedPodcast> = listOf(TestPodcastData.sampleCuratedPodcast)
 
   val refreshCalls = mutableListOf<CuratedPodcastsParam>()
 
-  override fun refreshSection(param: CuratedPodcastsParam): Flow<SectionState<List<CuratedPodcast>>> {
+  override fun refreshSection(
+    param: CuratedPodcastsParam
+  ): Flow<SectionState<List<CuratedPodcast>>> {
     refreshCalls.add(param)
     return MutableStateFlow(sectionState).asStateFlow()
   }
 
-  override fun refresh(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> {
-    return flowOf(curatedListToReturn)
-  }
+  override fun refresh(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> =
+    flowOf(curatedListToReturn)
 
-  override fun observePodcasts(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> {
-    return flowOf(curatedListToReturn)
-  }
+  override fun observePodcasts(param: CuratedPodcastsParam): Flow<List<CuratedPodcast>> =
+    flowOf(curatedListToReturn)
 }

@@ -11,31 +11,27 @@ import kotlinx.coroutines.flow.map
 class FakePodcastRepository : PodcastRepository {
   var podcastToReturn: Podcast = TestPodcastData.samplePodcast
   private val subscribedIds = mutableSetOf<String>()
-  private val _subscribedFlow = MutableStateFlow<Set<String>>(emptySet())
+  private val subscribedFlow = MutableStateFlow<Set<String>>(emptySet())
 
-  override fun refresh(podcastId: String): Flow<Podcast> {
-    return flowOf(podcastToReturn.copy(id = podcastId))
-  }
+  override fun refresh(podcastId: String): Flow<Podcast> =
+    flowOf(podcastToReturn.copy(id = podcastId))
 
-  override fun observePodcast(podcastId: String): Flow<Podcast> {
-    return flowOf(podcastToReturn.copy(id = podcastId))
-  }
+  override fun observePodcast(podcastId: String): Flow<Podcast> =
+    flowOf(podcastToReturn.copy(id = podcastId))
 
-  override fun isSubscribed(podcastId: String): Flow<Boolean> {
-    return _subscribedFlow.map { it.contains(podcastId) }
+  override fun isSubscribed(podcastId: String): Flow<Boolean> = subscribedFlow.map {
+    it.contains(podcastId)
   }
 
   override suspend fun subscribe(podcastId: String) {
     subscribedIds.add(podcastId)
-    _subscribedFlow.value = subscribedIds.toSet()
+    subscribedFlow.value = subscribedIds.toSet()
   }
 
   override suspend fun unsubscribe(podcastId: String) {
     subscribedIds.remove(podcastId)
-    _subscribedFlow.value = subscribedIds.toSet()
+    subscribedFlow.value = subscribedIds.toSet()
   }
 
-  override fun getSubscribedPodcasts(): Flow<List<Podcast>> {
-    return flowOf(listOf(podcastToReturn))
-  }
+  override fun getSubscribedPodcasts(): Flow<List<Podcast>> = flowOf(listOf(podcastToReturn))
 }
