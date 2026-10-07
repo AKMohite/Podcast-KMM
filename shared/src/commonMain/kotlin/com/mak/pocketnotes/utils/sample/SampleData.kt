@@ -1,4 +1,5 @@
 @file:Suppress("ktlint")
+//@file:Suppress("ktlint:standard:max-line-length", "ktlint:standard:comment-wrapping")
 
 package com.mak.pocketnotes.utils.sample
 
