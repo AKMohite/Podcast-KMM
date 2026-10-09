@@ -53,6 +53,10 @@ internal class DiscoverRobot(private val rule: ComposeContentTestRule) {
     rule.onAllNodesWithText(title).onFirst().assertIsDisplayed()
   }
 
+  fun clickPodcast(title: String) = apply {
+    rule.onAllNodesWithText(title).onFirst().performClick()
+  }
+
   fun assertRetryVisible() = apply {
     rule.onNodeWithText(context.getString(R.string.action_retry)).assertIsDisplayed()
   }

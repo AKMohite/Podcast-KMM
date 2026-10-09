@@ -54,7 +54,6 @@ kotlin {
         // Use api so that the android app can use it as well
         implementation(libs.koin.core)
         implementation(libs.store5)
-        implementation(libs.kotlinx.datetime)
       }
     }
     commonTest {

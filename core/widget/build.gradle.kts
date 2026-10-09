@@ -23,6 +23,10 @@ android {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
   }
+
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+  }
 }
 
 dependencies {
@@ -34,4 +38,10 @@ dependencies {
   implementation(libs.androidx.glance.material3)
   implementation(libs.androidx.media3.session)
   implementation(libs.koin.android)
+
+  testImplementation(libs.junit4)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.androidx.junit)
+  testImplementation("androidx.test:core:1.7.0")
+  testImplementation("org.robolectric:robolectric:4.17")
 }
