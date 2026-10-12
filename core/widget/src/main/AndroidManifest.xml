@@ -3,7 +3,7 @@
 
   <application>
     <receiver
-      android:name=".PodcastWidgetReceiver"
+      android:name=".PodcastPlayerWidgetReceiver"
       android:exported="true"
       android:label="@string/app_name">
       <intent-filter>

@@ -12,13 +12,19 @@ internal class GlanceWidgetUpdater(context: Context) : WidgetUpdater {
   private val appContext = context.applicationContext
 
   override suspend fun updateSubscriptionWidget() {
-    val widget = SubscriptionGridWidget()
-    widget.updateAll(appContext)
 
-    // Update preview for Android 15+
-    if (android.os.Build.VERSION.SDK_INT >= 35) {
-      val manager = GlanceAppWidgetManager(appContext)
-      manager.setWidgetPreviews(SubscriptionGridWidgetReceiver::class)
+    val manager = GlanceAppWidgetManager(appContext)
+    val widget = SubscriptionGridWidget()
+    val glanceIds = manager.getGlanceIds(widget.javaClass)
+    glanceIds.forEach { glanceId ->
+      widget.update(appContext, glanceId)
     }
+//    widget.updateAll(appContext)
+//
+//    // Update preview for Android 15+
+//    if (android.os.Build.VERSION.SDK_INT >= 35) {
+//      val manager = GlanceAppWidgetManager(appContext)
+//      manager.setWidgetPreviews(SubscriptionGridWidgetReceiver::class)
+//    }
   }
 }

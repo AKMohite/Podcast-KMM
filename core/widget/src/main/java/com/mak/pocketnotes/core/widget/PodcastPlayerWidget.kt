@@ -31,7 +31,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.mak.pocketnotes.core.widget.ui.PocketGlanceTheme
 
-class PodcastWidget : GlanceAppWidget() {
+class PodcastPlayerWidget : GlanceAppWidget() {
 
   companion object {
     private val SMALL_SQUARE = DpSize(48.dp, 48.dp)
@@ -51,7 +51,7 @@ class PodcastWidget : GlanceAppWidget() {
     provideContent {
       PocketGlanceTheme {
         val size = LocalSize.current
-        PodcastWidgetContent(size)
+        PodcastPlayerWidgetContent(size)
       }
     }
   }
@@ -59,13 +59,13 @@ class PodcastWidget : GlanceAppWidget() {
   override suspend fun providePreview(context: Context, widgetCategory: Int) {
     provideContent {
       PocketGlanceTheme {
-        PodcastWidgetContent(HORIZONTAL_RECTANGLE)
+        PodcastPlayerWidgetContent(HORIZONTAL_RECTANGLE)
       }
     }
   }
 
   @Composable
-  private fun PodcastWidgetContent(size: DpSize) {
+  private fun PodcastPlayerWidgetContent(size: DpSize) {
     val playerIntent = Intent(Intent.ACTION_VIEW, "pocketnotes://player".toUri()).apply {
       addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
